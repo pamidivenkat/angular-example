@@ -1,0 +1,47 @@
+@import '../../../../assets/scss/variablesMap';
+.searchbox {
+  @include clearfix;
+}
+
+.searchbox__button {
+  cursor: pointer;
+  float: left;
+  font-size: 0;
+  padding: 20px $base-padding;
+  @include media-over-767 {
+    padding: 20px ($base-padding * 2);
+  }
+}
+
+.searchbox__icon-close {
+  color: $teal--0;
+}
+
+.searchbox__input {
+  float: left;
+  width: calc(100% - 106px);
+  @include media-over-767 {
+    width: calc(100% - 161px);
+  }
+  label {
+    input {
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+  }
+}
+
+.header__search-input{
+  .button{
+    border: none;
+    height: 20px;
+    width: 20px;
+    margin: 0px;
+    padding: 0px;
+    box-shadow: none;
+    &:hover, &:active, &:focus{
+      background: transparent;
+      box-shadow: none;
+    }
+  }
+}

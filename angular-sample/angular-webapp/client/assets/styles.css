@@ -1,0 +1,81 @@
+/* You can add global styles to this file, and also import other style files */
+
+body {
+  background: #f3f3f3;
+}
+
+.atlas-dots,
+.logo-container {
+  position: absolute;
+  top: 0
+}
+.logo-container {      
+  text-align: center;
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  margin: auto;
+  height: 50px;
+}
+
+.loading-dots {
+  display: block;
+  margin: 15px auto;
+}
+  .dot {
+    animation: up-and-down 1.5s infinite;
+    background: #fec352;
+    border-radius: 50%;
+    display: inline-block;
+    height: 10px;
+    margin-right: 3px;
+    opacity: .6;
+    width: 10px;
+  }
+    .dot:nth-child(2) {
+    animation-delay: .1s;
+  }
+  .dot:nth-child(3) {
+    animation-delay: .2s;
+    margin-right: 0;
+    opacity: 1;
+  }
+@keyframes up-and-down {
+  0% {
+    transform: translateY(0);
+  }
+  35% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+  70% {
+    transform: translateY(3px);
+  }
+  85% {
+    transform: translateY(-3px);
+  }
+}
+
+.backlayer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  background-color: #f3f3f3;
+}
+
+img {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.icon svg{pointer-events: none;}

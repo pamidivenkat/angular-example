@@ -1,0 +1,702 @@
+<div id="employee-bulk-update">
+  <ae-banner [id]="getChildId('AeBanner')" [name]="getChildName('AeBanner')" [titleText]="'EMPLOYEE_BULK_UPDATE.UPDATE_EMPLOYEES' | translate:lang"
+    [backgroundImage]="'/assets/images/lp-employees.jpg'">
+    <ae2-breadcrumb [id]="'breadCrumb'" [name]="'breadCrumb'" class="bredcrumb-section" [group]="bcGroup"></ae2-breadcrumb>
+  </ae-banner>
+  <div class="table spacer">
+    <div class="table__filter-bar" id="enployeeFilter-barID">
+      <div class="filter-bar">
+        <div class="filter-bar__label label">{{'MANAGE_EMPLOYEE.Filter_By'| translate:lang}}</div>
+        <div class="sg-grid grid--1-1-3">
+          <div>
+            <ae-input [id]="getChildId('AeInput', 1)" [name]="getChildName('AeInput', 1)" [placeholder]="'MANAGE_EMPLOYEE.SEARCH_PLACEHOLDER'| translate:lang"
+              [delay]="searchDebounce" [type]="inputType" (aeChange)="onSearchTextChange($event)" [value]="''"></ae-input>
+          </div>
+
+          <div>
+            <ae-select [id]="getChildId('AeSelect', 1)" [name]="getChildName('AeSelect', 1)" [options]="employeeTypes" [value]="''" (aeSelectChange)="onEmployeeTypeChange($event)"></ae-select>
+          </div>
+
+          <div>
+            <ae-autocomplete [id]="'ddlDepartment'" [name]="'ddlDepartment'" [placeholder]="'EMPLOYEE_BULK_UPDATE.SELECT_DEPARTMENT' | translate: lang"
+              [multiselect]="'true'" [items]="departmentsData" [dstype]="dataSourceType" [field]="'Name'" [valuefield]="'Id'"
+              (aeOnSelect)="onDepartmentFilterChanged($event)" (aeOnClearSelected)="onDepartmentFilterCleared($event)"></ae-autocomplete>
+          </div>
+          <div>
+            <ae-autocomplete [id]="'ddlLocation'" [name]="'ddlLocation'" [placeholder]="'EMPLOYEE_BULK_UPDATE.SELECT_LOCATION' | translate: lang"
+              [multiselect]="'true'" [items]="locations" [dstype]="dataSourceType" [field]="'SiteNameAndPostcode'" [valuefield]="'Id'"
+              (aeOnSelect)="onLocationFilterChanged($event)" (aeOnClearSelected)="onLocationFilterCleared($event)"></ae-autocomplete>
+          </div>
+          <div>
+            <ae-autocomplete [id]="'ddlEmployeeGroup'" [name]="'ddlEmployeeGroup'" [placeholder]="'EMPLOYEE_BULK_UPDATE.SELECT_EMP_GROUP' | translate: lang"
+              [multiselect]="'true'" [items]="employeeGroups" [dstype]="dataSourceType" [field]="'Name'" [valuefield]="'Id'"
+              (aeOnSelect)="onEmployeeGroupFilterChanged($event)" (aeOnClearSelected)="onEmployeeGroupFilterCleared($event)"></ae-autocomplete>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="employee-bulk-update-header" class="button-bar">
+      <div class="button-bar__item">
+        <ae-button [type]="'button'" [id]="'btnUpdate'" [name]="'btnUpdate'" [class]="lightClass" [text]="'BUTTONS.SAVE' | translate: lang"
+          (aeClick)="bulkUpdate()"></ae-button>
+      </div>
+
+      <div class="button-bar__item">
+        <div class="checkbox-list-group" [class.open]="getOpen()">
+          <div class="button-group-list">
+            <ae-checkbox [id]="getChildId('AeCheckBox_showAll',1)" [name]="getChildName('AeCheckBox_showAll',1)" [checkText]="'BUTTONS.SHOW_ALL' | translate: lang"
+              [value]="true" [checked]="showAll" (onAeChange)="showColumns()"></ae-checkbox>
+            <div class="icon-sec" (click)="getOptionalColumnOpen($event)">
+              <ae-icon [id]="getChildId('AeIcon_list',1)" [name]="getChildName('AeIcon_list',1)" [icon]="'icon-burger'" [title]="'EMPLOYEE_BULK_UPDATE.LIST' | translate: lang"></ae-icon>
+            </div>
+          </div>
+          <div class="dropdown-list">
+            <div *ngFor="let column of optionalColumns;let k=index;">
+              <ae-checkbox [id]="getChildId('AeCheckBox_OptionalCol',k)" [name]="getChildName('AeCheckBox_OptionalCol',101)" [checkText]="column.Name"
+                [value]="column.Show" [checked]="column.Show" (onAeChange)="setHideShowColumn(column.Key)"></ae-checkbox>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div id="employee-bulk-update-data-table" class="top-15">
+      <ae-datatable [id]="getChildId('AeDatatable',1)" [name]="getChildName('AeDatatable',1)" [dataSource]="bulkUpdateEmployeesData$"
+        [totalRecords]="totalEmployeesCount$" [inlineEdit]="true" [defaultOptions]="defaultDataTableOptions$ | async" [autoGenerateColumns]="false"
+        [loading]="loadingStatus$ | async" (pageChanged)="onPageChange($event)" [rowSelector]="highLightErrorRow">
+
+        <ae-column [headerText]="'EMPLOYEE_BULK_UPDATE.EMPLOYEE_UPDATE_STATUS_COLUMN' | translate:lang" [sortable]="false">
+          <ae-template [type]="'header'">
+            <ng-template>
+              <span [title]="'EMPLOYEE_BULK_UPDATE.EMPLOYEE_UPDATE_STATUS_COLUMN' | translate:lang">{{'EMPLOYEE_BULK_UPDATE.EMPLOYEE_UPDATE_STATUS_COLUMN' | translate:lang}}</span>
+            </ng-template>
+          </ae-template>
+          <ae-template [type]="'edit'" [keys]="keys">
+            <ng-template let-context="item">
+              <div>
+                <ae-icon [id]="'icon-error'" [name]="'icon-error'" [size]="addressIconSize" [color]="''" [icon]="'icon-info'" [title]="getEmployeeErrorMessage(context.Row)"
+                  *ngIf="employeeHasErrors(context.Row)"></ae-icon>
+                <ae-icon [id]="'icon-auto-save'" [name]="'icon-auto-save'" [size]="addressIconSize" [color]="getAutoSaveIconColour(context.Row)"
+                  [icon]="getAutoSaveIcon(context.Row)" [title]="getAutoSaveStatusMessage(context.Row)" *ngIf="showAutoSaveStatusIcon(context.Row)"></ae-icon>
+              </div>
+            </ng-template>
+          </ae-template>
+        </ae-column>
+
+        <ae-column [headerText]="'EMPLOYEE_PERSONAL.title' | translate:lang" [sortable]="false">
+          <ae-template [type]="'header'">
+            <ng-template>
+              <span [title]="'EMPLOYEE_PERSONAL.title' | translate:lang">{{'EMPLOYEE_PERSONAL.title' | translate:lang}} *</span>
+            </ng-template>
+          </ae-template>
+          <ae-template [type]="'edit'" [keys]="keys">
+            <ng-template let-context="item">
+              <div>
+                <ae-select [id]="getChildId('AeSelect',context.Row)" [name]="getChildName('AeSelect',context.Row)" [title]="'EMPLOYEE_PERSONAL.title' | translate:lang"
+                  [options]="employeeTitles" [placeholder]="'Please Select'" [value]="getFieldValue(context.Row,'Title')" (aeSelectChange)="setSelectPropertyValue($event,context,'Title')"
+                  [hasError]="fieldHasRequiredError(context.Row,'Title')"></ae-select>
+
+                <span *ngIf="fieldHasRequiredError(context.Row,'Title')" class="form__input__error" id="title_field_error">
+          {{'EMPLOYEE_PERSONAL.title_required' | translate:lang}}.
+            </span>
+              </div>
+            </ng-template>
+          </ae-template>
+        </ae-column>
+
+        <ae-column [headerText]="'EMPLOYEE_PERSONAL.first_name' | translate:lang" [sortable]="false">
+          <ae-template [type]="'header'">
+            <ng-template>
+              <span [title]="'EMPLOYEE_PERSONAL.first_name' | translate:lang">{{'EMPLOYEE_PERSONAL.first_name' | translate:lang}} *</span>
+            </ng-template>
+          </ae-template>
+          <ae-template [type]="'edit'" [keys]="keys">
+            <ng-template let-context="item">
+              <div>
+                <ae-input [id]="getChildId('AeInput',context.Row)" [name]="getChildName('AeInput',context.Row)" [placeholder]="'EMPLOYEE_PERSONAL.first_name' | translate:lang"
+                  [title]="'EMPLOYEE_PERSONAL.first_name_tooltip' | translate:lang" [value]="getFieldValue(context.Row,'FirstName')"
+                  (aeChange)="setInputPropertyValue($event,context,'FirstName')" [hasError]="fieldHasRequiredError(context.Row,'FirstName') || hasInvalidNameError(context.Row,'FirstName')"
+                  (aeBlur)="inputPropertyAutoSave($event,context,'FirstName')"></ae-input>
+
+                <span *ngIf="fieldHasRequiredError(context.Row,'FirstName')" class="form__input__error" id="firstname_rq_error">
+            {{'EMPLOYEE_PERSONAL.first_name_required' | translate:lang}}.
+            </span>
+                <span *ngIf="hasInvalidNameError(context.Row,'FirstName')" class="form__input__error" id="firstname_validname_error">
+            {{'EMPLOYEE_PERSONAL.only_alpha_msg' | translate:lang}}.
+            </span>
+              </div>
+            </ng-template>
+          </ae-template>
+        </ae-column>
+
+        <ae-column [headerText]="'EMPLOYEE_PERSONAL.surname' | translate:lang" [sortable]="false">
+          <ae-template [type]="'header'">
+            <ng-template>
+              <span [title]="'EMPLOYEE_PERSONAL.surname' | translate:lang">{{'EMPLOYEE_PERSONAL.surname' | translate:lang}} *</span>
+            </ng-template>
+          </ae-template>
+          <ae-template [type]="'edit'" [keys]="keys">
+            <ng-template let-context="item">
+              <div>
+                <ae-input [id]="getChildId('AeInput',context.Row)" [name]="getChildName('AeInput',context.Row)" [value]="getFieldValue(context.Row,'Surname')"
+                  [title]="'EMPLOYEE_PERSONAL.sur_name_tooltip' | translate:lang" [placeholder]="'EMPLOYEE_PERSONAL.surname' | translate:lang"
+                  (aeChange)="setInputPropertyValue($event,context,'Surname')" [hasError]="fieldHasRequiredError(context.Row,'Surname') || hasInvalidNameError(context.Row,'Surname') "
+                  (aeBlur)="inputPropertyAutoSave($event,context,'Surname')"></ae-input>
+                <span *ngIf="fieldHasRequiredError(context.Row,'Surname')" class="form__input__error" id="surname_req_error">{{'EMPLOYEE_PERSONAL.surname_required' | translate:lang}}.</span>
+                <span *ngIf="hasInvalidNameError(context.Row,'Surname')" class="form__input__error" id="surname_validname_error">{{'EMPLOYEE_PERSONAL.only_alpha_msg' | translate:lang}}.</span>
+
+              </div>
+            </ng-template>
+          </ae-template>
+        </ae-column>
+
+        <ae-column [headerText]="'EMPLOYEE_PERSONAL.middle_name' | translate:lang" [sortable]="false">
+          <ae-template [type]="'header'">
+            <ng-template>
+              <span [title]="'EMPLOYEE_PERSONAL.middle_name' | translate:lang">{{'EMPLOYEE_PERSONAL.middle_name' | translate:lang}}</span>
+            </ng-template>
+          </ae-template>
+          <ae-template [type]="'edit'" [keys]="keys">
+            <ng-template let-context="item">
+              <div class="cell-width--sm">
+                <ae-input [id]="getChildId('AeInput',context.Row)" [name]="getChildName('AeInput',context.Row)" [value]="getFieldValue(context.Row,'MiddleName')"
+                  [title]="'EMPLOYEE_PERSONAL.middle_name_tooltip' | translate:lang" [placeholder]="'EMPLOYEE_PERSONAL.middle_name' | translate:lang"
+                  (aeChange)="setInputPropertyValue($event,context,'MiddleName')" (aeBlur)="inputPropertyAutoSave($event,context,'MiddleName')"></ae-input>
+              </div>
+            </ng-template>
+          </ae-template>
+        </ae-column>
+
+        <ae-column [headerText]="'EMPLOYEE_PERSONAL.known_as' | translate:lang" [sortable]="false">
+          <ae-template [type]="'header'">
+            <ng-template>
+              <span [title]="'EMPLOYEE_PERSONAL.known_as' | translate:lang">{{'EMPLOYEE_PERSONAL.known_as' | translate:lang}}</span>
+            </ng-template>
+          </ae-template>
+          <ae-template [type]="'edit'" [keys]="keys">
+            <ng-template let-context="item">
+              <ae-input [id]="getChildId('AeInput',context.Row)" [name]="getChildName('AeInput',context.Row)" [value]="getFieldValue(context.Row,'KnownAs')"
+                [title]="'EMPLOYEE_PERSONAL.known_as_tooltip' | translate:lang" [placeholder]="'EMPLOYEE_PERSONAL.known_as' | translate:lang"
+                (aeChange)="setInputPropertyValue($event,context,'KnownAs')" (aeBlur)="inputPropertyAutoSave($event,context,'KnownAs')"></ae-input>
+            </ng-template>
+          </ae-template>
+        </ae-column>
+
+        <ae-column [headerText]="'EMPLOYEE_PERSONAL.previous_name' | translate:lang" [sortable]="false">
+          <ae-template [type]="'header'">
+            <ng-template>
+              <span [title]="'EMPLOYEE_PERSONAL.previous_name' | translate:lang">{{'EMPLOYEE_PERSONAL.previous_name' | translate:lang}}</span>
+            </ng-template>
+          </ae-template>
+          <ae-template [type]="'edit'" [keys]="keys">
+            <ng-template let-context="item">
+              <ae-input [id]="getChildId('AeInput',context.Row)" [name]="getChildName('AeInput',context.Row)" [value]="getFieldValue(context.Row,'PreviousName')"
+                [title]="'EMPLOYEE_PERSONAL.previous_name_tooltip' | translate:lang" [placeholder]="'EMPLOYEE_PERSONAL.previous_name' | translate:lang"
+                (aeChange)="setInputPropertyValue($event,context,'PreviousName')" (aeBlur)="inputPropertyAutoSave($event,context,'PreviousName')"></ae-input>
+            </ng-template>
+          </ae-template>
+        </ae-column>
+
+        <ae-column [headerText]="'EMPLOYEE_PERSONAL.dob' | translate:lang" [sortable]="false">
+          <ae-template [type]="'header'">
+            <ng-template>
+              <span [title]="'EMPLOYEE_PERSONAL.dob' | translate:lang">{{'EMPLOYEE_PERSONAL.dob' | translate:lang}} *</span>
+            </ng-template>
+          </ae-template>
+          <ae-template [type]="'edit'" [keys]="keys">
+            <ng-template let-context="item">
+              <div class="cell-width--sm">
+                <ae-datetime-picker [id]="getChildId('AeDateTimePicker',context.Row)" [name]="getChildName('AeDateTimePicker',context.Row)"
+                  [title]="'EMPLOYEE_PERSONAL.dob' | translate:lang" [monthNavigator]="true" [yearNavigator]="true" [showIcon]="true"
+                  [defaultDate]="getDate(context.Row,'DOB')" (aeSelect)="setDateValue($event,context,'DOB')" (aeBlur)="autoSave(context.Row)"
+                  [readonlyInput]="true"></ae-datetime-picker>
+                <span *ngIf="fieldHasRequiredError(context.Row,'DOB')" class="form__input__error" id="dob_rq_error">{{'EMPLOYEE_PERSONAL.dob_required' | translate:lang}}.</span>
+              </div>
+            </ng-template>
+          </ae-template>
+        </ae-column>
+
+        <ae-column [headerText]="'EMPLOYEE_BULK_UPDATE.HAS_EMAIL' | translate:lang" [sortable]="false">
+          <ae-template [type]="'header'">
+            <ng-template>
+              <span [title]="'EMPLOYEE_BULK_UPDATE.HAS_EMAIL' | translate:lang">{{'EMPLOYEE_BULK_UPDATE.HAS_EMAIL' | translate:lang}}</span>
+            </ng-template>
+          </ae-template>
+          <ae-template [type]="'edit'" [keys]="keys">
+            <ng-template let-context="item">
+              <div>
+                <ae-switch [id]="getChildId('AeSwitch',context.Row)" [name]="getChildName('AeSwitch',context.Row)" [checked]="getFieldValue(context.Row,'HasEmail')"
+                  [switchText]="' '" [title]="'EMPLOYEE_IMPORT.HAS_EMAIL_TOOLTIP' | translate:lang" (aeChange)="onHasEmailChanged($event,context,'HasEmail')"
+                  [value]="getFieldValue(context.Row,'HasEmail')" [disabled]="isHasEmailDisable(context.Row)"></ae-switch>
+              </div>
+            </ng-template>
+          </ae-template>
+        </ae-column>
+
+
+        <ae-column [headerText]="'EMPLOYEE_BULK_UPDATE.CREATE_USER' | translate:lang" [sortable]="false">
+          <ae-template [type]="'header'">
+            <ng-template>
+              <ae-checkbox [id]="getChildId('AeCheckBox', 'All')" [name]="getChildName('AeCheckBox', 'All')" [checkText]="'EMPLOYEE_BULK_UPDATE.CREATE_USER' | translate:lang"
+                [title]="'EMPLOYEE_BULK_UPDATE.CREATE_USER' | translate: lang" [checked]="getCreateUserAllStatus()" [value]="getCreateUserAllStatus()"
+                (onAeChange)="setInputSwitchPropertyValueToAll($event)"></ae-checkbox>
+            </ng-template>
+          </ae-template>
+          <ae-template [type]="'edit'" [keys]="keys">
+            <ng-template let-context="item">
+              <ae-checkbox [id]="getChildId('AeCheckBox',context.Row)" [name]="getChildName('AeCheckBox',context.Row)" [checkText]="''"
+                [title]="'EMPLOYEE_BULK_UPDATE.CREATE_USER' | translate: lang" [checked]="getFieldValue(context.Row,'CreateUser') || getFieldValue(context.Row,'HasUser')"
+                [disabled]="getFieldValue(context.Row, 'HasUser')" [value]="getFieldValue(context.Row,'CreateUser')" (onAeChange)="setInputSwitchPropertyValue($event,context,'CreateUser')"></ae-checkbox>
+            </ng-template>
+          </ae-template>
+        </ae-column>
+
+        <ae-column [headerText]="'EMPLOYEE_CONTACTS.email' | translate: lang" [sortable]="false">
+          <ae-template [type]="'header'">
+            <ng-template>
+              <span [title]="'EMPLOYEE_CONTACTS.email' | translate: lang">{{'EMPLOYEE_CONTACTS.email' | translate: lang}}</span>
+            </ng-template>
+          </ae-template>
+          <ae-template [type]="'edit'" [keys]="keys">
+            <ng-template let-context="item">
+              <div class="cell-width--sm">
+                <ae-input [id]="getChildId('AeInput',context.Row)" [name]="getChildName('AeInput',context.Row)" [value]="getFieldValue(context.Row,'Email')"
+                  (aeChange)="setInputPropertyValue($event,context,'Email')" [disabled]="isEmailDisabled(context.Row)" [placeholder]="'EMPLOYEE_CONTACTS.email_address' | translate:lang"
+                  [title]="'EMPLOYEE_CONTACTS.email_address_tooltip' | translate:lang" [hasError]="(fieldHasRequiredEmailError(context.Row,'Email') || fieldHasInvalidEmail(context.Row, 'Email'))"
+                  (aeBlur)="inputPropertyAutoSave($event,context,'Email')"></ae-input>
+                <span *ngIf="fieldHasRequiredEmailError(context.Row,'Email')" class="form__input__error">{{'EMPLOYEE_CONTACTS.email_required' | translate:lang}}.</span>
+                <span *ngIf="fieldHasInvalidEmail(context.Row, 'Email')" class="form__input__error">{{'EMPLOYEE_CONTACTS.email_invalid' | translate:lang}}.</span>
+              </div>
+            </ng-template>
+          </ae-template>
+        </ae-column>
+
+
+        <ae-column [headerText]="'EMPLOYEE_IMPORT.USER_NAME' | translate:lang" [sortable]="false">
+          <ae-template [type]="'header'">
+            <ng-template>
+              <span [title]="'EMPLOYEE_IMPORT.USER_NAME' | translate:lang">{{'EMPLOYEE_IMPORT.USER_NAME' | translate:lang}}</span>
+            </ng-template>
+          </ae-template>
+          <ae-template [type]="'edit'" [keys]="keys">
+            <ng-template let-context="item">
+              <div class="cell-width--md">
+                <ae-input [title]="'EMPLOYEE_IMPORT.USER_NAME' | translate:lang" [id]="getChildId('AeInput',context.Row)" [name]="getChildName('AeInput',context.Row)"
+                  [value]="getFieldValue(context.Row,'UserName')" (aeChange)="setInputPropertyValue($event,context,'UserName')"
+                  [disabled]="!isUserNameDisabled(context.Row)" (aeBlur)="inputPropertyAutoSave($event,context,'UserName')"
+                  [hasError]="fieldHasRequiredUserName(context.Row, 'UserName') && isUserNameHasInValidPattern(context.Row, 'UserName')"></ae-input>
+                <span *ngIf="fieldHasRequiredUserName(context.Row, 'UserName')" class="form__input__error" [title]="'EMPLOYEE_IMPORT.USER_NAME_REQUIRED_ERROR' | translate:lang">{{'EMPLOYEE_IMPORT.USER_NAME_REQUIRED_ERROR' | translate:lang}}</span>
+                <span *ngIf="isUserNameHasInValidPattern(context.Row, 'UserName')" class="form__input__error" [title]="'EMPLOYEE_IMPORT.USER_NAME_INVALID_CRITERIA_ERROR' | translate:lang">{{'EMPLOYEE_IMPORT.USER_NAME_INVALID_CRITERIA_ERROR' | translate:lang}}</span>
+              </div>
+            </ng-template>
+          </ae-template>
+        </ae-column>
+
+
+
+        <ae-column [headerText]="'EMPLOYEE_IMPORT.USER_PROFILE' | translate:lang" [sortable]="false">
+          <ae-template [type]="'header'">
+            <ng-template>
+              <span [title]="'EMPLOYEE_IMPORT.USER_PROFILE' | translate:lang">{{'EMPLOYEE_IMPORT.USER_PROFILE' | translate:lang}}*</span>
+            </ng-template>
+          </ae-template>
+          <ae-template [type]="'edit'" [keys]="keys">
+            <ng-template let-context="item">
+              <div class="cell-width--xl fixed-col-atcomplete">
+                <ae-autocomplete (aeOnSelect)="onProfileChanged($event,context.Row)" (aeOnClearSelected)="onClearSelectedProfile($event,context.Row)"
+                  [title]="'User Profile'" [id]="getChildId('AeSelect',context.Row)" [name]="getChildName('AeSelect',context.Row)"
+                  [placeholder]="'PLEASE_SELECT' | translate: lang" [multiselect]="true " [items]="userProfiles" [dstype]="userProfileDatasourceType"
+                  [value]="context.SelectedUserProfiles" [field]="'Name'" [valuefield]=" 'Id' "></ae-autocomplete>
+                <span *ngIf="fieldHasRequiredUserProfileError(context.Row, 'UserProfiles') " class="form__input__error ">This field is required.</span>
+              </div>
+            </ng-template>
+          </ae-template>
+        </ae-column>
+
+
+        <ae-column [headerText]=" 'EMPLOYEE_CONTACTS.personal_email_address' | translate:lang " [sortable]="false ">
+          <ae-template [type]=" 'header' ">
+            <ng-template>
+              <span [title]=" 'EMPLOYEE_CONTACTS.personal_email_address' | translate:lang ">{{'EMPLOYEE_CONTACTS.personal_email_address' | translate:lang}}</span>
+            </ng-template>
+          </ae-template>
+          <ae-template [type]=" 'edit' " [keys]="keys ">
+            <ng-template let-context="item ">
+              <div class="cell-width--md ">
+                <ae-input [id]="getChildId( 'AeInput',context.Row) " [name]="getChildName( 'AeInput',context.Row)
+                  " [value]="getFieldValue(context.Row,'PersonalEmail')" [title]=" 'EMPLOYEE_CONTACTS.personal_email_address_tooltip' | translate:lang "
+                  [placeholder]="
+                  'EMPLOYEE_CONTACTS.personal_email_address' | translate:lang " (aeChange)="setInputPropertyValue($event,context, 'PersonalEmail') "
+                  [hasError]="fieldHasInvalidEmail(context.Row,
+                  'PersonalEmail') " (aeBlur)="inputPropertyAutoSave($event,context, 'PersonalEmail') "></ae-input>
+              </div>
+              <span *ngIf="fieldHasInvalidEmail(context.Row, 'PersonalEmail') " class="form__input__error ">{{'EMPLOYEE_CONTACTS.personal_email_invalid' | translate:lang}}.</span>
+            </ng-template>
+          </ae-template>
+        </ae-column>
+
+
+
+        <ae-column [headerText]=" 'EMPLOYEE_PERSONAL.gender' | translate: lang " [sortable]="false ">
+          <ae-template [type]=" 'header' ">
+            <ng-template>
+              <span [title]=" 'EMPLOYEE_PERSONAL.gender' | translate: lang ">{{'EMPLOYEE_PERSONAL.gender' | translate: lang}}</span>
+            </ng-template>
+          </ae-template>
+          <ae-template [type]=" 'edit' " [keys]="keys ">
+            <ng-template let-context="item ">
+              <ae-select [id]="getChildId( 'AeSelect',context.Row) " [name]="getChildName( 'AeSelect',context.Row)" [title]="'EMPLOYEE_PERSONAL.gender' | translate: lang"
+                [options]="_genderList " [placeholder]=" 'PLEASE_SELECT' | translate: lang " [value]="getFieldValue(context.Row,'Gender')"
+                (aeSelectChange)="setSelectPropertyValue($event,context,
+                  'Gender') "></ae-select>
+            </ng-template>
+          </ae-template>
+        </ae-column>
+
+
+        <ae-column [headerText]=" 'EMPLOYEE_JOB_DETAILS.job_title' | translate:lang " [sortable]="false ">
+          <ae-template [type]=" 'header' ">
+            <ng-template>
+              <span [title]=" 'EMPLOYEE_JOB_DETAILS.job_title' | translate:lang ">{{'EMPLOYEE_JOB_DETAILS.job_title' | translate:lang}}</span>
+            </ng-template>
+          </ae-template>
+          <ae-template [type]=" 'edit' " [keys]="keys ">
+            <ng-template let-context="item ">
+              <div class="cell-width--sm ">
+                <ae-autocomplete [id]="getChildId( 'JobTitle',context.Row) " [name]="getChildName( 'JobTitle',context.Row)" [title]="'EMPLOYEE_JOB_DETAILS.job_title' | translate:lang"
+                  [placeholder]=" 'Select job title' " [multiselect]="false " [items]="jobTitleOptionList " [dstype]="dsType"
+                  [field]="'Text'" [valuefield]="'Value'" [initialtext]="getJobTitle(context.Row) " (aeBlur)="onJobTitleBlur($event,context.Row)" (aeOnSelect)="onJobTitleChanged($event,context.Row)"
+                 (aeInputChange)="onJobTitleSearchChange($event,context.Row) ">
+                </ae-autocomplete>
+              </div>
+            </ng-template>
+          </ae-template>
+        </ae-column>
+
+        <ae-column [headerText]=" 'EMPLOYEE_JOB_DETAILS.start_date' | translate:lang " [sortable]="false ">
+          <ae-template [type]=" 'header' ">
+            <ng-template>
+              <span>{{'EMPLOYEE_JOB_DETAILS.start_date' | translate:lang}} *</span>
+            </ng-template>
+          </ae-template>
+          <ae-template [type]=" 'edit' " [keys]="keys ">
+            <ng-template let-context="item ">
+              <div class="cell-width--sm ">
+                <ae-datetime-picker [id]="getChildId('AeDatePicker',context.Row) " [name]="getChildName('AeDatePicker',context.Row)" [title]="'EMPLOYEE_IMPORT.START_DATE_TOOL_TIP' | translate:lang"
+                  [readonlyInput]="true" [monthNavigator]="true" [yearNavigator]="true" [showIcon]="true " [defaultDate]="getDate(context.Row,'Job.StartDate')"
+                  (aeBlur)="autoSave(context.Row)" (aeSelect)="setDateValue($event,context, 'Job.StartDate')"></ae-datetime-picker>
+              </div>
+            </ng-template>
+          </ae-template>
+        </ae-column>
+
+        <ae-column [headerText]=" 'EMPLOYEE_BULK_UPDATE.EMP_NUMBER' | translate: lang " [sortable]="false ">
+          <ae-template [type]=" 'header' ">
+            <ng-template>
+              <span>{{'EMPLOYEE_BULK_UPDATE.EMP_NUMBER' | translate: lang}}</span>
+            </ng-template>
+          </ae-template>
+          <ae-template [type]=" 'edit' " [keys]="keys ">
+            <ng-template let-context="item ">
+              <ae-input [id]="getChildId( 'AeInput',context.Row) " [name]="getChildName( 'AeInput',context.Row)" [title]="'EMPLOYEE_BULK_UPDATE.EMP_NUMBER' | translate: lang"
+                [value]="getFieldValue(context.Row, 'EmployeeNumber') " (aeChange)="setInputPropertyValue($event,context, 'EmployeeNumber') "
+                (aeBlur)="inputPropertyAutoSave($event,context, 'EmployeeNumber')"></ae-input>
+            </ng-template>
+          </ae-template>
+        </ae-column>
+
+
+        <ae-column [headerText]=" 'EMPLOYEE_PERSONAL.nationality' | translate:lang " [sortable]="false ">
+          <ae-template [type]=" 'header' ">
+            <ng-template>
+              <span [title]=" 'EMPLOYEE_PERSONAL.nationality' | translate:lang ">{{'EMPLOYEE_PERSONAL.nationality' | translate:lang}} *</span>
+            </ng-template>
+          </ae-template>
+          <ae-template [type]=" 'edit' " [keys]="keys ">
+            <ng-template let-context="item ">
+              <div>
+                <ae-input [id]="getChildId( 'AeInput',context.Row) " [name]="getChildName( 'AeInput',context.Row)
+                  " [value]="getFieldValue(context.Row,'Nationality')" (aeChange)="setInputPropertyValue($event,context, 'Nationality') "
+                  [placeholder]="
+                  'EMPLOYEE_PERSONAL.nationality' | translate:lang " [title]=" 'EMPLOYEE_PERSONAL.nationality_tooltip' | translate:lang "
+                  (aeBlur)="inputPropertyAutoSave($event,context, 'Nationality')" [hasError]="fieldHasRequiredError(context.Row, 'Nationality') && hasInvalidNameError(context.Row , 'Nationality') "></ae-input>
+                <span *ngIf="fieldHasRequiredError(context.Row, 'Nationality') " class="form__input__error " id="nationality_req_error ">{{'EMPLOYEE_PERSONAL.nationality_required' | translate:lang}}.</span>
+                <span *ngIf="hasInvalidNameError(context.Row, 'Nationality') " class="form__input__error " id="nationality_validname_error ">
+            {{'EMPLOYEE_PERSONAL.only_alpha_msg' | translate:lang}}.
+            </span>
+              </div>
+            </ng-template>
+          </ae-template>
+        </ae-column>
+
+
+        <ae-column [headerText]=" 'EMPLOYEE_IMPORT.DAYS_PER_WEEK' | translate:lang " [sortable]="false ">
+          <ae-template [type]=" 'header' ">
+            <ng-template>
+              <span [title]=" 'EMPLOYEE_IMPORT.DAYS_PER_WEEK' | translate:lang ">{{'EMPLOYEE_IMPORT.DAYS_PER_WEEK' | translate:lang}}</span>
+            </ng-template>
+          </ae-template>
+          <ae-template [type]=" 'edit' " [keys]="keys ">
+            <ng-template let-context="item ">
+              <div class="cell-width--md ">
+                <ae-input [id]="getChildId( 'AeInput',context.Row) " [name]="getChildName( 'AeInput',context.Row)
+                  " [type]="inputTypeNumber " [step]="1 " [min]="0 " [placeholder]=" 'Days per week (in days)' " [title]="
+                  'EMPLOYEE_JOB_DETAILS.days_per_week_tooltip' | translate:lang " [placeholder]=" 'EMPLOYEE_JOB_DETAILS.days_per_week_placeholder' | translate:lang "
+                  [value]="getFieldValue(context.Row,'Job.Days') " (aeChange)="setInputPropertyValue($event,context, 'Job.Days') "
+                  (aeBlur)="inputPropertyAutoSave($event,context, 'Job.Days')
+                  " [hasError]="fieldHasInvalidWeekDays(context.Row) "></ae-input>
+                <span *ngIf="fieldHasInvalidWeekDays(context.Row) " class="form__input__error " id="nationality_req_error ">{{'EMPLOYEE_IMPORT.INVALID_DAYS_ERROR' | translate:lang}}.</span>
+              </div>
+            </ng-template>
+          </ae-template>
+        </ae-column>
+
+        <ae-column [headerText]=" 'EMPLOYEE_JOB_DETAILS.hours_per_week' | translate:lang " [sortable]="false ">
+          <ae-template [type]=" 'header' ">
+            <ng-template>
+              <span [title]=" 'EMPLOYEE_JOB_DETAILS.hours_per_week' | translate:lang ">{{'EMPLOYEE_JOB_DETAILS.hours_per_week' | translate:lang}}</span>
+            </ng-template>
+          </ae-template>
+          <ae-template [type]=" 'edit' " [keys]="keys ">
+            <ng-template let-context="item ">
+              <div>
+                <ae-input [id]="getChildId( 'AeInput',context.Row) " [name]="getChildName( 'AeInput',context.Row)
+                  " [type]="inputTypeNumber " [step]="1 " [min]="0 " [value]="getFieldValue(context.Row, 'Job.HoursAWeek') "
+                  (aeChange)="setInputPropertyValue($event,context,
+                  'Job.HoursAWeek') " [title]=" 'EMPLOYEE_JOB_DETAILS.hours_per_week_tooltip' | translate:lang " (aeBlur)="inputPropertyAutoSave($event,context,'Job.HoursAWeek')"
+                  [placeholder]=" 'EMPLOYEE_JOB_DETAILS.hours_per_week' | translate:lang " [hasError]="fieldHasInvalidHours(context.Row) "></ae-input>
+                <span *ngIf="fieldHasInvalidHours(context.Row) " class="form__input__error " id="nationality_req_error ">{{'EMPLOYEE_IMPORT.INVALID_HOURS_ERROR' | translate:lang}}.</span>
+              </div>
+            </ng-template>
+          </ae-template>
+        </ae-column>
+
+        <ae-column [headerText]=" 'EMPLOYEE_PERSONAL.ni_number' | translate:lang " [sortable]="false ">
+          <ae-template [type]=" 'header' ">
+            <ng-template>
+              <span [title]=" 'EMPLOYEE_PERSONAL.ni_number' | translate:lang ">{{'EMPLOYEE_PERSONAL.ni_number' | translate:lang}}</span>
+            </ng-template>
+          </ae-template>
+          <ae-template [type]=" 'edit' " [keys]="keys ">
+            <ng-template let-context="item ">
+              <div>
+                <ae-input [id]="getChildId( 'AeInput',context.Row) " [name]="getChildName( 'AeInput',context.Row)
+                  " [title]=" 'EMPLOYEE_PERSONAL.ninumber_tooltip' | translate:lang " [placeholder]=" 'EMPLOYEE_PERSONAL.ni_number_placeholder' | translate:lang "
+                  [value]="getFieldValue(context.Row, 'EmployeePayrollDetails.NINumber') " (aeChange)="setInputPropertyValue($event,context, 'EmployeePayrollDetails.NINumber') "
+                  (aeBlur)="inputPropertyAutoSave($event,context, 'EmployeePayrollDetails.NINumber')" [hasError]="isNiNumberInValid(context.Row, 'EmployeePayrollDetails.NINumber') "></ae-input>
+                <span *ngIf="isNiNumberInValid(context.Row, 'EmployeePayrollDetails.NINumber') " class="form__input__error
+                  " id="ninumber_valid_error ">{{'EMPLOYEE_PERSONAL.ninumber_hint' | translate:lang}}.</span>
+              </div>
+            </ng-template>
+          </ae-template>
+        </ae-column>
+
+
+        <ae-column [headerText]=" 'EMPLOYEE_PERSONAL.tax_code_update' | translate:lang " [sortable]="false ">
+          <ae-template [type]=" 'header' ">
+            <ng-template>
+              <span [title]=" 'EMPLOYEE_PERSONAL.tax_code_update' | translate:lang ">{{'EMPLOYEE_PERSONAL.tax_code_update' | translate:lang}}</span>
+            </ng-template>
+          </ae-template>
+          <ae-template [type]=" 'edit' " [keys]="keys ">
+            <ng-template let-context="item ">
+              <ae-input [id]="getChildId( 'AeInput',context.Row) " [name]="getChildName( 'AeInput',context.Row)
+                  " [title]=" 'EMPLOYEE_PERSONAL.tax_code_tooltip' | translate:lang " [placeholder]=" 'EMPLOYEE_PERSONAL.tax_code_update' | translate:lang "
+                [value]="getFieldValue(context.Row,'EmployeePayrollDetails.TaxCode') " (aeChange)="setInputPropertyValue($event,context, 'EmployeePayrollDetails.TaxCode') "
+                (aeBlur)="inputPropertyAutoSave($event,context, 'EmployeePayrollDetails.TaxCode') "></ae-input>
+            </ng-template>
+          </ae-template>
+        </ae-column>
+
+        <ae-column [headerText]=" 'EMPLOYEE_PERSONAL.ethnicity' | translate:lang " [sortable]="false ">
+          <ae-template [type]=" 'header' ">
+            <ng-template>
+              <span [title]=" 'EMPLOYEE_PERSONAL.ethnicity' | translate:lang ">{{'EMPLOYEE_PERSONAL.ethnicity' | translate:lang}}</span>
+            </ng-template>
+          </ae-template>
+          <ae-template [type]=" 'edit' " [keys]="keys ">
+            <ng-template let-context="item ">
+              <div class="cell-width--lg ">
+                <div class="cell-width--xs pull-left">
+                <ae-select [id]="getChildId( 'AeSelect',context.Row) " [name]="getChildName( 'AeSelect',context.Row)
+                  " [options]="ethnicGroupData " [isOptGroup]="true " (aeSelectChange)="onEthnicityChange($event,context, 'EthnicGroupValueId')
+                  " [title]=" 'EMPLOYEE_PERSONAL.ethnicity_tooltip' | translate:lang " [value]="getEthnicGroupValueId(context) "></ae-select>
+                </div>
+                  <div class="cell-width--xs pull-left">
+                  <ae-input *ngIf="showOtherEthinicty(context.Row) " [id]="getChildId( 'AeInput',context.Row)
+                  " [name]="getChildName( 'AeInput',context.Row) " [placeholder]=" 'Other ethnicity' " (aeChange)="setInputPropertyValue($event,context,
+                  'EthnicGroup.Name') " (aeBlur)="inputPropertyAutoSave($event,context,'EthnicGroup.Name')"></ae-input>
+                </div>
+              </div>
+               <span *ngIf="showOtherEthinicty(context.Row) && fieldHasRequiredError(context.Row, 'EthnicGroup.Name')
+                  " class="form__input__error " id="nationality_req_error ">{{'EMPLOYEE_PERSONAL.ethnicity_required' | translate:lang}}</span>
+            </ng-template>
+          </ae-template>
+        </ae-column>
+
+
+        <ae-column [headerText]=" 'EMPLOYEE_JOB_DETAILS.holiday_unit_type' | translate:lang " [sortable]="false ">
+          <ae-template [type]=" 'header' ">
+            <ng-template>
+              <span [title]=" 'EMPLOYEE_JOB_DETAILS.holiday_unit_type' | translate:lang ">{{'EMPLOYEE_JOB_DETAILS.holiday_unit_type' | translate:lang}}</span>
+            </ng-template>
+          </ae-template>
+          <ae-template [type]=" 'edit' " [keys]="keys ">
+            <ng-template let-context="item ">
+              <div>
+                <ae-select [id]="getChildId( 'HolidayUnitType',context.Row) " [name]="getChildName( 'HolidayUnitType',context.Row)
+                  " [placeholder]=" 'Please Select' " [options]="holidayUnitTypeDataSelectList " [value]="getFieldValue(context.Row, 'Job.HolidayUnitType')
+                  " (aeSelectChange)="setSelectPropertyValue($event,context, 'Job.HolidayUnitType') " [title]=" 'EMPLOYEE_JOB_DETAILS.holiday_unit_type_tooltip' | translate:lang "></ae-select>
+              </div>
+            </ng-template>
+          </ae-template>
+        </ae-column>
+
+
+        <ae-column [headerText]=" 'EMPLOYEE_JOB_DETAILS.holiday_entitlement' | translate " [sortable]="false ">
+          <ae-template [type]=" 'header' ">
+            <ng-template>
+              <span [title]=" 'EMPLOYEE_JOB_DETAILS.holiday_entitlement' | translate ">{{'EMPLOYEE_JOB_DETAILS.holiday_entitlement' | translate:lang}}</span>
+            </ng-template>
+          </ae-template>
+          <ae-template [type]=" 'edit' " [keys]="keys ">
+            <ng-template let-context="item ">
+              <ae-input [id]="getChildId( 'HolidayEntitlement',context.Row) " [name]="getChildName(
+                  'HolidayEntitlement',context.Row) " [title]="'EMPLOYEE_IMPORT.HOLIDAY_ENTITLEMENT_TOOLTIP' | translate:lang"
+                [placeholder]=" 'EMPLOYEE_JOB_DETAILS.holiday_entitlement' | translate:lang " [value]="getFieldValue(context.Row,
+                  'Job.HolidayEntitlement') " (aeChange)="setInputPropertyValue($event,context, 'Job.HolidayEntitlement') "
+                (aeBlur)="inputPropertyAutoSave($event,context, 'Job.HolidayEntitlement') " [type]="inputTypeNumber " [hasError]="fieldHasInvalidEntitlementPeriod(context.Row) "></ae-input>
+                <span *ngIf="fieldHasInvalidEntitlementPeriod(context.Row) " class="form__input__error " id="nationality_req_error ">{{'EMPLOYEE_JOB_DETAILS.entitlement_period_error_msg' | translate:lang}}.</span>
+            </ng-template>
+          </ae-template>
+        </ae-column>
+
+
+        <ae-column [headerText]=" 'EMPLOYEE_JOB_DETAILS.probationary_period' | translate " [sortable]="false ">
+          <ae-template [type]=" 'header' ">
+            <ng-template>
+              <span [title]=" 'EMPLOYEE_JOB_DETAILS.probationary_period' | translate ">{{'EMPLOYEE_JOB_DETAILS.probationary_period' | translate:lang}}</span>
+            </ng-template>
+          </ae-template>
+          <ae-template [type]=" 'edit' " [keys]="keys ">
+            <ng-template let-context="item ">
+              <div class="cell-width--sm ">
+                <ae-input [id]="getChildId( 'ProbationaryPeriod',context.Row) " [name]="getChildName(
+                  'ProbationaryPeriod',context.Row) " [title]=" 'EMPLOYEE_JOB_DETAILS.probationary_period_tooltip' | translate:lang "
+                  [placeholder]=" 'EMPLOYEE_JOB_DETAILS.probationary_period' | translate:lang " [value]="getFieldValue(context.Row,
+                  'Job.ProbationaryPeriod') " (aeChange)="setInputPropertyValue($event,context, 'Job.ProbationaryPeriod') "
+                  (aeBlur)="inputPropertyAutoSave($event,context, 'Job.ProbationaryPeriod') " [type]="inputTypeNumber " [hasError]="fieldHasInvalidProbationaryPeriod(context.Row) "></ae-input>
+                <span *ngIf="fieldHasInvalidProbationaryPeriod(context.Row) " class="form__input__error " id="nationality_req_error ">{{'EMPLOYEE_IMPORT.INVALID_PROBATIONARY_PERIOD_ERROR' | translate:lang}}.</span>
+              </div>
+            </ng-template>
+          </ae-template>
+        </ae-column>
+
+
+        <ae-column [headerText]=" 'EMPLOYEE_JOB_DETAILS.home_based' | translate " [sortable]="false ">
+          <ae-template [type]=" 'header' ">
+            <ng-template>
+              <span [title]=" 'EMPLOYEE_JOB_DETAILS.home_based' | translate ">{{'EMPLOYEE_JOB_DETAILS.home_based' | translate:lang}}</span>
+            </ng-template>
+          </ae-template>
+          <ae-template [type]=" 'edit' " [keys]="keys ">
+            <ng-template let-context="item ">
+              <ae-switch [id]="getChildId( 'HomeBased',context.Row) " [name]="getChildName( 'HomeBased',context.Row)" [title]=" 'EMPLOYEE_JOB_DETAILS.home_based_tooltip' | translate:lang "
+                [switchText]=" ' ' " [value]="getJobDetails(context.Row, 'HomeBased') " [checked]="getJobDetails(context.Row,'HomeBased') "
+                (aeChange)="setInputSwitchPropertyValue($event,context, 'Job.HomeBased') "></ae-switch>
+            </ng-template>
+          </ae-template>
+        </ae-column>
+
+
+        <ae-column [headerText]=" 'EMPLOYEE_JOB_HISTORY.department' | translate:lang " [sortable]="false ">
+          <ae-template [type]=" 'header' ">
+            <ng-template>
+              <span [title]=" 'EMPLOYEE_JOB_HISTORY.department' | translate:lang ">{{'EMPLOYEE_JOB_HISTORY.department' | translate:lang}}</span>
+            </ng-template>
+          </ae-template>
+          <ae-template [type]=" 'edit' " [keys]="keys ">
+            <ng-template let-context="item ">
+              <div class="cell-width--sm ">
+                <ae-select [id]="getChildId( 'DepartmentId',context.Row) " [name]="getChildName( 'DepartmentId',context.Row)
+                  " [title]=" 'EMPLOYEE_JOB_DETAILS.department_or_team_tooltip' | translate:lang " [placeholder]=" 'Please Select' "
+                  [options]="departmentDataSelectList " [value]="getJobDetails(context.Row,'DepartmentId') " (aeSelectChange)="setSelectPropertyValue($event,context, 'Job.DepartmentId') "></ae-select>
+
+              </div>
+            </ng-template>
+          </ae-template>
+        </ae-column>
+
+
+        <ae-column [headerText]=" 'EMPLOYEE_JOB_DETAILS.employment_type' | translate:lang " [sortable]="false ">
+          <ae-template [type]=" 'header' ">
+            <ng-template>
+              <span [title]=" 'EMPLOYEE_JOB_DETAILS.employment_type' | translate:lang ">{{'EMPLOYEE_JOB_DETAILS.employment_type' | translate:lang}}</span>
+            </ng-template>
+          </ae-template>
+          <ae-template [type]=" 'edit' " [keys]="keys ">
+            <ng-template let-context="item ">
+              <div class="cell-width--lg ">
+                <div class="cell-width--xs pull-left ">
+                  <ae-select [id]="getChildId( 'EmploymentTypeId',context.Row) " [name]="getChildName(
+                  'EmploymentTypeId',context.Row) " [title]=" 'Employment Type' " [placeholder]=" 'Please Select' " [options]="employmentTypeDataSelectList "
+                    [value]="getFieldValue(context.Row,'EmploymentTypeId') " (aeSelectChange)="setEmploymentTypeValue($event,context, 'EmploymentTypeId') "></ae-select>
+                </div>
+                <div class="cell-width--xs pull-left ">
+                  <ae-input [id]="getChildId( 'OtherEmployeeType',context.Row) " [name]="getChildName('OtherEmployeeType',context.Row) " [title]=" 'EMPLOYEE_JOB_DETAILS.other_employment_type_tooltip' | translate:lang "
+                    [placeholder]=" 'EMPLOYEE_JOB_DETAILS.other_employment_type_placeholder' | translate:lang" [disabled]="isOtherEmploymentReadOnly(context.Row) "
+                    [value]="getOtherEmploymentDetails(context.Row)" [hasError]="isOtherEmploymentRequired(context.Row)" (aeBlur)="inputPropertyAutoSave($event,context, 'Job.OtherEmployeeType')"
+                    (aeChange)="setInputPropertyValue($event,context, 'Job.OtherEmployeeType') "></ae-input>
+                </div>
+              </div>
+              <span *ngIf="isOtherEmploymentRequired(context.Row) " class="form__input__error " id="title_field_error "> This field is required.</span>
+            </ng-template>
+          </ae-template>
+        </ae-column>
+
+
+        <ae-column [headerText]=" 'EMPLOYEE_JOB_DETAILS.location_or_site' | translate:lang " [sortable]="false ">
+          <ae-template [type]=" 'header' ">
+            <ng-template>
+              <span [title]=" 'EMPLOYEE_JOB_DETAILS.location_or_site' | translate:lang ">{{'EMPLOYEE_JOB_DETAILS.location_or_site' | translate:lang}}</span>
+            </ng-template>
+          </ae-template>
+          <ae-template [type]=" 'edit' " [keys]="keys ">
+            <ng-template let-context="item ">
+              <div class="cell-width--sm ">
+                <ae-select [id]="getChildId( 'SiteId',context.Row) " [name]="getChildName( 'SiteId',context.Row)
+                  " [title]=" 'EMPLOYEE_JOB_DETAILS.location_or_site_tooltip' | translate:lang " [placeholder]=" 'Please Select' "
+                  [options]="siteDataSelectList " [value]="getJobDetails(context.Row,'SiteId') " (aeSelectChange)="setSelectPropertyValue($event,context, 'Job.SiteId') "></ae-select>
+              </div>
+            </ng-template>
+          </ae-template>
+        </ae-column>
+
+      </ae-datatable>
+    </div>
+    <div id="employee-bulk-update-footer " class="button-bar top-15 ">
+      <div class="button-bar__item ">
+        <ae-button [type]=" 'button' " [id]=" 'btnUpdate' " [name]=" 'btnUpdate' " [class]="lightClass " [text]="
+                  'BUTTONS.SAVE' | translate: lang " (aeClick)="bulkUpdate() "></ae-button>
+      </div>
+    </div>
+  </div>
+
+</div>
+<ae-modal-dialog [visible]="getEmployeewithoutEmailPopup() " (click)="modalClosed() " [closable]="true " [id]="
+                  'confirmModal' " [name]=" 'confirmModal' " *ngIf="getEmployeewithoutEmailPopup() ">
+  <div class="modal-dialog-header ">
+    <h3>{{'EMPLOYEE_BULK_UPDATE.Dialog.Heading_text' | translate:lang}}</h3>
+  </div>
+  <div class="modal-dialog-body ">
+    <p>{{'EMPLOYEE_BULK_UPDATE.EMPLOYEE_WITH_NO_MAILS_CONFIRMATION' | translate:lang}}</p>
+    <p>{{'EMPLOYEE_BULK_UPDATE.EMPLOYEE_WITH_NO_MAILS_CONFIRMATION_AGREED' | translate:lang}}</p>
+  </div>
+  <div class="modal-dialog-footer ">
+    <ae-button [text]=" 'EMPLOYEE_BULK_UPDATE.Dialog.Btn_No' | translate:lang " [type]=" 'button' " [id]=" 'confirmNo'
+                  " [name]=" 'confirmNo' " (aeClick)="modalClosed( 'no') "></ae-button>
+    <ae-button [class]="lightClass " [text]=" 'EMPLOYEE_BULK_UPDATE.Dialog.Btn_Yes' | translate:lang " [type]="
+                  'button' " [id]=" 'confirmYes' " [name]=" 'confirmYes' " (aeClick)="onEmployeewithoutEmail($event) "></ae-button>
+
+  </div>
+</ae-modal-dialog>

@@ -1,0 +1,14 @@
+@import '../../../atlas-elements/ae-message/ae-message.component';
+
+.slideout-msg {
+  display: block;
+}
+
+.icon--switch {
+  margin-top: 25px;
+
+  ae-switch {
+    display: block;
+    margin: -27px 0 0 25px;
+  }
+}

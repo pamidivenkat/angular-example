@@ -1,0 +1,11 @@
+    @import '../../../../atlas-elements/ae-list/ae-list.component';
+    document-review-structure {
+      >document-review-structure {
+        display: block;
+        margin-top: 5px;
+      }
+    }
+
+    ae-anchor.button--child .button--small {
+      font-size: 100%;
+    }

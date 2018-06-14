@@ -1,0 +1,42 @@
+<employee-manage-header [id]="'employeeListHeader'" [name]="'employeeListHeader'">
+
+</employee-manage-header>
+<div class="button-bar button-bar--offset button-bar--compact spacer--use-margin">
+  <div class="button-bar__item">
+    <ae-button [type]="'button'" *ngIf="canExportEmployees()" [id]="'empExport'" [name]="'empExport'" [customClass]="'button button--cta'"
+      [text]="'MANAGE_EMPLOYEE.Export'| translate:lang" [title]="'MANAGE_EMPLOYEE.Export'| translate:lang" (aeClick)="onExport($event)"></ae-button>
+  </div>
+  <div class="button-bar__item">
+    <ae-splitbutton [id]="'empImport'" *ngIf="canExportEmployees()" [name]="'empImport'" [text]="'Import'" [options]="ImportSplitButtonOptions">
+    </ae-splitbutton>
+  </div>
+  <div class="button-bar__item">
+    <ae-button [type]="'button'" *ngIf="canBulkUpdateEmployees()" [id]="'empUpdate'" [name]="'empUpdate'" [customClass]="'button button--cta'"
+      [text]="'MANAGE_EMPLOYEE.Update_Employees'| translate:lang" [title]="'MANAGE_EMPLOYEE.Update_Employees'| translate:lang"
+      (aeClick)="onUpdateEmployees($event)"></ae-button>
+  </div>
+</div>
+
+<employees-list [id]="'employeeListID'" [name]="'employeeListName'" [dataSource]="EmployeeList$" [totalCount]="TotalCount$"
+  [defaultOptions]="EmployeesDataTableOptions$" [loadingStatus]="EmployeesLoading$"> </employees-list>
+
+<ae-modal-dialog [visible]="ShowExpExportConfirmation" (cancel)="modalClosed($event)" [closable]="true" [id]="'confirmModal'"
+  [name]="'confirmModal'" *ngIf="ShowExpExportConfirmation">
+  <form class="form" [formGroup]="ExportConfirmform" [id]="'exportConfirm'" [name]="'exportConfirm'">
+    <div class="modal-dialog-header">
+      <h3>{{'MANAGE_EMPLOYEE.Dialog.Heading_text'| translate:lang}}</h3>
+    </div>
+    <div class="modal-dialog-body">
+      <p>
+        <ae-switch (aeChange)="OnChange($event)" formControlName="exportAllPages" [id]="'exportAllPagesConfirm'" [name]="'exportAllPagesConfirm'"
+          [switchText]="'MANAGE_EMPLOYEE.Export_Confirm_AllPages' | translate:lang" [class]="switchTextLeft" [checked]="ExportAll"></ae-switch>
+      </p>
+    </div>
+    <div class="modal-dialog-footer">
+      <ae-button [text]="'MANAGE_EMPLOYEE.Dialog.Btn_No'| translate:lang" [type]="'button'" [id]="'confirmNo'" [name]="'confirmNo'"
+        (aeClick)="modalClosed('no')"></ae-button>
+      <ae-button [class]="LightClass" [text]="'MANAGE_EMPLOYEE.Dialog.Btn_Yes'| translate:lang" [type]="'button'" [id]="'confirmYes'"
+        [name]="'confirmYes'" (aeClick)="modalClosed('yes')"></ae-button>
+    </div>
+  </form>
+</ae-modal-dialog>

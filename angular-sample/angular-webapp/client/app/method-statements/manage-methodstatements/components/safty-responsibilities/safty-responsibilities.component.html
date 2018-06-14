@@ -1,0 +1,70 @@
+<div id="responsibilities" class="safty-responsibilities">
+  <div class="title-block">
+    <h3>
+      {{'MANAGE_METHOD_STM.SAFETY_PRECAUTIONS.SAFETY_RESPONSIBILITIES' | translate:lang}}
+    </h3>
+    <ae-button [type]="'button'" [id]="getChildId('AeButton', 1)" [name]="getChildName('AeButton', 1)" (aeClick)="openMSResponsibilitiesAddUpdateForm($event)"
+      class="btn" [class]="lightClass" [title]="'MANAGE_METHOD_STM.SAFETY_PRECAUTIONS.ADD' | translate:lang" [text]="'MANAGE_METHOD_STM.SAFETY_PRECAUTIONS.ADD' | translate:lang"></ae-button>
+  </div>
+  <ae-datatable [id]="getChildId('AeDatatable',1)" [name]="getChildName('AeDatatable',1)" [dataSource]="msSaftyResponsibilityList$"
+    [actions]="actions" [totalRecords]="recordsCount$" [autoGenerateColumns]="false" [defaultOptions]="dataTableOptions$ | async"
+    (pageChanged)="onGridPageChange($event)" [loading]="msSaftyResponsibilityListLoaded">
+
+    <ae-column [headerText]="'MANAGE_METHOD_STM.SAFETY_PRECAUTIONS.NAME' | translate:lang" [sortable]="false">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span [title]="'MANAGE_METHOD_STM.SAFETY_PRECAUTIONS.NAME' | translate:lang">{{'MANAGE_METHOD_STM.SAFETY_PRECAUTIONS.NAME' | translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <span for="soPanel">{{getResponsiblePerson(context)}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'MANAGE_METHOD_STM.SAFETY_PRECAUTIONS.RESPONSIBILITIES' | translate:lang" [sortable]="false">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span [title]="'MANAGE_METHOD_STM.SAFETY_PRECAUTIONS.RESPONSIBILITIES' | translate:lang">{{'MANAGE_METHOD_STM.SAFETY_PRECAUTIONS.RESPONSIBILITIES' | translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+
+          <span for="soPanel">{{getResponsibilities(context.Responsibilities, context.OtherResponsibilityValue)}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+  </ae-datatable>
+
+
+    <ae-slideout [id]="'empBankDetailsSlideOut'" [name]="'empBankDetailsSlideOut'" [modelState]="getMSResponsibilitiesSlideoutState()"
+      (cancel)="closeEmployeeBankDetailsAddUpdateForm($event)" [class.slide--animate]="showMSResponsibilitiesAddUpdateForm">
+      <ng-container *ngIf="showMSResponsibilitiesAddUpdateForm">
+        <safety-responsibilities-add-update [id]="'responsibilitiesAddUpdate'" [name]="'responsibilitiesAddUpdate'" (onCancel)="onAddOrUpdateCancel($event)"
+          [methodstatement]="methodStatement" [responsibilities]="responsibilities" [selectedRecord]="selectedRecord" (onCancel)="onMSRespCancel($event)"
+          (onUpdate)="onMSREspUpdate($event)" (onAdd)="onMSREspAdd($event)"></safety-responsibilities-add-update>
+      </ng-container>
+    </ae-slideout>
+
+  <ae-modal-dialog [visible]="showRemoveDialog" (cancel)="modalClosed($event)" [closable]="true" [id]="'confirmModal'" [name]="'confirmModal'"
+    *ngIf="showRemoveDialog">
+    <div class="modal-dialog-header">
+      <h3>{{ 'MANAGE_METHOD_STM.SAFETY_PRECAUTIONS.RESPONSIBILITIES.Dialog.Heading_text' | translate:lang }}</h3>
+    </div>
+    <div class="modal-dialog-body">
+      <p>{{'MANAGE_METHOD_STM.SAFETY_PRECAUTIONS.RESPONSIBILITIES.Dialog.Info' | translate: lang:{responsibilityName: _selectedRecord.NameOfResponsible
+        ? _selectedRecord.NameOfResponsible : (_selectedRecord.ResponsiblePerson ? _selectedRecord.ResponsiblePerson.FullName
+        : '') } }}
+      </p>
+    </div>
+    <div class="modal-dialog-footer">
+      <ae-button [text]="'MANAGE_METHOD_STM.SAFETY_PRECAUTIONS.RESPONSIBILITIES.Dialog.Btn_No' | translate:lang" [type]="'button'"
+        [id]="'confirmNo'" [name]="'confirmNo'" (aeClick)="modalClosed('no')"></ae-button>
+      <ae-button [class]="lightClass" [text]="'MANAGE_METHOD_STM.SAFETY_PRECAUTIONS.RESPONSIBILITIES.Dialog.Btn_Yes' | translate:lang"
+        [type]="'button'" [id]="'confirmYes'" [name]="'confirmYes'" (aeClick)="modalClosed('yes')"></ae-button>
+    </div>
+  </ae-modal-dialog>
+
+
+</div>

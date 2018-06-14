@@ -1,0 +1,43 @@
+<div>
+  <div>
+    <ae-banner [id]="'deligationsBanner'" [name]="'deligationsBanner'" [titleText]="'ABSENCETYPE.HEADING'| translate:lang" [backgroundImage]="'/assets/images/lp-employees.jpg'">
+      <div class="image-text banner-image-text">
+        <ae2-breadcrumb [id]="getChildId('Ae2Breadcrub',2)" [name]="getChildName('Ae2Breadcrub',2)" [group]="bcGroup"></ae2-breadcrumb>
+      </div>
+      <div class="icon-list banner-icon-list">
+        <ae-button [text]="'ABSENCETYPE.ADD_ABSENCETYPE'| translate:lang" [type]="'button'" [id]="'btnAdd'" [name]="'btnAdd'" (aeClick)="addNewAbscenceType()"></ae-button>
+      </div>
+    </ae-banner>
+    <div class="spacer">
+      <absencetype-list [id]="getChildId('AbsenceTypeList', 1)" [name]="getChildName('AbsenceTypeList', 1)" (onGridPaging)="onGridPaging($event)"
+        (onGridSorting)="onGridSorting($event)" (onAbsenceTypeSelect)="onAbsenceTypeSelect($event)" (onAbsenceTypeDelete)="onAbsenceTypeDelete($event)"></absencetype-list>
+    </div>
+
+  </div>
+
+  <div>
+    <ae-slideout [id]="getChildId('AeSlideOut', 1)" [name]="getChildName('AeSlideOut', 1)" [modelState]="getSlideoutState()"
+      [class.slide--animate]="showAbsencetypeAddUpdateForm">
+      <ng-container *ngIf="showAbsencetypeAddUpdateForm">
+        <absencetype-add-update [id]="getChildId('AbsencetypeAddUpdate', 1)" [name]="getChildName('AbsencetypeAddUpdate', 1)" [typeOfAbsencetypeForm]="operationMode"
+          [absenceCodes]="absenceCodes$ | async" [data]="selectedAbsenceType" (onAdd)="onAbsenceTypeAdd($event)" (onUpdate)="onAbsenceTypeUpdate($event)"
+          (onCancel)="onAbsenceTypeAddOrUpdateCancel($event)"></absencetype-add-update>
+      </ng-container>
+    </ae-slideout>
+  </div>
+  <ae-modal-dialog [visible]="showRemoveDialog" (cancel)="modalClosed($event)" [closable]="true" [id]="'confirmModal'" [name]="'confirmModal'"
+    *ngIf="showRemoveDialog">
+    <div class="modal-dialog-header">
+      <h3>{{ 'ABSENCETYPE.Dialog.Heading_text' | translate:lang }}</h3>
+    </div>
+    <div class="modal-dialog-body">
+      <p>{{ 'ABSENCETYPE.Dialog.Info' | translate:lang:{typeName: selectedAbsenceType.TypeName} }} </p>
+    </div>
+    <div class="modal-dialog-footer">
+      <ae-button [text]="'ABSENCETYPE.Dialog.Btn_No'| translate:lang " [type]="'button'" [id]="'confirmNo'" [name]="'confirmNo'"
+        (aeClick)="modalClosed('no')"></ae-button>
+      <ae-button [class]="lightClass" [text]="'ABSENCETYPE.Dialog.Btn_Yes'| translate:lang " [type]="'button'" [id]="'confirmYes'"
+        [name]="'confirmYes'" (aeClick)="modalClosed('yes')"></ae-button>
+    </div>
+  </ae-modal-dialog>
+</div>

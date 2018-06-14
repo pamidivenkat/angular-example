@@ -1,0 +1,74 @@
+<div id="bankList">
+    <ae-datatable [id]="getChildId('AeDatatable',1)" [name]="getChildName('AeDatatable',1)" [dataSource]="bankDetailsList$" [actions]="actions"
+        [totalRecords]="recordsCount$" [autoGenerateColumns]="false" [defaultOptions]="dataTableOptions$ | async" (pageChanged)="onGridPageChange($event)"
+        (onSort)="onGridSort($event)" [loading]="!(bankDetailsListLoaded$ | async)" [rowSelector]="highLightRow">
+
+        <ae-column [headerText]="'EMPLOYEE_BANK_DETAILS.BANK_NAME' | translate:lang" [sortable]="true" [sortKey]="'Name'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span [title]="'EMPLOYEE_BANK_DETAILS.BANK_NAME' | translate:lang">{{'EMPLOYEE_BANK_DETAILS.BANK_NAME' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    {{context.Name}}
+                    <!-- <ae-icon [id]="getChildId('AeIcon',1)" [name]="getChildName('AeIcon',1)" [size]="iconTiny"
+                        [icon]="'icon-alert-circle-tick'" [title]="'EMPLOYEE_BANK_DETAILS.SALARY_ACCOUNT' | translate: lang">
+                        </span> -->
+                </ng-template>
+            </ae-template>
+        </ae-column>
+        <ae-column [headerText]="'EMPLOYEE_BANK_DETAILS.ACCOUNT_NAME' | translate:lang" [sortable]="true" [sortKey]="'AccountName'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>{{'EMPLOYEE_BANK_DETAILS.ACCOUNT_NAME' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <span>{{context.AccountName}}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+        <ae-column [headerText]="'EMPLOYEE_BANK_DETAILS.ACCOUNT_NUMBER' | translate:lang" [sortable]="true" [sortKey]="'AccountNumber'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>{{'EMPLOYEE_BANK_DETAILS.ACCOUNT_NUMBER' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <span>{{context.AccountNumber}}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+        <ae-column [headerText]="'EMPLOYEE_BANK_DETAILS.SORT_CODE' | translate:lang" [sortable]="true" [sortKey]="'BankCode'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>{{'EMPLOYEE_BANK_DETAILS.SORT_CODE' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <span>{{context.BankCode}}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+        <ae-column [headerText]="'EMPLOYEE_BANK_DETAILS.TOWN_CITY' | translate:lang" [sortable]="true" [sortKey]="'Town'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>{{'EMPLOYEE_BANK_DETAILS.TOWN_CITY' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <span>{{context.Town}}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+
+    </ae-datatable>
+
+
+
+</div>

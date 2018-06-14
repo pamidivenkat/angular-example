@@ -1,0 +1,46 @@
+@import '../../../../../assets/scss/variablesMap';
+
+.witness-grid {
+  @include media-over-767 {
+    align-items: flex-end;
+    display: flex;
+    justify-content: space-between;
+
+    + .witness-grid {
+      margin-top: ($base-margin / 3) !important;
+    }
+
+    [class*="witness-grid__"] {
+      width: 31%;
+    }
+
+    label {
+      margin-top: 0 !important;
+    }
+  }
+
+  + .witness-grid {
+    margin-top: ($base-margin * 2);
+  }
+
+  label {
+    margin-bottom: ($base-margin / 3);
+    margin-top: $base-margin;
+  }
+}
+
+.about-incident-fieldset fieldset {
+  background: $grey--pale;
+  border-color: $grey--pale;
+  border-radius: $base-border-radius;
+  margin-top: $base-margin;
+
+ legend {
+    background: $grey--pale;
+    border-radius: $base-border-radius;
+    padding: ($base-padding / 3) $base-padding;
+  }
+}
+.loader-container{
+   min-height: 150px;
+}

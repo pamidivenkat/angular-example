@@ -1,0 +1,39 @@
+<ae-notification [id]="'companyDocumentsLandingMsg'" [name]="'companyDocumentsLandingMsg'" [iconName]="'icon-info'" [textInfo]="'COMPANY_DOCUMENTS_TAB.LANDING_MSG' | translate:lang"></ae-notification>
+<div class="spacer--use-margin">
+  <ae-tabstrip [id]="'companyDocuments'" [name]="'companyDocuments'" [standardWithIcon]="true" [isTabButton]="true">
+
+    <ae-tabstrip-item *ngIf="canViewHSDocuments()" [id]="'hsDocuments'" [name]="'hsDocuments'" [header]="'COMPANY_DOCUMENTS_TAB.HealthAndSafetyDocuments' | translate:lang"
+      [navigateUrl]="getHsDocumentsUrl()" [title]="'COMPANY_DOCUMENTS_TAB.HSDOCUMENTS_TITLE' | translate:lang" [hasCount]="true" [count]="(hsDocumentsCount$ | async).Count">
+
+    </ae-tabstrip-item>
+
+    <ae-tabstrip-item *ngIf="canViewHandbooksAndContracts()" [id]="getChildId('AeTabStripItem',3)" [name]="getChildName('AeTabStripItem',3)"
+      [header]="'COMPANY_DOCUMENTS_TAB.CONTRACTSHANDBOOKS' | translate:lang" [navigateUrl]="getContractHandbooksUrl()" [hasCount]="true"
+      [count]="contractHandbooksTotalCount" [title]="'COMPANY_DOCUMENTS_TAB.CONTRACTS_HANDBOOKS_TITLE' | translate:lang">
+    </ae-tabstrip-item>
+
+    <ae-tabstrip-item *ngIf="canViewELOrHSDocuments()" [id]="'employeeDocuments'" [name]="'employeeDocuments'" [header]="'COMPANY_DOCUMENTS_TAB.HREmployeeDocuments' | translate:lang"
+     [title]="'COMPANY_DOCUMENTS_TAB.EMP_DOCS_TITLE' | translate:lang" [navigateUrl]="appraisalReviews" [hasCount]="true" [count]="(hrEmployeeDocumentsCount$ | async).Count">
+    </ae-tabstrip-item>
+
+    <ae-tabstrip-item *ngIf="canViewELOrHSDocuments()"  [id]="'companyPolicies'" [name]="'companyPolicies'" [header]="'COMPANY_DOCUMENTS_TAB.CompanyPolicies' | translate:lang"
+     [title]="'COMPANY_DOCUMENTS_TAB.COMPANY_POLICIES_TITLE' | translate:lang" [navigateUrl]="companyPolicies" [hasCount]="true" [count]="(companyPoliciesCount$ | async).Count">
+    </ae-tabstrip-item>
+
+    <ae-tabstrip-item *ngIf="canViewELOrHSDocuments()" [id]="'otherDocuments'" [name]="'otherDocuments'" [header]="'Other'" [navigateUrl]="getOtherDocumentsUrl()"
+      [title]="'COMPANY_DOCUMENTS_TAB.OTHER_TITLE' | translate:lang" [hasCount]="true" [count]="(otherDocumentsCount$ | async).Count">
+
+    </ae-tabstrip-item>
+
+    <ae-tabstrip-item *ngIf="canViewUsefulDocumentsAndTemplates()" [id]="'usefulDocuments'" [name]="'usefulDocuments'" [header]="'USEFULDOCS.HEADERTEXT' | translate:lang"
+     [title]="'COMPANY_DOCUMENTS_TAB.USEFULDOCS_TITLE' | translate:lang" [navigateUrl]="getUsefulDocumentsAndTemplatesUrl()" [hasCount]="true" [count]="usefulDocsListTotalCount">
+    </ae-tabstrip-item>
+
+  </ae-tabstrip>
+
+  <div id="distributecontentArea" class="tab-content">
+    <router-outlet>
+
+    </router-outlet>
+  </div>
+</div>

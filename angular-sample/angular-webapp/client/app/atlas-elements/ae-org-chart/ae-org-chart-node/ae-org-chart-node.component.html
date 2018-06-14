@@ -1,0 +1,64 @@
+<div [id]="id">
+  <div>
+    <!-- Main Box -->
+    <div #orgNode class="org-node" [ngClass]="getCssClass()" (mousemove)="nodeMouseMove($event)" (mouseout)="nodeMouseOut($event)"
+      [class.ae-drag-enter]="isDragEnter" [aeDroppable]="getDroppableVm()" (onDrop)="dropped($event)" [aeDraggable]="getDraggableVm()" (onDragStart)="onDragStart($event)" (onDragLeave)="dragLeave($event)" (onDragEnter)="dragEnter($event)"
+        [class.ae-drag-enter]="isDragEnter">
+      <div >
+        <!-- Item Header -->
+        <div class="node-head">
+          <span>{{getHeaderText()}}</span>
+          <span *ngIf="hasChildren()" class="node-toggle" [class.expanded-view]="showChildren" (click)="onShowChildren($event)">
+           </span>
+        </div>
+        <!-- Item Body -->
+        <div class="node-info">
+          <ae-template-loader [template]="getBodyTemplate()" [contextItem]="getBodyContext()"></ae-template-loader>
+        </div>
+        <div class="emp-count"><span>{{context.DetailsCount}}</span></div>
+        <!-- Item Footer -->
+        <div class="node-button-group">
+          <span [ngClass]="action.CssClass" class="padleft-3" (click)="onActionClick(action)" *ngFor="let action of actions;let i = index">
+        <ae-icon [id]="getChildId('aeIcon', index)" [name]="getChildName('aeIcon', index)" [title]="action.Title" 
+        [size]="iconTiny" [color]="'white'" [icon]="action.IconName"></ae-icon>
+        </span>
+          <span class="expand" (click)="onShowDetailsClick($event)" *ngIf="context.DetailsCount>0">
+        <ae-icon [id]="getChildId('aeIcon', 5)" [name]="getChildName('aeIcon', 5)" [title]="'Employee view'" [size]="iconTiny" [color]="'white'" [icon]="'icon-people'"></ae-icon>
+        </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Node Details -->
+  <div *ngIf="canShowNodeDetails">
+    <div class="org-node node-employeelist">
+      <div class="node-head">
+        <span>List of employees</span>
+      </div>
+      <div class="node-list">
+        <ul>
+          <li *ngIf="context.DetailsCount>25">
+            <ae-input (aeChange)="filterByName($event)" [id]="'filter'" [name]="'filter'" [title]="'Filter by name'" [placeholder]="'Filter by name'"
+              [(ngModel)]="filterName"></ae-input>
+          </li>
+          <li *ngFor="let employee of filteredDetails">
+            <ae-anchor [id]="getChildId('aeanchor', 1)" [name]="getChildName('aeanchor', 1)" [text]="employee.Title" (aeClick)="onDetailItemClick(employee.Id)"
+              [ngClass]="{'strong__text': canHighlightDetailItem(employee.Id)}" [aeDraggable]="getDetailDraggableVm(employee.Id)"></ae-anchor>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="parent-container" [class.has-childrens]="showChildren && hasChildren()">
+    <span #childGroup>
+    </span>
+  </div>
+</div>
+<ng-template #defaultBodyTemplate let-context="item">
+  <span class="icon-sec">
+      <ae-icon [id]="getChildId('aeIcon', 5)" [name]="getChildName('aeIcon', 5)" [size]="iconSmall" [icon]="context.Icon" [title]="context.Title"></ae-icon>
+    </span>
+  <span>
+      {{context.Value}}
+    </span>
+</ng-template>

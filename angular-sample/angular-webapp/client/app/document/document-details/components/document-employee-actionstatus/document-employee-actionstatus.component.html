@@ -1,0 +1,80 @@
+<div class="spacer">
+    <div class="table__filter-bar">
+        <div class="filter-bar">
+            <div class="filter-bar__label label">{{'Filter_by' | translate:lang}}</div>
+
+            <form [formGroup]="documentActionForm" [id]="getChildId('form', 1)" [name]="getChildName('form', 1)">
+                <div class="filter-bar__filters">
+                    <div class="filter-bar__filter">
+                        <ae-select [id]="getChildId('AeSelect',1)" [name]="getChildName('AeSelect',1)" [placeholder]="'DocumentDetails.ALL_Version' | translate:lang" [options]="versionList$ | async" formControlName="version"></ae-select>
+                    </div>
+                    <div class="filter-bar__filter">
+                        <ae-select [id]="getChildId('AeSelect',2)" [name]="getChildName('AeSelect',2)" [placeholder]="'DocumentDetails.ALL_STATUS' | translate:lang" [options]="status" formControlName="status"></ae-select>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+    <div id="employeeActionStatus">
+        <ae-datatable [id]="getChildId('AeDatatable',1)" [name]="getChildName('AeDatatable',1)" [dataSource]="employeeActionStatusList$" [totalRecords]="recordsCount$" [autoGenerateColumns]="false" [defaultOptions]="dataTableOptions$ | async" (pageChanged)="onGridPageChange($event)"
+            (onSort)="onGridSort($event)" [loading]="!(employeeActionStatusListLoaded$ | async)">
+
+            <ae-column [headerText]="'DocumentDetails.Name' | translate:lang" [sortable]="true" [sortKey]="'EmployeeName'">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span [title]="'DocumentDetails.Name' | translate:lang">{{'DocumentDetails.Name' | translate:lang}}</span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+                        <span for="soPanel">{{context.EmployeeName}}</span>
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+            <ae-column [headerText]="'DocumentDetails.ActionTaken' | translate:lang" [sortable]="true" [sortKey]="'ActionTaken'">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span [title]="'DocumentDetails.ActionTaken' | translate:lang">{{'DocumentDetails.ActionTaken' | translate:lang}}</span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+
+                        <span for="soPanel">{{getActionStatus(context.ActionTaken)}}</span>
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+            <ae-column [headerText]="'DocumentDetails.AcknowledgementDate' | translate:lang" [sortable]="true" [sortKey]="'ActionedDate'">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span [title]="'DocumentDetails.AcknowledgementDate' | translate:lang">{{'DocumentDetails.AcknowledgementDate' | translate:lang}}</span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+                        <label *ngIf="context.Signature" for="soPanel" (click)="onActionDateClick(context)" class="so-panel__activator">{{context.ActionedDate | localeDate:defaultLocale:'short'}}</label>
+                        <span *ngIf="!context.Signature" for="soPanel">{{context.ActionedDate | localeDate:defaultLocale:'short'}}</span>
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+            <ae-column [headerText]="'DocumentDetails.DocumentVersion' | translate:lang" [sortable]="true" [sortKey]="'DocumentVersion'">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span [title]="'DocumentDetails.DocumentVersion' | translate:lang">{{'DocumentDetails.DocumentVersion' | translate:lang}}</span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+
+                        <span for="soPanel">{{context.DocumentVersionInfo}}</span>
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+        </ae-datatable>
+    </div>
+</div>
+
+<ae-modal-dialog [visible]="showSignatureDialog" (cancel)="modalClosed($event)" [closable]="true" [id]="'signatureModal'" [name]="'signatureModal'" *ngIf="showSignatureDialog">
+    <document-signature-view [id]="getChildId('signatureView', 1)" [name]="getChildName('signatureView', 1)" [documentSignatureDetails]="documentSignatureDetails"></document-signature-view>
+</ae-modal-dialog>

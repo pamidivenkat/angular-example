@@ -1,0 +1,157 @@
+<!--actual content div-->
+<div id="slide-out-form-content" class="wrapper-for-slideout-conten">
+    <div class="so-panel__title">
+        <h3 class="grey-strip">{{popHeadingText | translate:lang }} </h3>
+    </div>
+    <div class="so-panel__content">
+        <form id="user-form" name="user-form" class="form" [formGroup]="userForm">
+            <div class="form__input">
+                <label>{{'FIRST_NAME' | translate:lang}} *
+                <ae-input [id]="'firstname'" [name]="'firstname'" formControlName="FirstName" [placeholder]="'FIRST_NAME' | translate:lang"></ae-input>
+              </label>
+                <span *ngIf="fieldHasRequiredError('FirstName')" class="form__input__error">{{'VALIDATION_ERROR_MESSAGE.FIRST_NAME' | translate:lang}}</span>
+                <span *ngIf="fieldHasInvalidName('FirstName')" class="error-text" id="firstname_validname_error">{{'VALIDATION_ERROR_MESSAGE.ONLY_ALPHA_MSG' | translate:lang}}.</span>
+
+            </div>
+
+            <div class="form__input">
+                <label>{{'LAST_NAME' | translate:lang}} *
+               <ae-input [id]="'Lastname'" [name]="'Lastname'" formControlName="LastName" [placeholder]="'LAST_NAME' | translate:lang"></ae-input>
+        </label>
+                <span *ngIf="fieldHasRequiredError('LastName')" class="form__input__error">{{'VALIDATION_ERROR_MESSAGE.LAST_NAME' | translate:lang}}</span>
+                <span *ngIf="fieldHasInvalidName('LastName')" class="error-text" id="lastname_validname_error">{{'VALIDATION_ERROR_MESSAGE.ONLY_ALPHA_MSG' | translate:lang}}.</span>
+
+            </div>
+            <div class="form__input">
+                <ae-switch (aeChange)="onEmailValueChanged($event)" formControlName="HasEmail" [id]="'has-email'" [name]="'hasemail'" [checked]="userForm.get('HasEmail').value" [switchText]="'HAS_EMAIL' | translate:lang" [class]="'switchTextLeft'" [disabled]="isDisabled()"></ae-switch>
+            </div>
+            <div class="check-for-has-email change-password" *ngIf="!hasEmail();">
+                <ul class="list">
+                    <li>{{'USER_NAME_VALIDATION_RULES.CHAR_LENGTH' | translate:lang}}</li>
+                    <li>{{'USER_NAME_VALIDATION_RULES.ALPHA_NUMERIC' | translate:lang}}</li>
+                </ul>
+                <div class="form__input">
+                    <label>{{'USER_NAME' | translate:lang}} *
+            <ae-input [id]="'username'" [name]="'username'" [type]="ctrlTypeSearch" formControlName="UserName" (aeChange)="onUserNameChange($event)" [placeholder]="'USER_NAME' | translate:lang"></ae-input>
+          </label>
+                    <span *ngIf="fieldHasRequiredError('UserName')" class="form__input__error">{{'VALIDATION_ERROR_MESSAGE.USER_NAME_REQUIRED' | translate:lang}}</span>
+                    <span *ngIf="fieldHasMinError('UserName') && isUserNameValid && !fieldHasInvalidPattern('UserName')" class="form__input__error">{{'VALIDATION_ERROR_MESSAGE.USER_NAME_MIN_ERROR' | translate:lang}}</span>
+                    <span *ngIf="fieldHasMaxError('UserName') && isUserNameValid && !fieldHasInvalidPattern('UserName')" class="form__input__error">{{'VALIDATION_ERROR_MESSAGE.USER_NAME_MAX_ERROR' | translate:lang}}</span>
+                    <span *ngIf="fieldHasInvalidPattern('UserName') && isUserNameValid" class="form__input__error">{{'VALIDATION_ERROR_MESSAGE.USER_NAME_CRITERIA' | translate:lang}}</span>
+                    <span *ngIf="!isUserNameValid && !userForm.get('UserName').pristine" class="form__input__error">{{'VALIDATION_ERROR_MESSAGE.USER_NAME_AVAILABILITY' | translate:lang}}</span>
+
+                </div>
+
+                <ul class="list">
+                    <li>{{'PASSWORD_VALIDATION_RULES.CHAR_LENGTH' | translate:lang}}</li>
+                    <li>{{'PASSWORD_VALIDATION_RULES.LOWER_CASE' | translate:lang}}</li>
+                    <li>{{'PASSWORD_VALIDATION_RULES.CAPITAL_LETTER' | translate:lang}}</li>
+                    <li>{{'PASSWORD_VALIDATION_RULES.ONE_DIGIT' | translate:lang}}</li>
+                    <li>{{'PASSWORD_VALIDATION_RULES.SPECIAL_CHARACTER' | translate:lang}})</li>
+                </ul>
+
+                <div class="form__input">
+                    <label>{{'PASSWORD' | translate:lang}} *
+            <ae-input [id]="'password'" [type]="ctrlTypePassword" [name]="'password'" formControlName="Password" [placeholder]="'PASSWORD' | translate:lang"></ae-input>
+          </label>
+                    <span *ngIf="fieldHasRequiredError('Password')" class="form__input__error">{{'VALIDATION_ERROR_MESSAGE.PASSWORD' | translate:lang}}</span>
+                    <span *ngIf="fieldHasInvalidPattern('Password')" class="form__input__error">{{'VALIDATION_ERROR_MESSAGE.PASSWORD_CRITERIA' | translate:lang}}</span>
+
+
+                </div>
+
+
+                <div class="form__input">
+                    <label>{{'CONFIRM_PASSWORD' | translate:lang}} *
+            <ae-input [id]="'confirm-password'" [name]="'confirm-password'" [type]="ctrlTypePassword" formControlName="ConfirmPassword" [placeholder]="'CONFIRM_PASSWORD' | translate:lang"></ae-input>
+          </label>
+                    <span *ngIf="fieldHasRequiredError('ConfirmPassword')" class="form__input__error">{{'VALIDATION_ERROR_MESSAGE.CONFIRM_PASSWORD' | translate:lang}}</span>
+                    <span *ngIf="userForm.hasError('mismatchedPasswords') && userForm.get('ConfirmPassword').valid" class="form__input__error">{{'VALIDATION_ERROR_MESSAGE.MATCHPASSWORD_WITH_OLD' | translate:lang}}</span>
+                </div>
+
+                <div *ngIf="showRequisities" class="psw-strength-section">
+                    <div [class]="passwordStrength.class">
+                        <div><strong>Strength</strong> <span class="text" id="info_text">{{passwordStrength.Text}}</span></div>
+                        <div class="psw-strength"><span class="bar"></span></div>
+                    </div>
+                </div>
+
+                <div *ngIf="showRequisities">
+                    <ul>
+                        <li *ngFor="let error of _errorList">
+                            {{error}}
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="form__input" *ngIf="hasEmail();">
+                <label>{{'EMAIL' | translate:lang}} *
+          <ae-input [id]="'email'" [name]="'email'" formControlName="Email" [placeholder]="'EMAIL' | translate:lang" (aeChange)="onEmailChange($event)"></ae-input>
+        </label>
+                <span *ngIf="fieldHasRequiredError('Email') &&_checkEmailAvailability()" class="form__input__error">{{'VALIDATION_ERROR_MESSAGE.EMAIL' | translate:lang}}</span>
+                <span *ngIf="fieldHasError('Email')" class="form__input__error">{{'VALIDATION_ERROR_MESSAGE.INVALID_EMAIL' | translate:lang}}</span>
+                <span *ngIf="!fieldHasRequiredError('Email') && !fieldHasError('Email') &&_checkEmailAvailability() && !userForm.get('Email').pristine" class="form__input__error">{{'VALIDATION_ERROR_MESSAGE.EMAIL_AVAILABILITY' | translate:lang}}</span>
+            </div>
+            <div class="form__input">
+                <label>{{'SIGNATURE_FILE'| translate:lang }} </label>
+                <ae-file [id]="'sign-fileUpload'" [name]="'sign-fileUpload'" [multiple]="false" (onFilesSelected)="onFilesSelected($event)" [accept]="'*'"></ae-file>
+            </div>
+            <div *ngIf="showFilePreview" class="form__input">
+                <ae-input [id]="'signature-file'" [name]="'signature-file'" [type]="cntrlTypeHidden" formControlName="Signature"></ae-input>
+                <img [src]="imgPreviewSrcUrl" [alt]="'Signature file'" height="120px" width="120px">
+            </div>
+            <div class="form__input">
+                <label>{{'ACN' | translate:lang}}</label>
+                <ae-autocomplete [id]="'acn'" formControlName="AdviceCards" [name]="'acn'" [placeholder]="'ACN' | translate:lang" [multiselect]="true" [items]="adviceCardOptionItems" [dstype]="dataSouceType" [field]="'CardNumber'" [valuefield]="'Id'" (aeOnSelect)="onAdviceCardNumberChanged($event)"
+                    [readonly]="true"></ae-autocomplete>
+            </div>
+
+            <div class="form__input">
+                <label>{{'TELEPHONE_NUMBER' | translate:lang}} 
+          <ae-input [id]="'telephone-no'" [name]="'telephone'" formControlName="Telephone" [placeholder]="'TELEPHONE_NUMBER' | translate:lang"></ae-input>
+        </label>
+                <span *ngIf="fieldHasRequiredError('Telephone')" class="form__input__error">{{'VALIDATION_ERROR_MESSAGE.TELEPHONE_NUMBER' | translate:lang}}</span>
+                <span *ngIf="fieldHasError('Telephone')" class="form__input__error">{{'VALIDATION_ERROR_MESSAGE.INVALID_TELEPHONE_NUMBER' | translate:lang}}</span>
+            </div>
+            <div>
+                <div class="form__input" *ngIf="isCitationUser()">
+                    <label>{{'SALESFORCE_USERID' | translate:lang}} *
+               <ae-input [id]="'salesforceUserId'" [name]="'salesforceUserId'" formControlName="SalesforceUserId" [placeholder]="'SALESFORCE_USERID' | translate:lang"></ae-input>
+        </label>
+                    <span *ngIf="fieldHasRequiredError('SalesforceUserId')" class="form__input__error">{{'VALIDATION_ERROR_MESSAGE.SALESFORCE_USER_ID_REQUIRED' | translate:lang}}</span>
+                </div>
+
+                <div class="form__input" *ngIf="isCitationUser()">
+                    <label>{{'AREA' | translate:lang}}            
+               <ae-select [id]="'ddlArea'" [name]="'ddlArea'" [placeholder]="'AREA' | translate:lang" [options]="areaItems"
+               formControlName="Area"></ae-select>
+
+        </label>
+                </div>
+                <div class="form__input" *ngIf="isCitationUser()">
+                    <label>{{'QUALIFICATIONS' | translate:lang}}
+               <ae-input [id]="'qualifications'" [name]="'qualifications'" formControlName="Qualifications" [placeholder]="'QUALIFICATIONS' | translate:lang"></ae-input>
+        </label>
+                </div>
+            </div>
+            <div class="form__error">
+            </div>
+            <div *ngIf="hasEmail() && addOrUpdateActionType == 'ADD'">
+                <ae-message [id]="getChildId('AeMessage')" [name]="getChildName('AeMessage')" [text]="'INFORMATION_TEXT' | translate:lang" [show-close-icon]="false"></ae-message>
+            </div>
+        </form>
+    </div>
+    <div class="so-panel__footer">
+        <nav>
+            <ul>
+                <li><label for="soPanel" class="button button--inline-block" [id]="getChildId('AeButton',1)" (click)="onFormClosed($event)" [title]="'BUTTONS.SLIDE_CLOSE' | translate: lang">{{'BUTTONS.SLIDE_CLOSE' | translate: lang}}</label></li>
+                <li class="pull--right">
+                    <ae-anchor [id]="getChildId('AeAnchor',1)" [name]="getChildName('AeAnchor',1)" [anchorType]="'button'" [class]="'button button--inline-block'" [anchorClass]="lightClass" (aeClick)="onFormSubmit($event)" [title]="popButtonText | translate:lang" [text]="popButtonText | translate:lang"></ae-anchor>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+<!--actual content div end -->

@@ -1,0 +1,101 @@
+@import '../../../../assets/scss/variablesMap';
+.image-selectbox {
+  position: relative;
+  margin-top: 7px;
+}
+
+.image-selectbox .dropdown>button {
+  width: 140px;
+  display: block;
+  border: 1px solid $teal--0;
+  background-color: $teal--0;
+  position: relative;
+  padding: 0 30px 0 0;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  min-width: 160px;
+  padding: 5px 0;
+  margin: 2px 0 0;
+  list-style: none;
+  font-size: 14px;
+  text-align: left;
+  background-color: $white;
+  border: 1px solid $grey--pale;
+  border: 1px solid rgba($black, .15);
+  border-radius: 0;
+  -webkit-box-shadow: 0 6px 12px rgba($black, .175);
+  box-shadow: 0 6px 12px rgba($black, .175);
+  background-clip: padding-box;
+}
+
+.image-selectbox .dropdown-menu {
+  max-height: 200px;
+  overflow-y: auto;
+  top: 0;
+  margin-top: 0;
+  border-color: $teal--0;
+  max-width: 180px;
+  border-radius: 0;
+  left: 140px;
+  height: 100%;
+  width: 201px;
+}
+
+.image-selectbox .dropdown-menu li {
+  text-align: center;
+  padding: 5px;
+  width: 55px;
+  float: left;
+}
+
+.image-selectbox .dropdown-menu img {
+  max-width: 40px;
+  max-height: 40px;
+}
+
+.image-selectbox .dropdown>button .selected-img {
+  display: block;
+  background: $white;
+  padding: 10px;
+  height: 118px;
+}
+
+.image-selectbox .dropdown>button img {
+  max-height: 100px;
+}
+
+.image-selectbox .dropdown>button img {
+  max-height: 100px;
+}
+
+.image-selectbox .dropdown>button .arrow-icon {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  color: $white;
+  width: 30px;
+  font-size: 36px;
+  margin-top: -25px;
+}
+
+.buttons-hazard {
+  margin-top: 20px;
+  padding-left: 10px;
+  ae-button {
+    display: block;
+    margin-top: 15px;
+  }
+}
+
+.img-height {
+  max-height: 150px;
+  width:auto;
+  max-width:100%;
+  text-align:center;
+  img{width:auto; margin:auto; max-height: 150px;}
+}

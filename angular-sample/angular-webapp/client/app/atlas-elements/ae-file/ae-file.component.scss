@@ -1,0 +1,30 @@
+@import '../ae-button/ae-button.component';
+label.button--upload {
+  input {
+    display: none;
+  }
+}
+
+.file-list {
+  background-color: $grey--pale;
+  margin-top: 5px;
+  padding: 10px;
+  span {
+    padding-bottom: 5px;
+    display: block;
+  }
+}
+
+.btn-submit {
+  padding-top: 0;
+  margin-top: -4px;
+  >div {
+    padding: 10px;
+    text-align: right;
+    background-color: $grey--pale;
+  }
+}
+
+.information-grid__logo ae-file .file-list {
+  display: none !important;
+}

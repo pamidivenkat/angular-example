@@ -1,0 +1,17 @@
+@import '../../../../../assets/scss/variablesMap';
+.general-form-data{
+    .button-link{
+            display: inline-block;
+            margin-top:8px;
+            .button{
+                float: left !important;
+            }
+        }
+        .add-risk-data{
+            margin: 15px 0;
+        }
+    
+    ae-autocomplete{
+        .ae-autocomplete-input{min-width: 250px;}
+    }
+}

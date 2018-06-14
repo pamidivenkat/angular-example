@@ -1,0 +1,20 @@
+label,
+.label {
+  display: block;
+  font-weight: $bold;
+  >* {
+    font-weight: normal;
+  }
+ > ae-input, > ae-select, > ae-textarea, > ae-datetime-picker {
+    margin-top: 8px;
+    display: block;
+  }
+}
+
+label:not(:first-of-type) {
+  margin-top: $base-margin;
+}
+.so-panel__activator {
+  color: $teal--0;
+  cursor: pointer;
+}

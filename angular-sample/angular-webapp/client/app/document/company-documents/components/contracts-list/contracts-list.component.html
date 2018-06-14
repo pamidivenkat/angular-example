@@ -1,0 +1,109 @@
+<div>
+  <ae-datatable [id]="getChildId('AeDatatable',1)" [name]="getChildName('AeDatatable',1)" [dataSource]="contractsRequest$"
+    [actions]="actions" [totalRecords]="contractsListTotalCount$" [autoGenerateColumns]="false" [defaultOptions]="contractsListDataTableOptions$ | async"
+    (pageChanged)="onGridPaging($event)" (onSort)="onGridSorting($event)" [loading]="(!(contractsListLoaded$ | async)) || (userVersionLoading$ | async)">
+
+    <ae-column [headerText]="'HANDBOOK.TEMPLATE_NAME' | translate:lang" [sortable]="true " [sortKey]=" 'Title' " *ngIf="contractsFilter==1">
+      <ae-template [type]=" 'header' ">
+        <ng-template>
+          <span title="{{ 'HANDBOOK.TEMPLATE_NAME' | translate:lang  }}">{{'HANDBOOK.TEMPLATE_NAME' | translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]=" 'cell' " [keys]="keys ">
+        <ng-template let-context="item ">
+          <span title="{{ context.Title  }}">{{ context.Title }}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+
+    <ae-column [headerText]="'HANDBOOK.EMPLOYEE_NAME' | translate:lang" [sortable]="false" [sortKey]=" 'Title' " *ngIf="contractsFilter==2">
+      <ae-template [type]=" 'header' ">
+        <ng-template>
+          <span title="{{ 'HANDBOOK.EMPLOYEE_NAME' | translate:lang  }}">{{'HANDBOOK.EMPLOYEE_NAME' | translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]=" 'cell' " [keys]="keys ">
+        <ng-template let-context="item ">
+          <span title="{{ context.EmployeeDetails  }}">{{context.EmployeeDetails === null ? '' : context.EmployeeDetails.FullName}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+
+
+    <ae-column [headerText]="'HANDBOOK.EMPLOYEE_GROUP' | translate:lang" [sortable]="false" *ngIf="contractsFilter==1">
+      <ae-template [type]=" 'header' ">
+        <ng-template>
+          <span title="{{ 'HANDBOOK.EMPLOYEE_GROUP' | translate:lang  }}">{{'HANDBOOK.EMPLOYEE_GROUP' | translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]=" 'cell' " [keys]="keys ">
+        <ng-template let-context="item ">
+          <span title="{{ context.EmployeeGroup }}"> {{ context.EmployeeGroup.Name }}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+
+    <ae-column [headerText]="'HANDBOOK.TEMPLATE_VERSION' | translate:lang" [sortable]="true " [sortKey]=" 'Version' " *ngIf="contractsFilter==1">
+      <ae-template [type]=" 'header' ">
+        <ng-template>
+          <span title="{{ 'HANDBOOK.TEMPLATE_VERSION' | translate:lang  }}">{{'HANDBOOK.TEMPLATE_VERSION' | translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]=" 'cell' " [keys]="keys ">
+        <ng-template let-context="item ">
+          <span title="{{ context.Version }}"> {{ context.Version }}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+
+
+
+    <ae-column [headerText]=" 'HANDBOOK.LAST_MODIFY' | translate:lang " [sortable]="true" [sortKey]=" 'ModifiedOn' ">
+      <ae-template [type]=" 'header' ">
+        <ng-template>
+          <span title="{{ 'HANDBOOK.LAST_MODIFY' | translate:lang  }}">{{'HANDBOOK.LAST_MODIFY' | translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]=" 'cell' " [keys]="keys ">
+        <ng-template let-context="item ">
+          <span title="{{context.ModifiedOn}}">{{context.ModifiedOn | localeDate:defaultLocale:'shortDate'}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+
+    <ae-column [headerText]="'HANDBOOK.TEMPLATE' | translate:lang" [sortable]="true " [sortKey]=" 'Title' " *ngIf="contractsFilter==2">
+      <ae-template [type]=" 'header' ">
+        <ng-template>
+          <span title="{{ 'HANDBOOK.TEMPLATE' | translate:lang  }}">{{'HANDBOOK.TEMPLATE' | translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]=" 'cell' " [keys]="keys ">
+        <ng-template let-context="item ">
+          <span title="{{ context.Title  }}">{{ context.Title }}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+
+    <ae-column [headerText]="'HANDBOOK.DISTRIBUTED' | translate:lang" [sortable]="false " *ngIf="contractsFilter==2">
+      <ae-template [type]=" 'header' ">
+        <ng-template>
+          <span title="{{ 'HANDBOOK.TEMPLATE' | translate:lang  }}">{{'HANDBOOK.DISTRIBUTED' | translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]=" 'cell' " [keys]="keys ">
+        <ng-template let-context="item ">
+          <span title="{{ context.State === 1 ? 'Yes' : 'No' }}">{{ context.State === 1 ? 'Yes' : 'No' }}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+
+  </ae-datatable>
+</div>
+
+<ae-slideout [id]="'contractDistributionSlideout'" [name]="'contractDistributionSlideout'" [modelState]="getDocActionSlideoutState()"
+  [class.slide--animate]="showHideDocumentActionSlideOut">
+  <ng-container *ngIf="showHideDocumentActionSlideOut">
+    <contract-distribute-action [id]="'documentDistribute'" [name]="'documentDistribute'" (aeDocumentAction)="documentAction($event)"
+      [title]="documentTitle" [employeeGroup]="employeeGroup" [options]="actionOptions" (aeCancel)="onAeCancel($event)"></contract-distribute-action>
+  </ng-container>
+</ae-slideout>

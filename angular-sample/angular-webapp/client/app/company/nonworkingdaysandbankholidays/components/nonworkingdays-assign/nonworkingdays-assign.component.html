@@ -1,0 +1,80 @@
+<div>
+  <div class="so-panel__title">
+    <h3>{{'NON_WORKING_DAYS_ASSIGN_MSG' | translate:lang}} </h3>
+  </div>
+
+  <div class="so-panel__content nonworkingdays-assign">
+
+    <form [formGroup]="nonWorkingDaysAssignForm" [id]="'nonWorkingDaysAssignForm'" [name]="'nonWorkingDaysAssignForm'">
+      <div class="form__input">
+        <label>{{'NON_WORKING_DAYS_ASSIGNED_TO' | translate:lang}} <span class="error-text">*</span>
+            <ae-select [id]="'ddlAssignedTo'" [name]="'ddlAssignedTo'" [placeholder]="'PLEASE_SELECT' | translate:lang" [options]="assignedTo"
+              formControlName="assignedTo" (aeSelectChange)="onAssignedToChange($event)"></ae-select>
+          </label>
+            <span *ngIf="fieldHasRequiredError('assignedTo')"  class="form__input__error" id="name_rq_error">
+            {{'ASSIGNED_TO_IS_REQUIRED' | translate:lang}}.</span>
+        <div class="filter-bar__filter three">
+          <ae-switch *ngIf="canCompanyShown()" [id]="'IsDefaultCheckbox'" [name]="'IsDefaultCheckbox'" formControlName="IsDefault"
+            [switchText]="'NON_WORKING_DAYS_IS_DEFAULT' | translate:lang" [class]="switchTextLeft" [checked]="getIsDefault()"
+            [title]="'NON_WORKING_DAYS_IS_DEFAULT' | translate:lang"></ae-switch>
+
+          <label *ngIf="canDepartmentShown()">{{'DEPARTMENT' | translate:lang}} <span class="error-text">*</span> </label>
+
+          <ae-autocomplete *ngIf="canDepartmentShown()" formControlName="department" [id]="'ddldepartment'" [name]="'ddldepartment'"
+            [placeholder]="'Select departments'" [multiselect]="'true'" [items]="departments$ | async" [automatch]="false"
+            [dstype]="localDataSourceType" [field]="'Text'" [debounce]="500" [valuefield]="'Value'" (aeOnSelect)="onSelectDepartment($event)"></ae-autocomplete>
+          <!--[value]="_getValues('4')"-->
+        
+          <span *ngIf="canDepartmentShown() && fieldHasRequiredError('department')"  class="form__input__error" id="name_rq_error">
+            {{'DEPARTMENT_IS_REQUIRED' | translate:lang}}.</span>
+
+          <label *ngIf="canSiteShown()">{{'SITE' | translate:lang}} <span class="error-text">*</span></label>
+
+          <ae-autocomplete *ngIf="canSiteShown()" formControlName="site" [id]="'ddlSite'" [name]="'ddlSite'" [placeholder]="'Select sites'"
+            [multiselect]="'true'" [items]="sites$  | async" [automatch]="false" [dstype]="localDataSourceType" [field]="'Text'"
+            [debounce]="500" [valuefield]="'Value'" (aeOnSelect)="onSelectSite($event)"></ae-autocomplete>
+          <!--[value]="_getValues('3')"-->
+          <span *ngIf="canSiteShown() && fieldHasRequiredError('site')"   class="form__input__error" id="name_rq_error">
+            {{'SITE_IS_REQUIRED' | translate:lang}}.</span>
+
+          <label *ngIf="canEmployeeShown()">{{'EMPLOYEE_LABEL' | translate:lang}} <span class="error-text">*</span></label>
+
+          <ae-autocomplete *ngIf="canEmployeeShown()" formControlName="employee" [id]="'autoEmployee'" [name]="'autoEmployee'" [placeholder]="'Select employees'"
+            [multiselect]="'true'" [items]="searchedEmployeesSub | async" [automatch]="false" (aeOnComplete)="searchEmployees($event,false)"
+            [dstype]="remoteDataSourceType" [field]="'Text'" [debounce]="500" [valuefield]="'Value'"></ae-autocomplete>
+          <span *ngIf="canEmployeeShown() && fieldHasRequiredError('employee')"  class="form__input__error" id="name_rq_error">
+            {{'EMPLOYEE_IS_REQUIRED' | translate:lang}}.</span>
+
+          <div *ngIf="alreadyAssigned | async">
+            <label *ngIf="canAlreadyAssignedMsgShown()">{{ 'NON_WORKING_DAYS_ALREADY_ASSIGN_MSG' | translate:lang:{assignToName:nonWorkingDayAssignmentModelAssignedTo} }}</label>
+
+            <ae-switch formControlName="overrideConfirm" [id]="'overrideConfirm'" [name]="'overrideConfirm'" [switchText]="'NON_WORKING_DAYS_ALREADY_ASSIGN_OVERRIDE_CONFIRM_MSG' | translate:lang"
+              [class]="switchTextLeft"></ae-switch>
+
+          </div>
+        </div>
+        <div class="filter-bar__filter three">
+          <label *ngIf="canExcludedEmployeesShown()">{{'NON_WORKING_DAYS_EXCL_EMPLOYEES' | translate:lang}}</label>
+          <ae-autocomplete *ngIf="canExcludedEmployeesShown()" formControlName="excludedEmployee" [id]="'autoEmployee'" [name]="'autoEmployee'"
+            [placeholder]="'Select employees to exclude'" [multiselect]="'true'" [items]="searchedEmployeesSub | async" [automatch]="false"
+            (aeOnComplete)="searchEmployees($event,true)" [dstype]="remoteDataSourceType" [field]="'Text'" [debounce]="500"
+            [valuefield]="'Value'"></ae-autocomplete>
+          <!--[value]="_getValues('-1')"-->
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="so-panel__footer">
+    <nav>
+      <ul>
+        <li><label for="soPanel" class="button button--inline-block" [id]="getChildId('AeLabel',1)" (click)="slideClose($event)"
+            [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label></li>
+        <li class="pull--right">
+          <ae-anchor [id]="getChildId('AeAnchor',1)" [name]="getChildName('AeAnchor',1)" [anchorType]="'button'" [class]="'button button--inline-block'"
+            [anchorClass]="lightClass" (aeClick)="onAddOrUpdateFormSubmit($event)" [title]="'BUTTONS.SAVE' | translate:lang"
+            [text]="'BUTTONS.SAVE' | translate:lang"></ae-anchor>
+        </li>
+      </ul>
+    </nav>
+  </div>

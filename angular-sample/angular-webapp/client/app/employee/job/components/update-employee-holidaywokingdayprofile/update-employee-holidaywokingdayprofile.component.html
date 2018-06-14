@@ -1,0 +1,35 @@
+<div [id]="id">
+  <div class="so-panel__title">
+    <h3 class="grey-strip">{{'EMPLOYEE_JOB_DETAILS.change_hwp_title' | translate:lang}}</h3>
+  </div>
+  <div class="so-panel__content">
+    <div class="information-grid">
+      <div class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_JOB_DETAILS.SELECT_PROFILE' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3">
+          <ae-select [id]="getChildId('AeSelect',10)" [name]="getChildName('AeSelect',10)" [options]="hwpList" [placeholder]="'PLEASE_SELECT' | translate:lang"
+            [isOptGroup]="true" [formControl]="profileControl"  [title]="'EMPLOYEE_JOB_DETAILS.SELECT_PROFILE' | translate:lang"></ae-select>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="nonWorkingdaysEntity">
+      <hr class="hr-light-grey" />
+      <nonworkingdays-publicholiday-profile-view [id]="getChildId('NonworkingdaysPublicholidayProfileView',10)" [name]="getChildName('NonworkingdaysPublicholidayProfileView',10)"
+        [nonWorkingdaysModel]="nonWorkingdaysEntity" [showAssignedToSection]="false"></nonworkingdays-publicholiday-profile-view>
+    </div>
+  </div>
+  <div class="so-panel__footer">
+    <nav>
+      <ul>
+        <li><label for="soPanel" class="button button--inline-block" [id]="getChildId('AeLabel',1)" (click)="closeUpdateHWPPanel()"
+            [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label></li>
+        <li class="pull--right">
+          <ae-anchor [id]="getChildId('AeAnchor',1)" [name]="getChildName('AeAnchor',1)" [anchorType]="'button'" [class]="'button button--inline-block'"
+            [anchorClass]="lightClass" (aeClick)="updateEmpHWP()" [title]="'BUTTONS.UPDATE' | translate:lang"
+            [text]="'BUTTONS.UPDATE' | translate:lang"></ae-anchor>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
+<ae-loader [id]="getChildId('AeLoader', 1)" [loaderType]="loaderType" *ngIf="loading"></ae-loader>

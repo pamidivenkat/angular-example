@@ -1,0 +1,114 @@
+<div class="so-panel__title" *ngIf="CheckListInstance && CheckListInstance.CheckList">
+  <h3 class="grey-strip">{{'ACTION_ITEMS_RESPONSE.HEADER' | translate:lang:{actionItemName:CheckListInstance.CheckList.Name} }}</h3>
+</div>
+<div class="so-panel__content">
+  <div class="information-grid">
+    <div *ngIf="IsPending">
+      <ae-notification [id]="getChildId('AeNotificationCL',1)" [name]="getChildName('AeNotificationCL',1)" [iconName]="'icon-info'"
+        [textInfo]="'ACTION_ITEM_PENDING' | translate:lang"></ae-notification>
+    </div>
+
+    <div>
+      <ae-message [id]="getChildId('AeSuccessMessage',1)" [show-close-icon]="false" [name]="getChildName('AeSuccessMessage',1)"
+        [text]="'ACTION_ITEM_COMPLETED' | translate:lang" [icon]="'icon-alert-circle-tick'" [messageType]="MessageTypeInfo"
+        *ngIf="CheckListInstance && CheckListInstance && !IsPending && (CheckListInstance.Status == 2)">
+      </ae-message>
+    </div>
+    <div>
+      <ae-message [id]="getChildId('AeWarningMessage',1)" [show-close-icon]="false" [name]="getChildName('AeWarningMessage',1)"
+        [text]="'ACTION_ITEM_NOTCOMPLETED' | translate:lang" [icon]="'icon-alert-triangle'" [messageType]="MessageTypeWarning"
+        *ngIf="CheckListInstance && !IsPending && (CheckListInstance.Status == 1 || CheckListInstance.Status == 0)">
+      </ae-message>
+
+    </div>
+    <div>
+      <ae-notification [id]="getChildId('AeInfoMessage',1)" [name]="getChildName('AeInfoMessage',1)" [iconName]="'icon-info'" [textInfo]="'NO_ACTION_ITEMS' | translate:lang:{NoActionItenName:CheckListInstance.CheckList.Name}"
+        *ngIf="CheckListInstance && CheckListInstance.InstanceItems && (CheckListInstance.InstanceItems.length == 0)"></ae-notification>
+    </div>
+
+    <section class="accordion" role="tablist">
+      <div class="accordion__list" *ngIf="CheckListInstance">
+        <div *ngFor="let item of CheckListInstance.InstanceItems; let i = index" class="accordion__list--item">
+          <input [id]="'acc-'+ i" type="checkbox" hidden="">
+          <label [for]="'acc-'+ i" class="accordion__header">
+                <div class="accordion__header--grid">
+                <div class="accordion__title">
+                    <strong>{{item.ItemText}}</strong> <ae-icon [id]="getChildId('AeIconInfo',1)" [name]="getChildName('AeIconInfo',1)" [icon]="'icon-info'" [color]="''" [title]="item.CorrectiveActionText" *ngIf="((item.UnExpectedAnswer == 0 && (item.Answer && item.Answer == 1 || item.Answer == 1)) || (item.UnExpectedAnswer == 1 && (item.Answer && item.Answer == 2 || item.Answer == 2) ))"></ae-icon>
+                    </div>
+                    <div class="accordion__indicator icon"><svg><use xmlns:xlink="http://www.w3.org/1999/xlink" [attr.xlink:href]="getAbsoluteUrl('icon-pointer-right')"></use></svg></div>
+                </div>
+                <div class="accordion__buttons">
+                    <div class="button__response">Your response</div>
+                    <div class="button__collection">
+                    <button class="button button--small" title="Yes" [ngClass] = "{ActiveYes: item.Answer == 1}" (click)="yourResponse(1,i)" [disabled]="!IsPending">Yes</button>
+                    <button class="button button--small" title="No"  [ngClass] = "{ActiveNo: item.Answer == 2}" (click)="yourResponse(2,i)" [disabled]="!IsPending">No</button>
+                        <ae-file  [title]="'BUTTONS.UPLOAD' | translate:lang" [id]="getChildId('actionItem-fileUpload',1)" [name]="getChildName('actionItem-fileUpload',1)"  [multiple]="true" (onFilesSelected)="onFilesSelected($event,item.Id,i)"
+                        [accept]="'*'" *ngIf="IsPending"></ae-file>
+                    </div>
+            </div>
+            </label>
+          <div class="accordion__contents">
+            <ae-card>
+              <section class="cards" *ngIf="CheckListInstance.Attachments && CheckListInstance.Attachments.get(item.Id) && CheckListInstance.Attachments.get(item.Id).length > 0">
+                <div class="card acc-card" *ngFor="let doc of CheckListInstance.Attachments.get(item.Id)">
+                  <div class="card__image">
+                    <img src="{{getImagePreviewUrl(doc.Id)}}" alt="{{doc.FileName}}">
+                  </div>
+                  <div class="card__content">
+                    <div class="card__title" [title]="doc.FileName">{{doc.FileName}}</div>
+                    <div class="icon--buttons">
+                      <ae-button [id]="getChildId('AeActionItemButtonRemove', item.Id)" [name]="getChildName('AeActionItemButtonRemove', item.Id)"
+                        [btnIcon]="'icon-alert-cancel'" [customClass]="'button--inline-block button--small'" (aeClick)="removeActionItemDocument(doc,item.Id)"
+                        [disabled]="!IsPending" [title]="'BTN_REMOVE' | translate: lang"></ae-button>
+                      <ae-button [id]="getChildId('AeActionItemButtonDownpload', item.Id)" [name]="getChildName('AeActionItemButtonDownpload', item.Id)"
+                        [btnIcon]="'icon-alert-download'" [customClass]="'button--inline-block button--small'" (aeClick)="downloadActionItemAttachment(doc.Id)"
+                        [title]="'BTN_DOWNLOAD' | translate: lang"></ae-button>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section class="cards">
+                <div class="card acc-card" *ngFor="let doc of item.Attachments">
+                  <div class="card__image">
+                    <img src="{{getImagePreviewUrl(doc.Id)}}" alt="{{doc.FileName}}">
+                  </div>
+                  <div class="card__content">
+                    <div class="card__title" [title]="doc.FileName">{{doc.FileName}}</div>
+                    <div class="icon--buttons">
+                      <ae-button [id]="getChildId('AeActionItemButtonRemove', item.Id)" [name]="getChildName('AeActionItemButtonRemove', item.Id)"
+                        [btnIcon]="'icon-alert-cancel'" [customClass]="'button--inline-block button--small'" (aeClick)="removeActionItemDocument(doc,item.Id)"
+                        [disabled]="!IsPending" [title]="'BTN_REMOVE' | translate: lang"></ae-button>
+                      <ae-button [id]="getChildId('AeActionItemButtonDownpload', item.Id)" [name]="getChildName('AeActionItemButtonDownpload', item.Id)"
+                        [btnIcon]="'icon-alert-download'" [customClass]="'button--inline-block button--small'" (aeClick)="downloadActionItemAttachment(doc.Id)"
+                        [title]="'BTN_DOWNLOAD' | translate: lang"></ae-button>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+
+              <section class="cards" *ngIf="!(CheckListInstance.Attachments && CheckListInstance.Attachments.get(item.Id) && CheckListInstance.Attachments.get(item.Id).length > 0) && !(item.Attachments && item.Attachments.length > 0)">
+                <span class="ng-scope">{{'NO_ACTION_ITEMS_EVIDENCE' | translate:lang}}</span>
+              </section>
+            </ae-card>
+
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+<div class="so-panel__footer">
+  <nav>
+    <ul>
+      <li><label for="soPanel" class="button button--inline-block" [id]="getChildId('AeButton',1)" (click)="onActionItemClosed($event)"
+          [title]="'ACTION_ITEMS_RESPONSE.BTN_NO' | translate:lang">{{'ACTION_ITEMS_RESPONSE.BTN_NO' | translate:lang}}</label></li>
+      <li class="pull--right">
+        <ae-anchor *ngIf = "IsPending" [id]="getChildId('AeAnchor',1)" [name]="getChildName('AeAnchor',1)" [anchorType]="'button'" [class]="'button button--inline-block'"
+          [anchorClass]="buttonLightClass" (aeClick)="onActionItemSubmit($event)" [title]="'ACTION_ITEMS_RESPONSE.BTN_YES' | translate:lang"
+          [text]="'ACTION_ITEMS_RESPONSE.BTN_YES' | translate:lang"></ae-anchor>
+      </li>
+    </ul>
+  </nav>
+</div>

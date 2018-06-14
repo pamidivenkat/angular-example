@@ -1,0 +1,74 @@
+@import '../../../assets/scss/variablesMap';
+
+.legends {
+  background: $white;
+  margin-bottom: ($base-margin * 2);
+  padding: $base-padding ($base-padding * 2);
+  display: flex;
+
+  h4 {
+    font-size: 100%;
+    margin: 0 ($base-margin * 2) ($base-margin / 3) 0;
+    @include media-over-767 {
+      display: inline-block;
+      float: left;
+      margin: 0 ($base-margin * 2) 0 0;
+    }
+    // &:empty {
+    //   display: none;
+    // }
+  }
+
+  .legend-options {
+    float: left;
+  }
+
+  .legend {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    @include media-over-767 {
+      display: inline-block;
+    }
+  }
+
+  .legend__indicator {
+    float: left;
+    width: (($base-margin / 3) * 4);
+
+    .icon,
+    .indicator {
+      margin-bottom: ($base-margin / 5);
+    }
+  }
+
+  .legend__description {
+    @include media-over-767 {
+      margin-left: (($base-margin / 3) * 4);
+      margin-right: ($base-margin * 2);
+    }
+  }
+
+  .stamp {
+    color: $white;
+  }
+}
+
+.legends.legend--vertical {
+  h4 {
+    float: none;
+    display: block;
+    margin-bottom: 15px;
+  }
+
+  .legend {
+    display: flex;
+    margin-bottom: 5px;
+  }
+
+  .legend__description {
+    @include media-over-767 {
+      margin-right: 0;
+    }
+  }
+}

@@ -1,0 +1,94 @@
+<div [id]="'delegation'">
+    <form [formGroup]="delegationFilterForm" [id]="getChildId('form', 1)" [name]="getChildId('form', 1)">
+        <div class="filter-bar__filters spacer">
+            <div class="filter-bar__filter" *ngIf="checkDelegationAccess">
+                <ae-autocomplete formControlName="UserId" [id]="getChildId('employeeSelected',1)" [name]="getChildName('employeeSelected',1)" [placeholder]="'DELEGATION.Select_users' | translate:lang" [multiselect]="'false'" [items]="autosuggestUserslist$ | async" [automatch]="false"
+                    (aeOnComplete)="autoDelegationUsers($event)" [dstype]="remoteDataSourceType" [field]="'Text'" [debounce]="500" [valuefield]="'Value'"></ae-autocomplete>
+            </div>
+        </div>
+    </form>
+
+    <div class="delegation-data">
+        <ae-datatable [id]="getChildId('AeDataTable')" [name]="getChildName('AeDataTable')" [dataSource]="delegationRequests$" [autoGenerateColumns]="false" [totalRecords]="recordsCount$" [actions]="actions" [defaultOptions]="dataTableOptions | async" (pageChanged)="onPageChange($event)"
+            [loading]="!(delegationLoaded$  | async)" (onSort)="onSort($event)">
+
+            <ae-column [headerText]="'USER_NAME' | translate:lang" [sortable]="true" [sortKey]="'FirstName'">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span>{{ 'USER_NAME' | translate:lang  }}</span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+                        <span> {{ context.FirstName }} {{context.LastName}}</span>
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+
+            <ae-column [headerText]="'EMAIL' | translate:lang" [sortable]="true" [sortKey]="'Email'">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span>{{ 'EMAIL' | translate:lang  }}</span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+                        <span> {{ context.Email }} </span>
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+            <ae-column [headerText]="'DELEGATION.AuthoriseHolidays' | translate:lang" [sortable]="true" [sortKey]="'DeligatedHA'">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span>{{ 'DELEGATION.AuthoriseHolidays' | translate:lang  }}</span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+                        <span>{{ context.DeligatedHA ? 'Yes' : 'No' }} </span>
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+
+            <ae-column [headerText]="'DELEGATION.ViewEmployees' | translate:lang" [sortable]="true" [sortKey]="'DeligatedReadOnlyDE'">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span>{{ 'DELEGATION.ViewEmployees' | translate:lang  }}</span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+                        <span>{{context.DeligatedReadOnlyDE ? 'Yes' : 'No' }}</span>
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+
+            <ae-column [headerText]="'DELEGATION.ManageEmployees' | translate:lang" [sortable]="true" [sortKey]="'DeligatedManageDE'">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span>{{ 'DELEGATION.ManageEmployees' | translate:lang  }}</span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+                        <span>{{context.DeligatedManageDE ? 'Yes' : 'No' }}</span>
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+
+            <ae-column [headerText]="'SUBMITTED_ON'  | translate:lang" [sortable]="true" [sortKey]="'CreatedOn'">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span>{{'SUBMITTED_ON'  | translate:lang}}</span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+                        <span>{{context.CreatedOn | localeDate:defaultLocale:'shortDate'}}</span>
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+
+        </ae-datatable>
+    </div>
+</div>

@@ -1,0 +1,23 @@
+.sg-spacer {
+  border: 1px solid $black;
+}
+
+.sg-spacer__item {
+
+  &:nth-child(1) {
+    background: $teal--0;
+  }
+
+  &:nth-child(2) {
+    background: $blue--cerulean;
+  }
+
+  &:nth-child(3) {
+    background: $yellow--0;
+  }
+}
+
+.sg-spacer__inner {
+  background: $grey--pale;
+  height: 200px;
+}

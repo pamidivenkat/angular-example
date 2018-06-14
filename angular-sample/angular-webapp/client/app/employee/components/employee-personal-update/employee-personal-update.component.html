@@ -1,0 +1,147 @@
+<div class="so-panel__title">
+  <h3 class="grey-strip">{{'EMPLOYEE_PERSONAL.update_employee' | translate:lang}}</h3>
+</div>
+<div class="so-panel__content">
+  <div class="information-grid">
+
+    <form class="form" [formGroup]="updateEmpForm">
+      <section class="information-grid__section">
+        <h3>{{'EMPLOYEE_PERSONAL.name' | translate:lang}}</h3>
+
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.title' | translate:lang}} <span class="error-text">*</span></div>
+          <div class="information-grid__item-value column-2of3 text-muted">
+            <ae-select [id]="getChildId('AeSelect',1)" [name]="getChildName('AeSelect',1)" [title]="'EMPLOYEE_PERSONAL.title' | translate:lang"
+              formControlName="Title" [options]="employeeTitles" [placeholder]="'Please Select'" [hasError]="!isFieldValid('Title')"></ae-select>
+          </div>
+          <span *ngIf="fieldHasRequiredError('Title')" class="form__input__error" id="title_field_error">{{'EMPLOYEE_PERSONAL.title_required' | translate:lang}}.</span>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.first_name' | translate:lang}} <span class="error-text">*</span></div>
+          <div class="information-grid__item-value column-2of3 text-muted">
+            <ae-input [id]="getChildId('AeInput',2)" [name]="getChildName('AeInput',2)" [title]="'EMPLOYEE_PERSONAL.first_name_tooltip' | translate:lang"
+              formControlName="FirstName" [placeholder]="'EMPLOYEE_PERSONAL.first_name' | translate:lang" [hasError]="!isFieldValid('FirstName')"></ae-input>
+          </div>
+          <span *ngIf="fieldHasRequiredError('FirstName')" class="form__input__error" id="firstname_rq_error">{{'EMPLOYEE_PERSONAL.first_name_required' | translate:lang}}.</span>
+          <span *ngIf="fieldHasInvalidName('FirstName')" class="form__input__error" id="firstname_validname_error">{{'EMPLOYEE_PERSONAL.only_alpha_msg' | translate:lang}}.</span>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.middle_name' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3 text-muted">
+            <ae-input [id]="getChildId('AeInput',3)" [name]="getChildName('AeInput',3)" [title]="'EMPLOYEE_PERSONAL.middle_name_tooltip' | translate:lang"
+              formControlName="MiddleName" [placeholder]="'EMPLOYEE_PERSONAL.middle_name' | translate:lang" [hasError]="!isFieldValid('MiddleName')"></ae-input>
+          </div>
+          <span *ngIf="fieldHasInvalidName('MiddleName')" class="form__input__error" id="midname_validname_error">{{'EMPLOYEE_PERSONAL.only_alpha_msg' | translate:lang}}.</span>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.surname' | translate:lang}} <span class="error-text">*</span></div>
+          <div class="information-grid__item-value column-2of3 alert">
+            <ae-input [id]="getChildId('AeInput',4)" [name]="getChildName('AeInput',4)" [title]="'EMPLOYEE_PERSONAL.sur_name_tooltip' | translate:lang"
+              formControlName="Surname" [placeholder]="'EMPLOYEE_PERSONAL.surname' | translate:lang" [hasError]="!isFieldValid('Surname')"></ae-input>
+          </div>
+          <span *ngIf="fieldHasRequiredError('Surname')" class="form__input__error" id="surname_req_error">{{'EMPLOYEE_PERSONAL.surname_required' | translate:lang}}.</span>
+          <span *ngIf="fieldHasInvalidName('Surname')" class="form__input__error" id="surname_validname_error">{{'EMPLOYEE_PERSONAL.only_alpha_msg' | translate:lang}}.</span>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.known_as' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3 alert">
+            <ae-input [id]="getChildId('AeInput',5)" [name]="getChildName('AeInput',5)" [title]="'EMPLOYEE_PERSONAL.known_as_tooltip' | translate:lang"
+              formControlName="KnownAs" [placeholder]="'EMPLOYEE_PERSONAL.known_as' | translate:lang"></ae-input>
+          </div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.previous_name' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3 alert">
+            <ae-input [id]="getChildId('AeInput',6)" [name]="getChildName('AeInput',6)" [title]="'EMPLOYEE_PERSONAL.previous_name_tooltip' | translate:lang"
+              formControlName="PreviousName" [placeholder]="'EMPLOYEE_PERSONAL.previous_name' | translate:lang"></ae-input>
+          </div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.gender' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3 alert">
+            <ae-select [id]="getChildId('AeSelect',7)" [name]="getChildName('AeSelect',7)" [title]="'EMPLOYEE_PERSONAL.gender' | translate:lang"
+              formControlName="Gender" [options]="genderList" [placeholder]="'Please Select'"></ae-select>
+          </div>
+        </div>
+      </section>
+
+      <section class="information-grid__section">
+        <h3>{{'EMPLOYEE_PERSONAL.birth_date_age' | translate:lang}}</h3>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.dob' | translate:lang}} <span class="error-text">*</span></div>
+          <div class="information-grid__item-value column-2of3 alert">
+            <ae-datetime-picker [id]="getChildId('AeDatetimePicker',8)" [name]="getChildName('AeDatetimePicker',8)" [monthNavigator]="true"
+              [title]="'EMPLOYEE_PERSONAL.dob' | translate:lang" [yearNavigator]="true" yearRange="1910:2030" [showIcon]="true"
+              (aeSelect)="onDateSelect($event)" formControlName="DOB" [value]="updateEmployee.DOB" (aeBlur)="isValidDate($event)"></ae-datetime-picker>
+          </div>
+          <span *ngIf="fieldHasRequiredError('DOB')" class="form__input__error" id="dob_rq_error">{{'EMPLOYEE_PERSONAL.dob_required' | translate:lang}}.</span>
+          <span *ngIf="fieldHasFutureDateError('DOB')" class="form__input__error" id="dob_rq_error">{{'EMPLOYEE_PERSONAL.dob_should_not_future' | translate:lang}}.</span>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.age' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3 alert">
+            <ae-input [id]="getChildId('AeInput',9)" [name]="getChildName('AeInput',9)" [title]="'EMPLOYEE_PERSONAL.age' | translate:lang"
+              formControlName="Age" [cssClass]="'input'"></ae-input>
+          </div>
+        </div>
+      </section>
+
+      <section class="information-grid__section">
+        <h3>{{'EMPLOYEE_PERSONAL.ethnicity' | translate:lang}}</h3>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.ethnicity' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3 alert ethinic">
+            <ae-select [id]="getChildId('AeSelect',10)" [name]="getChildName('AeSelect',10)" formControlName="EthnicGroupValueId" [options]="ethnicGroupData"
+              [isOptGroup]="true" (aeSelectChange)="onEthnicityChange($event)" [title]="'EMPLOYEE_PERSONAL.ethnicity_tooltip' | translate:lang"></ae-select>
+            <ae-input *ngIf="showOtherEthinicty" [id]="getChildId('AeInput',11)" [name]="getChildName('AeInput',11)" formControlName="Name"
+              [placeholder]="'EMPLOYEE_PERSONAL.other_ethnicity' | translate:lang" [hasError]="!isFieldValid('Name')"></ae-input>
+          </div>
+          <span *ngIf="showOtherEthinicty&&fieldHasRequiredError('Name')" class="form__input__error" id="nationality_req_error">{{'EMPLOYEE_PERSONAL.ethnicity_required' | translate:lang}}</span>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.nationality' | translate:lang}} <span class="error-text">*</span></div>
+          <div class="information-grid__item-value column-2of3 alert">
+            <ae-input [id]="getChildId('AeInput',12)" [name]="getChildName('AeInput',12)" formControlName="Nationality" [placeholder]="'EMPLOYEE_PERSONAL.nationality' | translate:lang"
+              [hasError]="!isFieldValid('Nationality')" [title]="'EMPLOYEE_PERSONAL.nationality_tooltip' | translate:lang"></ae-input>
+          </div>
+          <span *ngIf="fieldHasRequiredError('Nationality')" class="form__input__error" id="nationality_req_error">{{'EMPLOYEE_PERSONAL.nationality_required' | translate:lang}}.</span>
+          <span *ngIf="fieldHasInvalidName('Nationality')" class="form__input__error" id="nationality_validname_error">{{'EMPLOYEE_PERSONAL.only_alpha_msg' | translate:lang}}.</span>
+        </div>
+      </section>
+
+      <section class="information-grid__section">
+        <h3>{{'EMPLOYEE_PERSONAL.tax' | translate:lang}}</h3>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">
+            <ae-icon [id]="getChildId('AeIcon',13)" [name]="getChildName('AeIcon',13)" [icon]="'icon-alert-circle-question'" [title]="'EMPLOYEE_PERSONAL.ninumber_info' | translate:lang"></ae-icon>
+            {{'EMPLOYEE_PERSONAL.ni_number' | translate:lang}}
+          </div>
+          <div class="information-grid__item-value column-2of3 alert">
+            <ae-input [id]="getChildId('AeInput',14)" [name]="getChildName('AeInput',14)" [title]="'EMPLOYEE_PERSONAL.ninumber_tooltip' | translate:lang"
+              formControlName="NINumber" [placeholder]="'EMPLOYEE_PERSONAL.ni_number_placeholder' | translate:lang" [hasError]="!isFieldValid('NINumber')"></ae-input>
+          </div>
+          <span *ngIf="!isFieldValid('NINumber')" class="form__input__error" id="ninumber_valid_error">{{'EMPLOYEE_PERSONAL.ninumber_hint' | translate:lang}}.</span>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.tax_code_update' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3 alert">
+            <ae-input [id]="getChildId('AeInput',15)" [name]="getChildName('AeInput',15)" [title]="'EMPLOYEE_PERSONAL.tax_code_tooltip' | translate:lang"
+              formControlName="TaxCode" [placeholder]="'EMPLOYEE_PERSONAL.tax_code_update' | translate:lang"></ae-input>
+          </div>
+        </div>
+      </section>
+    </form>
+  </div>
+</div>
+<div class="so-panel__footer">
+  <nav>
+    <ul>
+      <li><label for="soPanel" class="button button--inline-block" [id]="getChildId('AeButton',16)" (click)="onUpdateFormClosed($event)"
+          [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label></li>
+      <li class="pull--right">
+        <ae-anchor [id]="getChildId('AeAnchor',17)" [name]="getChildName('AeAnchor',17)" [anchorType]="'button'" [class]="'button button--inline-block'"
+          [anchorClass]="lightClass" (aeClick)="onUpdateFormSubmit($event)" [title]="'BUTTONS.UPDATE' | translate:lang" [text]="'BUTTONS.UPDATE' | translate:lang"></ae-anchor>
+      </li>
+    </ul>
+  </nav>
+</div>

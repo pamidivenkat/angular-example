@@ -1,0 +1,52 @@
+<div *ngIf="selectedDocument">
+  <div [id]="'empDocumentDetails'">
+
+    <div class="so-panel__title">
+      <h3>{{'EMP_DOC_DETAILS' | translate: lang}}</h3>
+    </div>
+    <div class="so-panel__content">
+      <div><label>{{'EMP_NAME' | translate: lang}}</label></div>
+      <div>
+        <p>{{getEmployeeName()}}</p>
+      </div>
+      <div><label>{{'TITLE' | translate:lang}}</label></div>
+      <div>
+        <p>{{selectedDocument.Title }}</p>
+      </div>
+      <div><label>{{'CATEGORY' | translate:lang }}</label></div>
+      <div>
+        <p>{{selectedDocument.CategoryLocalizedName }}</p>
+      </div>
+      <div><label>{{'EXPIRE_ON' | translate:lang }}</label></div>
+      <div>
+        <p>{{selectedDocument.ExpiryDate | localeDate:defaultLocale:'shortDate' }}</p>
+      </div>
+      <div>
+
+        <label>{{'FILE_NAME' | translate:lang }}</label></div>
+      <div>
+        <p class="link-color">
+          <ae-anchor [id]="getChildId('AeAnchor',1)" [name]="getChildName('AeAnchor',1)" [class]="'button button--inline-block'" [anchorClass]="lightClass"
+            (aeClick)="downloadDocument(selectedDocument.Id)" [text]="selectedDocument.FileName"></ae-anchor>
+
+        </p>
+      </div>
+
+      <div><label>{{'TYPE' | translate: lang}}</label></div>
+      <div>
+        <p>{{getTypeName()}}</p>
+      </div>
+    </div>
+    <div class="so-panel__footer">
+      <nav>
+        <ul>
+          <li>
+            <ae-button [text]="'BUTTONS.SLIDE_CLOSE' | translate: lang" [type]="'button'" [id]="'btnCancel'" [name]="'btnCancel'" (aeClick)="onDetaisCancel()"></ae-button>
+          </li>
+
+        </ul>
+      </nav>
+    </div>
+
+  </div>
+</div>

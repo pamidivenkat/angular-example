@@ -1,0 +1,10 @@
+<div class="content-container sequence-events">
+  <div class="wizard-button-bar top">
+    <ae-button [type]="'button'" [id]="getChildId('AeButton', 1)" [name]="getChildName('AeButton', 1)" (aeClick)="triggerMSProcAdd($event)"
+      class="btn" [class]="1" [title]="'MANAGE_METHOD_STM.SEQUENCE_OF_EVENTS.ADD_PROCEDURE' | translate:lang" [text]="'MANAGE_METHOD_STM.SEQUENCE_OF_EVENTS.ADD_PROCEDURE' | translate:lang"></ae-button>
+  </div>
+  <ae-notification [id]="'incidentNotification'" [name]="'incidentNotification'" [iconName]="'icon-info'" [textInfo]="'MANAGE_METHOD_STM.SEQUENCE_OF_EVENTS.SOE_HELPTEXT' | translate:lang">
+  </ae-notification>
+  <ms-procedure-container [id]="getChildId('MSProcedureContainer', 1)" [methodStatement]="methodStatement" [triggerAdd]="triggerStatus"
+    [procedureCode]="procedureCode" (resetTiggerStatus)="onResetTiggerStatus($event)"></ms-procedure-container>
+</div>

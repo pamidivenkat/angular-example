@@ -1,0 +1,13 @@
+.icon-switch {
+  padding-left: 25px;
+  position: relative;
+
+  ae-icon {
+    position: absolute;
+    left: 0;
+    top: 5px;
+  }
+}
+@media only screen and (min-width: 980px){
+  .so-panel__content .form-spacer{padding:0 15px;}
+}

@@ -1,0 +1,73 @@
+<div id="slide-out-form-content" class="wrapper-for-slideout-conten">
+  <div class="so-panel__title">
+    <h3 class="grey-strip">{{'YEAR_END_PROCEDURE.HOLIDAY_SETTINGS' | translate:lang}}</h3>
+  </div>
+  <div class="so-panel__content">
+    <div class="information-grid spacer--x">
+      <section class="information-grid__section">
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'YEAR_END_PROCEDURE.HOLIDAY_ENTITLEMENT' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3">
+            {{holidayEntitlement}}
+          </div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'YEAR_END_PROCEDURE.HOLIDAY_YEAR_START_DATE' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3">
+            <span *ngIf="employeeSettings">{{employeeSettings.FiscalStartDate | localeDate:defaultLocale:'dd/MM'}}</span>
+          </div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'YEAR_END_PROCEDURE.HOLIDAY_YEAR_END_DATE' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3">
+            <span *ngIf="employeeSettings">{{employeeSettings.FiscalEndDate | localeDate:defaultLocale:'dd/MM'}}</span>
+          </div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'YEAR_END_PROCEDURE.HOLIDAY_UNIT' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3">
+            {{holidayUnitType}}
+          </div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'YEAR_END_PROCEDURE.ALLOW_CARRY_FORWARD_DAYS' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3">
+            {{canAllowCarryForwardDays}}
+          </div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'YEAR_END_PROCEDURE.MAX_ALLOW_CARRY_FORWARD_DAYS' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3">
+            {{ getMaxCarryForwardDays || 'N/A'}}
+          </div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'YEAR_END_PROCEDURE.MAX_ALLOW_CARRY_FORWARD_HOURS' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3">
+            {{ getMaxCarryForwardHours || 'N/A'}}
+          </div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3"><span><ae-icon [id]="getChildId('AeIcon',3)" [name]="getChildName('AeIcon',3)" [title]="'YEAR_END_PROCEDURE.EXPIRY_PERIOD_HELPTEXT' | translate:lang" [icon]="'icon-alert-circle-question'"></ae-icon></span>            {{'YEAR_END_PROCEDURE.EXPIRY_PERIOD' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3">
+            <span [class.text-muted]="!hasCarryForwardExpDays" *ngIf="!hasCarryForwardExpDays">None</span>
+            <span *ngIf="hasCarryForwardExpDays">{{employeeSettings.CarryForwardExpDays}}</span>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+  <div class="so-panel__footer">
+    <nav>
+      <ul>
+        <li><label for="soPanel" [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang" class="button button--inline-block" [id]="getChildId('AeButton',13)"
+            (click)="onPanelClosed($event)">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label></li>
+        <li class="pull--right">
+          <ae-anchor [id]="getChildId('AeAnchor',14)" [name]="getChildName('AeAnchor',14)" [anchorType]="'button'" [class]="'button button--inline-block'"
+            [anchorClass]="lightClass" (aeClick)="gotoEmpSettings($event)" [title]="'BUTTONS.UPDATE' | translate:lang" [text]="'BUTTONS.UPDATE' | translate:lang"></ae-anchor>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
+<ae-loader [id]="'empBasicInfoDataLoad'" [loaderType]="loaderType" *ngIf="loading"></ae-loader>

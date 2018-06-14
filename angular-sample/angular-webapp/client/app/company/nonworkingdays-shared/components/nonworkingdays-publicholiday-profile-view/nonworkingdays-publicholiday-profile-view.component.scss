@@ -1,0 +1,26 @@
+.bank-holidays{
+    ae-pagination{display: none;}
+}
+.table-history {
+    font-size:90%;
+    td {
+        span {
+            @media screen and (min-width: 768px){
+                max-width: 75px;
+            }
+            
+            display: inline-block;
+        }
+    }
+}
+.non-workingdays-profiles{
+    ae-list {
+        .list-scroll{
+            margin: 0px;
+        }
+        .list-simplebar{
+            height: inherit;
+            min-height: inherit;
+        }
+    }
+}

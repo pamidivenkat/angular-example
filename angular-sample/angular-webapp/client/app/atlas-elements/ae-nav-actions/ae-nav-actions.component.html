@@ -1,0 +1,13 @@
+<div  [id]="getChildId('divActions',1)" class="nav--actions" *ngIf="isActionsList()">
+  <button [disabled]="!isBtnEnabled()" class="button button--condensed button--inline-block button--actions" [class.button--actions--left]="isLeft()"
+    [class.button--actions-active]="viewOptions()" (click)="_onClick($event)">&#8942;</button>
+  <ul class="list--actions" *ngIf="viewOptions()">
+    <li *ngFor="let option of listOptions; let colIndex = index" [class.separator]="option.Separator">
+      <ae-anchor [id]="option.Text" [name]="option.Text" [text]="option.Text" [disabled]="!isEnabled(option.Disabled)" (aeClick)="optionClick($event, option)"></ae-anchor>
+    </li>
+  </ul>
+</div>
+<div [id]="getChildId('divNoAction',1)" *ngIf="!isActionsList()" class="grid-action">
+  <ae-button [id]="getChildId('aeButton', 1)" [name]="defaultOption.Text" [customClass]="'button--cta button--condensed'" [text]="defaultOption.Text"
+    [disabled]="!isEnabled(defaultOption.Disabled)" (aeClick)="optionClick($event, defaultOption)" *ngIf="defaultOption != null"></ae-button>
+</div>

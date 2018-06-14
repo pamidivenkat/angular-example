@@ -1,0 +1,29 @@
+.mask {
+  background: rgba($black, .5);
+  height: 100vh;
+  left: 0;
+  opacity: 0;
+  overflow-y: scroll;
+  position: fixed;
+  top: 0;
+  transition: opacity $base-transition, z-index 0s .3s ease-out;
+  width: 100vw;
+  z-index: -1;
+}
+
+.mask--active {
+  opacity: 1;
+  transition: opacity $base-transition, z-index 0s 0s ease-out;
+  z-index: 10;
+}
+
+// The below is applied to to HTML element to handle scrollbars when the mask is on.
+
+.mask-on {
+  // margin-right: 17px;
+  overflow: hidden;
+  width: calc(100vw - 17px);
+  @media only screen and (max-device-width: 1024px) {
+    width: 100vw;
+  }
+}

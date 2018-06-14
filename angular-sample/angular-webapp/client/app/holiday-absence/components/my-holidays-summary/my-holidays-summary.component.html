@@ -1,0 +1,9 @@
+<div class="content-panel spacer bg--white pos-relative">
+  <h3>{{ 'SUMMARY' | translate:lang }}</h3>  
+  <employee-chart [id]="getChildId('EmployeeChart', 1)" [name]="getChildName('EmployeeChart', 1)" [chartData]="chartData | async" >
+    <holiday-entitlement-summary [id]="getChildId('entitlementSummary', 1)"
+     [name]="getChildName('entitlementSummary', 1)" [fiscalYearSummary]="fiscalYearSummary" [selectedEmployee]="">
+    </holiday-entitlement-summary>   
+  </employee-chart>
+  <ae-loader [loaderType]="loaderType" *ngIf="loadingStatus"></ae-loader>
+</div>

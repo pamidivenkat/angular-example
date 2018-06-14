@@ -1,0 +1,17 @@
+.inline-block {
+  display: inline-block;
+}
+
+.space-right-15 {
+  margin-right: 15px;
+}
+
+.form__input__error {
+  color: #df0000;
+  padding: 5px 15px;
+  display: block;
+}
+
+.information-grid__item-value .form__input__error {
+  padding: 5px 0px;
+}

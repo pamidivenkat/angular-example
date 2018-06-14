@@ -1,0 +1,168 @@
+<div class="table">
+  <div class="filter-bar holiday-filters table__filter-bar" *ngIf="companyDocumentsListForm">
+    <div class="filter-bar__label label">{{'Filter_by' | translate:lang}}</div>
+
+    <form [formGroup]="companyDocumentsListForm" [id]="'companyDocumentsListForm'" [name]="'companyDocumentsListForm'">
+      <div class="filter-bar__filters requests">
+
+        <div class="filter-bar__filter" *ngIf="canDocumentCategoryFilterBeShown()">
+          <ae-select [id]="'ddlCategories'" [name]="'ddlCategories'" [placeholder]="'ALL_CATEGORIES' | translate:lang" [options]="documentCategories | async"
+            formControlName="documentCategory" (aeSelectChange)="onCategoryChange($event)"></ae-select>
+        </div>
+        <div class="filter-bar__filter" *ngIf="canSiteFilterBeShown()">
+          <ae-autocomplete formControlName="site" [id]="'ddlSite'" [name]="'ddlSite'" [placeholder]="'ALL_SITES' | translate:lang"
+            [multiselect]="'false'" [items]="sites$  | async" [automatch]="false" [dstype]="localDataSourceType" [field]="'Text'"
+            [debounce]="500" [valuefield]="'Value'"></ae-autocomplete>
+        </div>
+
+        <div class="filter-bar__filter" *ngIf="canDepartmentFilterBeShown()">
+          <ae-autocomplete formControlName="department" [id]="'ddlDepartment'" [name]="'ddlDepartment'" [placeholder]="'ALL_DEPARTMENTS' | translate:lang"
+            [multiselect]="'false'" [items]="departments$  | async" [automatch]="false" [dstype]="localDataSourceType" [field]="'Text'"
+            [debounce]="500" [valuefield]="'Value'"></ae-autocomplete>
+
+        </div>
+
+        <div class="filter-bar__filter" *ngIf="canEmployeeShown()">
+          <ae-autocomplete formControlName="employee" [id]="'autoEmployee'" [name]="'autoEmployee'" [placeholder]="'ALL_EMPLOYEES' | translate:lang"
+            [multiselect]="'false'" [items]="searchedEmployeesSub | async" [automatch]="false" (aeOnComplete)="searchEmployees($event,false)"
+            [dstype]="remoteDataSourceType" [field]="'Text'" [debounce]="500" [valuefield]="'Value'"></ae-autocomplete>
+
+        </div>
+        <div class="filter-bar__filter" *ngIf="canStatusShown()">
+          <ae-select [id]="'ddlCategoryStatus'" [name]="'ddlCategoryStatus'" [options]="documentCategoryStatus$ | async" formControlName="documentCategoryStatus"></ae-select>
+        </div>
+      </div>
+    </form>
+
+  </div>
+
+  <div>
+
+    <ae-datatable [id]="'companyDocumentsGrid'" [name]="'companyDocumentsGrid'" [dataSource]="companyDocuments$" [actions]="actions"
+      [totalRecords]="companyDocumentsTotalCount$" [autoGenerateColumns]="false" [defaultOptions]="companyDocumentsTableOptions$ | async"
+      (pageChanged)="onGridPaging($event)" (onSort)="onGridSorting($event)" [loading]="!(companyDocumentsLoaded$ | async)">
+
+      <ae-column [headerText]="'CITATIONDRAFTS.DOCUMENT_NAME' | translate:lang" [sortable]="true " [sortKey]="'FileNameAndTitle'">
+        <ae-template [type]=" 'header' ">
+          <ng-template>
+            <span title="{{ 'CITATIONDRAFTS.DOCUMENT_NAME' | translate:lang }}">{{'CITATIONDRAFTS.DOCUMENT_NAME' | translate:lang}}</span>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]=" 'cell' " [keys]="keys ">
+          <ng-template let-context="item ">
+            <span title="{{ context.FileNameAndTitle  }}">{{ context.FileNameAndTitle }}</span>
+          </ng-template>
+        </ae-template>
+      </ae-column>
+
+      <ae-column [headerText]="'CITATIONDRAFTS.CATEGORY' | translate:lang" [sortable]="true " [sortKey]="'CategoryName'" *ngIf="canDocumentCategoryFilterBeShown()">
+        <ae-template [type]=" 'header' ">
+          <ng-template>
+            <span title="{{ 'CITATIONDRAFTS.CATEGORY' | translate:lang  }}">{{'CITATIONDRAFTS.CATEGORY' | translate:lang}}</span>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]=" 'cell' " [keys]="keys ">
+          <ng-template let-context="item ">
+            <span title="{{ context.CategoryName  }}">{{context.CategoryName}}</span>
+          </ng-template>
+        </ae-template>
+      </ae-column>
+
+
+      <ae-column [headerText]="'CITATIONDRAFTS.VERSION' | translate:lang" [sortable]="true " [sortKey]="'Version'">
+        <ae-template [type]=" 'header' ">
+          <ng-template>
+            <span title="{{ 'CITATIONDRAFTS.VERSION' | translate:lang  }}">{{'CITATIONDRAFTS.VERSION' | translate:lang}}</span>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]=" 'cell' " [keys]="keys ">
+          <ng-template let-context="item ">
+            <span title="{{ context.Version }}"> {{ context.Version }}</span>
+          </ng-template>
+        </ae-template>
+      </ae-column>
+
+      <ae-column [headerText]="'CITATIONDRAFTS.SITENAME' | translate:lang" [sortable]="true " [sortKey]="'SiteName'" *ngIf="canSiteNameColumnShown()">
+        <ae-template [type]=" 'header' ">
+          <ng-template>
+            <span title="{{ 'CITATIONDRAFTS.SITENAME' | translate:lang  }}">{{'CITATIONDRAFTS.SITENAME' | translate:lang}}</span>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]=" 'cell' " [keys]="keys ">
+          <ng-template let-context="item ">
+            <span title="{{ context.SiteName }}"> {{ context.SiteName }}</span>
+          </ng-template>
+        </ae-template>
+      </ae-column>
+
+
+      <ae-column *ngIf="canEmployeeNameColumnShown()" [headerText]=" 'HANDBOOK.EMPLOYEE_NAME' | translate:lang " [sortable]="true"
+        [sortKey]="'EmployeeName'">
+        <ae-template [type]=" 'header' ">
+          <ng-template>
+            <span title="{{ 'HANDBOOK.EMPLOYEE_NAME' | translate:lang  }}">{{'HANDBOOK.EMPLOYEE_NAME' | translate:lang}}</span>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]=" 'cell' " [keys]="keys ">
+          <ng-template let-context="item ">
+            <span title="{{context.EmployeeName}}">{{context.EmployeeName}}</span>
+          </ng-template>
+        </ae-template>
+      </ae-column>
+
+
+      <ae-column [headerText]=" 'CITATIONDRAFTS.UPLOAD_DATE' | translate:lang " [sortable]="true" [sortKey]="'ModifiedOn' ">
+        <ae-template [type]=" 'header' ">
+          <ng-template>
+            <span title="{{ 'CITATIONDRAFTS.UPLOAD_DATE' | translate:lang  }}">{{'CITATIONDRAFTS.UPLOAD_DATE' | translate:lang}}</span>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]=" 'cell' " [keys]="keys ">
+          <ng-template let-context="item ">
+            <span title="{{context.ModifiedOn | localeDate:defaultLocale:'shortDate'}}">{{context.ModifiedOn | localeDate:defaultLocale:'shortDate'}}</span>
+          </ng-template>
+        </ae-template>
+      </ae-column>
+
+    </ae-datatable>
+
+  </div>
+</div>
+
+<!--delete confirmation pop-up-->
+<div *ngIf="showRemovDocumentConfirm">
+  <ae-modal-dialog [visible]="showRemovDocumentConfirm" (cancel)="deleteConfirmModalClosed('No')" [closable]="true" [id]="getChildId('AeModel', 1)"
+    [name]="getChildName('AeModel', 1)">
+    <div class="modal-dialog-header">
+      <h3>{{'PERSONAL_DOCUMENT_REMOVE_DIALOG.Remove_Document_Heading_text' | translate: lang}}</h3>
+    </div>
+    <div class="modal-dialog-body">
+      <p>{{'PERSONAL_DOCUMENT_REMOVE_DIALOG.Info' | translate: lang:{docName: selectedDocument.FileNameAndTitle} }}</p>
+    </div>
+    <div class="modal-dialog-footer">
+      <ae-button [text]="'PERSONAL_DOCUMENT_REMOVE_DIALOG.Btn_No' | translate: lang" [type]="'button'" [id]="'deleteConfirmNo'"
+        [name]="'deleteConfirmNo'" (aeClick)="deleteConfirmModalClosed('No')"></ae-button>
+      <ae-button [class]="lightClass" [text]="'PERSONAL_DOCUMENT_REMOVE_DIALOG.Btn_Yes' | translate: lang" [type]="'button'" [id]="'deleteConfirmYes'"
+        [name]="'deleteConfirmYes'" (aeClick)="deleteConfirmModalClosed('Yes')"></ae-button>
+    </div>
+  </ae-modal-dialog>
+</div>
+
+<ae-slideout [id]="'documentDistributeSelectSlide'" [name]="'documentDistributeSelectSlide'" [modelState]="getDocDistributeSlideoutState()"
+  [class.slide--animate]="showRemoveDocumentDistributeSelectSlideOut">
+  <ng-container *ngIf="showRemoveDocumentDistributeSelectSlideOut">
+    <document-review-distribute [id]="'documentDistribute'" [name]="'documentDistribute'" [documentType]="documentType" [documentDetails]="documentDetails$ | async"
+      (aeCancel)="onAeCancel($event)" (aeDistribute)="onDocumentDistribute($event)">
+    </document-review-distribute>
+  </ng-container>
+</ae-slideout>
+
+
+<ae-slideout [id]="'documentUpdateSelectSlide'" [name]="'documentUpdateSelectSlide'" [modelState]="getDocUpdateSlideoutState()"
+  [class.slide--animate]="showUpdateDocumentSlideOut">
+  <ng-container *ngIf="showUpdateDocumentSlideOut">
+    <document-update [id]="'documentUpdate'" [name]="'documentUpdate'" [documentCategories]="documentCategoriesForUpdate" [document]="documentDetails$ | async"
+      (onCancel)="onDocumentUpdateCancel($event)" (onSubmit)="onDocumentUpdateSubmit($event)">
+    </document-update>
+  </ng-container>
+</ae-slideout>

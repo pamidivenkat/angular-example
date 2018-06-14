@@ -1,0 +1,118 @@
+<div [id]="'asess'">
+  <div class="bottom-30">
+    <ae-notification [id]="getChildId('AeNotification', 1)" [name]="getChildName('AeNotification', 1)" [iconName]="'icon-info'"
+      [textInfo]="'RA_HELP_TEXT.ASSESS' | translate:lang">
+    </ae-notification>
+  </div>
+  <div class="rating-row" [id]="'riskAssessmentMatrix'">
+    <div>
+      <div class="information-grid__item--input top0">
+        <label class="information-grid__item-label column-1of3" [id]="getChildId('AeMatrix', 1)"><ae-icon [id]="'iconInfo'" [name]="'iconInfo'" [color]="'#009494'" [title]="'RISK_RATING_EXPLANATION' | translate: lang" [icon]="'icon-info'" aePopover [popOverVm]="getPopOverVm()"
+          [popOverAction]="'click'"> </ae-icon> Matrix</label>
+        <div class="information-grid__item-value column-2of3">
+          <ae-select [id]="getChildId('AeSelect')" [name]="getChildName('AeSelect')" [options]="matrixOptions" (aeSelectChange)="updateMatrix($event)"
+            [value]="currentRiskAssessment && currentRiskAssessment.Matrix"></ae-select>
+        </div>
+      </div>
+    </div>
+    <div class="toggle-switch-spacer">
+      <ae-switch [id]="getChildId('AeSwitch', 1)" [name]="getChildName('AeSwitch', 1)" [switchText]="'PRINT_RISK_RANTING_LEGEND' | translate:lang"
+        (aeChange)="updateRatingLegend($event)" [value]="currentRiskAssessment && currentRiskAssessment.IncludeRatingLegend"></ae-switch>
+    </div>
+  </div>
+  <hr class="hr-grey-spacer-y" />
+  <!-- Overall riskAssessment -->
+  <div [id]="'overallRiskAssessment'">
+    <div class="pull-right">
+      <ae-switch [id]="getChildId('AeSwitch', 2)" [name]="getChildName('AeSwitch', 2)" [textVisible]="false" (aeChange)="changeOverAllAssessment($event)"
+        [value]="showOverAllAssessment"></ae-switch>
+    </div>
+    <h3>{{'OVERALL_RISK_ASSESSMENT'| translate:lang}}</h3>
+  </div>
+  <div class="overall-rating-grid" *ngIf="showOverAllAssessment">
+    <div class="text--centered">
+      <risk-chart [riskData]="chartData(999)" [id]="getChildId('RiskChart')" [name]="getChildName('RiskChart')"></risk-chart>
+    </div>
+    <div>
+      <div>{{'LIKELIHOOD_OF_HAZARD'| translate:lang}} : {{getLikelihoodText(currentRiskAssessment && currentRiskAssessment.Likelihood)
+        | translate:lang}}</div>
+      <ae-slider [min]="1" [max]="maxRiskValue" [id]="getChildId('AeSlider', 1)" [name]="getChildName('AeSlider', 1)" [thumbLabel]="true"
+        (aeChange)="updateLikelihood($event, 999)" [value]="currentRiskAssessment && currentRiskAssessment.Likelihood"></ae-slider>
+      <div>{{'SEVERITY_OF_HAZARD'| translate:lang}} : {{getSeverityText(currentRiskAssessment && currentRiskAssessment.Severity)
+        | translate:lang}}</div>
+      <ae-slider [min]="1" [max]="maxRiskValue" [id]="getChildId('AeSlider', 2)" [name]="getChildName('AeSlider', 2)" [thumbLabel]="true"
+        (aeChange)="updateSeverity($event, 999)" [value]="currentRiskAssessment && currentRiskAssessment.Severity"></ae-slider>
+    </div>
+    <div></div>
+  </div>
+  <div [id]="individualRiskAssessment" *ngIf="!(isCOSHH() || isMigrated())">
+    <hr class="hr-grey-spacer-y" />
+    <div>
+      <div class="pull-right">
+        <ae-switch [id]="getChildId('AeSwitch', 3)" [name]="getChildName('AeSwitch', 3)" [textVisible]="false" (aeChange)="changeIndividualAssessment($event)"
+          [value]="showIndividualAssessment"></ae-switch>
+      </div>
+      <h3>{{'INDIVIDUAL_HAZARD_ASSESSMENT'| translate:lang}}</h3>
+    </div>
+    <div class="bottom-30">
+      <ae-notification [id]="getChildId('AeNotification', 2)" [name]="getChildName('AeNotification', 2)" [iconName]="'icon-info'"
+        [textInfo]="'RA_HELP_TEXT.INDIVIDUAL_HAZARD_ASSESSMENT' | translate:lang">
+      </ae-notification>
+    </div>
+    <div *ngIf="showIndividualAssessment">
+      <ng-template ngFor let-item [ngForOf]="hazards" let-i="index">
+        <div class="overall-rating-grid border-top-grey">
+          <div class="text--centered">
+            <div class="container-hazard"><img [src]="getPictureUrl(item.PictureId, item.IsSharedPrototype)" [alt]="item.Name" class="margin-auto"></div>
+            <div>{{item.Name}}</div>
+          </div>
+          <div>
+            <div>{{'LIKELIHOOD_OF_HAZARD'| translate:lang}} : {{getLikelihoodText(item.Likelihood) | translate:lang}}</div>
+            <ae-slider [min]="1" [max]="maxRiskValue" [id]="getChildId('AeSlider', 1)" [name]="getChildName('AeSlider', 1)" [thumbLabel]="true"
+              (aeChange)="updateLikelihood($event, i, item.Id)" [value]="item.Likelihood"></ae-slider>
+            <div>{{'SEVERITY_OF_HAZARD'| translate:lang}} : {{getSeverityText(item.Severity) | translate:lang}}</div>
+            <ae-slider [min]="1" [max]="maxRiskValue" [id]="getChildId('AeSlider', 2)" [name]="getChildName('AeSlider', 2)" [thumbLabel]="true"
+              (aeChange)="updateSeverity($event, i, item.Id)" [value]="item.Severity"></ae-slider>
+          </div>
+          <div class="text--centered">
+            <risk-chart [riskData]="chartData(i)" [id]="getChildId('RiskChart', i)" [name]="getChildName('RiskChart', i)"></risk-chart>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>
+<ae-loader [loaderType]="loaderType()" *ngIf="loadingHazards"></ae-loader>
+<ae-template #popOverTemplate [type]="'popOver'">
+  <ng-template let-context="item">
+    <div class="popover-container ">
+      <div class="popover-head">
+        <h3>{{'RISK_RATING_EXPLANATION' | translate: lang}}</h3>
+      </div>
+      <div class="rating-popup rating-scroll">
+        <p>{{'RISK_RATING_EXPLANATION_TEXT' | translate:lang}}</p>
+        <div class="top-20" ng-show="(selectedOption.index == 2)">
+          <div class="information-grid__item--input">
+            <div class="column-2of3">
+              <div class="rating-line">
+                <div class="line-l">{{'HIGH_UNLIKELY' |translate:lang}}<br />1</div>
+                <div class="line-m">{{'LIKELY' |translate:lang}}<br />{{context.centerValue}}</div>
+                <div class="line-r">{{'HIGH_LIKELY' |translate:lang}}<br />{{context.rightValue}}</div>
+              </div>
+              <div class="rating-line flip-v">
+                <div class="line-l">1<br />{{context.bottomLeftText}}</div>
+                <div class="line-m">{{context.centerValue}}<br />{{context.bottomCenterText}}</div>
+                <div class="line-r">{{context.rightValue}}<br />{{context.bottomRightText}}</div>
+              </div>
+            </div>
+            <div class="text--centered column-1of3">
+              <img src="{{context.imgUrl}}" />
+            </div>
+          </div>
+        </div>
+        <h3 class="top10">{{'RISK_RATING_MEAN' | translate: lang}}</h3>
+        <ae-legend [id]="'riskRatingLegend'" [options]="legendOptions" [headText]="''" [shape]="legendIndicatorType" [legendType]="legendTypeVertical"></ae-legend>
+      </div>
+    </div>
+  </ng-template>
+</ae-template>

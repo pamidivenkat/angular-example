@@ -1,0 +1,4 @@
+<div [id]="id">
+  <ae-checkbox style="display:inline-block" [id]="getSeqId(i)" [name]="name" *ngFor="let item of options; let i = index" [checkText]="getTranslationText(item.Text)"
+    (onAeChange)="valueChanged($event,i + 1)" [disabled]="item.Disabled" [checked]="isChecked(i + 1)"></ae-checkbox>
+</div>

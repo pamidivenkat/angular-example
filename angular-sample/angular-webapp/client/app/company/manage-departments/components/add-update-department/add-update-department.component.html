@@ -1,0 +1,60 @@
+<div id="slide-out-form-content" class="wrapper-for-slideout-conten">
+  <div class="so-panel__title">
+    <h3 class="grey-strip">{{ getHeaderTitle() | translate:lang}}</h3>
+  </div>
+  <div class="so-panel__content">
+    <div class="information-grid">
+      <form id="department-form" name="department-form" class="form" [formGroup]="manageDepartmentForm">
+        <section class="information-grid__section">
+          <div class="form__column">
+            <div class="information-grid__item">
+              <div class="information-grid__item-label column-1of3">{{'MANAGE_DEPARTMENT.NAME' | translate:lang}} <span class="alert">*</span></div>
+              <div class="information-grid__item-value column-2of3 text-muted">                                  
+                  <ae-input [id]="'Name'" [name]="'Name'" formControlName="Name" [placeholder]="'MANAGE_DEPARTMENT.NEW_DEPT_TEAM_NAME' | translate:lang"
+                  [hasError]="hasError('Name')" [title]="'MANAGE_DEPARTMENT.NAME' | translate:lang"></ae-input>
+              </div>
+              <span *ngIf="hasError('Name')" class="form__input__error">{{getErrorMessage('Name') | translate:lang}}</span>
+            </div> 
+            <div class="information-grid__item">
+              <div class="information-grid__item-label column-1of3">
+                <ae-icon [id]="getChildId('AeIcon', 1)" [name]="getChildName('AeIcon', 1)" [icon]="'icon-alert-circle-question'" [title]="'HELP_MSG.TYPE_FIELD_MSG' | translate:lang"> </ae-icon>
+                {{'MANAGE_DEPARTMENT.TYPE' | translate:lang}} <span class="alert">*</span></div>
+              <div class="information-grid__item-value column-2of3 text-muted">
+                  <ae-select [id]="'Type'" [name]="'Type'" formControlName="Type" [placeholder]="'PLEASE_SELECT' | translate:lang"
+                  [options]="deptTypes" [hasError]="hasError('Type')" [title]="'MANAGE_DEPARTMENT.TYPE' | translate:lang"></ae-select>
+              </div>
+              <span *ngIf="hasError('Type')" class="form__input__error">{{getErrorMessage('Type') | translate:lang}}</span>
+            </div> 
+            <div class="information-grid__item">
+              <div class="information-grid__item-label column-1of3">
+                <ae-icon [id]="getChildId('AeIcon', 1)" [name]="getChildName('AeIcon', 1)" [icon]="'icon-alert-circle-question'" [title]="'HELP_MSG.MANAGE_DEPARTMENT_MSG' | translate:lang"> </ae-icon>
+                {{'MANAGE_DEPARTMENT.MANAGER' | translate:lang}}</div>
+              <div class="information-grid__item-value column-2of3 text-muted">                                  
+                  <ae-select [id]="'Manager'" [name]="'Manager'" formControlName="ManagerId" [placeholder]="'PLEASE_SELECT' | translate:lang"
+                  [options]="managers" [title]="'MANAGE_DEPARTMENT.MANAGER' | translate:lang"></ae-select>
+              </div>
+            </div> 
+            <div class="information-grid__item">
+              <div class="information-grid__item-label column-1of3">{{'MANAGE_DEPARTMENT.PARENT_DEPT_TEAM' | translate:lang}} <span class="alert">*</span></div>
+              <div class="information-grid__item-value column-2of3 text-muted">                                  
+                  <ae-input [cssClass]="'input'" [id]="'ParentDeptTeam'" [name]="'ParentDeptTeam'" formControlName="ParentDeptName"
+                  [title]="'MANAGE_DEPARTMENT.PARENT_DEPT_TEAM' | translate:lang" [placeholder]="'MANAGE_DEPARTMENT.PARENT_DEPT_TEAM' | translate:lang"></ae-input>
+              </div>
+            </div> 
+          </div>
+        </section>
+      </form>
+    </div>
+  </div>
+  <div class="so-panel__footer">
+    <nav>
+      <ul>
+        <li><label for="soPanel" [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang" class="button button--inline-block" [id]="getChildId('AeButton',1)" (click)="onFormClosed($event)">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label></li>
+        <li class="pull--right">
+          <ae-anchor [id]="getChildId('AeAnchor',1)" [name]="getChildName('AeAnchor',1)" [anchorType]="'button'" [class]="'button button--inline-block'"
+            [anchorClass]="lightClass" (aeClick)="onFormSubmit($event)" [title]="getSubmitButtonText() | translate:lang" [text]="getSubmitButtonText() | translate:lang"></ae-anchor>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>

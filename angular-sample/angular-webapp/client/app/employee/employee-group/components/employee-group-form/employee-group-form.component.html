@@ -1,0 +1,47 @@
+<!--actual content div-->
+<div id="slide-out-form-content" class="wrapper-for-slideout-conten">
+  <div class="so-panel__title">
+    <h3 class="grey-strip">{{ headerTitle | translate:lang}}</h3>
+  </div>
+  <div class="so-panel__content">
+    <div class="information-grid">
+      <form id="employee-group-form" name="employee-group-form" class="form" [formGroup]="employeeGroupForm">
+        <section class="information-grid__section">
+          <div class="form__column">
+            <div class="information-grid__item">
+              <div class="information-grid__item-label column-1of3">{{'EG_NAME' | translate:lang}} <span class="error-text">*</span></div>
+              <div class="information-grid__item-value column-2of3 text-muted">
+                <ae-input [id]="'Name'" [name]="'Name'" formControlName="Name" [placeholder]="'EG_ENTER_NAME' | translate:lang"></ae-input>
+              </div>
+              <span *ngIf="fieldHasRequiredError('Name')" class="form__input__error">{{'VALIDATION_ERROR_MESSAGE.NAME_REQUIRED' | translate:lang}}</span>
+            </div>
+
+            <div class="information-grid__item" *ngIf="checkForContractualPermission()">
+              <div class="information-grid__item-value column-2of3 text-muted">
+                <ae-checkbox [id]="'IsContractualGroup'" [name]="'IsContractualGroup'" [value]="IsContractualGroup" formControlName="IsContractualGroup"
+                  [checkText]="'EG_CONTRACTUAL_GROUP' | translate:lang" class="inline-block"></ae-checkbox>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="form__error">
+        </div>
+
+      </form>
+    </div>
+  </div>
+  <div class="so-panel__footer">
+    <nav>
+      <ul>
+        <li><label for="soPanel" class="button button--inline-block" [id]="getChildId('AeButton',1)" [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang"
+            (click)="onFormClosed($event)">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label></li>
+        <li class="pull--right">
+          <ae-anchor [id]="getChildId('AeAnchor',1)" [name]="getChildName('AeAnchor',1)" [anchorType]="'button'" [class]="'button button--inline-block'"
+            [anchorClass]="lightClass" (aeClick)="onFormSubmit($event)" [title]="buttonText | translate:lang" [text]="buttonText | translate:lang"></ae-anchor>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
+<!--actual content div end -->

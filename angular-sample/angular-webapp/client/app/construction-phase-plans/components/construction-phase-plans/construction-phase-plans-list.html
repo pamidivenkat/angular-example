@@ -1,0 +1,88 @@
+<div class="table spacer">
+  <ae-datatable [id]="getChildId('DataTable', 1)" [name]="getChildName('DataTable', 1)" [dataSource]="constructionPhasePlansList$"
+    [autoGenerateColumns]="false" [totalRecords]="totalCount$" [actions]="actions" [defaultOptions]="constructionPhasePlansDataTableOptions$ | async"
+    [loading]="constructionPhasePlansLoading$ | async" (pageChanged)="onPageChange($event)" (onSort)="onSort($event)">
+    <ae-column [headerText]="'CONSTRUCTIONPHASEPLAN.NAME'| translate:lang" [sortable]="true" [sortKey]="'Name'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'CONSTRUCTIONPHASEPLAN.NAME'| translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <div>
+            <span>{{context.Name}}</span>
+          </div>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'CONSTRUCTIONPHASEPLAN.REF_NO'| translate:lang" [sortable]="true" [sortKey]="'ReferenceNumber'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'CONSTRUCTIONPHASEPLAN.REF_NO'| translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <div>
+            <span>{{context.ReferenceNumber}}</span>
+          </div>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'CONSTRUCTIONPHASEPLAN.START_DATE'| translate:lang" [sortable]="true" [sortKey]="'StartDate'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'CONSTRUCTIONPHASEPLAN.START_DATE'| translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <div>
+            <span>{{context.StartDate | localeDate:defaultLocale:'shortDate'}}</span>
+          </div>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'CONSTRUCTIONPHASEPLAN.DUE_DATE'| translate:lang" [sortable]="true" [sortKey]="'ReviewDate'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'CONSTRUCTIONPHASEPLAN.DUE_DATE'| translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <div>
+            <span>{{context.ReviewDate | localeDate:defaultLocale:'shortDate'}}</span>
+          </div>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+  </ae-datatable>
+</div>
+<div *ngIf="showDeleteConfirm">
+  <ae-modal-dialog [visible]="showDeleteConfirm" (cancel)="deleteConfirmModalClosed('no')" [closable]="true" [id]="getChildId('AeModel', 1)"
+    [name]="getChildName('AeModel', 1)">
+    <div class="modal-dialog-header">
+      <h3>{{ 'CPP_ADD.REMOVE_CPP' | translate:lang }}</h3>
+    </div>
+    <div class="modal-dialog-body">
+      <p>{{'CPP_ADD.REMOVE_CPP_DIALOG' | translate: lang:{cppName: selectedCPP.Name} }}</p>
+    </div>
+    <div class="modal-dialog-footer">
+      <ae-button [text]="'CPP_ADD.REMOVE_CONFIRM_NO_BTN' | translate:lang" [type]="'button'" [id]="'deleteConfirmNo'" [name]="'deleteConfirmNo'"
+        (aeClick)="deleteConfirmModalClosed('no')"></ae-button>
+      <ae-button [class]="lightClass" [text]="'CPP_ADD.REMOVE_CONFIRM_YES_BTN' | translate:lang" [type]="'button'" [id]="'deleteConfirmYes'"
+        [name]="'deleteConfirmYes'" (aeClick)="deleteConfirmModalClosed('yes')"></ae-button>
+    </div>
+  </ae-modal-dialog>
+</div>
+<div>
+  <ae-slideout [id]="'cppCopySlideout'" [name]="'cppCopySlideout'" [modelState]="getCPPCopySlideoutState()" [class.slide--animate]="showCPPCopySlideOut">
+    <ng-container *ngIf="showCPPCopySlideOut">
+      <cpp-copy [id]="'cppCopy'" [name]="'cppCopy'" [constructionPhasePlan]="selectedCPP" (copyCPP)="onCopied($event)" (cancel)="closeCPPSlidOut($event)">
+      </cpp-copy>
+    </ng-container>
+  </ae-slideout>
+
+</div>

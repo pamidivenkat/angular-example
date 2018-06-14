@@ -1,0 +1,95 @@
+@import '../../../assets/scss/variablesMap';
+
+.search-results-list {
+  background: $white;
+
+  .table__heading {
+    display: none;
+  }
+
+  .table__row {
+    &:hover {
+      background: $white;
+    }
+
+    .table__item-inner {
+      border: none;
+
+      &:hover {
+        background: $white;
+      }
+    }
+
+    .table__item {
+      border: 0;
+    }
+  }
+}
+
+.search-result-block {
+  position: relative;
+
+  .button {
+    position: absolute;
+    top: 7px;
+    right: 3px;
+    border: 0;
+    border: 0;
+    padding: 5px;
+    box-shadow: none;
+
+    &:active,
+    &:focus,
+    &:hover {
+      background: none;
+      box-shadow: none;
+    }
+  }
+}
+
+.search-results-pagination {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-top: ($base-margin * 2);
+}
+
+.search-result {
+  align-items: center;
+  display: flex;
+
+  &:not(:first-of-type) {
+    margin-top: $base-margin;
+  }
+}
+
+.search-result__icon {
+  background: $grey--2;
+  border-radius: 50%;
+  color: $white;
+  padding: $base-padding;
+
+}
+
+.search-result__meta {
+  display: flex;
+  flex-direction: column;
+  padding: $base-padding;
+}
+
+.search-result__title {
+  h4 {
+    margin: 0 0 ($base-margin / 3);
+
+    a {
+      color: $teal--0;
+      text-decoration: none;
+    }
+  }
+}
+
+.search-result__description {
+  p {
+    margin: 0;
+  }
+}

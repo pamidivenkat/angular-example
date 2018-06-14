@@ -1,0 +1,66 @@
+<div [id]="getChildId('div', 1)" class="so-panel__title">
+  <h3 *ngIf="isAddForm()">{{'EMPLOYEE_PREVIOUS_EMPLOYMENT.add_header_text' | translate:lang}}</h3>
+  <h3 *ngIf="isUpdateForm()">{{'EMPLOYEE_PREVIOUS_EMPLOYMENT.update_header_text' | translate:lang}}</h3>
+</div>
+<div [id]="getChildId('div', 2)" class="so-panel__content">
+  <div class="information-grid" [id]="getChildId('div', 3)">
+    <section class="information-grid__section" [id]="getChildId('section', 4)">
+      <form class="form" [formGroup]="updatePreviousEmploymentHistoryForm" [id]="getChildId('form', 5)">
+        <section class="information-grid__section" [id]="getChildId('section', 6)">
+          <div class="information-grid__item" [id]="getChildId('div', 7)">
+            <div class="information-grid__item-label column-1of3" [id]="getChildId('div', 8)">{{'EMPLOYEE_PREVIOUS_EMPLOYMENT.employer_name' | translate:lang}} <span class="error-text">*</span></div>
+            <div class="information-grid__item-value column-2of3 text-muted" [id]="getChildId('div', 9)">
+              <ae-input [id]="getChildId('ae-input', 10)" [name]="getChildName('ae-input', 10)" formControlName="EmployerNameAndAddress"
+                [placeholder]="'EMPLOYEE_PREVIOUS_EMPLOYMENT.employer_name' | translate:lang"></ae-input>
+            </div>
+            <span *ngIf="fieldHasRequiredError('EmployerNameAndAddress')" class="form__input__error" id="'title_field_error'">{{'EMPLOYEE_PREVIOUS_EMPLOYMENT.employer_required' | translate:lang}}.</span>
+          </div>
+          <div>
+            <div class="information-grid__item" [id]="getChildId('div', 11)">
+              <div class="information-grid__item-label column-1of3" [id]="getChildId('div', 12)">{{'EMPLOYEE_PREVIOUS_EMPLOYMENT.job_title' | translate:lang}}</div>
+              <div class="information-grid__item-value column-2of3 text-muted" [id]="getChildId('div', 13)">
+                <ae-input [id]="getChildId('ae-input', 14)" [name]="getChildName('ae-input', 14)" formControlName="JobTitleAndRoles" [placeholder]="'EMPLOYEE_PREVIOUS_EMPLOYMENT.job_title' | translate:lang"></ae-input>
+              </div>
+            </div>
+            <div class="information-grid__item" [id]="getChildId('div', 20)">
+              <div class="information-grid__item-label column-1of3" [id]="getChildId('div', 21)">{{'EMPLOYEE_PREVIOUS_EMPLOYMENT.start_date' | translate:lang}}</div>
+              <div class="information-grid__item-value column-2of3 text-muted" [id]="getChildId('div', 22)">
+                <ae-datetime-picker [id]="getChildId('ae-datetime-picker', 23)" [name]="getChildName('ae-datetime-picker', 23)" formControlName="StartDate"
+                  [monthNavigator]="true" [yearNavigator]="true" [showIcon]="true"></ae-datetime-picker>
+              </div>
+              <span *ngIf="fieldHasValidDateError('StartDate')" class="form__input__error" id="'mot_field_error'">{{'EMPLOYEE_PREVIOUS_EMPLOYMENT.invalid_date' | translate:lang}}.</span>
+            </div>
+            <div class="information-grid__item" [id]="getChildId('div', 24)">
+              <div class="information-grid__item-label column-1of3" [id]="getChildId('div', 25)">{{'EMPLOYEE_PREVIOUS_EMPLOYMENT.leaving_date' | translate:lang}}</div>
+              <div class="information-grid__item-value column-2of3 text-muted" [id]="getChildId('div', 26)">
+                <ae-datetime-picker [id]="getChildId('ae-datetime-picker', 27)" [name]="getChildName('ae-datetime-picker', 27)" formControlName="EndDate"
+                  [monthNavigator]="true" [yearNavigator]="true" [showIcon]="true"></ae-datetime-picker>
+              </div>
+              <span *ngIf="fieldHasDateComparisonError()" class="form__input__error">{{'EMPLOYEE_PREVIOUS_EMPLOYMENT.end_date_error' | translate:lang}}</span>
+              <span *ngIf="fieldHasValidDateError('EndDate')" class="form__input__error" id="'mot_field_error'">{{'EMPLOYEE_PREVIOUS_EMPLOYMENT.invalid_date' | translate:lang}}.</span>
+            </div>
+            <div class="information-grid__item" [id]="getChildId('div', 40)">
+              <div class="information-grid__item-label column-1of3" [id]="getChildId('div', 41)">{{'EMPLOYEE_PREVIOUS_EMPLOYMENT.reason_for_leaving' | translate:lang}}</div>
+              <div class="information-grid__item-value column-2of3 text-muted" [id]="getChildId('div', 42)">
+                <ae-input [id]="getChildId('ae-input', 43)" [name]="getChildName('ae-input', 43)" formControlName="ReasonForLeaving" [placeholder]="'EMPLOYEE_PREVIOUS_EMPLOYMENT.reason_for_leaving' | translate:lang"></ae-input>
+              </div>
+            </div>
+          </div>
+        </section>
+        <div class="form__error" [id]="getChildId('div', 77)">
+        </div>
+      </form>
+    </section>
+  </div>
+</div>
+<div class="so-panel__footer" [id]="getChildId('div', 78)">
+  <nav>
+    <ul>
+      <li><label for="soPanel" class="button button--inline-block" [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang" (click)="onUpdateFormClosed()" >{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label></li>
+      <li class="pull--right">
+        <ae-anchor [id]="getChildId('ae-anchor', 79)" [name]="getChildName('ae-anchor', 79)" [anchorType]="'button'" [title]="'EMPLOYEE_PREVIOUS_EMPLOYMENT.add' | translate:lang" [class]="'button button--inline-block'"
+          [anchorClass]="lightClass" (aeClick)="onUpdateFormSubmit($event)" [text]="isAddForm() ? ('EMPLOYEE_PREVIOUS_EMPLOYMENT.add' | translate:lang) : ('EMPLOYEE_PREVIOUS_EMPLOYMENT.update' | translate:lang)"></ae-anchor>
+      </li>
+    </ul>
+  </nav>
+</div>

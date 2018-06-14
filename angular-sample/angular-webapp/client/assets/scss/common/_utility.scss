@@ -1,0 +1,162 @@
+.hidden {
+    display: none;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.text--centered {
+    text-align: center;
+}
+
+.text--right {
+    text-align: right;
+}
+
+.bg--white {
+    background-color: $white;
+}
+
+.top0 {
+    padding-top: 0 !important;
+}
+
+.top-space0 {
+    margin-top: 0 !important;
+}
+
+.top-5 {
+    margin-top: ($base-margin/3) !important;
+}
+
+.top-15 {
+    margin-top: $base-margin !important;
+}
+
+.bottom-15 {
+    margin-bottom: $base-margin !important;
+}
+
+.top-20 {
+    margin-top: 20px !important;
+}
+
+.top-80 {
+    top: 80px !important;
+}
+
+.height-80 {
+    height: 80px !important;
+}
+
+.hr-grey,
+.hr-grey-spacer-y,
+.hr-light-grey {
+    background-color: $grey--3;
+    height: 1px;
+    border: none;
+}
+
+.hr-light-grey {
+    background-color: $grey--pale;
+}
+
+.hr-grey-spacer-y {
+    margin: $base-margin 0;
+}
+
+.bottom-20 {
+    margin-bottom: 20px !important;
+}
+
+.bottom-30 {
+    margin-bottom: ($base-margin*2) !important;
+}
+
+.top-30 {
+    margin-top: ($base-margin*2) !important;
+}
+
+.pull-left {
+    float: left;
+}
+
+.pull-right {
+    float: right;
+}
+
+.spacer-lr {
+    padding: 0 $base-padding;
+}
+
+.spacer-l-10 {
+    padding-left: 10px;
+}
+
+.margin-0 {
+    margin: 0 !important;
+}
+
+.spacer-15 {
+    padding: $base-padding !important;
+}
+
+.pull-top-5 {
+    margin-top: -($base-margin/3) !important;
+}
+
+.margin-auto {
+    margin: auto !important;
+}
+
+.help-anchor a {
+    color: $teal--0;
+}
+
+.wizard__stages .tabs-nav__inner {
+    min-width: 100%;
+}
+
+.input-group {
+    position: relative;
+}
+
+.input-group .button {
+    padding: 10px 12px;
+    border-left: solid 1px transparent;
+    border-color: $grey--3;
+    color: $teal--0;
+    box-shadow: inset 0 -3px 6px rgba($black, 0.05);
+    height: 41px;
+    width: 48px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.text-bold {
+    font-weight: bold;
+}
+
+.icon--disabled {
+    .icon {
+        color: #b1b1b1;
+    }
+    cursor: default;
+}
+
+.cursor-default {
+    cursor: default !important;
+}
+
+::-ms-clear {
+    display: none;
+}
+.inline-block{display:inline-block !important;}
+
+.overflow-hidden {
+    overflow: hidden;
+}

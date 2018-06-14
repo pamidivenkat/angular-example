@@ -1,0 +1,16 @@
+<a [id]="id" class="video fancybox.iframe" (click)="openVideoModal($event)">
+  <span *ngIf="isLinkStyle()" class="link-text">{{linkText}}</span>
+  <img class="video__thumbnail" [attr.src]="thumbnailSrc" [attr.alt]="altText" *ngIf="isThumbnailStyle()">
+  <div class="video__play" *ngIf="isThumbnailStyle()">
+    <ae-icon [id]="iconId" [name]="iconId" [size]="iconSize" [icon]="'icon-play'"></ae-icon>
+  </div>
+</a>
+
+<div *ngIf="showDialog" class="popup-container">
+  <ae-modal-dialog [id]="id" [name]="name" [(visible)]="showDialog" (cancel)="modalClosed($event)" [size]="moadlSize" [closable]="true" [draggable]="true">
+    <div class="modal-dialog-body">
+      <iframe id="player" [attr.width]="width" [attr.height]="height" [attr.src]="trustedUrl" frameborder="0" allowfullscreen>
+      </iframe>
+    </div>
+  </ae-modal-dialog>
+</div>

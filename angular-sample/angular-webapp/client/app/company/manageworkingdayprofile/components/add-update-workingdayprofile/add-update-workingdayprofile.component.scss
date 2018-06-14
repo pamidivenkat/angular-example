@@ -1,0 +1,31 @@
+@import '../../../../../assets/scss/variablesMap';
+.switch-block {
+  background: $grey--pale;
+  cursor: pointer;
+  height: 40px;
+  line-height: 32px;
+  padding: 5px;
+}
+
+.add-update-profile {
+  .profile-label {
+    float: right;
+    padding-top: 10px;
+  }
+}
+
+.information-grid__item-value label {
+    padding: 0 !important;
+}
+
+.notification-bar+.information-grid {
+  border-top: 3px solid $grey--pale;
+}
+
+.switch-block {
+  background: $grey--pale;
+  cursor: pointer;
+  height: 40px;
+  line-height: 32px;
+  padding: 5px;
+}

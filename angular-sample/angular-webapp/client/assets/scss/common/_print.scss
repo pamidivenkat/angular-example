@@ -1,0 +1,131 @@
+@media print {
+  body {
+    background: #fff;
+    font-size: 14px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+
+    .preview-page .table__item,
+    ae-label {
+      font-size: 14px !important;
+    }
+  }
+
+  .banner__breadcrumbs overlay,
+  .button-bar,
+  .section-title,
+  .snackbar,
+  ae-banner,
+  ae-modal-dialog,
+  ae-notification,
+  ae-popover,
+  footer,
+  header,
+  nav {
+    display: none !important;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .grid--1-2 > * {
+    float: left;
+    display: block;
+    margin-right: 2%;
+    width: 49%;
+  }
+
+  .grid--1-2 > *:nth-child(2n) {
+    margin-right: 0;
+  }
+
+  .grid--1-2::after {
+    clear: both;
+    content: '';
+    display: table;
+  }
+
+  .wizard .wizard__stages {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .panel-container,
+  .table__headings,
+  .table__row {
+    page-break-inside: avoid;
+  }
+
+  .page-break-before {
+    page-break-before: always;
+  }
+
+  .page-break-inside {
+    page-break-inside: avoid;
+  }
+
+  .no-print, #us_report_button {
+    display: none !important;
+  }
+
+  .content,
+  .spacer {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .action__heading {
+    display: none !important;
+  }
+
+  .table__table {
+    display: table;
+    width: 100%;
+    page-break-inside: auto;
+  }
+
+  .table__table .table__row+.table-empty {
+    display: none;
+  }
+
+  .table__headings,
+  .table__row {
+    display: table-row;
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+
+  .table__heading,
+  .table__item {
+    display: table-cell;
+    height: 100%;
+  }
+
+  .table__item {
+    border-bottom: 1px solid $grey--4;
+    border-left: 1px solid $grey--pale;
+    border-right: 1px solid $grey--pale;
+
+    &:not(:last-child) {
+      border-right: 0;
+    }
+  }
+
+  .table__item-inner {
+    border: 0 !important;
+  }
+
+  .no-pdf, .breadcrumbs  {
+    display: none;
+  }
+
+  .headersec {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0 35px;
+  }
+  html,body{height:auto !important; overflow: visible !important;}
+  .border-none{border:none !important}
+}

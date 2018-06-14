@@ -1,0 +1,109 @@
+<div class="table table__filter-bar">
+    <div class="filter-bar holiday-filters">
+        <div class="filter-bar__label label">{{'Filter_by' | translate:lang}}</div>
+
+        <form [formGroup]="handbooksListForm" [id]="getChildId('form', 1)" [name]="getChildName('form', 1)">
+            <div class="filter-bar__filter">
+                <ae-autocomplete formControlName="site" [id]="getChildId('AeAutocomplete',1)" [name]="getChildName('AeAutocomplete',1)" [placeholder]="'HANDBOOK.SITE_PLACEHOLDER' | translate:lang"
+                    [multiselect]="'false'" [items]="sites$  | async" [automatch]="false" [dstype]="localDataSourceType" [field]="'Text'"
+                    [debounce]="500" [valuefield]="'Value'"></ae-autocomplete>
+            </div>
+        </form>
+
+    </div>
+</div>
+<div>
+    <ae-datatable [id]="getChildId('AeDatatable',1)" [name]="getChildName('AeDatatable',1)" [dataSource]="handbooksRequest$"
+        [actions]="actions" [totalRecords]="handbooksListTotalCount$" [autoGenerateColumns]="false" [defaultOptions]="handbooksListDataTableOptions$ | async"
+        (pageChanged)="onGridPaging($event)" (onSort)="onGridSorting($event)" [loading]="!(handbooksListLoaded$ | async)">
+
+        <ae-column [headerText]="'HANDBOOK.TITLE_FILE' | translate:lang" [sortable]="true " [sortKey]=" 'FileNameAndTitle' ">
+            <ae-template [type]=" 'header' ">
+                <ng-template>
+                    <span title="{{ 'HANDBOOK.TITLE_FILE' | translate:lang  }}">{{'HANDBOOK.TITLE_FILE' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]=" 'cell' " [keys]="keys ">
+                <ng-template let-context="item ">
+                    <span title="{{ context.FileNameAndTitle  }}">{{ context.FileNameAndTitle }}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+
+        <ae-column [headerText]="'HANDBOOK.SITE' | translate:lang" [sortable]="true " [sortKey]=" 'SiteName' ">
+            <ae-template [type]=" 'header' ">
+                <ng-template>
+                    <span title="{{ 'HANDBOOK.SITE' | translate:lang  }}">{{'HANDBOOK.SITE' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]=" 'cell' " [keys]="keys ">
+                <ng-template let-context="item ">
+                    <span title="{{ context.SiteName }}"> {{ context.SiteName }}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+
+        <ae-column [headerText]="'HANDBOOK.CATEGORY' | translate:lang" [sortable]="true " [sortKey]=" 'CategoryName' ">
+            <ae-template [type]=" 'header' ">
+                <ng-template>
+                    <span title="{{ 'HANDBOOK.CATEGORY' | translate:lang  }}">{{'HANDBOOK.CATEGORY' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]=" 'cell' " [keys]="keys ">
+                <ng-template let-context="item ">
+                    <span title="{{ context.CategoryName }}"> {{ context.CategoryName }}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+
+
+
+        <ae-column [headerText]=" 'HANDBOOK.VERSION' | translate:lang " [sortable]="true" [sortKey]=" 'Version' ">
+            <ae-template [type]=" 'header' ">
+                <ng-template>
+                    <span title="{{ 'HANDBOOK.VERSION' | translate:lang  }}">{{'HANDBOOK.VERSION' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]=" 'cell' " [keys]="keys ">
+                <ng-template let-context="item ">
+                    <span title="{{context.Version}}">{{context.Version }}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+
+        <ae-column [headerText]=" 'HANDBOOK.LAST_MODIFY' | translate:lang " [sortable]="true" [sortKey]=" 'ModifiedOn' ">
+            <ae-template [type]=" 'header' ">
+                <ng-template>
+                    <span title="{{ 'HANDBOOK.LAST_MODIFY' | translate:lang  }}">{{'HANDBOOK.LAST_MODIFY' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]=" 'cell' " [keys]="keys ">
+                <ng-template let-context="item ">
+                    <span title="{{context.ModifiedOn}}">{{context.ModifiedOn | localeDate:defaultLocale:'shortDate'}}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+
+        <ae-column [headerText]=" 'HANDBOOK.STATUS' | translate:lang " [sortable]="true" [sortKey]=" 'Status' ">
+            <ae-template [type]=" 'header' ">
+                <ng-template>
+                    <span title="{{ 'HANDBOOK.STATUS' | translate:lang  }}">{{'HANDBOOK.STATUS' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]=" 'cell' " [keys]="keys ">
+                <ng-template let-context="item ">
+                    <span title="{{context.Status}}">{{ getStatusName(context.Status)}}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+
+    </ae-datatable>
+</div>
+<ae-slideout [id]="'documentDistributeSelectSlide'" [name]="'documentDistributeSelectSlide'" [modelState]="getDocDistributeSlideoutState()"
+    [class.slide--animate]="showRemoveDocumentDistributeSelectSlideOut">
+    <ng-container *ngIf="showRemoveDocumentDistributeSelectSlideOut">
+        <document-review-distribute [id]="'documentDistribute'" [name]="'documentDistribute'" [documentType]="documentType" [documentDetails]="documentDetails$ | async"
+            (aeCancel)="onAeCancel($event)" (aeDistribute)="onDocumentDistribute($event)">
+        </document-review-distribute>
+    </ng-container>
+</ae-slideout>

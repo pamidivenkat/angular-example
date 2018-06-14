@@ -1,0 +1,336 @@
+<div id="getChildId('div', 1)" class="employee-add-container">
+  <section class="wizard spacer">
+    <div class="wizard__steps">
+      <nav>
+        <ul>
+          <li class="wizard__step">
+            <label for="ra-0" class="wizard__step--item" (click)="onTabClick('personal')" [class.activeTab]="isInActiveTab('personal')">
+              <span class="number">1</span>
+              <span class="title">Personal</span>
+              <span class="description">About the new employee</span>
+            </label>
+          </li>
+          <li class="wizard__step">
+            <label for="ra-1" class="wizard__step--item" (click)="onTabClick('job')" [class.activeTab]="isInActiveTab('job')">
+              <span class="number">2</span>
+              <span class="title">Job</span>
+              <span class="description">About the employee's role</span>
+            </label>
+          </li>
+          <li class="wizard__step">
+            <label for="ra-2" class="wizard__step--item" (click)="onTabClick('admin')" [class.activeTab]="isInActiveTab('admin')">
+              <span class="number">3</span>
+              <span class="title">Admin</span>
+              <span class="description">Final stage</span>
+            </label>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="wizard__stages">
+
+      <div class="information-grid" id="getChildId('div', 2)">
+        <form class="form" id="getChildId('empAddFormPersonal', 3)" name="getChildName('empAddFormPersonal', 3)" [formGroup]="employeeDetailsAddFormPersonal">
+          <div id="getChildId('div', 4)" [class.isInActive]="isInActiveTab('personal')">
+            <div class="section__title">
+              <h3><span>1</span> Personal </h3>
+            </div>
+            <section class="information-grid__section">
+              <h3>{{'EMPLOYEE_PERSONAL.name' | translate:lang}}</h3>
+              <div class="information-grid__item--input">
+                <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.title' | translate:lang}} <span class="error-text">*</span></div>
+                <div class="information-grid__item-value column-2of3">
+                  <ae-select [id]="getChildId('AeSelect',1)" [name]="getChildName('AeSelect',1)" [title]="'EMPLOYEE_PERSONAL.title' | translate:lang"
+                    formControlName="Title" [options]="employeeTitles" [placeholder]="'Please Select'"></ae-select>
+                  <span *ngIf="fieldHasRequiredErrorPersonal('Title')" class="error-text" id="title_field_error">{{'EMPLOYEE_PERSONAL.title_required' | translate:lang}}.</span>
+                </div>
+              </div>
+              <div class="information-grid__item--input">
+                <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.first_name' | translate:lang}} <span class="error-text">*</span></div>
+                <div class="information-grid__item-value column-2of3 text-muted">
+                  <ae-input [id]="getChildId('AeInput',2)" [name]="getChildName('AeInput',2)" [title]="'EMPLOYEE_PERSONAL.first_name_tooltip' | translate:lang"
+                    formControlName="FirstName" [placeholder]="'EMPLOYEE_PERSONAL.first_name' | translate:lang"></ae-input>
+                  <span *ngIf="fieldHasRequiredErrorPersonal('FirstName')" class="error-text" id="firstname_rq_error">{{'EMPLOYEE_PERSONAL.first_name_required' | translate:lang}}.</span>
+                  <span *ngIf="fieldHasInvalidName('FirstName')" class="error-text" id="firstname_validname_error">{{'EMPLOYEE_PERSONAL.only_alpha_msg' | translate:lang}}.</span>
+                </div>
+              </div>
+              <div class="information-grid__item--input">
+                <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.middle_name' | translate:lang}}</div>
+                <div class="information-grid__item-value column-2of3 text-muted">
+                  <ae-input [id]="getChildId('AeInput',3)" [name]="getChildName('AeInput',3)" [title]="'EMPLOYEE_PERSONAL.middle_name_tooltip' | translate:lang"
+                    formControlName="MiddleName" [placeholder]="'EMPLOYEE_PERSONAL.middle_name' | translate:lang"></ae-input>
+                  <span *ngIf="fieldHasInvalidName('MiddleName')" class="error-text" id="midname_validname_error">{{'EMPLOYEE_PERSONAL.only_alpha_msg' | translate:lang}}.</span>
+                </div>
+              </div>
+              <div class="information-grid__item--input">
+                <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.surname' | translate:lang}} <span class="error-text">*</span></div>
+                <div class="information-grid__item-value column-2of3 alert">
+                  <ae-input [id]="getChildId('AeInput',4)" [name]="getChildName('AeInput',4)" [title]="'EMPLOYEE_PERSONAL.sur_name_tooltip' | translate:lang"
+                    formControlName="Surname" [placeholder]="'EMPLOYEE_PERSONAL.surname' | translate:lang"></ae-input>
+                  <span *ngIf="fieldHasRequiredErrorPersonal('Surname')" class="error-text" id="surname_req_error">{{'EMPLOYEE_PERSONAL.surname_required' | translate:lang}}.</span>
+                  <span *ngIf="fieldHasInvalidName('Surname')" class="error-text" id="surname_validname_error">{{'EMPLOYEE_PERSONAL.only_alpha_msg' | translate:lang}}.</span>
+                </div>
+              </div>
+              <div class="information-grid__item--input">
+                <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.known_as' | translate:lang}}</div>
+                <div class="information-grid__item-value column-2of3 alert">
+                  <ae-input [id]="getChildId('AeInput',5)" [name]="getChildName('AeInput',5)" [title]="'EMPLOYEE_PERSONAL.known_as_tooltip' | translate:lang"
+                    formControlName="KnownAs" [placeholder]="'EMPLOYEE_PERSONAL.known_as' | translate:lang"></ae-input>
+                </div>
+              </div>
+              <div class="information-grid__item--input">
+                <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.previous_name' | translate:lang}}</div>
+                <div class="information-grid__item-value column-2of3 alert">
+                  <ae-input [id]="getChildId('AeInput',6)" [name]="getChildName('AeInput',6)" [title]="'EMPLOYEE_PERSONAL.previous_name_tooltip' | translate:lang"
+                    formControlName="PreviousName" [placeholder]="'EMPLOYEE_PERSONAL.previous_name' | translate:lang"></ae-input>
+                </div>
+              </div>
+              <div class="information-grid__item--input">
+                <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.gender' | translate:lang}}</div>
+                <div class="information-grid__item-value column-2of3 alert">
+                  <ae-select [id]="getChildId('AeSelect',7)" [name]="getChildName('AeSelect',7)" [title]="'EMPLOYEE_PERSONAL.gender' | translate:lang"
+                    formControlName="Gender" [options]="genderList" [placeholder]="'Please Select'"></ae-select>
+                </div>
+              </div>
+            </section>
+
+            <section class="information-grid__section">
+              <h3>{{'EMPLOYEE_PERSONAL.birth_date_age' | translate:lang}}</h3>
+              <div class="information-grid__item--input">
+                <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.dob' | translate:lang}} <span class="error-text">*</span></div>
+                <div class="information-grid__item-value column-2of3 alert">
+                  <ae-datetime-picker [id]="getChildId('AeDatetimePicker',8)" [name]="getChildName('AeDatetimePicker',8)" [monthNavigator]="true"
+                    [title]="'EMPLOYEE_PERSONAL.dob' | translate:lang" [yearNavigator]="true" yearRange="1910:2030" [showIcon]="true"
+                    formControlName="DOB" (aeSelect)="onDateSelect($event)" (aeBlur)="onDateSelect($event)"></ae-datetime-picker>
+                  <span *ngIf="fieldHasRequiredErrorPersonal('DOB')" class="error-text" id="dob_rq_error">{{'EMPLOYEE_PERSONAL.dob_required' | translate:lang}}.</span>
+                  <span *ngIf="fieldHasInvalidDOBError('dateOfBirthValidator')" class="error-text" id="dob_invalid_error">{{'EMPLOYEE_PERSONAL.dob_invalid' | translate:lang}}.</span>
+                </div>
+              </div>
+              <div class="information-grid__item--input">
+                <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.age' | translate:lang}}</div>
+                <div class="information-grid__item-value column-2of3 alert">
+                  <ae-input [id]="getChildId('AeInput',9)" [name]="getChildName('AeInput',9)" [title]="'EMPLOYEE_PERSONAL.age' | translate:lang"
+                    formControlName="Age" [cssClass]="'input'" [placeholder]="''"></ae-input>
+                </div>
+              </div>
+            </section>
+
+            <section class="information-grid__section">
+              <h3>{{'EMPLOYEE_PERSONAL.ethnicity' | translate:lang}}</h3>
+              <div class="information-grid__item--input">
+                <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.ethnicity' | translate:lang}}</div>
+                <div class="information-grid__item-value column-2of3 alert ethinic">
+                  <ae-select [id]="getChildId('AeSelect',10)" [name]="getChildName('AeSelect',10)" formControlName="EthnicGroupValueId" [options]="ethnicGroupData"
+                    [isOptGroup]="true" (aeSelectChange)="onEthnicityChange($event)" [title]="'EMPLOYEE_PERSONAL.ethnicity_tooltip' | translate:lang"></ae-select>
+                  <ae-input *ngIf="showOtherEthnicity" [id]="getChildId('AeInput',11)" [name]="getChildName('AeInput',11)" formControlName="Name"
+                    [placeholder]="'EMPLOYEE_PERSONAL.other_ethnicity' | translate:lang"></ae-input>
+                  <span *ngIf="showOtherEthnicity && fieldHasRequiredErrorPersonal('Name')" class="error-text" id="nationality_req_error">{{'EMPLOYEE_PERSONAL.ethnicity_required' | translate:lang}}</span>
+                </div>
+              </div>
+              <div class="information-grid__item--input">
+                <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.nationality' | translate:lang}} <span class="error-text">*</span></div>
+                <div class="information-grid__item-value column-2of3 alert">
+                  <ae-input [id]="getChildId('AeInput',12)" [name]="getChildName('AeInput',12)" formControlName="Nationality" [placeholder]="'EMPLOYEE_PERSONAL.nationality' | translate:lang"
+                    [title]="'EMPLOYEE_PERSONAL.nationality_tooltip' | translate:lang"></ae-input>
+                  <span *ngIf="fieldHasRequiredErrorPersonal('Nationality')" class="error-text" id="nationality_req_error">{{'EMPLOYEE_PERSONAL.nationality_required' | translate:lang}}.</span>
+                  <span *ngIf="fieldHasInvalidName('Nationality')" class="error-text" id="nationality_validname_error">{{'EMPLOYEE_PERSONAL.only_alpha_msg' | translate:lang}}.</span>
+                </div>
+              </div>
+            </section>
+
+            <section class="information-grid__section">
+              <h3>{{'EMPLOYEE_PERSONAL.tax' | translate:lang}}</h3>
+              <div class="information-grid__item--input">
+                <div class="information-grid__item-label column-1of3">
+                  <ae-icon [id]="getChildId('AeIcon',13)" [name]="getChildName('AeIcon',13)" [icon]="'icon-alert-circle-question'" [title]="'EMPLOYEE_PERSONAL.ninumber_info' | translate:lang"></ae-icon>
+                  {{'EMPLOYEE_PERSONAL.ni_number' | translate:lang}}
+                </div>
+                <div class="information-grid__item-value column-2of3 alert">
+                  <ae-input [id]="getChildId('AeInput',14)" [name]="getChildName('AeInput',14)" [title]="'EMPLOYEE_PERSONAL.ninumber_tooltip' | translate:lang"
+                    formControlName="NINumber" [placeholder]="'EMPLOYEE_PERSONAL.ni_number_placeholder' | translate:lang"></ae-input>
+                  <span *ngIf="!isFieldValid('NINumber')" class="error-text" id="ninumber_valid_error">{{'EMPLOYEE_PERSONAL.ninumber_hint' | translate:lang}}.</span>
+                </div>
+              </div>
+              <div class="information-grid__item--input">
+                <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.tax_code_update' | translate:lang}}</div>
+                <div class="information-grid__item-value column-2of3 alert">
+                  <ae-input [id]="getChildId('AeInput',15)" [name]="getChildName('AeInput',15)" [title]="'EMPLOYEE_PERSONAL.tax_code_tooltip' | translate:lang"
+                    formControlName="TaxCode" [placeholder]="'EMPLOYEE_PERSONAL.tax_code_update' | translate:lang"></ae-input>
+                </div>
+              </div>
+            </section>
+            <div class="button-bar spacer--y">
+              <div class="button-bar__item">
+                <ae-button [customClass]="'button--cta'" [text]="'BUTTONS.NEXT' | translate: lang" [type]="'button'" [id]="'btnNextPersonal'"
+                  [name]="'btnNextPersonal'" (aeClick)="onTabClick('job')"></ae-button>
+              </div>
+            </div>
+          </div>
+        </form>
+
+        <form class="form" id="empAddFormJob" name="empAddFormJob" [formGroup]="employeeDetailsAddFormJob">
+          <div id="divJob" [class.isInActive]="isInActiveTab('job')">
+            <div class="section__title">
+              <h3><span>2</span> Job</h3>
+            </div>
+            <section class="information-grid__section">
+              <h3>{{'EMPLOYEE_JOB_DETAILS.job_details' | translate:lang}}</h3>
+              <div class="form__column">
+
+                <div class="information-grid__item--input">
+                  <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_JOB_DETAILS.job_title' | translate:lang}} <span class="error-text">*</span></div>
+                  <div class="information-grid__item-value column-2of3 text-muted">
+                    <div class="input-group">
+                      <ae-autocomplete [id]="getChildId('JobTitle',1)" [name]="getChildName('JobTitle',1)" formControlName="JobTitle" [placeholder]="'Select job title'"
+                        [value]="datasourceSelectedJobTitle" [multiselect]="false" [dstype]="localDataSourceType" [items]="jobTitlesData | async"
+                        [field]="'Text'" [valuefield]="'Value'">
+                      </ae-autocomplete>
+
+                      <ae-button [type]="'button'" [id]="getChildId('AeButton', 1)" [class]="'ui-datepicker-trigger'" [name]="getChildName('AeButton', 1)"
+                        (aeClick)="openJobTitleAddForm($event)" class="btn" [class]="btnStyle" [title]="'BUTTONS.ADD' | translate:lang"
+                        [btnIcon]="'icon-plus'"></ae-button>
+
+                    </div>
+                    <span *ngIf="fieldHasRequiredErrorJob('JobTitle')" class="error-text">{{'EMPLOYEE_JOB_DETAILS.job_title_required' | translate:lang}}.</span>
+                  </div>
+                </div>
+                <div class="information-grid__item--input">
+                  <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_JOB_DETAILS.department_or_team' | translate:lang}}</div>
+                  <div class="information-grid__item-value column-2of3 text-muted">
+                    <ae-select [id]="getChildId('DepartmentId',1)" [name]="getChildName('DepartmentId',1)" [title]="'EMPLOYEE_JOB_DETAILS.department_or_team_tooltip' | translate:lang"
+                      formControlName="DepartmentId" [placeholder]="'Please Select'" [options]="departmentDataSelectList | async"></ae-select>
+                  </div>
+                </div>
+                <div class="information-grid__item--input">
+                  <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_JOB_DETAILS.location_or_site' | translate:lang}}</div>
+                  <div class="information-grid__item-value column-2of3 text-muted">
+                    <ae-select [id]="getChildId('SiteId',1)" [name]="getChildName('SiteId',1)" [title]="'EMPLOYEE_JOB_DETAILS.location_or_site_tooltip' | translate:lang"
+                      formControlName="SiteId" [placeholder]="'Please Select'" [options]="siteImmSelectList"></ae-select>
+                  </div>
+                </div>
+                <div class="information-grid__item--input">
+                  <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_JOB_DETAILS.employment_type' | translate:lang}}</div>
+                  <div class="information-grid__item-value column-2of3 text-muted">
+                    <ae-select [id]="getChildId('EmploymentTypeId',1)" [name]="getChildName('EmploymentTypeId',1)" [title]="'EMPLOYEE_JOB_DETAILS.employment_type_tooltip' | translate:lang"
+                      formControlName="EmploymentTypeId" [placeholder]="'Please Select'" [options]="employmentTypeDataSelectList"
+                      (aeSelectChange)="onEmploymentTypeChange($event)"></ae-select>
+                  </div>
+                </div>
+                <div class="information-grid__item" *ngIf="visibleOther">
+                  <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_JOB_DETAILS.other_employment_type' | translate:lang}}</div>
+                  <div class="information-grid__item-value column-2of3 text-muted">
+                    <ae-input [id]="getChildId('OtherEmployeeType',1)" [name]="getChildName('OtherEmployeeType',1)" [title]="'EMPLOYEE_JOB_DETAILS.other_employment_type_tooltip' | translate:lang"
+                      formControlName="OtherEmployeeType" [placeholder]="'EMPLOYEE_JOB_DETAILS.other_employment_type_placeholder' | translate:lang"></ae-input>
+                  </div>
+                </div>
+                <div class="information-grid__item--input">
+                  <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_JOB_DETAILS.days_per_week' | translate:lang:{ daysPerWeek: employeeSettings.DaysPerWeek } }}
+                  </div>
+                  <div class="information-grid__item-value column-2of3 text-muted">
+                    <ae-input  [type]="numberType" [step]="1" [max]="'7'" [maxlength]="'1'" [id]="getChildId('Days',1)" [name]="getChildName('Days',1)" [title]="'EMPLOYEE_JOB_DETAILS.days_per_week_tooltip' | translate:lang"
+                      formControlName="Days" [placeholder]="'EMPLOYEE_JOB_DETAILS.days_per_week_placeholder' | translate:lang"></ae-input>
+                      <span *ngIf="fieldHasDaysPerWeekRangeError('Days')" class="error-text">{{'EMPLOYEE_JOB_DETAILS.days_per_week_range_message' | translate:lang}}.</span>
+                  </div>
+                </div>
+                <div class="information-grid__item--input">
+                  <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_JOB_DETAILS.hours_per_week' | translate:lang}} <span class="error-text">*</span></div>
+                  <div class="information-grid__item-value column-2of3 text-muted">
+                    <ae-input [type]="numberType" [step]="1" [min]="0" [id]="getChildId('HoursAWeek',1)" [name]="getChildName('HoursAWeek',1)"
+                      [title]="'EMPLOYEE_JOB_DETAILS.hours_per_week_tooltip' | translate:lang" formControlName="HoursAWeek"
+                      [placeholder]="'EMPLOYEE_JOB_DETAILS.hours_per_week' | translate:lang"></ae-input>
+                    <span *ngIf="fieldHasRequiredErrorJob('HoursAWeek')" class="error-text">{{'EMPLOYEE_JOB_DETAILS.hours_per_week_required' | translate:lang}}.</span>
+                    <span *ngIf="fieldHasInvalidHoursPerWeek('HoursAWeek')" class="error-text">{{'EMPLOYEE_JOB_DETAILS.hours_per_week_invalid' | translate:lang}}.</span>
+                  </div>
+                </div>
+                <div class="information-grid__item--input">
+                  <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_JOB_DETAILS.start_date' | translate:lang}} <span class="error-text">*</span></div>
+                  <div class="information-grid__item-value column-2of3 text-muted">
+                    <ae-datetime-picker [id]="getChildId('AeDatetimePicker',1)" [name]="getChildName('AeDatetimePicker',1)" [monthNavigator]="true"
+                      [title]="'EMPLOYEE_JOB_DETAILS.start_date_tooltip' | translate:lang" [yearNavigator]="true" yearRange="1910:2030"
+                      [showIcon]="true" formControlName="StartDate">
+                    </ae-datetime-picker>
+                    <span *ngIf="fieldHasRequiredErrorJob('StartDate')" class="error-text">{{'EMPLOYEE_JOB_DETAILS.start_date_required' | translate:lang}}.</span>
+                  </div>
+                </div>
+                <div class="information-grid__item--input">
+                  <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_JOB_DETAILS.employee_number' | translate:lang}}</div>
+                  <div class="information-grid__item-value column-2of3 text-muted">
+                    <ae-input [id]="getChildId('EmployeeNumber',1)" [name]="getChildName('EmployeeNumber',1)" [title]="'EMPLOYEE_JOB_DETAILS.employee_number_tooltip' | translate:lang"
+                      formControlName="EmployeeNumber" [placeholder]="'EMPLOYEE_JOB_DETAILS.employee_number' | translate:lang"></ae-input>
+                  </div>
+                </div>
+                <div class="information-grid__item--input">
+                  <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_JOB_DETAILS.holiday_unit_type' | translate:lang}} <span class="error-text">*</span></div>
+                  <div class="information-grid__item-value column-2of3 text-muted">
+                    <ae-select [id]="getChildId('HolidayUnitType',1)" [name]="getChildName('HolidayUnitType',1)" [title]="'EMPLOYEE_JOB_DETAILS.holiday_unit_type_tooltip' | translate:lang"
+                      formControlName="HolidayUnitType" [placeholder]="'Please Select'" [options]="holidayUnitTypeDataSelectList"></ae-select>
+                    <span *ngIf="fieldHasRequiredErrorJob('HolidayUnitType')" class="error-text">{{'EMPLOYEE_JOB_DETAILS.holiday_unit_type_required' | translate:lang}}.</span>
+                  </div>
+                </div>
+                <div class="information-grid__item--input">
+                  <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_JOB_DETAILS.holiday_entitlement' | translate:lang}}</div>
+                  <div class="information-grid__item-value column-2of3 text-muted">
+                    <ae-input [type]="numberType" [id]="getChildId('HolidayEntitlement',1)" [name]="getChildName('HolidayEntitlement',1)" [title]="'EMPLOYEE_JOB_DETAILS.holiday_entitlement_tootltip' | translate:lang"
+                      formControlName="HolidayEntitlement" [placeholder]="'EMPLOYEE_JOB_DETAILS.holiday_entitlement' | translate:lang"></ae-input>
+                  </div>
+                  <span *ngIf="fieldHasMinValueErrorJob('HolidayEntitlement')" class="form__input__error">{{'EMPLOYEE_JOB_DETAILS.entitlement_period_error_msg' | translate:lang}}</span>
+                  <span *ngIf="fieldHasMaxValueErrorJob('HolidayEntitlement')" class="form__input__error">{{'EMPLOYEE_JOB_DETAILS.entitlement_period_error_msg' | translate:lang}}</span>
+                </div>
+                <div class="information-grid__item--input">
+                  <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_JOB_DETAILS.probationary_period' | translate:lang}}</div>
+                  <div class="information-grid__item-value column-2of3 text-muted">
+                    <ae-input [id]="getChildId('ProbationaryPeriod',1)" [name]="getChildName('ProbationaryPeriod',1)" [title]="'EMPLOYEE_JOB_DETAILS.probationary_period_tooltip' | translate:lang"
+                      formControlName="ProbationaryPeriod" [placeholder]="'EMPLOYEE_JOB_DETAILS.probationary_period' | translate:lang"></ae-input>
+                    <span *ngIf="fieldHasMinValueErrorJob('ProbationaryPeriod')" class="form__input__error">{{'EMPLOYEE_JOB_DETAILS.probationary_period_error_msg' | translate:lang}}</span>
+                    <span *ngIf="fieldHasMaxValueErrorJob('ProbationaryPeriod')" class="form__input__error">{{'EMPLOYEE_JOB_DETAILS.probationary_period_error_msg' | translate:lang}}</span>
+                  </div>
+                </div>
+                <div class="information-grid__item--input">
+                  <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_JOB_DETAILS.home_based' | translate:lang}}</div>
+                  <div class="information-grid__item-value column-2of3 text-muted">
+                    <ae-switch [id]="getChildId('HomeBased',1)" [name]="getChildName('HomeBased',1)" [title]="'EMPLOYEE_JOB_DETAILS.home_based_tooltip' | translate:lang"
+                      formControlName="HomeBased" [switchText]="' '" [class]="switchTextClass" [checked]="employeeDetails.Job.HomeBased"></ae-switch>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <div class="button-bar spacer--y">
+              <div class="button-bar__item">
+                <ae-button [text]="'BUTTONS.PREVIOUS' | translate: lang" [type]="'button'" [id]="'btnPrevJob'" [name]="'btnPrevJob'" (aeClick)="onTabClick('personal')"></ae-button>
+              </div>
+              <div class="button-bar__item">
+                <ae-button [customClass]="'button--cta'" [text]="'BUTTONS.NEXT' | translate: lang" [type]="'button'" [id]="'btnNextJob'"
+                  [name]="'btnNextJob'" (aeClick)="onTabClick('admin')"></ae-button>
+              </div>
+            </div>
+          </div>
+        </form>
+
+        <div id="divOptions" [class.isInActive]="isInActiveTab('admin')">
+          <div>
+            <admin-options [id]="'credientialOptions'" [name]="'credientialOptions'" [isNew]="true" (optionsModalToSave)="optionsModalToSave($event)">
+            </admin-options>
+          </div>
+
+          <div class="button-bar spacer--y">
+            <div class="button-bar__item">
+              <ae-button [text]="'BUTTONS.PREVIOUS' | translate: lang" [type]="'button'" [id]="'btnPrevJob'" [name]="'btnPrevJob'" (aeClick)="onTabClick('job')"></ae-button>
+            </div>
+            <div class="button-bar__item">
+              <ae-button [class]="lightClass" [text]="'BUTTONS.SAVE' | translate: lang" [type]="'button'" [id]="'btnSave'" [name]="'btnSave'"
+                (aeClick)="onFormSubmit($event)"></ae-button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <ae-slideout [id]="getChildId('AeSlideOut', 1)" [name]="getChildName('AeSlideOut', 1)" [modelState]="getJobTitleSlideoutState()"
+    (cancel)="closeJobTitleAddForm($event)" [class.slide--animate]="showJobTitleAddForm">
+    <ng-container *ngIf="showJobTitleAddForm">
+      <jobtitle-add (onCancel)="closeJobTitleAddForm($event)" (onSave)="jobTitleSave($event)"></jobtitle-add>
+    </ng-container>
+  </ae-slideout>
+</div>

@@ -1,0 +1,69 @@
+<ae-banner [id]="getChildId('banner')" [name]="getChildName('banner')" [titleText]="riskAssessmentName" [backgroundImage]="'/assets/images/lp-risk-assessments.jpg'">
+  <ae2-breadcrumb [id]="'breadCrumb'" [name]="'breadCrumb'" [group]="bcGroup" class="bredcrumb-section"></ae2-breadcrumb>
+</ae-banner>
+
+<div class="spacer">
+  <ae-wizard [previousURL]="'/risk-assessment'" [steps]="riskAssessmentSteps" [id]="'riskAssessmentWizard'" [name]="'riskAssessmentWizard'"
+    [showComplete]="showComplete">
+    <ae-template [type]="'general'">
+      <ng-template let-context="item">
+        <risk-assessment-general [id]="getChildId('general-tab',1)" [name]="getChildName('general-tab', 1)" [context]="context" [isExample]="isExampleRiskAssessment"
+          [RiskAssessmentTypeId]="currentRiskAssessmentTypeId" [previousGeneralFormGroup]="previousGeneralFormGroup" (changeRiskAssessmentType)="onChangeRiskAssessmentType($event)"></risk-assessment-general>
+      </ng-template>
+    </ae-template>
+    <ae-template [type]="'substance'">
+      <ng-template let-context="item">
+        <risk-assessment-substance-list [id]="getChildId('substance-tab',1)" [name]="getChildName('substance-tab', 1)"></risk-assessment-substance-list>
+      </ng-template>
+    </ae-template>
+    <ae-template [type]="'hazards'">
+      <ng-template let-context="item">
+        <risk-assessment-hazard [id]="getChildId('hazard-tab',1)" [name]="getChildName('hazard-tab', 1)" [context]="context" [affectedPeople]="affectedPeoplesList"
+          [refreshEventData]="refreshEventData" (refreshStep)="refreshWizardStep($event)"></risk-assessment-hazard>
+      </ng-template>
+    </ae-template>
+    <ae-template [type]="'routesofexposure'">
+      <ng-template let-context="item">
+        <routes-of-exposure [routesOfExposures]="routesOfExposuresList" [affectedPeople]="affectedPeoplesList" [refreshEventData]="refreshEventData"
+          (refreshStep)="refreshWizardStep($event)" [context]="context"></routes-of-exposure>
+      </ng-template>
+    </ae-template>
+    <ae-template [type]="'controls'">
+      <ng-template let-context="item">
+        <controls [id]="getChildId('controls')" [name]="getChildName('controls')" [context]="context" [currentRiskAssessment]="currentRiskAssessment"
+          [refreshEventData]="refreshEventData" (refreshStep)="refreshWizardStep($event)"> </controls>
+      </ng-template>
+    </ae-template>
+    <ae-template [type]="'furthercontrols'">
+      <ng-template let-context="item">
+        <further-controls [id]="getChildId('further-controls',1)" [name]="getChildName('further-controls', 1)" [context]="context"
+          [furtherControls]="allFurtherControlsList"></further-controls>
+      </ng-template>
+    </ae-template>
+    <ae-template [type]="'assess'">
+      <ng-template let-context="item">
+        <assess [context]="context" [id]="getChildId('assess')" [name]="getChildName('assess')"></assess>
+      </ng-template>
+    </ae-template>
+    <ae-template [type]="'controlmeasures'">
+      <ng-template let-context="item">
+        <further-control-measures [id]="getChildId('FCM', 1)" [name]="getChildId('FCM', 1)"></further-control-measures>
+      </ng-template>
+    </ae-template>
+    <ae-template [type]="'operatingprocedures'">
+      <ng-template let-context="item">
+        <risk-assessment-procedures [id]="getChildId('procedures-tab',1)" [name]="getChildName('procedures-tab', 1)" [context]="context"></risk-assessment-procedures>
+      </ng-template>
+    </ae-template>
+    <ae-template [type]="'supportingevidence'">
+      <ng-template let-context="item">
+        <risk-assessment-supporting-evidence [id]="getChildId('supporting-evidence-tab',1)" [name]="getChildName('supporting-evidence-tab', 1)"></risk-assessment-supporting-evidence>
+      </ng-template>
+    </ae-template>
+    <ae-template [type]="'preview'">
+      <ng-template let-context="item">
+        <preview [id]="getChildId('preview')" [name]="getChildName('preview')"></preview>
+      </ng-template>
+    </ae-template>
+  </ae-wizard>
+</div>

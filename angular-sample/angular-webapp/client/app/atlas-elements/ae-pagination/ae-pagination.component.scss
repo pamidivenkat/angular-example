@@ -1,0 +1,128 @@
+@import '../../../assets/scss/variablesMap';
+@import '../ae-select/ae-select.component';
+
+.pagination {
+  @include clearfix;
+  font-size: 0;
+}
+
+.pagination__page, .pagination__page.button {
+  $pagination-height: 40px;
+  background: $white;
+  border: 1px solid $grey--2;
+  border-radius: $base-border-radius;
+  box-shadow: $button-shadow;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 1.5rem;
+  font-weight: $bold;
+  height: $pagination-height;
+  line-height: $pagination-height;
+  margin-right: 3px;
+  min-width: $pagination-height;
+  padding: 0 10px;
+  text-align: center;
+  transition: $button-transition, transform .1s ease-in-out;
+
+  &:hover {
+    background: $teal--4;
+  }
+
+  &:active,
+  &:focus {
+    box-shadow: $button-shadow-active;
+    transform: translateY(-1px);
+  }
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+.select.inline-block {
+  display: inline-block;
+  width: 100px;
+}
+
+/* customized class */
+
+.state-active {
+  .pagination__page, .pagination__page.button {
+    background-color: $grey--0;
+    border-color: $grey--0;
+    color: $white;
+
+    &:hover {
+      background-color: $grey--1;
+    }
+  }
+}
+
+.state-disabled {
+  .pagination__page, .pagination__page.button {
+    background-color: $grey--4;
+    border-color: $grey--4;
+    box-shadow: none;
+    color: $grey--2;
+    cursor: not-allowed;
+
+    &:hover {
+      background-color: $grey--4;
+      color: $grey--2;
+    }
+  }
+}
+.pagination__page.button {
+  line-height: normal !important;
+  text-transform: none;
+  padding: 10px;
+
+  .button__icon {
+    display: none;
+  }
+  @include media-0-767 {
+    .button__icon {
+      display: inline-block;
+    }
+    .btn-text {
+      display: none;
+    }
+  }
+}
+.table__pagination {
+  ae-anchor, ae-button {
+    margin-right: 2px;
+    float: left;
+      &:last-child {
+        margin-right: 0;
+      }
+  }
+}
+
+.pagination-section {
+    align-items: center;
+    padding: 10px 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    @include media-0-767 {
+      flex-direction: column;
+    }
+  
+
+  .table__rows-summary {
+    font-size: 80%;
+    margin-bottom: 10px;
+    // letter-spacing: 1px;
+    // text-transform: uppercase;
+    @include media-over-767 {
+      // float: left;
+      // max-width: 300px;
+      margin-bottom: 0;
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+  }
+
+}

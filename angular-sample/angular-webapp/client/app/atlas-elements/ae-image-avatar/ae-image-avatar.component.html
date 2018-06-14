@@ -1,0 +1,9 @@
+<div class="person__avatar" [ngClass]="{'circle':isBorderCircle, 'person__avatar--big':isBigAvatar()}">
+  <img [src]="imgSrc" [alt]="alt">
+  <div *ngIf="edit" class="person__edit">
+    <div class="icon icon--medium">
+      <ae-file [id]="'editImageIconUpload'" [name]="'editImageIconUpload'" [multiple]="false" [showFileName]="false" (onFilesSelected)="onFilesSelected($event)"
+        [accept]="'.jpg,.jpeg,.png,.gif'" [icon]="'icon-edit'" [iconSize]="editIconSize" [iconColor]="'white'" [size]="maxAvatarImageSize"></ae-file>
+    </div>
+  </div>
+</div>

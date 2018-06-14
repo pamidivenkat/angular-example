@@ -1,0 +1,64 @@
+<div class="so-panel__title">
+  <h3>{{getViewname()}}</h3>
+</div>
+<div class="so-panel__content">
+  <div class="information-grid">
+    <section class="information-grid__section">
+      <div id="Name" class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'Name' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3">
+          {{iconManagementDetailsVm.Name}}
+        </div>
+      </div>
+      <div id="Preview" class="image-preview-section">
+        <img [id]="'imgPreview'" [name]="'imgPreview'" [src]="pictureUrl" />
+      </div>
+      <div id="Category" class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'Category' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3">
+          {{iconManagementDetailsVm.CategoryText}}
+        </div>
+      </div>
+
+      <div id="Description" class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'Description' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3">
+          {{iconManagementDetailsVm.Description}}
+        </div>
+      </div>
+      <div id="CreatedOn" class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'Created on' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3">
+          {{iconManagementDetailsVm.CreatedOn | localeDate:defaultLocale:'shortDate'}}
+        </div>
+      </div>
+      <div id="CreatedBy" class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'Created By' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3">
+          {{iconManagementDetailsVm.CreatedBy}}
+        </div>
+      </div>
+      <div id="ModifiedOn" class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'Modified on' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" *ngIf="showModifiedOn()">
+          {{iconManagementDetailsVm.ModifiedOn | localeDate:defaultLocale:'shortDate'}}
+        </div>
+      </div>
+      <div id="ModifiedBy" class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'Modified by' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" *ngIf="showModifiedBy()">
+          {{iconManagementDetailsVm.ModifiedBy}}
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+<div class="so-panel__footer">
+  <nav>
+    <ul>
+      <li>
+        <ae-button [text]="'BUTTONS.SLIDE_CLOSE' | translate:lang" [type]="'button'" [id]="'btnCancel'" [name]="'btnCancel'" (aeClick)="onDetailCancel()"></ae-button>
+      </li>
+    </ul>
+  </nav>
+</div>

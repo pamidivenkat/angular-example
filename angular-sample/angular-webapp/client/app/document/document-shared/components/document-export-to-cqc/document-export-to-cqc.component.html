@@ -1,0 +1,49 @@
+<div class="document-export-cqc">
+  <ae-form [formBuilderData]="addUpdateExportToCQCProFormVM" [id]="'addUpdateExportToCQCProForm'" [name]="'addUpdateExportToCQCProForm'"
+    [Title]="title | translate:lang" [isPrimaryTitle]="true" (onFormInit)="onFormInit($event)"
+    [displayFooter]="false">
+
+    <form class="form" [formGroup]="commonForm" [id]="getChildId('form', 2)">
+      <div>
+        <div formArrayName="Standards" class="information-grid__item--input" *ngIf="cqcStandards">
+          <label class="information-grid__item-label column-1of3">Standards <span class="error-text">*</span>
+            <div>
+                <div *ngFor="let item of cqcStandards; let i=index">
+                <div [formGroupName]="i">
+                    <ae-checkbox formControlName="IsSelected" [id]="'standard'+i" [name]="'standard'+i" [checkText]="stringToHTML(item.Title)" [checked]="item.IsSelected" (change)="onChangeStandards($event)"></ae-checkbox>
+                </div>
+
+                </div>
+                
+
+            </div>
+            <span *ngIf="requiredStandards" class="error-text">At least one standard is required</span>
+          </label>
+        </div>
+        <div formArrayName="Categories" class="top-10" *ngIf="cqcCategories">
+          <label class="information-grid__item-label column-1of3">Categories
+            <div>
+                <div *ngFor="let citem of cqcCategories; let j=index">
+                <div [formGroupName]="j">
+                    <ae-checkbox formControlName="CatIsSelected" [id]="'category'+j" [name]="'category'+j" [checkText]="citem.CatName" [checked]="citem.CatIsSelected"></ae-checkbox>
+                </div>
+                </div>
+            </div>
+          </label>
+        </div>
+      </div>
+    </form>
+    <span *ngIf="checkReferenceExist" class="form__input__error">Reference already exist, please try new</span>
+    <div class="so-panel__footer" so-panel-footer>
+        <nav>
+          <ul>
+            <li><label for="soPanel" class="button button--inline-block" [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang" (click)="onCancel($event)">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label></li>
+            <li class="pull--right">
+              <ae-anchor [id]="getChildId('AeAnchor',1)" [name]="getChildName('AeAnchor',1)" [anchorType]="'button'" [class]="'button button--inline-block'"
+                [anchorClass]="lightClass" [text]="'Attach'" [title]="'Attach'" (aeClick)="onSubmit($event)" [disabled]="submitStatus()"></ae-anchor>
+            </li>
+          </ul>
+        </nav>
+      </div>
+  </ae-form>
+</div>

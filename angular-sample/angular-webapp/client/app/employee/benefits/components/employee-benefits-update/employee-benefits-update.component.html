@@ -1,0 +1,34 @@
+<div [id]="id">
+  <div class="so-panel__title">
+    <h3 class="grey-strip">{{'EMPLOYEE_BENEFITS.update_benefits' | translate:lang}}</h3>
+  </div>
+
+  <div class="so-panel__content employee-benefits">
+    <div class="information-grid">
+      <form method="post" [formGroup]="updateEmpForm" [id]="'employeeBenefitForm'" [name]="'employeeBenefitForm'">
+        <section class="information-grid__section">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_BENEFITS.pension_scheme' | translate:lang}} <span class="error-text">*</span></div>
+          <div class="information-grid__item-value column-2of3 alert">
+            <ae-input [id]="'EmployeeBenefit'" [name]="'EmployeeBenefit'" [placeholder]="'Please enter pension scheme'" [type]="inputType"
+              formControlName="PensionScheme"></ae-input>
+            <span *ngIf="fieldHasError('PensionScheme')" class="form__input__error">{{'EMPLOYEE_BENEFITS.field_required' | translate:lang}}</span>
+          </div>
+        </section>
+      </form>
+    </div>
+  </div>
+
+  <div class="so-panel__footer">
+    <nav>
+      <ul>
+        <li><label for="soPanel" class="button button--inline-block" [id]="getChildId('AeButton',1)" (click)="onCancel($event)"
+            [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label></li>
+        <li class="pull--right">
+          <ae-anchor [id]="getChildId('AeAnchor',1)" [name]="getChildName('AeAnchor',1)" [anchorType]="'button'" [class]="'button button--inline-block'"
+            [anchorClass]="lightClass" [title]="'BUTTONS.UPDATE' | translate:lang" [text]="'BUTTONS.UPDATE' | translate:lang"
+            (click)="onUpdateFormSubmit($event)"></ae-anchor>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>

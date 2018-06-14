@@ -1,0 +1,125 @@
+<ae-snackbar *ngFor="let item of snackbarItems" [snackbarModel]="item" (aeClose)="closeSnackbar($event)">
+</ae-snackbar>
+
+
+<header class="header" id="back-top-top" *ngIf="isAuthorized">
+  <div class="header__burger" (click)="menuToggleClick()" [class.disabled]="showOnMenuLoad">
+    <div id="js-burger" class="burger" [class.burger--active]="menuToggl">
+      <div class="burger__inner"></div>
+    </div>
+  </div>
+  <div class="header__logo">
+    <a (click)="redirectTo()" title="Back to home page" id="lnk_logo">
+            <img class="logo-for-light" src="/assets/images/atlas-logo-bg-light.svg" alt="Atlas - The Citation Platform">
+        </a>
+  </div>
+  <company-switch-header [id]="'company-header'" [name]="'company-header'" *ngIf="showCompanyName()"></company-switch-header>
+  <onboarding-status [id]="onboardingStatus" [name]="onboardingStatus" *ngIf="showOnboarding()"></onboarding-status>
+  <div class="header__person">
+    <profile [id]="'userProfile'" [name]="userProfileName" (click)="toggleMenuAndNotificationProfile()"></profile>
+  </div>
+  <notification-indicator [id]="'notifCountIndicator'" [name]="'notificationCountIndicatorName'" [initialNotifications]="Notifications$ | async"
+    [pendingNotificationsCount]="NoOfUnReadNotifications$ | async" (onNotificationClick)="onNotificationClicked($event)" [closeNotification]="showNotification"
+    (click)="toggleNotification()">
+  </notification-indicator>
+  <search [id]="globalSearch" [closeSearchBox]="closeSearchBox" [name]="globalSearch" (onSearch)="closeSearch($event)" (onmouseout)="toggleMenuAndNotification('true')">
+  </search>
+  <div class="header__help" (click)="helpNavigation()">
+    <label for="soPanelHelp" class="header__help--label">
+          <div class="icon icon--small icon--help">
+            <svg>
+              <use xmlns:xlink="http://www.w3.org/1999/xlink" [attr.xlink:href]="getAbsoluteUrl('icon-alert-circle-question')"></use>
+            </svg>
+          </div>
+        </label>
+  </div>
+</header>
+
+<div class="clear"></div>
+
+<nav class="js-nav nav" [class.nav--open]="menuToggl" [class.nav--open-level-two]="toggleChild" *ngIf="isAuthorized && menuToggl">
+  <div class="profile-mobile-view">
+    <div class="nav__person" [class.profile-col]="!showOnboarding()">
+      <profile [id]="'userProfile'" [name]="userProfileName"></profile>
+    </div>
+    <div class="js-progress-sidebar-trigger nav__progress" *ngIf="showOnboarding()">
+      <onboarding-status [id]="onboardingStatus" [name]="onboardingStatus"></onboarding-status>
+    </div>
+  </div>
+  <menu-top [id]="menuItems" [name]="menuItems" [menuItems]="menus" [atlasV1URL]="v1AppUrl" (notifyOnToggleLevelTwo)="onToggleChild($event)"
+    (onMenuClick)="toggleMenu()"></menu-top>
+  <menu-bottom [id]="menuBottom" [name]="menuBottom" [consultantsInfo]="consultantsInfo" [adviceCardNumber]="adviceCard" (onHelpClick)="onHelpClick()"></menu-bottom>
+</nav>
+<div>
+  <router-outlet></router-outlet>
+</div>
+<ae-popover [visibleChange]="popOverVisibilityChange" [id]="'AePopover'" [name]="'AePopover'">
+  <!--<div>
+   <ae-template-loader [template]="_getPopOverTemplate()" [contextItem]="_getPopOverContext()"></ae-template-loader>
+  </div>-->
+  <!--<span style="background-color:red">hello</span>-->
+</ae-popover>
+<footer class="footer" *ngIf="isAuthorized">
+  <div class="footer__row">
+    <div class="footer__links-social">
+      <a class="footer__links-social__item" href="https://www.facebook.com/CitationLtd" title="Follow Citation on Facebook" target="_blank"
+        id="facebook">
+        <div class="icon icon--medium">
+          <svg>
+            <use [attr.xlink:href]="getAbsoluteUrl('icon-social-fb')"></use>
+          </svg>
+        </div>
+      </a>
+      <a class="footer__links-social__item" href="https://www.linkedin.com/company/citation-ltd" title="Follow Citation on LinkedIn"
+        target="_blank" id="linkedIn">
+        <div class="icon icon--medium">
+          <svg>
+            <use [attr.xlink:href]="getAbsoluteUrl('icon-social-linkedin')"></use>
+          </svg>
+        </div>
+      </a>
+      <a class="footer__links-social__item" href="https://twitter.com/citationltd" title="Follow Citation on Twitter" target="_blank"
+        id="twitter">
+        <div class="icon icon--medium">
+          <svg>
+            <use [attr.xlink:href]="getAbsoluteUrl('icon-social-twitter')"></use>
+          </svg>
+        </div>
+      </a>
+      <a class="footer__links-social__item" href="https://www.youtube.com/channel/UCB0I50l-KBZ8Rmz7SCJbExw" title="Subscribe to YouTube channel"
+        target="_blank" id="youTubeChannel">
+        <div class="icon icon--medium">
+          <svg>
+            <use [attr.xlink:href]="getAbsoluteUrl('icon-social-play')"></use>
+          </svg>
+        </div>
+      </a>
+    </div>
+    <div class="footer__links-top">
+      <a href="javascript:void(0)" (click)="scrollTop()" class="footer__top" title="Back to the top of this page" id="lnk_backToTop">
+        <div class="icon icon--medium">
+          <svg>
+            <use [attr.xlink:href]="getAbsoluteUrl('icon-back-to-top')"></use>
+          </svg>
+        </div>
+        <span>Back to the top of this page</span>
+      </a>
+    </div>
+  </div>
+  <div class="footer__row">
+    <div class="footer__links-info">
+      <ul>
+        <li><a href="http://www.citation.co.uk/privacy-policy" target="_blank" class="footer__link" id="lnk_termsOfUse" title="Privacy policy">Privacy policy</a></li>
+        <li><a href="{{siteUrl}}/identity/terms/termsofuse" target="_blank" class="footer__link" id="lnk_privacy" title="Terms of use">Terms of use</a></li>
+      </ul>
+    </div>
+    <div class="footer__address-citation">
+      <p><b>Citation Limited</b>, Kings Court, Water Lane, Wilmslow, Cheshire SK9 5AR, <a href="tel:0345 234 0404">0345 234 0404</a><br>Copyright
+        &copy; 2017 Citation Limited.</p>
+    </div>
+    <div class="footer__logo-citation">
+      <p><img src="/assets/images/citation-logo.svg" alt="Citation"></p>
+    </div>
+  </div>
+</footer>
+<div class="js-mask mask " [class.mask--active]="menuToggl || searchActive" (click)="_onMaskClick()"></div>

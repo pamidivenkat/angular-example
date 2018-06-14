@@ -1,0 +1,98 @@
+.person-overlay {
+  @include clearfix;
+  background: $teal--4;
+  border-radius: 20px;
+  color: $base-color;
+  font-size: 1.5rem;
+  line-height: 1.2;
+  padding-bottom: 30px;
+  position: relative;
+  width: 500px;
+
+  &::before {
+    @include media-over-480 {
+      content: '';
+      display: block;
+      position: absolute;
+    }
+  }
+}
+
+.person-overlay--left {
+  &::before {
+    border-bottom: 15px solid transparent;
+    border-right: 13px solid $teal--4;
+    border-top: 15px solid transparent;
+    right: 100%;
+    top: calc(50% - 15px);
+  }
+}
+
+.person-overlay--right {
+  &::before {
+    border-bottom: 15px solid transparent;
+    border-left: 13px solid $teal--4;
+    border-top: 15px solid transparent;
+    left: 100%;
+    top: calc(50% - 15px);
+  }
+}
+
+.person-overlay--top {
+  &::before {
+    border-bottom: 13px solid $teal--4;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    bottom: 100%;
+    left: calc(50% - 15px);
+  }
+}
+
+.person-overlay--bottom {
+  &::before {
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-top: 13px solid $teal--4;
+    left: calc(50% - 15px);
+    top: 100%;
+  }
+}
+
+.person-overlay__avatar {
+  @include dimensions(130px);
+  border: 2px solid $white;
+  border-radius: 50%;
+  float: left;
+  margin: 10px;
+  overflow: hidden;
+}
+
+.person-overlay__name {
+  margin-bottom: 0;
+}
+
+.person-overlay__details {
+  @include clearfix;
+  float: left;
+  width: calc(100% - 160px);
+}
+
+.person-overlay__col {
+  float: left;
+  width: 50%;
+
+  &:first-of-type {
+    padding-right: 10px;
+  }
+}
+
+.person-overlay__key {
+  font-weight: $bold;
+  margin: 15px 0 0;
+}
+
+.person-overlay__edit {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+}

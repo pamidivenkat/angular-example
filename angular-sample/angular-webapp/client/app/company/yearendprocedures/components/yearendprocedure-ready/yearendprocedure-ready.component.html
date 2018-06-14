@@ -1,0 +1,11 @@
+<div [id]="id">
+  <yearendprocedure-status [id]="getChildId('YearendprocedureStatus', 6)" [name]="getChildName('YearendprocedureStatus', 6)"></yearendprocedure-status>
+
+  <div class="button-bar spacer--y">
+    <div class="button-bar__item"></div>
+    <div class="button-bar__item">
+      <ae-button [id]="getChildId('AeButton', 17)" [name]="getChildName('AeButton', 17)" [customClass]="'button--cta'" [text]="'BUTTONS.RUN' | translate:lang"
+        [title]="'BUTTONS.RUN' | translate:lang" (aeClick)="runYearEndProcedure()"></ae-button>
+    </div>
+  </div>
+</div>

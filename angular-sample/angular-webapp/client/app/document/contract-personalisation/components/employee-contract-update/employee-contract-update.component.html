@@ -1,0 +1,38 @@
+<ae-banner [id]="getChildId('aeBanner')" [name]="getChildName('aeBanner')" [titleText]="'CONTRACT_UPDATE.HEADER'| translate:lang" [backgroundImage]="'/assets/images/lp-documents.jpg'">
+    <h2 sub-title *ngIf="hasFileInBlob">{{'('+personalisedDocument?.Title+')'}}</h2>
+    <ae2-breadcrumb [id]="'breadCrumb'" [name]="'breadCrumb'" class="bredcrumb-section" [group]="bcGroup"></ae2-breadcrumb>
+    <div class="icon-list banner-icon-list">
+        <div class="banner__info-icons">
+            <div class="banner__info-icon">
+                <div class="icon-with-text icon-with-text--inline-block"> </div>
+            </div>
+            <div class="banner__info-icon">
+                <div class="icon-with-text icon-with-text--inline-block"> </div>
+            </div>
+        </div>
+    </div>
+</ae-banner>
+<ae-notification id="'bulkDistributeInfo'" [name]="'bulkDistributeInfo'" [iconName]="'icon-info'" [textInfo]="'CONTRACT_UPDATE.NOTIFICATION_TEXT' | translate:lang"></ae-notification>
+
+<section class="document-container spacer">
+    <div class="document-container__title">
+        <h3>{{'CONTRACT_UPDATE.DOCUMENT_CONTENT' | translate:lang}} </h3>
+    </div>
+    <div class="border-bt-none document__area-scroller" *ngIf="hasFileInBlob">
+        <div class="document__blocks" *ngIf="showDocumentReviewDetails()">
+            <div *ngFor="let block of personalisedDocument.Blocks | blockChecked">
+                <document-content-review [id]="'document-content'" [name]="'document-content'" [block]="block" [canEdit]="true" [isEmployeeContract]="true"></document-content-review>
+            </div>
+        </div>
+    </div>
+    <ae-loader [loaderType]="loaderType" *ngIf="contractLoading"></ae-loader>
+    <ae-notification *ngIf="!hasFileInBlob" id="'bulkDistributeInfo'" [name]="'bulkDistributeInfo'" [iconName]="'icon-info'" [textInfo]="'CONTRACT_UPDATE.FILE_NOT_FOUND' | translate:lang"></ae-notification>
+    <div class="button-bar top-30">
+        <div *ngIf="showPreviousButton" class="button-bar__item">
+            <ae-button [type]="'button'" [id]="'previousButton'" [name]="'previousButton'" [text]="'BUTTONS.PREVIOUS'| translate:lang" [disabled]="disablePreviousButton()" [title]="'BUTTONS.PREVIOUS'| translate:lang" (aeClick)="onPreviousButtonClick()"></ae-button>
+        </div>
+        <div class="button-bar__item">
+            <ae-button [type]="'savePersonalisedDocument'" [id]="'savePersonalisedDocument'" [name]="'bulkDistribution'" [disabled]="!hasFileInBlob" [customClass]="'button button--cta'" [text]="'BUTTONS.SAVE'| translate:lang" [title]="'BUTTONS.SAVE'| translate:lang" (aeClick)="savePersonalisedDocumentOnClick()"></ae-button>
+        </div>
+    </div>
+</section>

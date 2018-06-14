@@ -1,0 +1,23 @@
+.wizard{
+    .further-information{
+        .tabs-nav__item{
+            border-radius: 9px;
+            margin-right: 3px;
+            border: 1px solid;
+            &:last-of-type{
+                border-right: 1px solid;
+                margin-right: 0px;
+            }
+        }
+    
+        .section-title{
+            padding: 15px 0;
+            display: inline-block;
+            width: 100%;
+            &:after{clear: none;}
+        h3{ padding: 12px 0 !important; }
+        }
+        ae-datatable{margin:0px 0px 15px 0px; width: 100%;}
+        .information-grid__item-label{align-self: flex-start;}
+    }
+}

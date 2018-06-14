@@ -1,0 +1,61 @@
+<div id="contractPersonalisationHeader" class="contact-personalisation">
+    <ae-banner [id]="getChildId('AeBanner')" [name]="getChildName('AeBanner')" [titleText]="('CONTRACT_PERSONALISATION.HEADER'| translate:lang)"
+        [backgroundImage]="'/assets/images/lp-documents.jpg'">
+        <h2 sub-title>{{'('+title+')'}}</h2>
+        <ae2-breadcrumb [id]="'breadCrumb'" [name]="'breadCrumb'" class="bredcrumb-section" [group]="bcGroup"></ae2-breadcrumb>
+        <div class="icon-list banner-icon-list">
+            <div class="banner__info-icons">
+                <div class="banner__info-icon">
+                    <div class="icon-with-text icon-with-text--inline-block">
+                        <ae-icon [id]="'doucmentVersionIcon'" [name]="'doucmentVersionIcon'" [size]="iconSize" [title]="'Document version'" [icon]="'icon-to-review'"></ae-icon>
+                        <span class="icon-with-text__copy ">
+                        {{getContractVersion()}}
+                      </span>
+                    </div>
+                </div>
+                <div class="banner__info-icon">
+                    <div class="icon-with-text icon-with-text--inline-block">
+                        <ae-icon [id]="'dateIcon'" [name]="'dateIcon'" [size]="iconSize" [icon]="'icon-date'" [title]="'Last modified'"></ae-icon>
+                        <span class="icon-with-text__copy nowrap">
+                        {{getContractCreatedonDate() | localeDate:defaultLocale:'shortDate'}}
+                      </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ae-banner>
+</div>
+<div class="notification-bar notification-bar--button spacer">
+    <div>
+        <b> {{getEmployeeGroupName()}} {{'CONTRACT_PERSONALISATION.EMPLOYEE_GROUP'| translate:lang}}</b>
+        <div><small>{{'CONTRACT_PERSONALISATION.LANDING_MESSAGE'| translate:lang}}</small></div>
+        <div><small>{{'CONTRACT_PERSONALISATION.LANDING_MESSAGE_INFO'| translate:lang}}</small></div>
+    </div>
+    <ae-button *ngIf="getEmployeeGroupName()" [type]="'button'" [id]="'addEmployeesToGroup'" [name]="'addEmployeesToGroup'" [customClass]="'button button--cta'"
+        [text]="'CONTRACT_PERSONALISATION.ADD_EMPLOYEES_TO_GROUP'| translate:lang" [title]="'CONTRACT_PERSONALISATION.ADD_EMPLOYEES_TO_GROUP'| translate:lang"
+        (aeClick)="onAddEmployeesClick($event)"></ae-button>
+</div>
+
+
+<contract-employee-list [id]="getChildId('ContractEmployeesList', 1)" [name]="getChildName('ContractEmployeesList', 1)" (onPageChange)="onPageChange($event)"
+    (onSorting)="onSorting($event)" (onEmployeeCheck)="onEmployeeCheck($event)"></contract-employee-list>
+
+<div class="button-bar spacer--x">
+    <div class="button-bar__item">
+        <ae-button [type]="'button'" [id]="'previousButton'" [name]="'previousButton'" [text]="'BUTTONS.PREVIOUS'| translate:lang"
+            [title]="'BUTTONS.PREVIOUS'| translate:lang" (aeClick)="onPreviousButtonClick()"></ae-button>
+    </div>
+    <div class="button-bar__item">
+        <ae-button [type]="'button'" [id]="'personalisation'" [name]="'personalisation'" [class]="lightClass" [text]="'Personalise'"
+            [title]="'Personalise'" [disabled]="enablePersonalize()" (aeClick)="onPersonalizeClick()"></ae-button>
+    </div>
+</div>
+
+<!--slideout pop code here-->
+<ae-slideout [id]="getChildId('AeSlideOut', 2)" [name]="getChildName('AeSlideOut', 2)" [modelState]="getEmployeeAssociationSlideoutState()"
+    [class.slide--animate]="showEmployeeAssociationSlideOut">
+    <div *ngIf="showEmployeeAssociationSlideOut">
+        <employee-association [id]="'employee-group-form-section'" [name]="'employee-group-form-section'" [vm]="_contractDetails.EmployeeGroup"
+            (onCancel)="onEmployeeAssociationGroupFormCancel($event)" (onSaveComplete)="onEmployeeAssociationGroupFormSaveComplete($event)"></employee-association>
+    </div>
+</ae-slideout>

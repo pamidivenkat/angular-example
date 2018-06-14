@@ -1,0 +1,78 @@
+@import '../ae-button/ae-button.component';
+
+.ae-form-switch {
+  span {
+    display: block;
+  }
+
+  .toggle-switch .toggle-switch__indicator {
+    float: left;
+  }
+}
+
+.information-grid__item--input {
+  padding-top: (15px);
+
+  &:first-child {
+    margin-top: 0;
+  }
+}
+@include media-over-979 {
+  .ae-form-switch {
+    ae-switch {
+      width: 100%;
+    }
+
+    .toggle-switch {
+      span {
+        width: 100%;
+        width: (100% / 3);
+        text-align: right;
+        padding: 5px 15px;
+        display: block;
+        float: left;
+      }
+
+      .toggle-switch__indicator {
+        float: left;
+        margin: 5px 15px !important;
+      }
+    }
+  }
+}
+
+.so-panel {
+  .ae-form-switch {
+    span {
+      display: block;
+      float: none;
+      text-align: left;
+      width: 100%;
+    }
+
+    .toggle-switch .toggle-switch__indicator {
+      float: left;
+    }
+  }
+
+  .column-1of3 {
+    width: 100%;
+    text-align: left;
+  }
+}
+
+.helper-text {
+  color: $grey--2;
+  display: block;
+  font-size: 90%;
+  margin-left: (100% / 3);
+  padding-left: ($base-margin);
+ @include media-over-979 {
+    margin-left: (100% / 3);
+    padding-left: ($base-margin);
+  }
+}
+.label-font-normal{
+ .information-grid__item-label, label, .radio__copy b, .checkbox__copy b{font-weight:normal;}
+}
+ 

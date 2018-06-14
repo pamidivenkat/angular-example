@@ -1,0 +1,36 @@
+.checklist {
+  background: $teal--4;
+}
+
+.checklist__item {
+  margin: 15px 0;
+}
+
+.card__text {
+  .checklist {
+    background: transparent;
+  }
+
+  .checklist__item {
+    margin: ($base-margin / 3) 0;
+  }
+
+  .checkbox__copy {
+    padding-bottom: ($base-padding / 3);
+    padding-top: ($base-padding / 3);
+    b{font-weight: $normal !important;}
+  }
+
+  .checklist {
+    margin-top: (($base-margin / 3) * 2);
+  }
+}
+.checklist__header {
+  border-top: 2px solid $grey--pale;
+  margin: 30px 0 15px;
+  padding-top: 15px;
+  .right-sec {
+    float: right;
+    margin-top: -40px;
+  }
+}

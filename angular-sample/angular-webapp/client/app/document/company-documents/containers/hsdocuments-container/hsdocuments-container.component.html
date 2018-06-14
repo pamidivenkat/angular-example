@@ -1,0 +1,28 @@
+<div class="spacer--y">
+
+  <div>
+    <ae-tabstrip [id]="'hsDocumentList'" [name]="'hsDocumentList'" [standardWithIcon]="true" [isTabButton]="true">
+      <ae-tabstrip-item [id]="'handbooksandpolicies'" [name]="'handbooksandpolicies'" [header]="'COMPANY_DOCUMENTS_TAB.HandbooksAndPolicies' | translate:lang"
+      [title]="'COMPANY_DOCUMENTS_TAB.HANDBOOKS_POLICIES_TITLE' | translate:lang"
+        [navigateUrl]="handBooksUrl" [hasCount]="true" [count]="(hankBooksAndPoliciesStat$ | async).Count">
+
+      </ae-tabstrip-item>
+      <ae-tabstrip-item [id]="'inspectionReportsAndCert'" [name]="'inspectionReportsAndCert'" [header]="'COMPANY_DOCUMENTS_TAB.InspectionReportsAndCertficates' | translate:lang"
+       [title]="'COMPANY_DOCUMENTS_TAB.INSPECTION_REPORTS_TITLE' | translate:lang"
+        [navigateUrl]="inspectionReportsUrl" [hasCount]="true" [count]="(inspectionReportStat$ | async).Count">
+      </ae-tabstrip-item>
+      <ae-tabstrip-item [id]="'hsdocumentsuite'" [name]="'hsdocumentsuite'" [header]="'COMPANY_DOCUMENTS_TAB.HSDocumentSuite' | translate:lang"
+       [title]="'COMPANY_DOCUMENTS_TAB.HS_DOCUMENT_SUITE_TITLE' | translate:lang"
+        [navigateUrl]="hsDocumentSuite" [hasCount]="true" [count]="(hsDocumentSuitStat$ | async).Count">
+
+
+      </ae-tabstrip-item>
+
+    </ae-tabstrip>
+  </div>
+  <div id="HSDocumentsArea">
+    <router-outlet>
+
+    </router-outlet>
+  </div>
+</div>

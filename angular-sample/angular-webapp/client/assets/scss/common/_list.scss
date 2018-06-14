@@ -1,0 +1,91 @@
+.list {
+  padding: 0;
+}
+
+.list__item {
+  list-style: none;
+  margin-bottom: (($base-margin / 3) * 2);
+  padding-bottom: (($base-padding / 3) * 2);
+  padding-left: ($base-padding * 2);
+  position: relative;
+
+  // &:last-of-type {
+  //   margin-bottom: 0;
+  //   padding-bottom: 0;
+  // }
+
+  &::before {
+    @include dimensions(6px);
+    background: $grey--0;
+    border-radius: 50%;
+    content: '';
+    display: inline-block;
+    font-weight: $bold;
+    left: 6px;
+    margin-right: (($base-margin / 3) * 2);
+    position: absolute;
+    top: 6px;
+  }
+
+  a {
+    color: $teal--0;
+  }
+}
+
+.list__item--left-line {
+  min-height: 60px;
+  overflow: hidden;
+
+  &:last-child {
+    .list__left-line {
+      display: none;
+    }
+  }
+}
+
+.list__left-line {
+  border-left: 1px solid $grey--4;
+  height: 400px;
+  left: 8px;
+  position: absolute;
+  top: 24px;
+}
+
+.list__item--notification {
+  &::before {
+    border-color: $notification-color;
+  }
+}
+
+.list--actions,
+.list--dropdowns {
+  background: $grey--pale;
+  border: 1px solid $grey--3;
+  box-shadow: 0 4px 9px 0 rgba($black, .1);
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    margin: 0;
+
+    &:not(:first-child) {
+      border-top: 1px solid $grey--4;
+    }
+
+    a {
+      display: block;
+      font-size: 80%;
+      font-weight: bold;
+      padding: (($base-padding / 3) * 2);
+      text-align: left;
+      text-decoration: none;
+      text-transform: uppercase;
+      color: $teal--0;
+
+      &:hover {
+        color: $teal--0;
+      }
+    }
+  }
+}

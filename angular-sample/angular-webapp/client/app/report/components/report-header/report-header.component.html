@@ -1,0 +1,11 @@
+<div id="reportHeaderDiv">
+    <div class="report-informationbar">
+        <ae-informationbar [items]="informationBarItems" [id]="getChildId('AeInformationBar')" [name]="getChildName('AeInformationBar')">
+        </ae-informationbar>
+    </div>
+    <ae-banner [id]="getChildId('AeBanner')" [name]="getChildName('AeBanner')" [titleText]="'REPORTS' | translate:lang" [backgroundImage]="'REPORTS_BACKGROUND_IMAGE'| translate:lang">
+        <div class="image-text banner-image-text">
+            <ae2-breadcrumb [id]="getChildId('Ae2Breadcrub',1)" [name]="getChildName('Ae2Breadcrub',1)" [group]="bcGroup"></ae2-breadcrumb>
+        </div>
+    </ae-banner>
+</div>

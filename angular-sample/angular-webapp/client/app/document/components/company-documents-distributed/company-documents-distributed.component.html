@@ -1,0 +1,91 @@
+<div class="table__filter-bar">
+    <div class="filter-bar">
+        <form [formGroup]="documentsFilterForm" id="'shareddocsfilerform'" name="'shareddocsfilerform'">
+            <div class="filter-bar__label label">{{'Filter_by' | translate:lang}}</div>
+            <div class="filter-bar__filter">
+                <ae-select [id]="'ddlDocumentAction'" [name]="'ddlDocumentAction'" [placeholder]="'ALL' | translate:lang" [options]="documentActionFilter" (aeSelectChange)="onDocumentActionChanged($event)" formControlName="documentAction"></ae-select>
+            </div>
+        </form>
+    </div>
+</div>
+<div>
+    <ae-datatable [id]="'tblDistributedDocuments'" [name]="'tblDistributedDocuments'" [dataSource]="disributedDocuments$" [autoGenerateColumns]="false" [totalRecords]="totalRecords$" [defaultOptions]="dataTableOptions$ | async" (pageChanged)="onPageChange($event)"
+        (onSort)="onSort($event)" [loading]="documentsLoading$ | async">
+        <ae-column [headerText]="'USEFULDOCS.TITILE' | translate: lang" [sortable]="true" [sortKey]="'DocumentName'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>{{'USEFULDOCS.TITILE' | translate: lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <ae-anchor [id]="'distDocumentDownLoad'" [name]="'distDocumentDownLoad'" [text]="context.DocumentName" (aeClick)="onDocumentDownLoad(context)">
+                    </ae-anchor>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+        <ae-column [headerText]="'USEFULDOCS.DATE_SENT' | translate: lang" [sortable]="true" [sortKey]="'DateSent'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>{{'USEFULDOCS.DATE_SENT' | translate: lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <span> {{context.DateSent |  localeDate:defaultLocale:'shortDate' }} </span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+        <ae-column [headerText]="'USEFULDOCS.ACTIONED_DATE' | translate: lang" [sortable]="true" [sortKey]="'ActionedDateOn'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>{{'USEFULDOCS.ACTIONED_DATE' | translate: lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <label *ngIf="context.Signature" for="soPanel" (click)="onActionDateClick(context)" class="so-panel__activator">{{context.ActionedDateOn | localeDate:defaultLocale:'shortDate'}}</label>
+                    <span *ngIf="!context.Signature">{{context.ActionedDateOn | localeDate:defaultLocale:'shortDate'}}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+
+
+        <!-- [sortKey]="getSortKey('DocumentAction')" -->
+        <ae-column [headerText]="'CITATIONDRAFTS.STATUS' | translate: lang" [sortable]="false">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>{{'CITATIONDRAFTS.STATUS' | translate: lang}}</span>
+                </ng-template>
+            </ae-template>
+
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <span *ngIf="canActionTakenVisible(context)" class="icon icon--small" [title]="getActionTitle(context)"><svg><use xmlns:xlink="http://www.w3.org/1999/xlink" [attr.xlink:href]="getAbsoluteUrl('icon-alert-circle-tick')">
+          </use></svg>
+          </span>
+                    <div *ngIf="canNoActionRequireVisible(context)" [title]="getActionTitle(context)">
+                        <!--Here there should not be any text in the cell but cell should have hover text -->
+                        <span style="font-size: 0">No action required</span>
+                    </div>
+                    <div *ngIf="canRequireActionVisible(context)" [title]="getActionTitle(context)" class="icon icon--tiny button button--condensed button--light" (click)="onDocumentAction(context)">
+                        <svg>
+              <use xmlns:xlink="http://www.w3.org/1999/xlink" [attr.xlink:href]="getAbsoluteUrl('icon-alert-pencil')"></use>
+            </svg>
+                    </div>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+    </ae-datatable>
+</div>
+
+
+<ae-modal-dialog [visible]="showRemoveDocumentActionConfirmModalDialog" (cancel)="modalClosed('discard')" [closable]="true" [draggable]="false" [id]="'documentActionConfirmModal'" [name]="'documentActionConfirmModal'" *ngIf="showRemoveDocumentActionConfirmModalDialog">
+    <document-action-confirm [modeOfOPeration]="modeOfOPeration" [actionedDocument]="selectedDocument" (dialogDisplayStatusChange)="onDailogDisplayStatusChanged($event)">
+    </document-action-confirm>
+</ae-modal-dialog>
+
+
+<ae-modal-dialog [visible]="showSignatureDialog" (cancel)="signatureModalClosed($event)" [closable]="true" [id]="'signatureModal'" [name]="'signatureModal'" *ngIf="showSignatureDialog">
+    <document-signature-view [id]="getChildId('signatureView', 1)" [name]="getChildName('signatureView', 1)" [documentSignatureDetails]="documentSignatureDetails"></document-signature-view>
+</ae-modal-dialog>

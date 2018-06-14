@@ -1,0 +1,172 @@
+<div id="slide-out-form-content" class="wrapper-for-slideout-conten">
+  <div class="so-panel__title">
+    <h3 class="grey-strip">{{ 'EMPLOYEE_DETAILS' | translate:lang}}</h3>    
+  </div>
+  <div class="so-panel__content">
+    <div class="information-grid">
+      <section class="information-grid__section">
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.title' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3" [class.text-muted]="!employeeSalutation" id="emppersonal_salutation">{{employeeSalutation || ' '}}</div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.first_name' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3" [class.text-muted]="!employeeFirstName" id="emppersonal_firstname">{{employeeFirstName || ' '}}</div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.middle_name' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3" [class.text-muted]="!employeeMiddleName" id="emppersonal_middlename">{{employeeMiddleName || ' '}} </div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.surname' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3" [class.text-muted]="!employeeSurname" id="emppersonal_surname">{{employeeSurname || ' '}} </div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.known_as' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3" [class.text-muted]="!employeeKnownAs" id="emppersonal_knownas">{{employeeKnownAs || ' '}}</div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.previous_name' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3" [class.text-muted]="!employeePreviousName"
+            id="emppersonal_previousname">{{employeePreviousName || ' '}}</div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.gender' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3" [class.text-muted]="!employeeGenderText" id="emppersonal_gender">{{employeeGenderText || ' ' | translate:lang}}</div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.dob' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3" [class.text-muted]="!employeeDOB" id="emppersonal_dob">{{employeeDOB | date:'y-MM-dd' || ' '}}</div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.age' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3" [class.text-muted]="!employeeAge" id="emppersonal_age">{{employeeAge || ' '}}</div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.ethnicity' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3" [class.text-muted]="!employeeSalutationEthnicGroupValueName"
+            id="emppersonal_ethnicity">{{getEthnicity() || ' '}}</div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.nationality' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3" [class.text-muted]="!employeeNationality" id="emppersonal_nationality">{{employeeNationality || ' ' }}</div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.ni_number' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3" [class.text-muted]="!employeeNINumber"
+            id="emppersonal_ninumber">{{employeeNINumber || ' '}}</div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.tax_code' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3" [class.text-muted]="!employeeTaxCode"
+            id="emppersonal_taxcode">{{employeeTaxCode || ' '}}</div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_CONTACTS.address' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3" [class.text-muted]="!employeeFullAddress" id="empcontacts_fulladdress">{{employeeFullAddress || ''}}</div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_CONTACTS.personal_email_address' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3" [class.text-muted]="!employeePersonalEmail" id="empcontacts_personalemail">{{employeePersonalEmail || ''}}</div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_CONTACTS.email_address' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3" [class.text-muted]="!employeeEmail" id="empcontacts_email">{{employeeEmail || ''}} </div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_CONTACTS.mobile_phone' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3" [class.text-muted]="!employeeMobilePhone" id="empcontacts_mobilephone">{{employeeMobilePhone || ''}} </div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_CONTACTS.home_phone' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3" [class.text-muted]="!employeeHomePhone" id="empcontacts_homephone">{{employeeHomePhone || ''}}</div>
+        </div>
+      </section>
+    </div>
+
+    <ae-datatable [id]="getChildId('AeDatatable',1)" [name]="getChildName('AeDatatable',1)" [dataSource]="emergencyContacts" 
+    [totalRecords]="totalRecords" [autoGenerateColumns]="false" 
+    [defaultOptions]="dataTableOptions | async" >
+        <ae-column [headerText]="'Name'" [sortKey]="'Name'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>{{'EMPLOYEE_CONTACTS.name' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <span *ngIf="context.IsPrimary"><b>{{context.Name}} 
+            <span>&#10004;</span></b>
+                    </span>
+                    <span *ngIf="!context.IsPrimary">{{context.Name}}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+        <ae-column [headerText]="'Relation'" [sortKey]="'EmployeeRelationName'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>{{'EMPLOYEE_CONTACTS.relation' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <span *ngIf="context.IsPrimary"><b>{{context.EmployeeRelationName}}</b></span>
+                    <span *ngIf="!context.IsPrimary">{{context.EmployeeRelationName}}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+        <ae-column [headerText]="'Town'" [sortKey]="'Town'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>{{'EMPLOYEE_CONTACTS.town' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <span *ngIf="context.IsPrimary"><b>{{context.Town}}</b></span>
+                    <span *ngIf="!context.IsPrimary">{{context.Town}}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+        <ae-column [headerText]="'Telephone'" [sortKey]="'MobilePhone'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>{{'EMPLOYEE_CONTACTS.telephone' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <span *ngIf="context.IsPrimary"><b>{{context.MobilePhone}}</b></span>
+                    <span *ngIf="!context.IsPrimary">{{context.MobilePhone}}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+        <ae-column [headerText]="'Email'" [sortKey]="'Email'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>{{'EMPLOYEE_CONTACTS.email' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <span *ngIf="context.IsPrimary"><b>{{context.Email}}</b></span>
+                    <span *ngIf="!context.IsPrimary">{{context.Email}}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+    </ae-datatable>
+  </div>
+  <div class="so-panel__footer">
+    <nav>
+      <ul>
+        <li><label for="soPanel" [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang" class="button button--inline-block" [id]="getChildId('AeButton',1)"
+            (click)="onPanelClosed($event)">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label></li>
+        <li class="pull--right">
+            <a id="update-employee-link" class="button button--inline-block button--light" name="update-employee-link" [title]="'BUTTONS.UPDATE' | translate:lang"
+            [attr.href]="getEmpUpdateUrl()" target="_blank">{{'BUTTONS.UPDATE' | translate:lang}}</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
+<ae-loader [id]="'empBasicInfoDataLoad'" [loaderType]="loaderType" *ngIf="loading"></ae-loader>

@@ -1,0 +1,60 @@
+@import '../../../../../assets/scss/variablesMap';
+.nonworkingdays-view{
+    .so-panel {z-index: 99;
+      width: 100%;
+      @include media-over-767 {
+        width: 650px;
+      }
+    }
+    .table-history {
+    border-collapse: collapse;
+    width: 100%;
+    th {
+      text-align: left;
+      background: $grey--4;
+      padding: 5px;
+      border: solid 1px $grey--4;
+    }
+    td {
+      text-align: left;
+      padding: 5px;
+      border: solid 1px $grey--4;
+    }
+  }
+  .table-data {
+    width: 100%;
+    margin-top: 20px;
+  }
+}
+@media(max-width:767px) {
+  .table-history {
+    width: 100%;
+    thead {
+      display: none;
+    }
+    tbody,
+    tr {
+      display: block;
+      td {
+        display: block;
+        position: relative;
+        padding-left: 50% !important;
+        &:not(:first-child) {
+          border-top: none !important;
+        }
+        &:before {
+          content: attr(data-title);
+          position: absolute;
+          left: 0;
+          top: 0;
+          padding-top: 5px;
+          padding-left: 10px;
+          height: 100%;
+          background: $grey--4;
+          width: 46%;
+          font-weight: 700;
+        }
+      }
+    }
+  }
+}

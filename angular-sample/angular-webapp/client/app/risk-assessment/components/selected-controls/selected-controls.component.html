@@ -1,0 +1,37 @@
+<div class="control-grid">
+    <ng-template ngFor let-control [ngForOf]="selectedControls" let-i="index">
+        <div class="control-grid__item" [title]="control.Description | limitTo : 150">
+            <div class="control-grid__item__icon">
+                <img src="{{control.PictureId ? getPictureUrl(control.PictureId, control.IsSharedPrototype) : ''}}" alt="{{control.Name}}">
+            </div>
+            <div class="control-grid__item__label">
+                <p>{{control.Name}}</p>
+            </div>
+            <div class="control-grid__item__actions">
+                <ae-button [id]="getChildId('AeButtonUpdate', i)" [name]="getChildName('AeButtonUpdate', i)" [btnIcon]="'icon-alert-pencil'"
+                    [customClass]="'button--inline-block button--small'" (aeClick)="updateControl(control)" [title]="'BUTTONS.UPDATE' | translate: lang"></ae-button>
+                <ae-button [id]="getChildId('AeButtonRemove', i)" [name]="getChildName('AeButtonRemove', i)" [btnIcon]="'icon-alert-cancel'"
+                    [customClass]="'button--inline-block button--small'" (aeClick)="removeControlConfirm(control)" [title]="'BUTTONS.REMOVE' | translate: lang"></ae-button>
+            </div>
+        </div>
+    </ng-template>
+</div>
+
+<!--Remove control model-->
+<div *ngIf="removeConfirmation">
+  <ae-modal-dialog [visible]="removeConfirmation" (cancel)="removeModalClose($event)" [closable]="true" [id]="getChildId('Aemodal', 2)"
+    [name]="getChildName('Aemodal', 2)">
+    <div class="modal-dialog-header">
+      <h3>{{ 'CONTROL_REMOVE_DIALOG.HEADER_TEXT' | translate:lang }}</h3>
+    </div>
+    <div class="modal-dialog-body">
+      <p>{{'CONTROL_REMOVE_DIALOG.INFO' | translate: lang:{controlName: selectedControl.Name} }}</p>
+    </div>
+    <div class="modal-dialog-footer">
+      <ae-button [text]="'CONTROL_REMOVE_DIALOG.BTN_NO' | translate:lang" [type]="'button'" [id]="getChildId('AeButton', 1)" [name]="getChildName('AeButton', 1)"
+        (aeClick)="removeModalClose($event)"></ae-button>
+      <ae-button [class]="lightClass" [text]="'CONTROL_REMOVE_DIALOG.BTN_YES' | translate:lang" [type]="'button'" [id]="getChildId('AeButton', 2)"
+        [name]="getChildName('AeButton', 2)" (aeClick)="removeControl(selectedControl)"></ae-button>
+    </div>
+  </ae-modal-dialog>
+</div>

@@ -1,0 +1,181 @@
+@import '../../../assets/scss/variablesMap';
+$transition-duration: .4s;
+$transition-easing: ease-in-out;
+$transition: all $transition-duration $transition-easing;
+
+ae-modal-dialog {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 200vh;
+  transition: $transition;
+  z-index: $mo-panel-z-index;
+  display: flex;
+}
+
+.modal-dialog-footer,
+.modal-dialog-header {
+  align-items: center;
+  background-color: $grey--pale;
+  display: flex;
+  flex-shrink: 0;
+  justify-content: flex-start;
+  padding: ($base-padding);
+  position: relative;
+}
+
+.modal-dialog-header {
+  border-bottom: 1px solid $grey--4;
+  border-top: 3px solid $teal--0;
+  border-top-left-radius: $base-border-radius;
+  border-top-right-radius: $base-border-radius;
+
+  h3 {
+    color: $black;
+    flex-grow: 1;
+    flex-shrink: 0;
+    margin: 0;
+    // font-size: 2rem;
+    // line-height: 1;
+    max-width: 100%;
+    padding-right: 35px;
+  }
+}
+
+.modal-dialog-footer {
+  border-bottom-left-radius: $base-border-radius;
+  border-bottom-right-radius: $base-border-radius;
+  border-top: 1px solid $grey--4;
+  display: block;
+  text-align: right;
+
+  .button {
+    display: inline-block;
+    margin-left: 10px;
+    padding: 10px 15px;
+    text-overflow: ellipsis;
+    max-width: 290px;
+    @include media-over-1049 {
+      max-width: 350px;
+    }
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .button-bar {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  ae-button:first-child {
+    button {
+      margin-left: 0;
+    }
+  }
+}
+
+.modal-dialog-body {
+  -webkit-overflow-scrolling: touch;
+  background-color: $white;
+  flex-shrink: 1;
+  overflow: auto;
+  padding: $base-padding;
+
+  iframe {
+    max-width: 100%;
+  }
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba($black, 0.5);
+  z-index: 998;
+}
+
+.dialog {
+  display: flex;
+  flex-direction: column;
+  margin: 0 20px;
+  max-height: calc(100vh - 40px);
+  overflow: auto;
+  position: relative;
+  width: 100%;
+  @include media-over-767 {
+    margin: 0 auto;
+    width: 680px;
+  }
+  @include media-over-979 {
+    width: 760px;
+  }
+  @include media-over-1049 {
+    width: 980px;
+  }
+  z-index: 999;
+}
+@media all and (-ms-high-contrast:none) {
+  ae-modal-dialog {
+    display: -ms-flexbox;
+    -ms-flex-pack: center;
+    justify-content: inherit;
+  }
+
+  .modal-dialog-body {
+    max-height: 400px;
+  }
+}
+@media screen and (min-height:800px) and (-ms-high-contrast:none) {
+  .modal-dialog-body {
+    max-height: 600px;
+  }
+}
+@media screen and (min-height:980px) and (-ms-high-contrast:none) {
+  .modal-dialog-body {
+    max-height: 800px;
+  }
+}
+@media screen and (min-height:1180px) and (-ms-high-contrast:none) {
+  .modal-dialog-body {
+    max-height: 1000px;
+  }
+}
+
+.button--close {
+  border: none;
+  color: $grey--2;
+  padding: 0;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  background: transparent;
+  font-size: 20px;
+  z-index: 1;
+
+  &:focus {
+    outline: none;
+  }
+
+  &:hover {
+    color: $teal--0;
+  }
+}
+
+.modal-dialog-footer .button-bar {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  margin: 0 !important;
+}

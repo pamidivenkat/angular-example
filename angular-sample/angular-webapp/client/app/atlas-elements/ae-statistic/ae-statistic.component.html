@@ -1,0 +1,9 @@
+<div class="statistic" [id]="id" (click)="onClick($event)" [title]="tooltip">
+    <div class="statistic__icon" [id]="id+'_icondiv'" >
+        <ae-icon [id]="id+'_icon'" [name]="id+'_iconname'" [size]="iconSize" [color]="iconColor" [icon]="iconName" [notify]="hasNotification"></ae-icon>
+    </div>
+    <div class="statistic__copy" [id]="id+'_countdiv'">
+        <div class="statistic__number" [style.color]="numbercolor" [id]="id+'_countdiv_num'">{{numberText}}</div>
+        <div class="statistic__name" [style.color]="numbercolor" [id]="id+'_countdiv_name'">{{nameText}}</div>
+    </div>
+</div>

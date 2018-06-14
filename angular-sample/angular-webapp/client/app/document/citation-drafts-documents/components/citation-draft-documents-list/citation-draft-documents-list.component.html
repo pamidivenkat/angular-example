@@ -1,0 +1,111 @@
+<ae-notification [id]="'draftnotificationInfo'" [name]="'draftnotificationInfo'" [iconName]="'icon-info'" [textInfo]="'CITATIONDRAFTS.STATIC_TEXT' | translate:lang"></ae-notification>
+<div class="spacer">
+  <div class="table__filter-bar">
+    <div class="filter-bar holiday-filters">
+      <div class="filter-bar__label label">{{'Filter_by' | translate:lang}}</div>
+
+      <form [formGroup]="draftDocumentForm" [id]="getChildId('form', 1)" [name]="getChildName('form', 1)">
+        <div class="filter-bar__filters requests">
+          <div class="filter-bar__filter">
+            <ae-select [id]="getChildId('AeSelect',1)" [name]="getChildName('AeSelect',1)" [placeholder]="'CITATIONDRAFTS.ALL_CATEGORIES' | translate:lang"
+              [options]="categoryList" formControlName="category"></ae-select>
+          </div>
+          <div class="filter-bar__filter">
+            <ae-select [id]="getChildId('AeSelect',2)" [name]="getChildName('AeSelect',2)" [placeholder]="'CITATIONDRAFTS.ALL_SITES' | translate:lang"
+              [options]="sites$ | async" formControlName="sites"></ae-select>
+          </div>
+          <div class="filter-bar__filter">
+            <ae-select [id]="getChildId('AeSelect',3)" [name]="getChildName('AeSelect',3)" [placeholder]="'CITATIONDRAFTS.ALL_STATUS' | translate:lang"
+              [options]="status" formControlName="status"></ae-select>
+          </div>
+        </div>
+      </form>
+
+    </div>
+  </div>
+  <div>
+    <ae-datatable [id]="getChildId('AeDatatable',1)" [name]="getChildName('AeDatatable',1)" [dataSource]="citationDraftsRequest$"
+      [actions]="actions" [totalRecords]="citationDraftsListTotalCount$" [autoGenerateColumns]="false" [defaultOptions]="citationDraftsListDataTableOptions$ | async"
+      (pageChanged)="onGridPaging($event)" (onSort)="onGridSorting($event)" [loading]="!(citationDraftsListLoaded$ | async)">
+
+      <ae-column [headerText]="'CITATIONDRAFTS.DOCUMENT_NAME' | translate:lang" [sortable]="true " [sortKey]="'FileNameAndTitle'">
+        <ae-template [type]=" 'header' ">
+          <ng-template>
+            <span title="{{ 'CITATIONDRAFTS.DOCUMENT_NAME' | translate:lang  }}">{{'CITATIONDRAFTS.DOCUMENT_NAME' | translate:lang}}</span>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]=" 'cell' " [keys]="keys ">
+          <ng-template let-context="item ">
+            <span title="{{ context.FileNameAndTitle  }}">{{ context.FileNameAndTitle }}</span>
+          </ng-template>
+        </ae-template>
+      </ae-column>
+
+      <ae-column [headerText]="'CITATIONDRAFTS.CATEGORY' | translate:lang" [sortable]="true " [sortKey]="'CategoryName'">
+        <ae-template [type]=" 'header' ">
+          <ng-template>
+            <span title="{{ 'CITATIONDRAFTS.CATEGORY' | translate:lang  }}">{{'CITATIONDRAFTS.CATEGORY' | translate:lang}}</span>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]=" 'cell' " [keys]="keys ">
+          <ng-template let-context="item ">
+            <span title="{{ context.CategoryName }}"> {{ context.CategoryName }}</span>
+          </ng-template>
+        </ae-template>
+      </ae-column>
+
+      <ae-column [headerText]="'CITATIONDRAFTS.VERSION' | translate:lang" [sortable]="true " [sortKey]="'Version'">
+        <ae-template [type]=" 'header' ">
+          <ng-template>
+            <span title="{{ 'CITATIONDRAFTS.VERSION' | translate:lang  }}">{{'CITATIONDRAFTS.VERSION' | translate:lang}}</span>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]=" 'cell' " [keys]="keys ">
+          <ng-template let-context="item ">
+            <span title="{{ context.Version }}"> {{ context.Version }}</span>
+          </ng-template>
+        </ae-template>
+      </ae-column>
+
+      <ae-column [headerText]=" 'CITATIONDRAFTS.SITENAME' | translate:lang " [sortable]="true" [sortKey]="'SiteName'">
+        <ae-template [type]=" 'header' ">
+          <ng-template>
+            <span title="{{ 'CITATIONDRAFTS.SITENAME' | translate:lang  }}">{{'CITATIONDRAFTS.SITENAME' | translate:lang}}</span>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]=" 'cell' " [keys]="keys ">
+          <ng-template let-context="item ">
+            <span title="{{context.SiteName}}">{{context.SiteName}}</span>
+          </ng-template>
+        </ae-template>
+      </ae-column>
+
+      <ae-column [headerText]="'CITATIONDRAFTS.UPLOAD_DATE' | translate:lang" [sortable]="true" [sortKey]="'ModifiedOn'">
+        <ae-template [type]=" 'header' ">
+          <ng-template>
+            <span title="{{'CITATIONDRAFTS.UPLOAD_DATE' | translate:lang}}">{{'CITATIONDRAFTS.UPLOAD_DATE' | translate:lang}}</span>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]=" 'cell' " [keys]="keys ">
+          <ng-template let-context="item">
+            <span title="{{context.ModifiedOn}}">{{context.ModifiedOn | localeDate:defaultLocale:'shortDate'}}</span>
+          </ng-template>
+        </ae-template>
+      </ae-column>
+
+      <ae-column [headerText]="'CITATIONDRAFTS.STATUS' | translate:lang" [sortable]="true" [sortKey]="'Status'">
+        <ae-template [type]=" 'header' ">
+          <ng-template>
+            <span title="{{'CITATIONDRAFTS.STATUS' | translate:lang}}">{{'CITATIONDRAFTS.STATUS' | translate:lang}}</span>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]=" 'cell' " [keys]="keys ">
+          <ng-template let-context="item">
+            <span title="{{ getStatusName(context.Status) }}">{{  getStatusName(context.Status)}}</span>
+          </ng-template>
+        </ae-template>
+      </ae-column>
+
+    </ae-datatable>
+  </div>
+</div>

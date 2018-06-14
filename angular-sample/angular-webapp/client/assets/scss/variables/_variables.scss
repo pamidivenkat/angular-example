@@ -1,0 +1,138 @@
+// These are automatically added to the colours partial if using a hex code
+//Start of colours - do not change this comment
+$black: #000;
+$white: #fff;
+
+//New colours
+$grey--0: #3d3d3d;
+$grey--1: mix($white, $grey--0, 20%);
+$grey--2: mix($white, $grey--0, 40%);
+$grey--3: mix($white, $grey--0, 60%);
+$grey--4: mix($white, $grey--0, 80%);
+$grey--pale: #f3f3f3;
+
+$yellow--0: #fec352;
+$yellow--1: mix($white, $yellow--0, 20%);
+$yellow--2: mix($white, $yellow--0, 40%);
+$yellow--3: mix($white, $yellow--0, 60%);
+$yellow--4: mix($white, $yellow--0, 80%);
+
+$teal--0: #009494;
+$teal--1: mix($white, $teal--0, 20%);
+$teal--2: mix($white, $teal--0, 40%);
+$teal--3: mix($white, $teal--0, 60%);
+$teal--4: mix($white, $teal--0, 80%);
+
+$red--0: #df0000;
+$red--1: mix($white, $red--0, 20%);
+$red--2: mix($white, $red--0, 40%);
+$red--3: mix($white, $red--0, 60%);
+$red--4: mix($white, $red--0, 80%);
+
+$indicator--green:  #b7d660;
+$indicator--red:    #f08482;
+$indicator--purple: #9d85be;
+$indicator--yellow: #fcc254;
+$indicator--teal:   #5ea8a7;
+$indicator--grey:   #bdbbbc;
+$indicator--dark-green:  #7fc395;
+$indicator--dark-yellow:  #fdc649;
+$indicator--dark-red:  #e51941;
+
+$unsuitable-blue--cerulean: #4a80a9;
+$unsuitable-blue--sky: #56b7e8;
+//End of colours - do not change this comment
+
+$base-color: $black;
+$alert-color: $red--0;
+$notification-color: $red--0;
+$placeholder-color: #767676; // https://www.w3.org/WAI/tutorials/forms/instructions/#styling
+
+// Typography
+
+$base-font: 'Avenir Next W01', sans-serif;
+$font-condensed: 'Roboto Condensed', sans-serif;
+$font-document: Verdana, Geneva, Tahoma, sans-serif;
+$bold: 700;
+$bold-headings: $bold;
+$normal: 500;
+
+// Borders
+$base-border-radius: 6px;
+$widget-border-radius: 3px;
+$base-border: 3px;
+$border--thick: $base-border * 2;
+$border--thin: $base-border / 3;
+
+// Transitions
+$base-transition: .3s ease-out;
+$button-transition: all .15s ease-in-out;
+$fast-transition: .2s ease-out;
+
+// Shadows
+$base-shadow: 0 8px 18px 0 rgba($black, .09);
+$button-shadow: 0 1px 3px 0 rgba($black, .12), 0 1px 2px 0 rgba($black, .24);
+$button-shadow-active: 0 3px 6px rgba($black, .16), 0 3px 6px rgba($black, .22);
+$button-banner-shadow-active: 0 3px 6px rgba($black, .16), 0 3px 6px rgba($black, .22);
+
+// Margin and padding
+$base-margin: 15px;
+$base-padding: $base-margin;
+
+// Heights
+$header-height: 80px;
+$header-height-small: 60px;
+$burger-block-height: 5px;
+$snackbar-height: 160px;
+
+// Widths
+$min-width: 1200px;
+$min-width-tabs: ($min-width / 1);
+$sidebar-width: 320px;
+$sidebar-width--over-767: $sidebar-width + 60px;
+$nav-width: $sidebar-width;
+$nav-width--over-767: $nav-width + 30px;
+$so-panel-width: $sidebar-width;
+$so-panel-width--over-767: $sidebar-width + 60px;
+$so-panel-width--over-979: $sidebar-width + 180px;
+$so-panel-width--wide: 50%;
+
+$ie-scrollbar-width: 17px;
+
+$aside-width: 30em;
+$avatar-size: 50px;
+
+$icon-size: 50px;
+
+$banner-width-small: 320px;
+$banner-width-big: 400px;
+$person-avatar-med: 100px;
+$person-avatar-big: 200px;
+
+// Space
+$base-space: $base-margin * 2;
+
+// custom checkbox/radios
+$input-height: 14px;
+$input-width: 14px;
+$input-border-width: 2px;
+$input-active-scale: 4px; // optimized for even numbers
+
+// Scrollbars
+$base-scrollbar-height: ($base-margin / 2);
+$base-scrollbar-width: ($base-margin / 2);
+
+// Z-indexes
+$mask-z-index-inactive: -1;   // -1
+$person-dropdown-z-index: 2;  //  2
+$breadcrumb-z-index: 2;       //  2
+$mask-z-index-active: 20;     // 10
+$header-z-index: 30;          // 11
+$nav-z-index: 40;             // 20
+$sidebar-z-index: 50;         // 25
+$so-panel-mask-z-index: 55;
+$so-panel-z-index: 56;
+$mo-panel-z-index: 57;
+$modal-z-index: 60;
+$modal-z-index-mask: 61;
+$modal-z-index-card: 62;

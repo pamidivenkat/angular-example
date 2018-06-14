@@ -1,0 +1,288 @@
+@import '../../../../../assets/scss/variablesMap';
+
+.table__table-preview {
+  width: 100%;
+  page-break-inside: auto;
+  border-collapse: collapse;
+
+  .table__heading {
+    background: #d8d8d8;
+    font-weight: 800;
+    padding: 15px;
+    text-align: left;
+    border-right: 1px solid #d8d8d8;
+  }
+
+  .table__heading:last-child {
+    border-right: 0;
+  }
+
+  .table__item {
+    font-size: 1.4rem;
+    position: relative;
+    border-bottom: 1px solid #d8d8d8;
+    border-left: 1px solid #f3f3f3;
+    border-right: 1px solid #f3f3f3;
+  }
+
+  .table__item:not(:last-child) {
+    border-right: 0;
+  }
+
+  .table__item-inner {
+    border: 1px solid #d8d8d8;
+    border-top-color: #fff;
+    padding: 15px;
+    border: 0;
+  }
+
+  .table__row {
+    background: #fff;
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+
+  .table__row--active {
+    background: #f3f3f3;
+  }
+
+  .table__row:hover {
+    background-color: $white;
+  }
+}
+
+.construction-plan-view {
+  .tlephone-block {
+    margin-top: 20px;
+    font-weight: 300;
+  }
+
+  .person__avatar {
+    border-radius: 0;
+    max-width: 240px;
+    width: auto;
+    height: auto;
+  }
+
+  .personal-info {
+    .information-grid__item-label {
+      text-align: left;
+      width: 33.333%;
+      align-self: flex-start;
+
+      .person__avatar {
+        width: 100px;
+        height: 100px;
+      }
+    }
+
+    .address_block div {
+      font-weight: 300;
+    }
+  }
+
+  .text-center {
+    text-align: center;
+  }
+
+  .column-1of3,
+  .column-2of3 {
+    width: 50%;
+  }
+
+  h3 {
+    margin-top: 20px;
+  }
+
+  .sequence-of-events div {
+    width: 100%;
+  }
+
+  .datatable {
+    width: 100%;
+
+    .table__heading {
+      border-right: 1px solid $white;
+      display: table-cell;
+      background: #d8d8d8;
+      font-weight: 700;
+      padding: 15px;
+      position: relative;
+      text-align: left;
+    }
+
+    .table__row {
+      display: table-row;
+    }
+
+    .table__item-inner {
+      border: 0;
+      padding: 15px;
+    }
+  }
+
+  .safety-precautions {
+    display: block;
+    overflow: hidden;
+
+    div {
+      float: left;
+
+      &.text-muted {
+        padding-top: 10px;
+      }
+    }
+
+    .person__avatar {
+      width: 100%;
+      max-width: 140px;
+    }
+
+    .img-section {
+      width: 100px;
+      height: 100px;
+    }
+  }
+
+  a {
+    text-decoration: underline;
+  }
+}
+
+.ms-preview {
+  h1 {
+    font-weight: 300;
+  }
+
+  h2 {
+    background-color: $grey--1;
+    border: 1px solid $grey--0;
+    padding: 5px;
+    color: $white;
+    font-size: 18px;
+  }
+
+  .bottom-30 {
+    margin-bottom: 30px;
+  }
+
+  .table__heading {
+    background: $yellow--2 !important;
+  }
+
+  .safety-precautions {
+    display: inline-block;
+    width: 19%;
+    text-align: center;
+    padding: 0 10px;
+    vertical-align: top;
+    margin: 20px 0 40px;
+    page-break-inside: avoid;
+
+    div {
+      float: none;
+      width: 100%;
+      display: inline-block;
+      text-align: center;
+    }
+  }
+
+  .download-block {
+    display: block;
+    text-align: center;
+  }
+  @media screen {
+    &.preview-page-scroll {
+      max-height: 550px;
+      overflow-y: auto;
+      padding: $base-padding;
+      border: solid 1px $grey--4;
+
+      .scroll-x {
+        overflow-x: scroll;
+      }
+    }
+  }
+  @media print {
+    .preview-page-scroll {
+      padding: 0 !important;
+    }
+  }
+
+  .scroll-x {
+    overflow-x: auto;
+    @include media-over-767 {
+      overflow: initial;
+    }
+  }
+
+  .preivew-text-link {
+    color: $teal--0;
+  }
+}
+
+.email-slideout {
+  .so-panel {
+    width: 100%;
+    @include media-over-767 {
+      width: 650px;
+    }
+    z-index: 99;
+
+    .loader {
+      position: absolute;
+      top: 50px;
+      width: 100%;
+      bottom: 0;
+
+      .loader-inner {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100px;
+        height: 44px;
+        margin: auto;
+      }
+    }
+
+    .form__input__error {
+      display: block;
+      width: 100%;
+    }
+
+    .ql-editor p {
+      white-space: initial;
+      margin: 5px 0;
+    }
+  }
+}
+
+.page-break-inside {
+  page-break-inside: avoid;
+}
+
+.editer-data {
+  table {
+    border: 0;
+    border-spacing: 10px;
+    border-collapse: separate;
+
+    td {
+      border: 0;
+      border-spacing: 10px;
+      border-collapse: separate;
+    }
+  }
+
+  h1,
+  h2,
+  h3,
+  h5,
+  h6,
+  p {
+    margin: 10px 0;
+  }
+}
+.ms-preview-logo{ max-height: 150px; max-width: 100%;}

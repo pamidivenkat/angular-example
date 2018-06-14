@@ -1,0 +1,40 @@
+<div class="person person--big" *ngIf="hasEmployeeInfo()">
+  <app-ae-image-avatar [id]="getChildId('EmployeeImageAvatar',1)" [name]="getChildName('EmployeeImageAvatar',1)" [imgSrc]="getPictureUrl | async"
+    [alt]="''" [size]="imageAvatarSize" [isBorderCircle]="true" [edit]="true" [editIconSize]="imgPreviewEditIconSize" (onAeAvatarChange)="onEmployeeProfilePicChange($event)"
+    [maxAvatarImageSize]="maxEmployeePictureImageSize">
+  </app-ae-image-avatar>
+  <div class="person__details person__details--big">
+    <h2 class="person__name person__name--big">
+      {{empInfo.FirstName}} {{empInfo.Surname}}
+    </h2>
+    <div class="person__details-cols">
+      <div class="person__details-col">
+        <div id="employee-first-name" class="person__name-val"><b>{{'EMPLOYEE_SUMMARY.job_title' | translate:lang}}:</b> <span> {{empInfo.JobTitle}} </span></div>
+        <div id="employee-first-dob" class="person__name-val"><b>{{'EMPLOYEE_SUMMARY.dob' | translate:lang}}:</b> <span> {{empInfo.DOB | date:'dd/MM/y'}}</span></div>
+        <div id="employee-first-start-date" class="person__name-val"><b>{{'EMPLOYEE_SUMMARY.start_date' | translate:lang}}:</b> <span> {{empInfo.StartDate | date:'dd/MM/y' }}</span></div>
+      </div>
+      <div class="person__details-col">
+        <div class="person__contact" *ngIf="hasEmail()">
+          <div class="icon-with-text ">
+            <span class="icon-with-text__icon">
+                      <ae-icon [id]="getChildId('AeIcon', 1)" [name]="getChildName('AeIcon', 1)" [icon]="'icon-alert-envelope'"></ae-icon>
+                  </span>
+            <span id="employee-email" class="icon-with-text__copy ">
+                  {{empInfo.Email}}
+                  </span>
+          </div>
+        </div>
+        <div class="person__contact" *ngIf="hasMobileNumber()">
+          <div class="icon-with-text ">
+            <span class="icon-with-text__icon">
+                    <ae-icon [id]="getChildId('AeIcon', 2)" [name]="getChildName('AeIcon', 2)" [icon]="'icon-phone'"></ae-icon>
+                  </span>
+            <span id="employee-first-contact" class="icon-with-text__copy ">
+                  {{empInfo.MobilePhone}}
+                  </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

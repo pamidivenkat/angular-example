@@ -1,0 +1,36 @@
+.icon-with-text {
+  text-decoration: none;
+}
+
+.icon-with-text__icon {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.icon-with-text__copy {
+  display: inline-block;
+  margin-left: 5px;
+  max-width: calc(100% - 60px);
+  vertical-align: middle;
+}
+
+.banner__info-icons {
+  .icon-with-text__copy {
+    max-width: calc(100vw - 60px);
+  }
+}
+
+.icon-with-text--action {
+  color: $red--0;
+}
+
+.icon-with-text--progress {
+  font-size: 1.8rem;
+  font-weight: $bold;
+}
+
+.icon--dragable {
+    background: #f3f3f3;
+    cursor: ns-resize;
+    padding: 5px;
+}

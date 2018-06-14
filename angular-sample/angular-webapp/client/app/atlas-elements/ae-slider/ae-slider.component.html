@@ -1,0 +1,16 @@
+<div [id]="id" class="mat-slider-wrapper">
+  <div [id]="getChildId('div', 1)" class="mat-slider-track-wrapper">
+    <div [id]="getChildId('div', 2)" class="mat-slider-track-background" [ngStyle]="trackBackgroundStyles"></div>
+    <div [id]="getChildId('div', 3)" class="mat-slider-track-fill" [ngStyle]="trackFillStyles"></div>
+  </div>
+  <div [id]="getChildId('div', 4)" class="mat-slider-thumb-container" [ngStyle]="thumbContainerStyles">
+    <div [id]="getChildId('div', 5)" class="mat-slider-thumb"></div>
+    <div [id]="getChildId('div', 6)" class="mat-slider-thumb-label">
+      <span [id]="getChildId('span', 7)" class="mat-slider-thumb-label-text">{{displayValue}}</span>
+    </div>
+  </div>
+  <div class="slider-min-max">
+    <div class="pull-left">{{min}}</div>
+    <div class="pull-right">{{max}}</div>
+  </div>
+</div>

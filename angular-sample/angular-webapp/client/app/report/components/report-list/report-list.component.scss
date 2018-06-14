@@ -1,0 +1,6 @@
+@import '../../../../assets/scss/variablesMap';
+@include media-over-767 {
+  .reports-table .table__row .table__item:last-child {
+    overflow: visible;
+  }
+  }

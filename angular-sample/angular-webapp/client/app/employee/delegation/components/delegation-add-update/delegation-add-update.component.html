@@ -1,0 +1,79 @@
+<div class="so-panel__title">
+    <h3>{{ headerTitle | translate:lang}}</h3>
+</div>
+<div class="so-panel__content">
+    <div class="information-grid">
+        <section class="information-grid__section">
+            <form class="form" [formGroup]="delegationAddEditForm" [id]="getChildId('form', 1)" [name]="getChildName('form', 1)">
+                <section class="information-grid__section">
+                    <div>
+                        <div class="information-grid__item" *ngIf="showMessage()">
+                            <div class="information-grid__item-value column-2of3" *ngIf="updateDelegationMessage">
+                                <ae-message [id]="getChildId('AeMessage',1)" [name]="getChildName('AeMessage',1)" [text]="updateDelegationMessage | translate:lang" [icon]="'icon-bell'" (aeClose)="hideMessage()" [messageType]="messagetType">
+                                </ae-message>
+                            </div>
+                            <div class="information-grid__item-value column-2of3" *ngIf="permissionValidationMessage">
+                                <ae-message [id]="getChildId('AeMessage',2)" [name]="getChildName('AeMessage',2)" [text]="permissionValidationMessage | translate:lang" [icon]="'icon-bell'" (aeClose)="hidePermissionValidationMessage()" [messageType]="messagetType">
+                                </ae-message>
+                            </div>
+                        </div>
+                        <div class="information-grid__item" *ngIf="checkDelegationAccess">
+                            <label class="information-grid__item-label column-1of3">{{'DELEGATION.Select_whose_responsibilities' | translate: lang}}
+                <ae-icon [id]="getChildId('AeIcon', 2)" [name]="getChildName('AeIcon', 2)"
+                  [icon]="'icon-alert-circle-question'" [title]="'DELEGATION.Whoever_you_select' | translate:lang"> </ae-icon>
+              </label>
+                            <div class="information-grid__item-value column-2of3 text`-muted">
+                                <ae-autocomplete formControlName="ManagerId" [id]="getChildId('employeeSelected',1)" [name]="getChildName('employeeSelected',1)" [placeholder]="'DELEGATION.Select_manager' | translate:lang" [title]="'DELEGATION.Select_manager' | translate:lang" [multiselect]="'false'"
+                                    [items]="autosuggestUsers$ | async" [automatch]="false" (aeOnComplete)="searchDelegationUsers($event,'manager')" [dstype]="remoteDataSourceType" [field]="'Text'" (aeOnClearSelected)="onClearManager($event)" [debounce]="500"
+                                    [valuefield]="'Value'"></ae-autocomplete>
+                                <span *ngIf="fieldHasRequiredError('ManagerId')" class="error-text">{{ 'DELEGATION.Please_select_Manager' | translate:lang }}.</span>
+                            </div>
+                            <span *ngIf="fieldHasRequiredError('ManagerId')" class="error-text">{{ 'DELEGATION.Please_select_manager' | translate:lang }}.</span>
+                        </div>
+                        <div class="information-grid__item">
+                            <label class="information-grid__item-label column-1of3">{{'DELEGATION.Select_who_you_are' | translate: lang}}
+                <ae-icon [id]="getChildId('AeIcon', 3)" [name]="getChildName('AeIcon', 3)"
+                  [icon]="'icon-alert-circle-question'" [title]="'DELEGATION.Whoever_is_select' | translate:lang"> </ae-icon>
+              </label>
+                            <div class="information-grid__item-value column-2of3 text-muted">
+                                <ae-autocomplete formControlName="UserId" [id]="getChildId('employeeSelected',2)" [name]="getChildName('employeeSelected',2)" [placeholder]="'DELEGATION.Select_user' | translate:lang" [title]="'DELEGATION.Select_user' | translate:lang" [multiselect]="'false'"
+                                    [items]="autosuggestUsers$ | async" [automatch]="false" (aeOnComplete)="searchDelegationUsers($event,'user')" (aeOnSelect)="onSelectAutoSuggest($event)" [dstype]="remoteDataSourceType" [field]="'Text'" [debounce]="500"
+                                    [valuefield]="'Value'" [value]="delegatedUserId"></ae-autocomplete>
+                                <span *ngIf="fieldHasRequiredError('UserId')" class="error-text">{{ 'DELEGATION.Please_select_user' | translate:lang }}.</span>
+                            </div>
+
+                        </div>
+                        <div class="information-grid__item">
+                            <div class="information-grid__item-value column-2of3 text-muted">
+                                <ae-switch formControlName="DeligatedHA" [id]="'reminder'" [name]="'reminder'" [switchText]="'DELEGATION.Authorise_Holidays_Absences' | translate:lang" [checked]="authoriseHoliday" [title]="'DELEGATION.AuthoriseHolidays' | translate:lang"></ae-switch>
+                            </div>
+                        </div>
+                        <div class="information-grid__item">
+                            <div class="information-grid__item-value column-2of3 text-muted">
+                                <ae-switch formControlName="DeligatedReadOnlyDE" [id]="'reminder'" [name]="'reminder'" [switchText]="'DELEGATION.View_Employees' | translate:lang" [checked]="viewEmployee" [title]="'DELEGATION.View_Employees' | translate:lang"></ae-switch>
+                            </div>
+                        </div>
+                        <div class="information-grid__item">
+                            <div class="information-grid__item-value column-2of3 text-muted">
+                                <ae-switch formControlName="DeligatedManageDE" [id]="'reminder'" [name]="'reminder'" [switchText]="'DELEGATION.Manage_Employees' | translate:lang" [checked]="manageEmployee" [title]="'DELEGATION.Manage_Employees' | translate:lang"></ae-switch>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </section>
+            </form>
+        </section>
+    </div>
+</div>
+<div class="so-panel__footer">
+    <nav>
+        <ul>
+            <li><label for="soPanel" class="button button--inline-block" (click)="onAddCancel()" [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label></li>
+            <li class="pull--right">
+                <ae-anchor [id]="getChildId('AeAnchor',1)" [name]="getChildName('AeAnchor',1)" [anchorType]="'button'" [class]="'button button--inline-block'" [anchorClass]="lightClass" (aeClick)="onAddFormSubmit()" [text]="action == 'Add' ? ('BUTTONS.ADD' | translate:lang) : ('BUTTONS.UPDATE' | translate:lang)"
+                    [title]="action == 'Add' ? ('BUTTONS.ADD' | translate:lang) : ('BUTTONS.UPDATE' | translate:lang)"></ae-anchor>
+            </li>
+        </ul>
+    </nav>
+</div>

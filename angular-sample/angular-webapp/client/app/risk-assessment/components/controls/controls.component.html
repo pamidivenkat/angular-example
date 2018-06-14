@@ -1,0 +1,177 @@
+<div>
+  <div class="toggle-switch-spacer" *ngIf="isMigrated">
+    <ae-switch [id]="getChildId('AeAwitch', 1)" [name]="getChildName('AeAwitch', 1)" [switchText]="'RA_HELP_TEXT.PRINT_CONTROL_DESCRIPTION_IN_PDF' | translate:lang"
+      [class]="switchTextLeft" [checked]="printControlDescription" (aeChange)="setPrintControlDiscription($event)"></ae-switch>
+  </div>
+  <div class="bottom-30">
+    <ae-notification [id]="getChildId('AeNotification', 1)" [name]="getChildName('AeNotification', 1)" [iconName]="'icon-info'"
+      [textInfo]="'RA_HELP_TEXT.CONTROLS' | translate:lang">
+    </ae-notification>
+  </div>
+  <section class="hazard-control-panel" *ngIf="!isMigrated">
+    <div class="hazard-control-panel__header">
+      <div class="hazard-control-panel__header__hazard">
+        <h4>{{'HAZARD' | translate:lang}}</h4>
+      </div>
+      <div class="hazard-control-panel__header__controls">
+        <h4>{{'CONTROLS' | translate:lang}}</h4>
+      </div>
+    </div>
+    <ng-template ngFor let-hazard [ngForOf]="hazards" let-i="index">
+      <div class="hazard-control-panel__row">
+        <div class="hazard-control-panel__hazard">
+          <div class="hazard__icon">
+            <img src="{{getPictureUrl(hazard.PictureId, hazard.IsSharedPrototype, true)}}" alt="{{hazard.Name}}" title="{{hazard.Description}}">
+          </div>
+          <div class="hazard__label">
+            <p>{{hazard.Name}}</p>
+          </div>
+        </div>
+        <div class="hazard-control-panel__controls">
+          <div class="control-grid">
+            <selected-controls [id]="getChildId('selectedcontrols', 1)" [name]="getChildName('selectedcontrols', 1)" [selectedControls]="getControls(hazard.Id)"
+              (updateControl)="updateControl($event)" (removeControl)="removeControl($event)">
+            </selected-controls>
+            <div class="control-grid__item add">
+              <ae-button [id]="getChildId('AeButton', i)" [name]="getChildName('AeButton', i)" [text]="'ADD_CONTROL' | translate:lang"
+                [type]="'button'" (aeClick)="addControl(hazard)" [class]="lightClass"></ae-button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </section>
+  <div *ngIf="isMigrated">
+    <ae-tab [id]="getChildId('AeTab')" [name]="getChildName('AeTab')" [defaultSelection]="defaultSelection" (aeTabIndexChange)="tabChanged($event)">
+      <ae-tab-item [id]="getChildId('AeTabItem',1)" [name]="getChildName('AeTabItem',1)" [title]="">
+        <ae-template [type]="'header'">
+          <ng-template>
+            <span>{{'All_CONTROLS' | translate: lang}}</span>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]="'content'">
+          <ng-template>
+            <all-controls [id]="getChildId('AllControls', 1)" [name]="getChildName('AllControls', 1)" [currentRiskAssessment]="currentRiskAssessment"></all-controls>
+          </ng-template>
+        </ae-template>
+      </ae-tab-item>
+      <ae-tab-item [id]="getChildId('AeTabItem',1)" [name]="getChildName('AeTabItem',1)" [title]="">
+        <ae-template [type]="'header'">
+          <ng-template>
+            <span>{{'SELECTED_CONTROLS' | translate: lang}}({{selectedControls.length}}) </span>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]="'content'">
+          <ng-template>
+            <selected-controls [id]="getChildId('selectedcontrols', 2)" [name]="getChildName('selectedcontrols', 2)" [selectedControls]="selectedControls"
+              (updateControl)="updateControl($event)" (removeControl)="removeControl($event)">
+            </selected-controls>
+            <div class="control-grid__item add">
+              <ae-button [id]="getChildId('AeButton', i)" [name]="getChildName('AeButton', i)" [text]="'ADD_CONTROL' | translate:lang"
+                [type]="'button'" (aeClick)="addNewControl()" [class]="lightClass" [title]="'RA_HELP_TEXT.ADD_CONTROL' | translate:lang"></ae-button>
+            </div>
+          </ng-template>
+        </ae-template>
+      </ae-tab-item>
+      <ae-tab-item [id]="getChildId('AeTabItem',1)" [name]="getChildName('AeTabItem',1)" [title]="">
+        <ae-template [type]="'header'">
+          <ng-template>
+            <span>{{'SUGGESTED_CONTROLS' | translate: lang}}</span>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]="'content'">
+          <ng-template>
+            <suggested-controls [suggestedControls]="suggestedControls"></suggested-controls>
+          </ng-template>
+        </ae-template>
+      </ae-tab-item>
+    </ae-tab>
+  </div>
+  <div *ngIf="isMigrated && isCOSHH()" class="top-20">
+    <form [id]="notes" name="notes" [formGroup]="notesForm">
+      <label>
+      Notes:
+        <ae-textarea [id]="getChildId( 'AeTextarea')" [name]="getChildName( 'AeTextarea')" [rows]="3" formControlName="notesText"
+          [placeholder]=""></ae-textarea>
+    </label>
+    </form>
+  </div>
+</div>
+<div *ngIf="showControlsModal">
+  <ae-modal-dialog [visible]="showControlsModal" (cancel)="modalClosed($event)" [closable]="true" [id]="getChildId('Aemodal', 1)"
+    [name]="getChildName('Aemodal', 1)" [size]="addModelSize">
+    <div class="modal-dialog-header">
+      <h3> {{'ADD_CONTROL' | translate:lang}}</h3>
+    </div>
+    <div class="modal-dialog-body">
+      <section class="accordion modal-accordion" role="tablist">
+        <div class="accordion__list">
+          <!-- all contorls start-->
+          <div class="accordion__list--item">
+            <ae-accordion [id]="getChildId('AeAccordion', 1)" [name]="getChildName('AeAccordion', 1)" [titleText]="'All_CONTROLS' | translate: lang">
+              <all-controls [id]="getChildId('AllControls', 2)" [name]="getChildName('AllControls', 2)" [currentRiskAssessment]="currentRiskAssessment" [selectedHazardId]="selectedHazardId"></all-controls>
+            </ae-accordion>
+          </div>
+          <!-- all contorls end-->
+          <!-- selected contorls start-->
+          <div class="accordion__list--item">
+            <ae-accordion [id]="getChildId('AeAccordion', 2)" [name]="getChildName('AeAccordion', 2)" [titleText]="'SELECTED_CONTROLS' | translate: lang">
+              <selected-controls [id]="getChildId('selectedcontrols', 3)" [name]="getChildName('selectedcontrols', 3)" [selectedControls]="getControls(selectedHazardId)"
+                (updateControl)="updateControl($event)" (removeControl)="removeControl($event)">
+              </selected-controls>
+              <div class="control-grid__item add">
+                <ae-button [id]="getChildId('AeButton', i)" [name]="getChildName('AeButton', i)" [text]="'ADD_CONTROL' | translate:lang"
+                  [type]="'button'" (aeClick)="addNewControl(hazard)" [class]="lightClass" [title]="'RA_HELP_TEXT.ADD_CONTROL' | translate:lang"></ae-button>
+              </div>
+            </ae-accordion>
+          </div>
+          <!-- selected contorls end-->
+          <!-- frequently used contorls start-->
+          <div class="accordion__list--item">
+            <ae-accordion [id]="getChildId('AeAccordion', 3)" [name]="getChildName('AeAccordion', 3)" [titleText]="'FREQUENTLY_USED' | translate: lang">
+              <div class="control-grid">
+                <ng-template ngFor let-control [ngForOf]="frequentlyUsedControls" let-i="index">
+                  <div class="control-grid__item" [title]="control.Description | limitTo : 150">
+                    <div class="control-grid__item__icon">
+                      <img src="{{control.PictureId ? getPictureUrl(control.PictureId, control.IsExample) : ''}}" alt="{{control.Name}}" title="{{control.Description}}">
+                    </div>
+                    <div class="control-grid__item__label">
+                      <p>{{control.Name}}</p>
+                    </div>
+                    <div class="icon-picker__checkbox">
+                      <ae-icon [id]="getChildId('AeIcon',control.Id)" [name]="getChildName('AeIcon',control.Id)" [size]="iconTiny" [icon]="'icon-alert-add'"
+                        [color]="'#009494'" (click)="addControlToRiskAssessment(control)"></ae-icon>
+                    </div>
+                  </div>
+                </ng-template>
+              </div>
+            </ae-accordion>
+          </div>
+          <!-- frequently used contorls end-->
+          <!-- suggested contorls start-->
+          <div class="accordion__list--item">
+            <ae-accordion [id]="getChildId('AeAccordion', 4)" [name]="getChildName('AeAccordion', 4)" [titleText]="'SUGGESTED_CONTROLS' | translate: lang">
+              <suggested-controls [suggestedControls]="suggestedControls" [currentRiskAssessment]="currentRiskAssessment" [selectedHazardId]="selectedHazardId"></suggested-controls>
+            </ae-accordion>
+          </div>
+        </div>
+      </section>
+    </div>
+    <!-- suggested contorls end-->
+    <div class="modal-dialog-footer">
+      <ae-button [text]="'CLOSE'" [type]="'button'" [id]="getChildId('AeButton', 1)" [name]="getChildName('AeButton', 1)" (aeClick)="modalClosed($event)"></ae-button>
+      <ae-button [class]="lightClass" [text]="'CONTINUE'" [type]="'button'" [id]="getChildId('AeButton', 2)" [name]="getChildName('AeButton', 2)"
+        (aeClick)="doAction($event)"></ae-button>
+    </div>
+  </ae-modal-dialog>
+</div>
+
+
+  <ae-slideout [id]="getChildId('AeSlideOut', 1)" [name]="getChildName('AeSlideOut', 1)" [modelState]="createControlSlideoutState()"
+    (cancel)="closeSlideOut($event)" [class.slide--animate]="showCreateControlSlideOut">
+    <ng-container *ngIf="showCreateControlSlideOut">
+      <create-update-control [id]="getChildId('AddControl', 1)" [name]="getChildName('AddControl', 1)" (slideOutClose)="closeSlideOut($event)"
+        (onCreateControl)="createControlSubmit($event)" [selectedControl]="selectedControl">
+      </create-update-control>
+    </ng-container>
+  </ae-slideout>

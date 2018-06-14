@@ -1,0 +1,160 @@
+@import '../../../assets/scss/variablesMap';
+.banner {
+  display: flex;
+  position: relative;
+}
+
+.banner--secondary {
+  color: $white;
+  justify-content: center;
+  padding: 10px 30px;
+}
+
+.banner--teal {
+  background: $teal--0;
+}
+
+.banner--grey {
+  background: $grey--2;
+}
+
+.banner--red {
+  background: $red--0;
+}
+
+.banner--grey-pale {
+  background: $grey--pale;
+}
+
+.banner--teal,
+.banner--grey,
+.banner--red,
+.banner--grey-pale {
+  .banner__title {
+    margin-bottom: $base-margin;
+    margin-top: ($base-margin * 2);
+  }
+}
+
+.banner__widget {
+  background: $yellow--0;
+  padding: $base-padding * 2;
+  position: relative;
+  text-align: center;
+  width: 100%;
+  @include media-over-480 {
+    flex-shrink: 0;
+    text-align: left;
+    width: 320px;
+  }
+  @include media-over-767 {
+    width: 33.333%;
+  }
+  &::before,
+  &::after {
+    @include media-over-480 {
+      border-bottom: 15px solid transparent;
+      border-left: 13px solid $yellow--0;
+      border-top: 15px solid transparent;
+      content: '';
+      display: block;
+      position: absolute;
+      top: calc(50% - 15px);
+    }
+  }
+  &::before {
+    left: 100%;
+  }
+  &::after {
+    border-left-color: $yellow--0;
+    left: calc(100% - 1px);
+  }
+  .banner__title {
+    margin: $base-margin 0;
+  }
+  .button {
+    // background: transparent !important;
+    width: 100% !important;
+    display: block;
+  }
+  ae-button,
+  ae-splitbutton,
+  ae-splitbutton .nav--dropdown {
+    display: block;
+    margin: 0;
+  }
+}
+
+.banner__background {
+  background-position: center center;
+  background-size: cover;
+  @include media-over-480 {
+    width: calc(100% - #{$banner-width-small});
+  }
+  @include media-over-767 {
+    width: 66.666%;
+  }
+}
+
+.banner__background--dashboard {
+  background-position: center;
+  background-size: cover;
+  border-bottom: 1px solid $grey--4;
+  color: $white;
+  width: 100%;
+  .banner__title {
+    margin: ($base-margin * 3) ($base-margin * 2) 0;
+    text-shadow: 0 0 $base-margin rgba($black, .6);
+  }
+  .banner__info-icons {
+    margin: 0 ($base-margin * 2) ($base-margin * 3);
+  }
+  .icon-with-text__icon {
+    color: $teal--0;
+  }
+  .icon-with-text__copy {
+    max-width: 100%;
+    text-shadow: 0 0 ($base-margin / 2) rgba($black, .8);
+  }
+  @include media-over-767 {
+    .banner__title {
+      margin: ($base-margin * 4) ($base-margin * 2) 0;
+    }
+    .banner__info-icons {
+      margin: 0 ($base-margin * 2) ($base-margin * 4);
+    }
+  }
+  @include media-0-480 {
+    display: none;
+  }
+}
+
+.banner__info-icon {
+  display: inline-block;
+  &:first-child:not(:last-child) {
+    margin-right: 8px;
+  }
+}
+
+.banner__statistics {
+  background: $grey--0;
+  display: none;
+  flex-grow: 1;
+  padding: 10px 0;
+  @include media-over-767 {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  @include media-over-1239 {
+    align-items: center;
+    flex-wrap: nowrap;
+  }
+}
+
+.banner__statistic {
+  @include media-over-1239 {
+    &:not(:last-child) {
+      //border-right: 1px solid $grey--1;
+    }
+  }
+}

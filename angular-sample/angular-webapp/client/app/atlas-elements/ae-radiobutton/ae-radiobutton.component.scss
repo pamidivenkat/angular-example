@@ -1,0 +1,185 @@
+@import '../../../assets/scss/variablesMap';
+[type="radio"] {
+  @include vh();
+
+  &:focus,
+  &:hover {
+    + label {
+      &::before {
+        border-color: $grey--1;
+      }
+    }
+  }
+
+  &:active {
+    + label {
+      &::before {
+        filter: brightness(.2);
+        transition-duration: 0;
+      }
+    }
+
+  }
+&[disabled] {
+    + label {
+      color: $grey--2;
+
+      &::before {
+        border-color: $grey--2;
+      }
+
+      &::after {
+        border-color: $grey--2;
+      }
+    }
+  }
+  + label {
+    padding: 10px 10px 10px 26px !important;
+    position: relative;
+    user-select: none;
+    vertical-align: middle;
+
+    &::before {
+      border: $input-border-width solid $grey--1;
+      box-sizing: content-box;
+      color: $teal--0;
+      content: '';
+      height: $input-height;
+      left: 0;
+      margin-top: -(($input-height / 2) + $input-border-width);
+      position: absolute;
+      text-align: center;
+      top: 50%;
+      width: $input-width;
+      //font-size: 18px;
+    }
+
+    &::after {
+      background-color: $teal--0;
+      box-sizing: content-box;
+      content: '';
+      height: ($input-height - $input-active-scale);
+      left: ($input-border-width + ($input-active-scale / 2));
+      margin-top: -(($input-height - $input-active-scale) / 2);
+      position: absolute;
+      top: 50%;
+      transform: scale(0);
+      transform-origin: 50%;
+      transition: transform 200ms ease-out;
+      width: $input-width - $input-active-scale;
+    }
+  }
+}
+
+
+[type="radio"] {
+  &:checked {
+    + label {
+      &::before {
+        animation: borderscale 300ms ease-in;
+        background-color: $white;
+      }
+
+      &::after {
+        transform: scale(1);
+      }
+    }
+  }
+
+  + label {
+    &::before,
+     &::after {
+      border-radius: 50%;
+    }
+  }
+}
+
+@keyframes borderscale {
+  50% {
+    box-shadow: 0 0 0 2px $teal--0;
+  }
+}
+
+.radio {
+  margin: 20px;
+
+  &:hover {
+    .radio__indicator::before {
+      opacity: .5;
+    }
+  }
+}
+
+.radio__input {
+  display: none;
+
+  &:checked {
+    ~.radio__indicator {
+      border-color: $unsuitable-blue--sky;
+
+
+      &::before {
+        animation: radiopop .3s ease-in-out;
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    ~.radio__indicator--alt {
+      &::before {
+        animation: radiopop--alt .3s ease-in-out;
+      }
+    }
+  }
+}
+
+.radio__indicator {
+  @include dimensions(24px);
+  border: 3px solid $black;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  transition: border-color $base-transition;
+  vertical-align: middle;
+
+  &::before {
+    @include dimensions(10px);
+    background: $unsuitable-blue--sky;
+    border-radius: 50%;
+    content: '';
+    display: block;
+    left: 4px;
+    opacity: 0;
+    position: absolute;
+    top: 4px;
+    transform: scale(1);
+    transform-origin: center center;
+    transition: opacity $base-transition;
+  }
+}
+
+.radio__copy {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+@keyframes radiopop {
+  50% {
+    transform: scale(1.5);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes radiopop--alt {
+  50% {
+    transform: scale(2.5);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+

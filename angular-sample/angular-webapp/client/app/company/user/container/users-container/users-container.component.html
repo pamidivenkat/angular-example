@@ -1,0 +1,70 @@
+<ae-banner [id]="'user-list-banner'" [name]="'user-list-banner'" [titleText]="'Users'" [backgroundImage]="'/assets/images/lp-employees.jpg'">
+  <ae2-breadcrumb [id]="'breadCrumb'" [name]="'breadCrumb'" class="bredcrumb-section" [group]="bcGroup"></ae2-breadcrumb>
+  <div class="image-text banner-image-text">
+  </div>
+  <div class="icon-list banner-icon-list">
+    <ae-button [type]="'button'" [id]="'test-slider'" [name]="'test-slider'" (aeClick)="onAddClick($event)" class="btn" [text]="'Add User'"></ae-button>
+  </div>
+</ae-banner>
+
+<div class="button-bar button-bar--offset button-bar--compact spacer" *ngIf="canBulkResetPwd()">
+  <div class="button-bar__item">
+    <ae-button [type]="'button'" [id]="'bulkResePwd'" [name]="'bulkResePwd'" (aeClick)="onBulkResetPwd($event)" [customClass]="'button--cta'"
+      [text]="'BULK_PASSWORD_RESET_BTN_TITLE' | translate:lang" [title]="'BULK_PASSWORD_RESET_BTN_TITLE' | translate:lang">
+
+    </ae-button>
+  </div>
+</div>
+<ae-notification [id]="'user-list-info'" [name]="'user-list-info'" [iconName]="'icon-info'" [textInfo]="'ATLAS_USERS_MEG' | translate:lang"></ae-notification>
+
+<user-list [id]="'user-list-component'" [name]="'user-list-component'" (detailUserCommand)="_detailUserCommand($event)" (updateUserCommand)="_updateUserCommand($event)"
+  (disableUserCommand)="_disableUserCommand($event)" (enableUserCommand)="enableUserCommand($event)" (removeUserCommand)="_removeUserCommand($event)"
+  (userViewPermissionCommand)="userViewPermissionCommand($event)" (userManualReset)="onShowUserManualReset($event)"></user-list>
+
+<!--slideout pop code here-->
+<div class="users-slideout">
+  <ae-slideout [id]="getChildId('AeSlideOut', 1)" [name]="getChildName('AeSlideOut', 1)" [modelState]="getSlideoutState()"
+    [class.slide--animate]="getSlideoutAnimateState()">
+    <div *ngIf="_showAddUpdateSlideOut()">
+      <user-add-update-form [id]="'user-add-update-form-section'" [name]="'user-add-update-form-section'" [vm]="_selectedUser"
+        [addOrUpdateActionType]="_addOrUpdateActionType" (onCancel)="_onUserGroupFormCancel($event)" (OnSaveComplete)="_onUserFormSaveComplete($event)"></user-add-update-form>
+    </div>
+    <div *ngIf="_showUserDetailSlideOut()">
+      <user-detail [id]="'user-detail-section'" [name]="'user-detail-section'" [vm]="_selectedUser" (onCancel)="_onUserGroupFormCancel($event)"></user-detail>
+    </div>
+
+    <div *ngIf="_showUserPermissionSlideOut()">
+      <user-view-permissions [id]="'user-permissions-section'" [name]="'user-permissions-section'" [vm]="_selectedUser" (onCancel)="_onUserGroupFormCancel($event)"></user-view-permissions>
+    </div>
+    <div *ngIf="showUserResetPasswordSlideOut()">
+      <reset-password [id]="'resetPasswordPage'" [name]="'resetPasswordPage'" [userId]="selectedUser.Id" (cancel)="onResetPasswordCancel($event)"
+        (update)="onResetPasswordComplete($event)"></reset-password>
+    </div>
+  </ae-slideout>
+</div>
+<!--delete confirmation pop-up-->
+<div *ngIf="showConfirmDialog">
+  <ae-modal-dialog [visible]="showConfirmDialog" (cancel)="_ConfirmModalClosed($event)" [closable]="true" [id]="getChildId('AeModel', 1)"
+    [name]="getChildName('AeModel', 1)">
+    <div class="modal-dialog-header">
+      <h3 *ngIf="_showDeleteConfirmDialog" class="modal-title">{{'USERS_Dialog.Heading_text' | translate:lang}}</h3>
+      <h3 *ngIf="_showDisableConfirmDialog" class="modal-title">{{'USERS_Dialog.Heading_text_disable' | translate:lang}} </h3>
+      <h3 *ngIf="_showEnableConfirmDialog" class="modal-title">{{'USERS_Dialog.Heading_text_enable' | translate:lang}} </h3>
+    </div>
+    <div class="modal-dialog-body">
+      <span *ngIf="_showDeleteConfirmDialog">{{'USERS_Dialog.Info' | translate:lang:{UserName: _selectedUser.FullName} }}</span>
+      <span *ngIf="_showDisableConfirmDialog">{{'USERS_Dialog.Info_disable' | translate:lang }} </span>
+      <span *ngIf="_showEnableConfirmDialog">{{'USERS_Dialog.Info_enable' | translate:lang }} </span>
+    </div>
+    <div class="modal-dialog-footer">
+      <ae-button [text]="'USERS_Dialog.Btn_No' | translate:lang" [type]="'button'" [id]="'deleteConfirmNo'" [name]="'deleteConfirmNo'"
+        (aeClick)="_ConfirmModalClosed($event)"></ae-button>
+      <ae-button *ngIf="_showDeleteConfirmDialog" [class]="_lightClass" [text]="'USERS_Dialog.Btn_Yes' | translate:lang" [type]="'button'"
+        [id]="'deleteConfirmYes'" [name]="'deleteConfirmYes'" (aeClick)="_removeUserRecord($event)"></ae-button>
+      <ae-button *ngIf="_showDisableConfirmDialog" [class]="_lightClass" [text]="'USERS_Dialog.Btn_Yes_disable' | translate:lang"
+        [type]="'button'" [id]="'disableConfirmYes'" [name]="'enableConfirmYes'" (aeClick)="_disableUserRecord($event)"></ae-button>
+      <ae-button *ngIf="_showEnableConfirmDialog" [class]="_lightClass" [text]="'USERS_Dialog.Btn_Yes_enable' | translate:lang"
+        [type]="'button'" [id]="'enableConfirmYes'" [name]="'enableConfirmYes'" (aeClick)="_disableUserRecord($event)"></ae-button>
+    </div>
+  </ae-modal-dialog>
+</div>

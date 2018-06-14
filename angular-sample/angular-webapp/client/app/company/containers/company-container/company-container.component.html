@@ -1,0 +1,4 @@
+<company-header [informationBarItems]="companyInformationBarItems" [id]="'companyHeader'" [name]="'companyHeader'"
+    [companyDetail]='companyDetails$ | async'></company-header>
+<company-details [companyDetail]='companyDetails$ | async' (onCompanyLogoSave)="onCompanyLogoSave($event)" [logourl]='imgPreviewSrcUrl'
+    [id]="'companyDetails'" [name]="'companyDetails'"></company-details>

@@ -1,0 +1,50 @@
+@import '../../../../../assets/scss/variablesMap';
+.isInActive {
+  display: none;
+}
+
+.employee-add-container {
+  .wizard__step--item {
+    background: $teal--0;
+    color: $white;
+    &:hover {
+      background: $teal--0;
+      color: $white;
+    }
+    @media only screen and (min-width: 768px) {
+      &::after {
+        border: solid transparent;
+        border-color: rgba(136, 183, 213, 0);
+        border-left-color: $teal--0;
+        border-width: 10px;
+        content: " ";
+        display: block;
+        height: 20px;
+        left: 100%;
+        margin-top: -10px;
+        pointer-events: none;
+        position: absolute;
+        top: 50%;
+        width: 10px;
+      }
+    }
+    &.activeTab {
+      background: $white;
+      color: $teal--0;
+      &:hover {
+        background: $white;
+        color: $teal--0;
+      }
+      &::after {
+        display: none;
+      }
+    }
+  }
+  .button-bar {
+    border-top: 2px solid $grey--pale;
+    margin-top: 30px;
+  }
+  .information-grid__section > h3 {
+    margin-top: 10px !important
+  }
+}

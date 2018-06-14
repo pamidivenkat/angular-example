@@ -1,0 +1,12 @@
+<div class="legends" [class.legend--vertical]="legendVertical()" [id]="id">
+  <h4 *ngIf="legendText">{{legendText}}</h4>
+  <div class="legend-options">
+    <div class="legend" *ngFor="let legend of options">
+      <div class="legend__indicator">
+        <ae-indicator [class]="legend.Class" [text]="legend.Text" [shape]="shape" *ngIf="!showLegendIcon(legend.IconName)"></ae-indicator>
+        <ae-icon [id]="getChildId('aeLegend', 1)" [name]="getChildName('aeLegend', 1)" [size]="iconTiny" [color]="'grey'" [icon]="legend.IconName"  *ngIf="showLegendIcon(legend.IconName)"></ae-icon>
+      </div>
+      <div class="legend__description">{{legend.Text}} <ae-stamp [class]="legend.Class" [text]="legend.Value" *ngIf="showLegendValue(legend.Value)"></ae-stamp></div>
+    </div>
+  </div>
+</div>

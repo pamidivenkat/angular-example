@@ -1,0 +1,9 @@
+<div [id]="getChildId('div', 1)">
+  <div class="so-panel__title" [id]="getChildId('div', 2)">
+    <h3 *ngIf="isAddForm()">{{'ADD_ROE' | translate:lang}}</h3>
+    <h3 *ngIf="isUpdateForm()">{{'UPDATE_ROE' | translate:lang}}</h3>
+  </div>
+  <ae-form [formBuilderData]="raRoutesOfExposureFormVM" [id]="getChildId('AeForm', 1)" [name]="getChildName('AeForm', 1)"
+    [isPrimaryTitle]="false" [footerBtnText]="footerBtnText()" (onSubmit)="onUpdateFormSubmit($event)" (onCancel)="onUpdateFormClosed($event)" (onFormInit)="onFormInit($event)">
+  </ae-form>
+</div>

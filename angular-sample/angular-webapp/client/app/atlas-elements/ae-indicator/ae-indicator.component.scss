@@ -1,0 +1,86 @@
+@import '../../../assets/scss/variablesMap';
+.indicator {
+  @include dimensions(10px);
+  background: $grey--0;
+  border-radius: 50%;
+  display: inline-block;
+  text-indent: -9999px;
+  vertical-align: middle;
+  &.indicator--square {
+    border-radius: 0;
+  }
+  .icon {
+    margin-left: 5px;
+  }
+}
+
+.indicator--Immediate {
+  background: $red--0;
+}
+
+.indicator--High {
+  background: $yellow--0;
+}
+
+.indicator--Medium {
+  background: $teal--2;
+}
+
+.indicator--Low {
+  background: $teal--4;
+}
+
+.indicator--green {
+  background: $indicator--green;
+  color: $white;
+}
+
+.indicator--red {
+  background: $indicator--red;
+  color: $white;
+}
+
+.indicator--purple {
+  background: $indicator--purple;
+  color: $white;
+}
+
+.indicator--yellow {
+  background: $indicator--yellow;
+  color: $white;
+}
+
+.indicator--teal {
+  background: $indicator--teal;
+  color: $white;
+}
+
+.indicator--grey {
+  background: $indicator--grey;
+  color: $white;
+}
+
+.indicator--dark-green {
+  background: $indicator--dark-green;
+  color: $white;
+}
+
+.indicator--dark-yellow {
+  background: $indicator--dark-yellow;
+  color: $white;
+}
+
+.indicator--dark-red {
+  background: $indicator--dark-red;
+  color: $white;
+}
+
+.cl-green {
+    background: #009245;
+}
+.cl-yellow {
+    background: #fdc649;
+}
+.cl-red {
+    background: #e51942;
+}

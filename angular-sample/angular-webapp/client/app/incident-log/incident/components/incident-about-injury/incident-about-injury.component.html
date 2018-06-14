@@ -1,0 +1,60 @@
+<div id="incidentAboutInjury" class="incident-about-injury">
+  <div>
+    <ae-form [formBuilderData]="incidentAboutFormVM" [id]="'incidentAboutInjuryForm'" [name]="'incidentAboutInjuryForm'" [isPrimaryTitle]="false"
+      [displayFooter]="false" (onFormInit)="onFormInit($event)" (isFormValid)="onFormValidityChange($event)" *ngIf="!isIncidentTypeChanged()">
+      <ae-template [type]="'witnessTemplate'">
+        <ng-template let-context="item">
+          <div id="witness-form" *ngIf="hasWitness">
+            <form id="incident-witness-form" name="incident-witness-form" class="form" [formGroup]="aboutIncidentForm">
+              <div formArrayName="witnesses">
+                <div *ngFor="let witness of witnessesArray; let i = index ">
+                  <div class="witness-grid-collection about-incident-fieldset">
+                    <fieldset>
+                      <legend>Witness {{i+1}}</legend>
+                      <div class="witness-grid" [formGroupName]="i">
+                        <div class="witness-grid__name">
+                          <label for="name-+i">Full name </label>
+                          <ae-input id="getChildId('Witness-Full-Name',i)" [name]="getChildName('Witness-Full-Name',i)" formControlName="FullName"
+                            [readonly]="'false'" [placeholder]="''" [maxlength]="150"></ae-input>
+                        </div>
+                        <div class="witness-grid__telephone">
+                          <label for="telephone-+i">Telephone </label>
+                          <ae-input id="getChildId('Witness-Telephone',i)" [name]="getChildName('Witness-Telephone',i)" formControlName="Telephone"
+                            [readonly]="'false'" [placeholder]="''" [maxlength]="150"></ae-input>
+                        </div>
+                        <div class="witness-grid__delegation">
+                          <label for="delegation-+i">Delegation / Job title</label>
+                          <ae-input id="getChildId('Witness-Delegation',i)" [name]="getChildName('Witness-Delegation',i)" formControlName="JobRole"
+                            [readonly]="'false'" [placeholder]="''" [maxlength]="150"></ae-input>
+                        </div>
+                      </div>
+                    </fieldset>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </ng-template>
+      </ae-template>
+
+    </ae-form>
+  </div>
+  <div *ngIf="isIncidentTypeChanged()" class="loader-container">
+    <ae-loader [loaderType]="loaderType"></ae-loader>
+  </div>
+</div>
+<ae-modal-dialog [visible]="showPopUp" (cancel)="modalClosed($event)" [closable]="false" [id]="getChildId('Aemodal', 1)"
+  [name]="getChildName('Aemodal', 1)" *ngIf="showPopUp">
+  <div class="modal-dialog-header">
+    <h3> {{'INCIDENT_KEY_FIELD.NOTIFICATION_HEADER' | translate:lang}}</h3>
+  </div>
+  <div class="modal-dialog-body">
+    <p>{{'INCIDENT_KEY_FIELD.NOTIFICATION_MESSAGE' | translate:lang}} </p>
+  </div>
+  <div class="modal-dialog-footer">
+    <ae-button [text]="'INCIDENT_KEY_FIELD.BUTTON_REMAIN' | translate:lang" [title]="'INCIDENT_KEY_FIELD.BUTTON_REMAIN' | translate:lang"
+      [type]="'button'" [id]="'submitConfirmCancel'" [name]="'submitConfirmCancel'" (aeClick)="modalClosed($event)"></ae-button>
+    <ae-button [class]="lightClass" [text]="'INCIDENT_KEY_FIELD.BUTTON_CONTINUE' | translate:lang" [title]="'INCIDENT_KEY_FIELD.BUTTON_CONTINUE' | translate:lang"
+      [type]="'button'" [id]="'submitConfirm'" [name]="'submitConfirm'" (aeClick)="onConfirmation($event)"></ae-button>
+  </div>
+</ae-modal-dialog>

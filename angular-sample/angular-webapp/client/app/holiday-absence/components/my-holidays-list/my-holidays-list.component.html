@@ -1,0 +1,221 @@
+<div class="table holiday-table">
+  <div class="section-title">
+    <h3>{{'ABSENCES.REQUESTS' | translate:lang}}</h3>
+    <ae-select [id]="'status-filter'" [name]="'status-filter'" [placeholder]="'ABSENCES.ALL' | translate:lang" (aeSelectChange)="absenceStatusChange($event)"
+      [options]="absenceStatusItems" [value]="selectedStatus"></ae-select>
+  </div>
+  <ae-datatable [id]="'holidays'" [name]="'holidays'" [dataSource]="myHolidays$" [autoGenerateColumns]="false" [totalRecords]="totalRecords$"
+    [loading]="loadingStatus$ | async" [defaultOptions]="dataTableOptions$ | async" (pageChanged)="onPageChange($event)" (onSort)="onSort($event)"
+    [actions]="actions">
+    <ae-column [headerText]="'ABSENCES.Status' | translate: lang" [sortable]="false">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span></span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <holiday-status-indicator *ngIf="context.Status" [code]="context.Status.Code" [id]="getChildId('holidayStatusIndicator', context.Id)"
+            [name]="getChildName('holidayStatusIndicator', context.Id)">
+          </holiday-status-indicator>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'ABSENCES.START_DATE'| translate:lang" [sortKey]="'StartDate'" [isMobileView]="true">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'ABSENCES.START_DATE'| translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <span>{{context.StartDate |  localeDate:defaultLocale:'shortDate'}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'ABSENCES.END_DATE'| translate:lang" [sortKey]="'EndDate'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'ABSENCES.END_DATE'| translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <span>{{context.EndDate |  localeDate:defaultLocale:'shortDate'}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'ABSENCES.REQUESTED_DAYS'| translate:lang" [sortKey]="'NoOfDays'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'ABSENCES.REQUESTED_DAYS'| translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <span>{{noOfUnitsInFraction(context.Id)}}</span>
+          <span *ngIf="context.NoOfDays && context.IsHour">
+            <ae-icon [id]="'iconInfo'" [name]="'iconInfo'" [size]="iconTiny" [color]="'#009494'" [title]="'Click_more_info' | translate: lang"
+            *ngIf="showMyAbsenceDetailsInfoIcon(context.Id)" [icon]="'icon-info'"
+            aePopover [popOverVm]="getPopOverVm(context)" [popOverAction]="'click'">  </ae-icon>
+          </span>
+
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'ABSENCES.SUBMITTED_DATE'| translate:lang" [sortKey]="'CreatedOn'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'ABSENCES.SUBMITTED_DATE'| translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <span>{{context.CreatedOn | localeDate:defaultLocale:'shortDate'}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'ABSENCES.SUBMITTED_TO'| translate:lang" [sortable]="false">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'ABSENCES.SUBMITTED_TO'| translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <span>{{getUserInfo(context.Id)}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'ABSENCES.COMMENT'| translate:lang" [sortable]="false">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'ABSENCES.COMMENT'| translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <a href="'javascript:void(0)'" onclick="return false" class="icon icon--small" [ngClass]="commentStatus(context) ? '' : 'icon--disabled'">
+            <ae-icon [id]="'iconone'" [name]="'iconone'" [size]="_iconSmall" [title]="commentStatus(context) ?  getComment(context) : 'No comments added' "   [icon]="'icon-alert-comment'"></ae-icon>
+          </a>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+
+  </ae-datatable>
+</div>
+<holiday-status-legend [id]="getChildId('holidayStatusLegend', 1)" [name]="getChildName('holidayStatusLegend', 1)"></holiday-status-legend>
+<div class="widget spacer top0" *ngIf="showDelegatesData()">
+  <div class="widget__item widget__item--single widget__item--card widget__item--no-margin">
+    <div *ngFor="let delegate of myDelegateData">
+      <h3 class="top-space0">{{delegate.DelegateGroupName}} </h3>
+      <div class="list-scroll">
+        <ul class="content--col-3">
+          <li *ngFor="let name of delegate.Delegates">{{name}}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="showReasonDialog">
+  <ae-modal-dialog [visible]="showReasonDialog" (cancel)="reasonModalClosed($event)" [closable]="true" [id]="'test'" [name]="'test'">
+    <div class="modal-dialog-header">
+      <h3 class="modal-title">{{ reasonHeaderMessage | translate:lang }}</h3>
+    </div>
+    <div class="modal-dialog-body">
+      <span>{{ leaveCancelReason | translate:lang }} </span>
+    </div>
+    <div class="modal-dialog-footer">
+      <ae-button [text]="'Dialog.Btn_Close'| translate:lang" [type]="'button'" [id]="'testCnfrmYes'" [name]="'testCnfrmYes'" (aeClick)="reasonModalClosed($event)"></ae-button>
+    </div>
+  </ae-modal-dialog>
+</div>
+
+<div *ngIf="showCancelDialog">
+  <ae-modal-dialog [visible]="showCancelDialog" (cancel)="cancelModalClosed($event)" [closable]="true" [id]="'test'" [name]="'test'">
+    <div class="modal-dialog-header">
+      <h3 class="modal-title">{{ cancelHeaderMessage | translate:lang }}</h3>
+    </div>
+    <div class="modal-dialog-body">
+      <span>{{ cancelConfirmationText| translate:lang }} </span>
+    </div>
+    <div class="modal-dialog-footer">
+      <ae-button [text]="'Dialog.Holidays.Btn_No'| translate:lang" [type]="'button'" [id]="'testCnfrmNo'" [name]="'testCnfrNo'"
+        (aeClick)="cancelModalClosed($event)"></ae-button>
+      <ae-button [class]="lightClass" [text]="'Dialog.Holidays.Btn_Yes'| translate:lang" [type]="'button'" [id]="'testCnfrmYes'"
+        [name]="'testCnfrmYes'" (aeClick)="cancelHoliday($event)"></ae-button>
+    </div>
+  </ae-modal-dialog>
+</div>
+
+<div *ngIf="showResubmitDialog">
+  <ae-modal-dialog [visible]="showResubmitDialog" (cancel)="resubmitModallClosed($event)" [closable]="true" [id]="'reSubmitModal'"
+    [name]="'reSubmitModal'">
+    <div class="modal-dialog-header">
+      <h3 class="modal-title">Re-Submit / Escalate Holiday Request</h3>
+    </div>
+    <div class="modal-dialog-body">
+      <div>
+        <b>Please choose action</b>
+      </div>
+      <div class="radio-group top-5">
+        <div *ngIf="showResubmitToManager()">
+          <input type="radio" id="radio-02-01" name="radio-alt" class="radio__input" [checked]="!checkEscalateRequest()" (click)="selectResubmitRequest(1)">
+          <label for="radio-02-01" class="radio__copy">Resubmit to your manager</label>
+        </div>
+
+        <div *ngIf="_showEscalateRequest()">
+          <input type="radio" id="radio-02-02" name="radio-alt" class="radio__input" [checked]="checkEscalateRequest()" (click)="selectResubmitRequest(2)">
+          <label for="radio-02-02" class="radio__copy"> Escalate your request</label>
+        </div>
+      </div>
+    </div>
+    <div class="modal-dialog-footer">
+      <ae-button [text]="'No'" [type]="'button'" [id]="'resubmitConfirmNo'" [name]="'resubmitConfirmNo'" (aeClick)="resubmitModallClosed($event)"></ae-button>
+      <ae-button [class]="lightClass" [text]="'Yes'" [type]="'button'" [id]="'resubmitConfirmYes'" [name]="'resubmitConfirmYes'"
+        (aeClick)="onResubmit()"></ae-button>
+    </div>
+  </ae-modal-dialog>
+</div>
+
+<div *ngIf="showEsclateNotUpdateDialog">
+  <ae-modal-dialog [visible]="showEsclateNotUpdateDialog" (cancel)="esclateNotUpdateModallClosed($event)" [closable]="true"
+    [id]="getChildId('AeModalDialog', 13)" [name]="getChildName('AeModalDialog', 13)">
+    <div class="modal-dialog-header">
+      <h3 class="modal-title">{{'HOLIDAYS.EDIT_HOLIDAY_REQUEST' | translate:lang}}</h3>
+    </div>
+    <div class="modal-dialog-body">
+      <p>{{'HOLIDAYS.ESCALATE_NOT_EDIT_MSG' | translate:lang}}</p>
+    </div>
+    <div class="modal-dialog-footer">
+      <ae-button [class]="lightClass" [title]="'BUTTONS.OK' | translate:lang" [text]="'BUTTONS.OK' | translate:lang" [type]="'button'"
+        [id]="getChildId('AeButton', 14)" [name]="getChildName('AeButton', 14)" (aeClick)="esclateNotUpdateModallClosed($event)"></ae-button>
+    </div>
+  </ae-modal-dialog>
+</div>
+
+<ae-template #popOverTemplate [type]="'popOver'">
+  <ng-template let-context="item">
+    <div class="popover-container">
+      <table class="table__table" border="0" cellspacing="0">
+        <tr>
+          <th class="table__heading">{{'ABSENCES.DATE'| translate:lang}}</th>
+          <th class="table__heading">{{'ABSENCES.HOURS'| translate:lang}}</th>
+          <th class="table__heading">{{'ABSENCES.EXCLUDE_LUNCH'| translate:lang}}</th>
+        </tr>
+        <tr *ngFor="let absenceDetails of context.MyAbsenceDetails" class="table__row">
+          <td class="table__item">
+            <div class="table__item-inner">{{absenceDetails.FromHour | localeDate:defaultLocale:'shortDate' }}</div>
+          </td>
+          <td class="table__item">
+            <div class="table__item-inner">{{absenceDetails.NoOfUnits}}</div>
+          </td>
+          <td class="table__item">
+            <div class="table__item-inner">{{getLunchDuration(absenceDetails.LunchDuration)}}</div>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </ng-template>
+</ae-template>

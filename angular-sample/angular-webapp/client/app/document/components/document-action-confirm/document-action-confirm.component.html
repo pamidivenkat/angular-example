@@ -1,0 +1,39 @@
+<div class="modal-dialog-header document-model">
+    <h3> {{ setActionConfirmTitle() }}</h3>
+</div>
+<div class="modal-dialog-body">
+    <form class="form" [formGroup]="actionedDocumentForm" (window:resize)="beResponsive()">
+        <div *ngIf="isRequiresRead()">
+            <ae-checkbox formControlName="readActionConfirm" [id]="'chkReadActionConfirm'" [name]="'chkReadActionConfirm'" [checkText]="setCheckBoxConfirmTitle()">
+            </ae-checkbox>
+        </div>
+        <div *ngIf="isRequiresSign()">
+            <label>{{ 'SIGNATURE' | translate:lang }} <span class="error-text">*</span> </label>
+
+            <div class="sig-container" #sigContainer1>
+                <div class="signarure-block pu" fxLayout="row">
+                    <ae-signature formControlName="employeeSignConfirm" (aeChange)="onSigned($event)"></ae-signature>
+                </div>
+                <div fxLayout="row">
+                    <ae-anchor [id]="'clearSignature'" [name]="'clearSignature'" [text]="'Clear Signature'" (aeClick)="onClearSignature($event)">
+                    </ae-anchor>
+                </div>
+            </div>
+
+            <ae-checkbox formControlName="signActionConfirm" [id]="'chkSignActionConfirm'" [name]="'chkSignActionConfirm'" [checkText]="setCheckBoxConfirmTitle()">
+            </ae-checkbox>
+        </div>
+        <div *ngIf="needToShowValidationMessage()">
+            <span class="error-text">  {{validationMessage}} </span>
+        </div>
+    </form>
+</div>
+
+<div class="modal-dialog-footer">
+    <ae-button [class]="darkClass" [text]="'BUTTONS.VIEW' | translate:lang" [type]="'button'" [id]="'confirmView'" [name]="'ConfirmView'" (aeClick)="modalDocumentView()" [btnIcon]="'icon-alert-eye'" [iconPosition]="btnRight">
+    </ae-button>
+    <ae-button [class]="lightClass" [text]="'BUTTONS.DISCARD' | translate:lang" [type]="'button'" [id]="'confirmNo'" [name]="'confirmNo'" (aeClick)="modalClosed('discard')" [btnIcon]="'icon-alert-cancel'" [iconPosition]="btnRight">
+    </ae-button>
+    <ae-button [class]="lightClass" [text]="'BUTTONS.OK' | translate:lang" [type]="'button'" [id]="'confirmYes'" [name]="'confirmYes'" (aeClick)="modalClosed('ok')" [btnIcon]="'icon-alert-circle-tick'" [iconPosition]="btnRight">
+    </ae-button>
+</div>

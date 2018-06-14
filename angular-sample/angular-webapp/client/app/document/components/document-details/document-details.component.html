@@ -1,0 +1,95 @@
+<div *ngIf="selectedDocument">
+  <div class="so-panel__title">
+    <h3>{{'DETAILS_DOCUMET' | translate:lang}} </h3>
+  </div>
+  <div class="so-panel__content">
+    <div class="information-grid">
+      <section class="information-grid__section">
+        <div id="information-grid__item_name" class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'FILE_NAME' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3">{{selectedDocument.FileNameAndTitle }}
+          </div>
+        </div>
+
+        <div id="information-grid__item_category" class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'CATEGORY' | translate:lang }}</div>
+          <div class="information-grid__item-value column-2of3">{{selectedDocument.CategoryLocalizedName }}
+          </div>
+        </div>
+
+        <div id="information-grid__item__subCat" class="information-grid__item" *ngIf="selectedDocument.DocumentVaultSubCategory!=null && selectedDocument.DocumentVaultSubCategory != undefined">
+          <div class="information-grid__item-label column-1of3">{{'DOCUMENT_TYPE' | translate:lang }}</div>
+          <div class="information-grid__item-value column-2of3">{{selectedDocument.DocumentVaultSubCategory.Name }}
+          </div>
+        </div>
+
+        <div id="information-grid__item_regard" class="information-grid__item" *ngIf="showRegardingObjectData()">
+          <div class="information-grid__item-label column-1of3">{{ regardingObjectTypeName }}</div>
+          <div class="information-grid__item-value column-2of3">{{ regardingObjectTypeValue }}
+          </div>
+        </div>
+
+        <div id="information-grid__item_type" class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'TYPE' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3">{{selectedDocument.UsageName }}
+          </div>
+        </div>
+
+        <div id="information-grid__item_archive" class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'ARCHIVED' | translate:lang }}</div>
+          <div class="information-grid__item-value column-2of3">{{ selectedDocument.IsArchived ? 'Yes' : 'No' }}
+          </div>
+        </div>
+
+        <div id="information-grid__item_modified" class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'MODIFIED_ON' | translate : lang }}</div>
+          <div class="information-grid__item-value column-2of3">{{selectedDocument.ModifiedOn | localeDate:defaultLocale:'shortDate' }}
+          </div>
+        </div>
+
+
+        <div id="information-grid__item_expire" class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EXPIRE_ON' | translate:lang }}</div>
+          <div class="information-grid__item-value column-2of3">{{selectedDocument.ExpiryDate | localeDate:defaultLocale:'shortDate' }}
+          </div>
+        </div>
+
+
+        <div id="information-grid__item_desc" class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'DESCRIPTION' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3">{{selectedDocument.Description ? selectedDocument.Description : 'Not Mentioned' }}
+          </div>
+        </div>
+        <div id="information-grid__item_notes" class="information-grid__item">
+          <div class="information-grid__item-label column-1of3"> {{'NOTES' | translate:lang}} </div>
+          <div class="information-grid__item-value column-2of3">{{selectedDocument.Comment ? selectedDocument.Comment : 'Not Mentioned' }}
+          </div>
+        </div>
+        <div class="sg-grid grid--1-2 top15">
+          <div>
+            <ae-anchor [class]="'button--cta card__button'" [text]="'Download'" [anchorType]="'button'" [id]="'btnDownload'" [name]="'btnDownload'"
+              (aeClick)="downloadDocument(selectedDocument.Id)"></ae-anchor>
+          </div>
+          <div>
+            <ae-anchor [class]="'button--cta card__button'" [text]="'Remove'" [anchorType]="'button'" [id]="'btnRemove'" [name]="'btnRemove'"
+              (aeClick)="removeDocumentClick()"></ae-anchor>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+  <div class="so-panel__footer">
+    <nav>
+      <ul>
+        <li>
+          <ae-button [class]="darkClass" [text]="'BUTTONS.SLIDE_CLOSE' | translate:lang" [type]="'button'" [id]="'btnCancel'" [name]="'btnCancel'"
+            (aeClick)="onDocumentCancel()"></ae-button>
+        </li>
+        <li class="pull--right">
+          <ae-button [class]="buttonLightClass" [text]="'Update'" [type]="'button'" [id]="'btnUpdate'" [name]="'btnUpdate'" (aeClick)="onDocumentEditClick()"></ae-button>
+        </li>
+
+      </ul>
+    </nav>
+  </div>
+</div>

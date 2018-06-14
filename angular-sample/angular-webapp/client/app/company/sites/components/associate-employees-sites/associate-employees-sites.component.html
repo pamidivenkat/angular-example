@@ -1,0 +1,6 @@
+<div class="associate-employees-sites">
+  <ae-form [formBuilderData]="associateEmployeeFormVM" [id]="'associateEmployeeForm'" [name]="'associateEmployeeForm'" [isPrimaryTitle]="true"
+    [footerBtnText]="'Update'" [Title]="getTitle()" (onFormInit)="onFormInit($event)" (onCancel)="onassociateEmployeeFormCancel($event)"
+    (onSubmit)="onassociateEmployeeFormSubmitted($event)" (isFormValid)="onFormValidityChange($event)">
+  </ae-form>
+</div>

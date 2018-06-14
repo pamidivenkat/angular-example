@@ -1,0 +1,29 @@
+html {
+  box-sizing: border-box;
+  color: $base-color;
+  font-size: 62.5%;
+  line-height: 1.2;
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: inherit;
+    flex: 0 1 auto;
+    line-height: inherit;
+  }
+}
+
+body {
+  font-family: $base-font;
+  font-size: 1.6rem;
+  overflow-x: hidden;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+}

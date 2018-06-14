@@ -1,0 +1,26 @@
+<div id="js-search-icon" class="header__search-icon" (click)="showHideSearch()">
+  <div class="icon icon--small">
+    <svg>
+      <use xmlns:xlink="http://www.w3.org/1999/xlink" [attr.xlink:href]="getAbsoluteUrl('icon-search')"></use>
+    </svg>
+  </div>
+</div>
+<div class="header__search-input" [ngClass]="getSearchStyle()" *ngIf="showSearch">
+  <form [formGroup]="searchFormGroup" [id]="'searchForm'" [name]="'searchForm'">
+    <div class="searchbox" [id]="id">
+      <div class="searchbox__button">
+        <ae-button [type]="'button'" [id]="'searchBtn'" [name]="'searchBtn'" [btnIcon]="'icon-search'" [iconSize]="" class="btn"
+          (aeClick)="search($event)"></ae-button>
+      </div>
+      <div class="searchbox__input">
+        <label>
+      <ae-input [id]="getChildId('AeInputSearch', 1)" formControlName="searchTerm" (aeKeydown)="submitWhenEnter($event)" [name]="getChildName('AeInputSearch', 1)" [placeholder]="'SEARCH_PLACERHOLDER' | translate: lang" [cssClass]="'input--no-styling'" [value]="''"></ae-input>
+    </label>
+      </div>
+      <div id="js-search-close" class="searchbox__button searchbox__icon-close">
+        <ae-button [type]="'button'" [id]="'searchClose'" [name]="'searchClose'" [iconColor]="'teal'" [btnIcon]="'icon-cross'" [iconSize]="iconDefault"
+          class="btn" (aeClick)="clearSearch($event)" [text]="'close'"></ae-button>
+      </div>
+    </div>
+  </form>
+</div>

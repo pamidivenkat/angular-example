@@ -1,0 +1,45 @@
+<ae-banner [id]="'banner'" [name]="'banner'" [titleText]="'HELP_TITLE' | translate: lang:{firstName: firstName}" [backgroundImage]="'/assets/images/lp-training.jpg'">
+  <ae2-breadcrumb [id]="'breadCrumb'" [name]="'breadCrumb'" [group]="bcGroup" class="bredcrumb-section"></ae2-breadcrumb>
+</ae-banner>
+<div class="spacer search-help-content">
+  <section class="accordion" role="tablist">
+    <div class="accordion__list margin-auto" *ngIf="HelpSearchContent">
+      <ng-container *ngFor="let item of HelpSearchContent; let i = index">
+        <div class="accordion__list--item" [class.accordion-open]="isOpen(item)">
+          <label [for]="'acc-'+ i" class="accordion__header" (click)="getHelpAreaContentbody(item)">
+            
+                <div class="accordion__header--grid">
+                <div class="accordion__title">
+                    <div class="date">{{item.PublishDate | localeDate:defaultLocale:'dd MMM yyyy'}}</div>
+                        <h2 class="article-listing__title"><label title="'Read more about {{item.Title}}'">{{item.Title}}</label></h2>
+        </div>
+        <div class="accordion__indicator icon">
+          <svg>
+            <use xmlns:xlink="http://www.w3.org/1999/xlink" [attr.xlink:href]="getAbsoluteUrl('icon-pointer-right')"></use>
+          </svg>
+        </div>
+    </div>
+    </label>
+    <div class="accordion__contents" *ngIf="isOpen(item)">
+      <ae-card>
+        <section class="cards" *ngIf="item.Body" [innerHTML]="byPassSecurityForHTML(item.Body)">
+
+        </section>
+      </ae-card>
+    </div>
+</div>
+</ng-container>
+</div>
+<div *ngIf="isNoMatchedArticles">
+  <section class="content-section spacer text--centered">
+    <h2>{{'SEARCH_RESULTS_NOT_FOUND' | translate:lang}}</h2>
+  </section>
+</div>
+</section>
+<ae-loader [loaderType]="loaderType" *ngIf="loading"></ae-loader>
+<div class="table__footer" *ngIf="!loading">
+  <ae-pagination [id]="getChildId('AePagination')" [name]="getChildName('AePagination')" [rows]="defaultNoOfRows" [totalRecords]="totalRecords"
+   [currentRows]="currentRows" (aePageChange)="onPageChange($event)" [currentPage]="currentPageNumber">
+  </ae-pagination>
+</div>
+</div>

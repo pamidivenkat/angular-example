@@ -1,0 +1,39 @@
+<div id="bankContainer">
+  <div class="section-title">
+    <h3>{{'EMPLOYEE_BANK_DETAILS.BANK_DETAILS_HEADING' | translate:lang}}</h3>
+    <ae-button *ngIf="canUpdate$ | async" [type]="'button'" [id]="getChildId('AeButton', 1)" [name]="getChildName('AeButton', 1)" (aeClick)="openEmployeeBankDetailsAddUpdateForm($event)"
+      class="btn" [class]="lightClass" [title]="'BUTTONS.ADD' | translate:lang" [text]="'BUTTONS.ADD' | translate:lang"></ae-button>
+  </div>
+<div class="spacer">
+  <employee-bank-list (onGridPaging)="onGridPaging($event)" [id]="'empBankDetailsList'" [name]="'empBankDetailsList'"
+  (onGridSorting)="onGridSorting($event)" (onBankDetailsSelected)="onBankDetailsSelect($event)" (onBankDetailsDelete)="onBankDetailsDeleteSelect($event)">
+  </employee-bank-list>
+</div>
+<div>
+  <ae-slideout [id]="'empBankDetailsSlideOut'" [name]="'empBankDetailsSlideOut'" [modelState]="getEmployeeBankDetailsSlideoutState()"
+    (cancel)="closeEmployeeBankDetailsAddUpdateForm($event)" [class.slide--animate]="showEmployeeBankDetailsAddUpdateForm">
+    <ng-container *ngIf="showEmployeeBankDetailsAddUpdateForm">
+      <employee-bank-add-update [id]="'empBankDetailsAddUpdate'" [name]="'empBankDetailsAddUpdate'" (onCancel)="onAddOrUpdateCancel($event)" [County]="county$ | async" [Country]="country$ | async"
+        [toggleOption]="operationMode" [data]="selectedBankdetails" (onUpdate)="onBankDetailsUpdate($event)" (onAdd)="onBankDetailsAdd($event)">
+      </employee-bank-add-update>
+    </ng-container>
+  </ae-slideout>
+  </div>
+
+  <ae-modal-dialog [visible]="showRemoveDialog" (cancel)="modalClosed($event)" [closable]="true" [id]="'confirmModal'" [name]="'confirmModal'"
+    *ngIf="showRemoveDialog">
+    <div class="modal-dialog-header">
+      <h3>{{ 'EMPLOYEE_BANK_DETAILS.Dialog.Heading_text' | translate:lang  }}</h3>
+    </div>
+    <div class="modal-dialog-body">
+      <p>{{ 'EMPLOYEE_BANK_DETAILS.Dialog.Info' | translate:lang:{bankName: _selectedBankdetails.Name} }} </p>
+    </div>
+    <div class="modal-dialog-footer">
+      <ae-button [text]="'EMPLOYEE_BANK_DETAILS.Dialog.Btn_No'| translate:lang " [type]="'button'" [id]="'confirmNo'" [name]="'confirmNo'" (aeClick)="modalClosed('no')"></ae-button>
+      <ae-button [class]="lightClass" [text]="'EMPLOYEE_BANK_DETAILS.Dialog.Btn_Yes'| translate:lang " [type]="'button'" [id]="'confirmYes'" [name]="'confirmYes'"
+        (aeClick)="modalClosed('yes')"></ae-button>
+    </div>
+  </ae-modal-dialog>
+
+
+</div>

@@ -1,0 +1,29 @@
+.cal-month-view{
+  .event-block{
+    width: 100%; margin-bottom: 2px;
+  }
+} 
+.more-items{ text-align: center;
+   .down a{ width: 100%; display: inline-block;
+     &:after{
+      content: "";
+      width: 0; 
+      height: 0; 
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 6px solid #3d3d3d;
+      display: inline-block;
+    }
+   }
+  .up a{ width: 100%; display: inline-block;
+    &:after{
+        content: "";
+        width: 0; 
+        height: 0; 
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-bottom: 6px solid #3d3d3d;
+        display: inline-block;
+      }
+    }
+  }

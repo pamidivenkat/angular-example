@@ -1,0 +1,80 @@
+<ae-banner [id]="'holidayrequestsbanner'" [name]="'holidayrequestsbanner'" [titleText]="'Holiday & absence requests'" [backgroundImage]="'/assets/images/lp-employees.jpg'">
+  <ae2-breadcrumb [id]="'breadCrumb'" [name]="'breadCrumb'" class="bredcrumb-section" [group]="bcGroup"></ae2-breadcrumb>
+  <div class="image-text banner-image-text">
+  </div>
+  <div class="icon-list banner-icon-list">
+    <ae-splitbutton [id]="'holidayrequestsSplitButton'" [name]="'holidayrequestsSplitButton'" [text]="'Add Holiday or Absence'"
+      [options]="splitButtonOptions" (aeClick)="onSplitBtnClick($event)">
+    </ae-splitbutton>
+  </div>
+</ae-banner>
+
+<ae-notification [id]="'holidayrequestsNotify'" [name]="'holidayrequestsNotify'" [iconName]="'icon-info'" [textInfo]="'HOLIDAYS.HOLIDAY_ABSENCES_REQUESTS_NOTIFICATION' | translate:lang"></ae-notification>
+
+<div style="width:50%;margin:0px auto" *ngIf="hasOneStepError">
+  <ae-message [id]="getChildId('AeMessage',1)" [name]="getChildName('AeMessage',1)" [text]="'Please select the employee'" [show-close-icon]="true"
+    (aeClose)="clearErrorMsg($event)" [icon]="'icon-alert-triangle'" [messageType]="messageType"></ae-message>
+</div>
+
+<holiday-absence-requests [id]="'holidayAbsenceRequests'" [name]="'holidayAbsenceRequests'" (declineRequest)="onDeclineRequest($event)"
+  (viewTeamCalendarRequest)="onViewTeamCalendarRequest($event)" (approveRequest)="onApproveRequest($event)" (employeeSelect)="onEmployeeSelect($event)"
+  [fiscalYearList]="fiscalYearData" [fiscalYearSummary]="fiscalYearSummaryForChart" [absenceStatusItems]="adjustedAbsenceStatusList"
+  [employeeSettings]="employeeSettings" [absenceTypes]="absenceTypes" (selectTeamRoaster)="onSelectTeamRoaster($event)" (changeFiscalYear)="onChangeFiscalYear($event)"
+  [filterEmployee]="filterEmployee">
+</holiday-absence-requests>
+
+<div class="holiday-slideout">
+  <ae-slideout [id]="getChildId('AeSlideOut', 15)" [name]="getChildName('AeSlideOut', 15)" [modelState]="getMyAbsenceDeclineSlideoutState()"
+    (cancel)="closeMyAbsenceDeclineForm()" [class.slide--animate]="showMyAbsenceDeclineForm">
+    <ng-container *ngIf="showMyAbsenceDeclineForm">
+      <my-absence-decline [id]="'myHolidayAbsenceDecline'" [name]="'myHolidayAbsenceDecline'" (declineFormClose)="closeMyAbsenceDeclineForm()"
+        [id]="getChildId('MyAbsenceDecline',8)" [name]="getChildName('MyAbsenceDecline',8)" (declineComplete)="onDeclineComplete($event)"
+        [absenceStatuses]="absenceStatusList" [myAbsence]="employeeAbsence"></my-absence-decline>
+    </ng-container>
+  </ae-slideout>
+</div>
+
+<div class="holiday-slideout">
+  <ae-slideout [id]="getChildId('AeSlideOut', 16)" [name]="getChildName('AeSlideOut', 16)" [modelState]="getMyAbsenceManageSlideoutState()"
+    [class.slide--animate]="showMyAbsenceManageForm">
+    <my-absence-manage *ngIf="showMyAbsenceManageForm" [id]="'myHolidayAbsenceManage'" [name]="'myHolidayAbsenceManage'" [operationMode]="operationMode"
+      (aeOnClose)="closeMyAbsenceManageForm($event)" [fiscalYears]="fiscalYearData" [employeeSettings]="employeeSettings" [absenceStatuses]="absenceStatusList"
+      [approve]="isApproveMode" [onestep]="isOneStepProcess" [myAbsence]="employeeAbsence" [approvedBy]="userId" [employeeConfig]="employeeConfig"
+      [myabsenceVM]="myHolidayAbsenceVM" (summaryChange)="onSummaryChange($event)" [absenceTypes]="absenceTypes" [fiscalYearSummary]="fiscalYearSummary"
+      (formSubmit)="saveEmployeeHoliday($event)" (pullFiscalYearSummary)="onPullFiscalYearSummary($event)"></my-absence-manage>
+  </ae-slideout>
+</div>
+
+<div class="calendar-slideout">
+  <ae-slideout [hidden]="!showTeamCalendar" [class.slide--animate]="showTeamCalendar" [modelState]="getViewTeamCalendarSlideoutState()"
+    (cancel)="closeViewTeamCalendar()" [id]="'calendarSlider'" [name]="'calendarSlider'">
+    <div class="so-panel__title">
+      <h3 class="grey-strip">Team Calendar ( {{selectedEmployeeDepartmentName}} )</h3>
+    </div>
+    <div class="so-panel__content">
+      <team-calendar-loader [isLoaded]="showTeamCalendar$"></team-calendar-loader>
+    </div>
+    <div class="so-panel__footer">
+      <nav>
+        <ul>
+          <li><label for="soPanel" class="button button--inline-block" (click)="closeViewTeamCalendar()" [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label></li>
+        </ul>
+      </nav>
+    </div>
+  </ae-slideout>
+</div>
+
+
+<div class="roster-slideout">
+
+  <ae-slideout [id]="'teamRoster'" [name]="'teamRoster'" [modelState]="getTeamRoasterSlideoutState()" [class.slide--animate]="showTeamRoaster">
+    <ng-container *ngIf="showTeamRoaster">
+      <team-roaster [id]="'myHolidayAbsenceManage'" [name]="'myHolidayAbsenceManage'" [loading]="rosterLoaded$" [rosterData]="rosterData$"
+        [recordsCount]="rosterTotalCount$" [dataTableOptions]="rosterDataTableOptions$ | async" [DepartmentName]="selectedEmployeeDepartmentName"
+        [DepartmentId]="selectedEmployeeDepartmentId" [initialWeekModel]="selectedEmployeeRequestWeekModel" (aeOnClose)="closeTeamRoaster($event)"
+        (aeWeekChange)="onWeekChange($event)">
+      </team-roaster>
+    </ng-container>
+  </ae-slideout>
+
+</div>

@@ -1,0 +1,22 @@
+<div class="incident-add-update">
+    <ae-form [formBuilderData]="incidentAddUpdateFormVM" [id]="'incidentAddUpdateForm'" [name]="'incidentAddUpdateForm'" [isPrimaryTitle]="false"
+        [displayFooter]="false" (onFormInit)="onFormInit($event)" (isFormValid)="onFormValidityChange($event)">
+    </ae-form>
+    <ae-loader [loaderType]="loaderType" *ngIf="isDataLoading"></ae-loader>
+</div>
+
+<ae-modal-dialog [visible]="showPopUp" (cancel)="modalClosed($event)" [closable]="false" [id]="getChildId('Aemodal', 1)"
+    [name]="getChildName('Aemodal', 1)" *ngIf="showPopUp">
+    <div class="modal-dialog-header">
+        <h3> {{'INCIDENT_KEY_FIELD.NOTIFICATION_HEADER' | translate:lang}}</h3>
+    </div>
+    <div class="modal-dialog-body">
+        <p>{{'INCIDENT_KEY_FIELD.NOTIFICATION_MESSAGE' | translate:lang}} </p>
+    </div>
+    <div class="modal-dialog-footer">
+        <ae-button [text]="'INCIDENT_KEY_FIELD.BUTTON_REMAIN' | translate:lang" [title]="'INCIDENT_KEY_FIELD.BUTTON_REMAIN' | translate:lang"
+            [type]="'button'" [id]="'submitConfirmCancel'" [name]="'submitConfirmCancel'" (aeClick)="modalClosed($event)"></ae-button>
+        <ae-button [class]="lightClass" [text]="'INCIDENT_KEY_FIELD.BUTTON_CONTINUE' | translate:lang" [title]="'INCIDENT_KEY_FIELD.BUTTON_CONTINUE' | translate:lang"
+            [type]="'button'" [id]="'submitConfirm'" [name]="'submitConfirm'" (aeClick)="onConfirmation($event)"></ae-button>
+    </div>
+</ae-modal-dialog>

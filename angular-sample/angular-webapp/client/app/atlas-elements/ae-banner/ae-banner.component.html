@@ -1,0 +1,14 @@
+<div class="banner">
+  <ng-content select=".bredcrumb-section"></ng-content>
+  <div class="banner__widget" [class.banner--black]="isBannerThemeBlack()" [class.banner--blue]="isBannerThemeBlue()" [class.banner--grey]="isBannerThemeGray()"
+    [class.banner--teal]="isBannerThemeGreen()" [class.banner--red]="isBannerThemePink()" [class.banner--default]="isBannerThemeDefault()">
+    <h1 *ngIf="titleText" class="banner__title" [innerHTML]="titleText"></h1>
+    <ng-content select="[sub-title]"></ng-content>
+    <div class="banner__info">
+      <ng-content select=".icon-list"></ng-content>
+    </div>
+  </div>
+  <div *ngIf="getBackgroundImageUrl()" class="banner__background" [style.background-image]="getBackgroundImageUrl()">
+    <ng-content select=".image-text"></ng-content>
+  </div>
+</div>

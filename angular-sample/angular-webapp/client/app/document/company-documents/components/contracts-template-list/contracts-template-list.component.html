@@ -1,0 +1,17 @@
+
+<div class="table table__filter-bar">
+  <div class="filter-bar holiday-filters">
+    <div class="filter-bar__label label">{{'Filter_by' | translate:lang}}</div>
+
+    <form [formGroup]="contractListForm" [id]="getChildId('form', 1)" [name]="getChildName('form', 1)">
+      <div class="filter-bar__filter">
+        <ae-autocomplete formControlName="site" [id]="getChildId('AeAutocomplete',1)" [name]="getChildName('AeAutocomplete',1)" [placeholder]="'HANDBOOK.SITE_PLACEHOLDER' | translate:lang"
+          [multiselect]="'false'" [items]="sites$  | async" [automatch]="false" [dstype]="localDataSourceType" [field]="'Text'"
+          [debounce]="500" [valuefield]="'Value'"></ae-autocomplete>
+      </div>
+    </form>
+
+  </div>
+</div>
+ <contracts-list [id]="getChildId('ContractsTemplate', 1)" [name]="getChildName('ContractsTemplate', 1)"
+  [contractsFilter]="1" (onGridPaging)="onGridPaging($event)" (onGridSorting)="onGridSorting($event)"> </contracts-list>

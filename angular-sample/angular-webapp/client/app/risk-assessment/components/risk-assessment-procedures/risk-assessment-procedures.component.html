@@ -1,0 +1,10 @@
+<div>
+    <div class="bottom-30">
+        <ae-notification [id]="getChildId('AeNotification', 1)" [name]="getChildName('AeNotification', 1)" [iconName]="'icon-info'"
+            [textInfo]="'RA_HELP_TEXT.OPERATING_PROCEDURE' | translate:lang">
+        </ae-notification>
+    </div>
+    <ae-form [formBuilderData]="riskAssessmentProceduresFormVM" [id]="getChildId('AeForm', 1)" [name]="getChildName('AeForm', 1)"
+        [isPrimaryTitle]="false" (onFormInit)="onFormInit($event)" [displayFooter]="false" (isFormValid)="onFormValidityChange($event)">
+    </ae-form>
+</div>

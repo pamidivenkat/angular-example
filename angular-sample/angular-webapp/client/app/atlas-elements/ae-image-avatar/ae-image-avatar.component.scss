@@ -1,0 +1,43 @@
+@import '../../../assets/scss/variablesMap';
+.person--big {
+  background: $yellow--0;
+  padding-left: 130px;
+  position: relative;
+  @include media-over-767 {
+    padding-left: 230px;
+  }
+}
+
+.person__avatar {
+  @include dimensions(36px);
+  flex-shrink: 0;
+  float: left;
+  margin: 12px;
+  overflow: hidden;
+}
+
+.circle {
+  border-radius: 50%;
+}
+
+.person__avatar--big {
+  @include dimensions($person-avatar-med);
+  border: 2px solid $white;
+  left: 0;
+  position: absolute;
+  top: 0;
+  @include media-over-767 {
+    @include dimensions($person-avatar-big);
+  }
+}
+
+.person__edit {
+  bottom: 15px;
+  color: $white;
+  position: absolute;
+  right: $base-margin;
+  @include media-over-767 {
+    bottom: 40px;
+    right: 40px;
+  }
+}

@@ -1,0 +1,210 @@
+<div>
+  <ae-notification [id]="'todays'" [name]="'todays'" [iconName]="'icon-info'" [textInfo]="getHelpText() | translate:lang">
+  </ae-notification>
+</div>
+
+<div *ngIf="!isRecordsEmpty()" class="table spacer" [id]="'todays-or-complete-incomplete-checklist'">
+  <form [formGroup]="filterForm" [id]="getChildId('checklist-listing-filter', 1)" [name]="getChildName('checklist-listing-filter', 1)">
+    <div class="table__filter-bar">
+      <div class="filter-bar">
+        <div class="filter-bar__label label">{{'Filter_by'| translate:lang}}</div>
+        <div class="sg-grid grid--1-1-3">
+          <div>
+            <ae-select [id]="getChildId('AeSelect', 2)" [name]="getChildName('AeSelect', 2)" [options]="siteOptionList" formControlName="filterTodaysInstanceBySiteId"></ae-select>
+          </div>
+          <div *ngIf="isTodaysChecklistActive">
+            <ae-select [id]="getChildId('AeSelect', 3)" [name]="getChildName('AeSelect', 3)" [options]="checklistFilterOptions" formControlName="filterTodaysCheckListsView"></ae-select>
+          </div>
+          <div *ngIf="isCompleteIncompleteChecklistActive">
+            <ae-select [id]="getChildId('AeSelect', 3)" [name]="getChildName('AeSelect', 3)" [options]="filterStatusOptions" formControlName="filterInstanceByStatus"></ae-select>
+          </div>
+          <div *ngIf="isCompleteIncompleteChecklistActive">
+            <ae-select [id]="getChildId('AeSelect', 3)" [name]="getChildName('AeSelect', 3)" [options]="checklistFilterOptions" formControlName="filterInstanceByUser"></ae-select>
+          </div>
+          <div *ngIf="isCompleteIncompleteChecklistActive">
+            <ae-datetime-picker formControlName="startDate" [placeholder]="startDate" [showIcon]="true"></ae-datetime-picker>
+          </div>
+          <div *ngIf="isCompleteIncompleteChecklistActive">
+            <ae-datetime-picker formControlName="endDate"  [placeholder]="endDate" [showIcon]="true"></ae-datetime-picker>
+            <span *ngIf="formHasError('endDateLessThanStartDate')" class="form__input__error">
+                {{'END_DATE_GREATER_VALIDATION_MSG' | translate:lang}}
+              </span>
+          </div>
+          <div *ngIf="isCompleteIncompleteChecklistActive" class="autocomplete-filter">
+            <ae-autocomplete [id]="'AssignedUsersFilter'" *ngIf="isCompleteIncompleteChecklistActive" formControlName="filterInstanceByAssignee"
+              [name]="'taskAssignedUsers'" [placeholder]="'SELECT_ASSIGNED_USERS' | translate: lang" [multiselect]="false"
+              [items]="assignUsersOptions$ | async" [dstype]="dataSouceType" [field]="'FullName'" [valuefield]="'Id'"></ae-autocomplete>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <ae-datatable [id]="getChildId('DataTable', 1)" [name]="getChildName('DataTable', 1)" [dataSource]="list$" [autoGenerateColumns]="false"
+    [totalRecords]="totalCount$" [actions]="actions" [defaultOptions]="dataTableOptions$ | async" [loading]="loading$ | async"
+    (pageChanged)="onPageChange($event)" (onSort)="onSort($event)">
+    <ae-column [headerText]="'TEST'| translate:lang" [sortable]="true" [sortKey]="'Name'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'NAME'| translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <div>
+            <span>{{context.Name}}</span>
+          </div>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+
+    <ae-column *ngIf="isCompleteIncompleteChecklistActive" [headerText]="'SCHEDULED_FOR'| translate:lang" [sortable]="true" [sortKey]="'ScheduledDate'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'SCHEDULED_FOR'| translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <div>
+            <span>{{context.ScheduledDate | localeDate:defaultLocale:'shortDate'}}</span>
+          </div>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+
+    <ae-column *ngIf="isCompleteIncompleteChecklistActive" [headerText]="'STATUS'| translate:lang" [sortable]="true" [sortKey]="'Status'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'STATUS'| translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <div>
+            <span>{{getChecklistStatus(context.Status)}}</span>
+          </div>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+
+    <ae-column [headerText]="'ASSIGN_TO'| translate:lang" [sortable]="true" [sortKey]="'firstname'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'ASSIGN_TO'| translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <div>
+            <span>{{ getAssignedFullname(context.firstname,context.lastname)}}</span>
+          </div>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'SITE'| translate:lang" [sortable]="true" [sortKey]="'SiteId'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'SITE'| translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <div>
+            <span>{{getSiteName(context.SiteName,context.SiteLocation)}}</span>
+          </div>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'WORKSPACE'| translate:lang" [sortable]="false">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'WORKSPACE'| translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <div *ngIf="context.Workspaces" class="max-width-container">
+            <ae-stamp *ngFor="let item of context.Workspaces" [text]="item.Name" [class]="'stamp--grey'"></ae-stamp>
+          </div>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'FREQUENCY'| translate:lang" [sortable]="true" [sortKey]="'Periodicity'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'FREQUENCY'| translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <div>
+            <span>{{getFrequency(context.Periodicity)}}</span>
+          </div>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'Actions'" [sortable]="false">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>Actions</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="_keys">
+        <ng-template let-context="item">
+          <div [class]="'grid-action'">
+            <ae-button [customClass]="'button--small button--cta button--block'" [text]="'CONDUCT' | translate: lang" [type]="'button'"
+              [id]="getChildId('AeActionConductButton',1)" [name]="getChildName('AeActionConductButton',1)" (aeClick)="viewOrActionActionCommand(context.Id)"
+              *ngIf="getChecklistActionItemsStatus(context)"></ae-button>
+
+            <ae-button [class]="buttonLightClass" [customClass]="'button--small button--block'" [text]="'BUTTONS.VIEW' | translate: lang"
+              [type]="'button'" [id]="getChildId('AeActionViewButton',1)" [name]="getChildName('AeActionViewButton',1)" (aeClick)="viewOrActionActionCommand(context.Id)"
+              *ngIf="!getChecklistActionItemsStatus(context)"></ae-button>
+          </div>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+  </ae-datatable>
+</div>
+
+<!--up to date -->
+<div *ngIf="isRecordsEmpty()" id="'up-to-date-content'" class="up-to-date">
+  <div class="up-to-date__text">
+    <p>{{'UP_TO_DATE_TEXT'| translate:lang}}</p>
+  </div>
+  <div class="up-to-date__icon">
+    <ae-icon [id]="'up-to-date-icon'" [name]="'up-to-date-icon'" [size]="iconOneSize" [icon]="'icon-thumbs-up'"></ae-icon>
+  </div>
+</div>
+<!--up to date end-->
+
+
+<!--slideout pop code here-->
+<div class="checklist-slideout">
+  <ae-slideout [id]="getChildId('AeSlideOut', 1)" [name]="getChildName('AeSlideOut', 1)" [modelState]="getSlideoutState()"
+    [class.slide--animate]="isChecklistAction">
+    <ng-container *ngIf="isChecklistAction">
+      <checklist-actionItems [id]="getChildId('checklist-actionItems', 1)" [name]="getChildName('checklist-actionItems', 1)" [checkListInstance]="checklistActionItems$ | async"
+        (onCancel)="onChecklistActionItemsCancel($event)" (OnSaveComplete)="onChecklistActionItemsSaveComplete($event)" (onShowDialog)="onChecklistActionItemsDocumentRemove($event)"></checklist-actionItems>
+    </ng-container>
+  </ae-slideout>
+</div>
+<!--slideout pop end-->
+<!--delete confirmation pop-up-->
+<ae-modal-dialog *ngIf="showDeleteConfirmDialog" [visible]="showDeleteConfirmDialog" (cancel)="removeActionItemDocumentClosed($event)"
+  [closable]="true" [id]="getChildId('AeModel', 1)" [name]="getChildName('AeModel', 1)">
+  <div class="modal-dialog-header">
+    <h3>{{'REMOVE_DOCUMENT_DIALOG.HEADER_TEXT' | translate:lang}}</h3>
+  </div>
+  <div class="modal-dialog-body">
+    <p>{{'REMOVE_DOCUMENT_DIALOG.INFO' | translate: lang:{documentName:SelectedAttachmentToRemove.FileName} }}</p>
+
+  </div>
+  <div class="modal-dialog-footer">
+    <ae-button [text]="'REMOVE_DOCUMENT_DIALOG.BTN_NO' | translate:lang" [type]="'button'" [id]="getChildId('deleteConfirmNo', 1)"
+      [name]="getChildName('deleteConfirmNo', 1)" (aeClick)="removeActionItemDocumentClosed($event)"></ae-button>
+    <ae-button [class]="buttonLightClass" [text]="'REMOVE_DOCUMENT_DIALOG.BTN_YES' | translate:lang" [type]="'button'" [id]="getChildId('deleteConfirmYes', 1)"
+      [name]="getChildName('deleteConfirmYes', 1)" (aeClick)="removeActionItemDocumentConfirmed($event)"></ae-button>
+  </div>
+</ae-modal-dialog>
+
+<!--delete confirmation pop-up end-->

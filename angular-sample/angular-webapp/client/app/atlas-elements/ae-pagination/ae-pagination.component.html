@@ -1,0 +1,22 @@
+<div [id]="id" *ngIf="setPagingVisibility()" class="pagination-section">
+  <div class="table__filter">
+    <ae-select (aeSelectChange)="onRowsPerPageChanged($event)" [options]="displayOptions" [value]="rows" [id]="getChildId('AeSelect',1)"
+      [name]="getChildName('AeSelect',1)" *ngIf="rowsPerPageOptions && setPagingVisibility()">
+    </ae-select>
+  </div>
+  <div class="table__rows-summary">
+    <div>Displaying {{getStartRowIndex()}} - {{getEndRowIndex()}} of {{totalRecordsCount}} rows</div>
+  </div>
+  <div class="table__pagination" *ngIf="setPageLinksVisibility()">
+    <ae-button [text]="'First'" [id]="getChildId('aeAnchor', 1)" [name]="getChildName('aeAnchor', 1)" (aeClick)="isFirstPage() ? return: changePageToFirst($event)"
+      [btnIcon]="'icon-page-first'" [customClass]="'pagination__page'" *ngIf="setVisibilityOnTotalCount()" [class.state-disabled]="isFirstPage()"></ae-button>
+    <ae-button [text]="'Previous'" [id]="getChildId('aeAnchor', 2)" [name]="getChildName('aeAnchor', 2)" (aeClick)="isFirstPage() ? return : changePageToPrev($event)"
+      [btnIcon]="'icon-page-previous'" [customClass]="'pagination__page'" *ngIf="setVisibilityOnTotalCount()" [class.state-disabled]="isFirstPage()"></ae-button>
+    <ae-anchor [id]="getChildId('page', i)" [name]="getChildName('aeAnchor', 3)" *ngFor="let pageLink of pageLinks; let i=index"
+      [text]="pageLink" (aeClick)="_changePage(pageLink, $event)" [class]="'pagination__page'" [class.state-active]="setCurrentPageActive(pageLink)"></ae-anchor>
+    <ae-button [text]="'Next'" [id]="getChildId('aeAnchor', 4)" [name]="getChildName('aeAnchor', 4)" (aeClick)="isLastPage() ? return : changePageToNext($event)"
+      [btnIcon]="'icon-page-next'" [customClass]="'pagination__page'" *ngIf="setVisibilityOnTotalCount()" [class.state-disabled]="isLastPage()"></ae-button>
+    <ae-button [text]="'Last'" [id]="getChildId('aeAnchor', 5)" [name]="getChildName('aeAnchor', 5)" (aeClick)="isLastPage() ? return : changePageToLast($event)"
+      [btnIcon]="'icon-page-last'" [customClass]="'pagination__page'" *ngIf="setVisibilityOnTotalCount()" [class.state-disabled]="isLastPage()"></ae-button>
+  </div>
+</div>

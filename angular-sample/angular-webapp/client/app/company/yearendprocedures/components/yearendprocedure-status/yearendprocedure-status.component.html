@@ -1,0 +1,24 @@
+<div class="information-grid" [ngClass]="{'pos-relative': loading}">
+  <section class="information-grid__section">
+    <div class="information-grid__item">
+      <div class="information-grid__item-label column-1of3">{{'YEAR_END_PROCEDURE.YEP_STATUS.YEAR_START_DATE' | translate:lang}}</div>
+      <div class="information-grid__item-value column-2of3">
+        <span *ngIf="yearEndProcedure">{{yearEndProcedure.FiscalYearData.StartDate | localeDate:defaultLocale:'shortDate'}}</span>
+      </div>
+    </div>
+    <div class="information-grid__item">
+      <div class="information-grid__item-label column-1of3">{{'YEAR_END_PROCEDURE.YEP_STATUS.YEAR_END_DATE' | translate:lang}}</div>
+      <div class="information-grid__item-value column-2of3">
+        <span *ngIf="yearEndProcedure">{{yearEndProcedure.FiscalYearData.EndDate | localeDate:defaultLocale:'shortDate'}}</span>
+      </div>
+    </div>
+    <div class="information-grid__item">
+      <div class="information-grid__item-label column-1of3">{{'YEAR_END_PROCEDURE.YEP_STATUS.STATUS' | translate:lang}}</div>
+      <div class="information-grid__item-value column-2of3">
+        <span>{{currentStatus}}</span> <span *ngIf="isReviewConfirmedState && nextReviewDate">— {{'YEAR_END_PROCEDURE.YEP_STATUS.NEXT_REVIEW_TEXT' | translate:lang}} <b>{{nextReviewDate | date: 'dd/MM/yyyy'}}</b>.</span>
+      </div>
+    </div>
+  </section>
+  
+<ae-loader [id]="getChildId('AeLoader',12)" [loaderType]="loaderType" *ngIf="loading"></ae-loader>
+</div>

@@ -1,0 +1,40 @@
+<construction-phase-plans-header [id]="getChildId('trainingcourseHeader')" [name]="getChildName('trainingcourseHeader')"
+  (onConstructionPhasePlanAdd)="onAdd($event)"></construction-phase-plans-header>
+<div [id]="'constructionphaseplans'">
+  <div class="spacer">
+    <form [formGroup]="constructionPhasePlanListForm" [id]="getChildId('constructionPhasePlanListForm', 1)" [name]="getChildName('constructionPhasePlanListForm', 1)">
+      <div class="table__filter-bar">
+        <div class="filter-bar__label label">{{'CONSTRUCTIONPHASEPLAN.Filter_by'| translate:lang}}</div>
+        <div class="filter-bar">
+          <div class="filter-bar__filters">
+            <div class="filter-bar__filter">
+              <ae-input [id]="getChildId('AeInput', 1)" [name]="getChildName('AeInput', 1)" [placeholder]="'CONSTRUCTIONPHASEPLAN.SEARCH_PLACEHOLDER'| translate:lang"
+                [delay]="searchDebounce" [type]="inputType" formControlName="searchCPPFilter"></ae-input>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div>
+    <ae-tabstrip [id]="getChildId('AeTabStrip',1)" [name]="getChildName('AeTabStrip',1)" [standardWithIcon]="true">
+      <ae-tabstrip-item [id]="getChildId('AeTabStripItem',1)" [name]="getChildName('AeTabItem',1)" [navigateUrl]="getLiveUrl()"
+        [header]="'CONSTRUCTIONPHASEPLAN.LIVE' | translate:lang" [hasCount]="true" [count]="getCPPStatsCount(2)">
+      </ae-tabstrip-item>
+      <ae-tabstrip-item [id]="getChildId('AeTabStripItem',2)" [name]="getChildName('AeTabItem',2)" [navigateUrl]="getPendingUrl()"
+        [header]="'CONSTRUCTIONPHASEPLAN.PENDING' | translate:lang" [hasCount]="true" [count]="getCPPStatsCount(1)">
+      </ae-tabstrip-item>
+      <ae-tabstrip-item [id]="getChildId('AeTabStripItem',3)" [name]="getChildName('AeTabItem',3)" [navigateUrl]="getOverdueUrl()"
+        [header]="'CONSTRUCTIONPHASEPLAN.OVERDEW' | translate:lang" [hasCount]="true" [count]="getCPPStatsCount(3)">
+      </ae-tabstrip-item>
+    </ae-tabstrip>
+  </div>
+    <router-outlet>
+
+    </router-outlet>
+</div>
+
+
+
+
+

@@ -1,0 +1,11 @@
+<div [id]="id">
+  <ae-banner [id]="getChildId('AeBanner',1)" [name]="getChildName('AeBanner',1)" [titleText]="'INCIDENT_LOG.INCIDENT_LOG' | translate:lang"
+    [backgroundImage]="'/assets/images/lp-accident.jpg'">
+    <ae2-breadcrumb [id]="getChildId('Ae2Breadcrub',2)" [name]="getChildName('Ae2Breadcrub',2)" class="bredcrumb-section" [group]="bcGroup"></ae2-breadcrumb>
+    <div class="icon-list banner-icon-list" *ngIf="showLogIncident()">
+      <ae-button (aeClick)="addIncidentLog()" [type]="'button'" [id]="getChildId('AeButton',3)" [name]="getChildId('AeButton',3)"
+        class="btn" [text]="'INCIDENT_LOG.LOG_INCIDENT' | translate:lang"></ae-button>
+    </div>
+  </ae-banner>
+  <ae-notification  [id]="getChildId('AeInfoMessage',1)" [name]="getChildName('AeInfoMessage',1)" [iconName]="'icon-info'" [textInfo]="statesLoaded | translate:lang"></ae-notification>
+</div>

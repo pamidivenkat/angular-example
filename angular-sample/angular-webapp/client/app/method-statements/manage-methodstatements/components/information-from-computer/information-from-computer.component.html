@@ -1,0 +1,15 @@
+
+<div id="otherRiskAssessment" class="information-from-computer">
+  <div class="other-risk-assessments">
+
+    <ae-form *ngIf="isFormLoaded" [formBuilderData]="msOtherRiskAssessmentsVM" [id]="'otherRAForm'" [name]="'otherRAForm'" [isPrimaryTitle]="true"
+      [Title]="'Add risk assessment'" (onFormInit)="onFormInit($event)" (onSubmit)="onMSOtherRiskAssessmentsSubmitted($event)"
+      (onCancel)="onFormCancel($event)" (isFormValid)="onFormValidityChange($event)" [footerBtnText]="formButtonNames()">
+      <div top-info>{{'MANAGE_METHOD_STM.FURTHER_INFORMATION.OTHER_RA_TEXT_FIRST' | translate:lang}} 
+        <br>
+        {{'MANAGE_METHOD_STM.FURTHER_INFORMATION.OTHER_RA_TEXT_SECOND'
+        | translate:lang}}
+      </div>
+    </ae-form>
+  </div>
+</div>

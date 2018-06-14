@@ -1,0 +1,160 @@
+.accordion__heading {
+  margin: $base-margin;
+}
+
+[hidden] {
+  display: none !important;
+  visibility: hidden;
+}
+
+.accordion__list {
+  list-style-type: none;
+  margin: $base-margin;
+  padding-left: 0;
+  @include clearfix();
+  @include media-over-979 {
+    .tabs__tab & {
+      margin: ($base-margin * 2);
+    }
+  }
+  .accordion__list--item {
+    margin-bottom: $base-margin;
+  }
+}
+
+.accordion .accordion__header {
+  background-color: $white;
+  border: 1px solid $teal--0;
+  border-radius: $base-border-radius;
+  color: $teal--0; // display: block;
+  padding: (($base-padding * 4) / 3) $base-padding;
+  transition: all .25s ease-in;
+  &:focus,
+  &:hover {
+    background: $teal--4;
+  }
+}
+
+.accordion label {
+  cursor: pointer;
+  // &::before {
+  //   display: none;
+  //   visibility: hidden;
+  // }
+  // &::after {
+  //   display: none;
+  //   visibility: hidden;
+  // }
+}
+
+.accordion__header--grid {
+  align-items: center;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  .accordion__title {}
+  .accordion__indicator {
+    svg {
+      transition: all .25s ease-in;
+    }
+  }
+}
+
+.accordion__actions {
+  .button {
+    margin-right: (($base-margin / 3) * 2);
+  }
+}
+
+.accordion__buttons {
+  align-items: center;
+  border-top: 1px solid rgba($teal--0, .25);
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  margin: $base-margin 0 0;
+  padding: $base-padding 0 0;
+  .button__collection {
+    display: flex;
+  }
+  .button {
+    &:not(:first-of-type) {
+      margin-left: 5px;
+    }
+    svg {
+      @include dimensions(20px);
+    }
+  }
+  .button[title="Yes"]:focus,
+  .button[title="Yes"]:hover,
+  .ActiveYes,
+  .ActiveYes:disabled,
+  .ActiveYes:disabled:hover {
+    background: $indicator--green;
+    color: $white;
+  }
+  .button[title="No"]:focus,
+  .button[title="No"]:hover,
+  .ActiveNo,
+  .ActiveNo:disabled,
+  .ActiveNo:disabled:hover {
+    background: $indicator--red;
+  }
+}
+
+.accordion__contents {
+  background: $white;
+  box-shadow: $base-shadow;
+  height: 100%;
+  max-height: 0;
+  overflow: hidden;
+  transition: all .3s ease-in-out;
+  p:first-of-type {
+    margin-top: 0;
+  }
+  p:last-of-type {
+    margin-bottom: 0;
+  }
+  .table & {
+    padding: 0;
+  }
+  &:has(.table) {
+    padding: 0;
+  }
+  >.message {
+    margin: ($base-margin * 2) ($base-margin * 2) 0;
+  }
+}
+
+.accordion__content {
+  padding: $base-padding;
+}
+
+.accordion__list input[type=checkbox]:checked+.accordion__header {
+  background: $teal--0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  color: $white;
+  +.accordion__contents {
+    // reset the height when checkbox is checked
+    max-height: 1000px;
+  }
+  .accordion__buttons {
+    border-color: rgba($white, .25);
+  }
+}
+
+
+/**
+ * Rotating chevron icon
+ */
+
+.accordion__list input[type=checkbox]:checked+.accordion__header {
+  .accordion__indicator>svg {
+    transform: rotate(90deg);
+  }
+}
+
+.help-image {
+  width: 100%;
+}

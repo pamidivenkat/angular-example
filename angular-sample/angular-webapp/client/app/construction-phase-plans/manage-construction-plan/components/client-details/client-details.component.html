@@ -1,0 +1,42 @@
+<div class="client-form-data">
+</div>
+<ae-form [formBuilderData]="cppClientDetailsFormVM" [id]="'clientDetailsForm'" [name]="'clientDetailsForm'" [isPrimaryTitle]="false"
+  [displayFooter]="false" (onFormInit)="onFormInit($event)" (isFormValid)="onFormValidityChange($event)">
+
+</ae-form>
+<span class="helper-text"> {{'CPP_ADD.CONTRACTORS_UPLOAD_MSG' | translate:lang }}</span>
+<form class="form" [formGroup]="contractorsFormGroup" [id]="'contractorsForm'" [name]="'contractorsForm'">
+    <div class="form__input">
+      <div formArrayName="contractors" class="add-contractors">
+        <div class="sg-grid grid--1-2">
+          <div><label>{{'NAME' | translate:lang}} *</label></div>
+
+          <div><label>{{'CPP_ADD.POSITION' | translate:lang}} </label></div>
+
+        </div>
+        <div class="no-contractors">
+
+          <div [formGroupName]="i" class="sg-grid grid--1-2" *ngFor="let contractor of contractors; let i=index">
+
+            <div>
+              <ae-textarea [id]="getChildId('Name',index)" [name]="getChildName('Name',index)" [title]="'CPP_ADD.CONTRACTOR_NAME' | translate:lang"
+                formControlName="Name" [placeholder]="'CPP_ADD.CONTRACTOR_NAME' | translate:lang" (aeChange)="setOverAllValidity($event)"></ae-textarea>
+              <span *ngIf="fieldHasRequiredError('Name',i)" class="error-text">
+                            {{'CPP_ADD.NAME_IS_REQUIRED' | translate:lang}}
+                        </span>
+            </div>
+
+            <div>
+              <ae-textarea [id]="getChildId('Position',index)" [name]="getChildName('Position',index)" [title]="'CPP_ADD.CONTRACTOR_POSITION' | translate:lang"
+                formControlName="Position" [placeholder]="'CPP_ADD.CONTRACTOR_POSITION' | translate:lang"></ae-textarea>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+
+</form>

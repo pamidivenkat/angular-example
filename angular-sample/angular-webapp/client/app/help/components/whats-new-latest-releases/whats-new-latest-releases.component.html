@@ -1,0 +1,20 @@
+<section class="banner banner--secondary banner--teal">
+  <ae2-breadcrumb [id]="'breadCrumb'" [name]="'breadCrumb'" [group]="bcGroup" class="bredcrumb-section"></ae2-breadcrumb>
+  <h1 class="banner__title"> {{'WHATS_NEW.LATEST_RELEASES' | translate:lang}} </h1>
+</section>
+
+<div class="spacer" *ngIf="latestReleases">
+  <div class="article-listing__item" *ngFor="let item of latestReleases; let i = index">
+    <div class="date">{{item.PublishDate | localeDate:defaultLocale:'dd MMM yyyy'}}</div>
+    <h2 class="article-listing__title"><a (click)="getBodyLoad(item)" title="'Read more about {{item.Title}}'">{{item.Title}}</a></h2>
+    <div class="article-listing__copy">
+
+    </div>
+  </div>
+ 
+  <div class="table__footer">
+    <ae-pagination [id]="getChildId('AePagination')" [name]="getChildName('AePagination')" [currentPage]="currentPageNumber" [rows]="defaultNoOfRows" [totalRecords]="totalRecords"
+      (aePageChange)="onPageChange($event)">
+    </ae-pagination>
+  </div>
+</div>

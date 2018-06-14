@@ -1,0 +1,51 @@
+<at-base-dashboard>
+  <!-- Static section start here -->
+  <div staticbar-info>
+    <!-- Static section Content start here -->
+    <app-informationbar [id]="'userInformationBarId'" [name]="'userInformationBarName'">
+    </app-informationbar>
+    <!-- Static section content end here -->
+  </div>
+  <!-- Static section end here -->
+
+  <!--<div banner-info>
+        <app-employeeSummary></app-employeeSummary>
+    </div>-->
+
+  <!-- Banner section Start here -->
+  <div banner-info class="banner__background--dashboard">
+    <!-- Banner content Start here -->
+    <greeting [backgroundImage]="'/assets/images/generic-banner-image.jpg'" [id]="'userGreeting'" [name]="'userGreetingName'"></greeting>
+    <!-- Banner content end here -->
+
+  </div>
+  <!-- Banner section end here -->
+
+  <!-- Banner section end here -->
+  <ae-notification no-emp-msg *ngIf="!HasEmployeeRecord" [id]="'noEmployeeMessageId'" [name]="'noEmployeeMessageName'" [iconName]="'icon-bell'"
+    [textInfo]="noEmployeeRecordMessage()" [isAlert]="true"></ae-notification>
+  <!-- Widget section stat here -->
+  <div widget-info3-1>
+
+    <!-- Content section 1 start here -->
+    <todays-overview [id]="'userTodaysOverViewId'" [name]="'userTodaysOverViewName'"></todays-overview>
+    <!-- Content section 1 end here-->
+  </div>
+  <div widget-info3-2>
+    <!-- Content section 2 start here -->
+    <dashboard-task></dashboard-task>
+    <!-- Content section 2 end here-->
+  </div>
+  <div widget-info3-3>
+    <!-- Content section 3 start here -->
+    <app-trainingcard [id]="'userTrainingCardId'" [name]="'userTrainingCardName'"></app-trainingcard>
+    <!-- Content section 3 end here-->
+  </div>
+  <!-- 2 Grid Widget end here -->
+  <div adverts-section>
+    <advert [id]="'cmpAdvert'" [name]="'cmpAdvert'"></advert>
+  </div>
+  <div whatsnew>
+    <whats-new [id]="'whatsnew'"></whats-new>
+  </div>
+</at-base-dashboard>

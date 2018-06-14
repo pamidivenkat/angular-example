@@ -1,0 +1,55 @@
+<!--actual content div-->
+<div id="slide-out-form-content" class="wrapper-for-slideout-conten employee-group">
+    <div class="so-panel__title">
+        <h3 class="grey-strip">{{ 'EG_ASSOCIATE_EMPLOYEES' | translate:lang}}</h3>
+    </div>
+    <div class="so-panel__content">
+        <div class="information-grid">
+            <form [formGroup]="employeegroupassociationForm" [id]="'employeegroupassociationForm'" [name]="'employeegroupassociationForm'">
+                <section class="information-grid__section">
+                    <div class="form__column">
+                        <div class="information-grid__item">
+                            <div class="information-grid__item-label column-1of3">{{'GROUP_NAME' | translate:lang}} </div>
+                            <div class="information-grid__item-value column-2of3 text-muted">
+                                {{vm.Name}}
+                            </div>
+                        </div>
+                        <div class="information-grid__item">
+                            <div class="information-grid__item-label column-1of3">{{ 'EG_SITE' | translate:lang}}</div>
+                            <div class="information-grid__item-value column-2of3">
+                                <ae-select [id]="getChildId('SiteId',1)" [name]="getChildName('SiteId',1)" formControlName="SiteId" [placeholder]="'Please select'"
+                                    (aeSelectChange)="onSiteChange($event)" [options]="locations"></ae-select>
+                            </div>
+                        </div>
+
+                        <div class="information-grid__item">
+                            <div class="information-grid__item-label column-1of3">{{ 'EG_EMPLOYEES' | translate:lang}}</div>
+                            <div class="information-grid__item-value column-2of3">
+                                <ae-autocomplete formControlName="employee" [id]="getChildId('employeeSelected',1)" [name]="getChildName('employeeSelected',1)"
+                                    [value]="employeeSelected" [placeholder]="'Select employees'" [multiselect]="'true'" [items]="employees | async"
+                                    (aeOnComplete)="searchEmployees($event)" [dstype]="remoteDataSourceType" [field]="'Text'"
+                                    [debounce]="500" (aeOnSelect)="onSelectEmployee($event)" (aeOnUnselect)="aeOnUnselectEmployee($event)"
+                                    (aeOnClearSelected)="aeOnClearEmployee($event)" [valuefield]="'Value'"></ae-autocomplete>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </form>
+        </div>
+    </div>
+
+    <div class="so-panel__footer">
+        <nav>
+            <ul>
+                <li><label for="soPanel" class="button button--inline-block" [id]="getChildId('AeButton',1)" [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang"
+                        (click)="onFormClosed($event)">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label></li>
+                <li class="pull--right">
+                    <ae-anchor [id]="getChildId('AeAnchor',1)" [name]="getChildName('AeAnchor',1)" [anchorType]="'button'" [class]="'button button--inline-block'"
+                        [anchorClass]="lightClass" (aeClick)="onFormSubmit($event)" [title]="'BUTTONS.UPDATE' | translate:lang"
+                        [text]="'BUTTONS.UPDATE' | translate:lang"></ae-anchor>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+<!--actual content div end -->

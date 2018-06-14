@@ -1,0 +1,50 @@
+<div [id]="getChildId('div', 1)" class="so-panel__title">
+  <h3 *ngIf="isAddForm()">{{'ADD_CHECK_ITEM' | translate:lang}}</h3>
+  <h3 *ngIf="isUpdateForm()">{{'UPDATE_CHECK_ITEM' | translate:lang}}</h3>
+</div>
+<div [id]="getChildId('div', 2)" class="so-panel__content">
+  <div class="information-grid" [id]="getChildId('div', 3)">
+    <form class="form" [formGroup]="updateCheckItemsForm" [id]="getChildId('form', 5)">
+      <div class="form__input">
+        <label>
+          <ae-icon [id]="getChildId('AeIcon', 1)" [name]="getChildName('AeIcon', 1)" [icon]="'icon-alert-circle-question'"
+          [title]="'CHECKLIST_HELP_TEXT.ADD_CHECK_ITEM' | translate:lang"> </ae-icon>
+          {{'ENTER_CHECK_ITEM' | translate:lang}} *
+              <ae-textarea [id]="getChildId('AeTextArea', 10)" [name]="getChildName('AeTextArea', 10)" [maxlength]="'200'" formControlName="ItemText" [placeholder]="'ENTER_CHECK_ITEM' | translate:lang"></ae-textarea>
+            </label>
+        <span *ngIf="fieldHasRequiredError('ItemText')" class="form__input__error" id="'itemtext_field_error'">{{'CHECK_ITEM_REQUIRED' | translate:lang}}.</span>
+      </div>
+      <div class="form__input">
+        <label>
+          <ae-icon [id]="getChildId('AeIcon', 2)" [name]="getChildName('AeIcon', 2)" [icon]="'icon-alert-circle-question'"
+          [title]="'CHECKLIST_HELP_TEXT.NEGATIVE_ANSWER' | translate:lang"> </ae-icon>
+        {{'SELECT_NEGATIVE_ANSWER' | translate:lang}} *
+              <ae-select [id]="getChildId('AeSelect', 14)" [name]="getChildName('AeSelect', 14)" [placeholder]="'PLEASE_SELECT' | translate:lang"
+                [options]="answerTypes" formControlName="UnExpectedAnswer"></ae-select>
+            </label>
+        <span *ngIf="fieldHasRequiredError('UnExpectedAnswer')" class="form__input__error" id="'itemtext_field_error'">{{'NEGATIVE_ANSWER_REQUIRED' | translate:lang}}.</span>
+      </div>
+      <div class="form__input">
+        <label>
+          <ae-icon [id]="getChildId('AeIcon', 3)" [name]="getChildName('AeIcon', 3)" [icon]="'icon-alert-circle-question'"
+          [title]="'CHECKLIST_HELP_TEXT.CORRECTIVE_ACTION' | translate:lang"> </ae-icon>
+        {{'WHAT_IS_CORRECTIVE_ACTION' | translate:lang}} *
+              <ae-textarea [id]="getChildId('AeTextArea', 18)" [name]="getChildName('AeTextArea', 18)" [maxlength]="'2000'" formControlName="CorrectiveActionText"
+                [placeholder]="'WHAT_IS_CORRECTIVE_ACTION' | translate:lang"></ae-textarea>
+            </label>
+        <span *ngIf="fieldHasRequiredError('CorrectiveActionText')" class="form__input__error" id="'itemtext_field_error'">{{'CORRECTIVE_ACTION_REQUIRED' | translate:lang}}.</span>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="so-panel__footer" [id]="getChildId('div', 78)">
+  <nav>
+    <ul>
+      <li><label for="soPanel" class="button button--inline-block" (click)="onUpdateFormClosed($event)" [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label></li>
+      <li class="pull--right">
+        <ae-anchor [id]="getChildId('ae-anchor', 79)" [name]="getChildName('ae-anchor', 79)" [anchorType]="'button'" [class]="'button button--inline-block'"
+          [anchorClass]="lightClass" (aeClick)="onUpdateFormSubmit($event)" [title]="isAddForm() ? ('BUTTONS.ADD' | translate:lang) : ('BUTTONS.UPDATE' | translate:lang)" [text]="isAddForm() ? ('BUTTONS.ADD' | translate:lang) : ('BUTTONS.UPDATE' | translate:lang)"></ae-anchor>
+      </li>
+    </ul>
+  </nav>
+</div>

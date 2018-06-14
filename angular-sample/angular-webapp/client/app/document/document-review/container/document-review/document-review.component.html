@@ -1,0 +1,62 @@
+<ae-banner [id]="'checklist-banner'" [name]="'checklist-banner'" [titleText]="getArtifactTitle()" [backgroundImage]="'DOCUMENTS_BACKGROUND_IMAGE' | translate:lang">
+  <ae2-breadcrumb [id]="'breadCrumb'" [name]="'breadCrumb'" [group]="bcGroup" class="bredcrumb-section"></ae2-breadcrumb>
+  <div class="banner__info-icons icon-list">
+    <div class="banner__info-icon" title="{{'DOCUMENT_VERSION' | translate:lang}}">
+      <ae-label [id]="getChildId('AeLabel',1)" [name]="getChildName('AeLabel',1)" [text]="(artifact)?.Version" [icon]="'icon-to-review'"></ae-label>
+    </div>
+    <div class="banner__info-icon" title="{{'DOCUMENT_LAST_MODIFIED' | translate:lang}}">
+      <ae-label [id]="getChildId('AeLabel',2)" [name]="getChildName('AeLabel',2)" [text]="(artifact)?.ModifiedOn | localeDate:defaultLocale:'shortDate'"
+        [icon]="'icon-date'"></ae-label>
+    </div>
+  </div>
+</ae-banner>
+<ae-notification [id]="'checklist-info'" [name]="'checklist-info'" [iconName]="'icon-info'" [textInfo]="'INFO' | translate:lang"></ae-notification>
+<section class="document">
+  <aside class="document__structure">
+    <div class="document__area-header">
+      <h3>{{'DOCUMENT_STRUCUTRE' | translate:lang}}</h3>
+      <p>{{'DOCUMENT_STRUCUTRE_INFO' | translate:lang}}</p>
+    </div>
+    <div class="document__area-scroller">
+      <nav role="navigation" *ngIf="artifact">
+        <ul class="button-list">
+          <li *ngFor="let block of artifact.Blocks | blockChecked">
+            <document-review-structure [id]="'document-structure'" [name]="'document-structure'" [block]="block" [documentVersion]="(artifact)?.Version"
+              [previousVersionedDocument]="previousVersionedDocument" (onCurrentBlockSelect)="currentSelectedBlock($event)"></document-review-structure>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </aside>
+  <main class="document__content review-content">
+    <div class="document__area-header">
+      <h3>{{'DOCUMENT_CONTENT' | translate:lang}}</h3>
+      <p>{{'DOCUMENT_CONTENT_INFO' | translate:lang}}</p>
+    </div>
+    <div class="document__area-scroller">
+      <div class="document__blocks" *ngIf="artifact">
+        <div *ngFor="let block of artifact.Blocks | blockChecked">
+          <document-content-review [id]="'document-content'" [name]="'document-content'" [block]="block"></document-content-review>
+        </div>
+      </div>
+       <ae-loader [loaderType]="loaderType" *ngIf="!artifact"></ae-loader> 
+    </div>
+  </main>
+  <document-review-comments [id]="'document-comments'" [name]="'document-comments'" [documentVersion]="(artifact)?.Version"
+    (actionOnComment)="actionOnComment($event)"></document-review-comments>
+</section>
+<section class="actions">
+  <div class="button-bar spacer">
+    <div class="button-bar__item">
+      <b>{{'DOCUMENT_SAVE_TEXT' | translate:lang}}</b>
+    </div>
+    <div class="button-bar__item select--left">
+      <ae-select [id]="'documentReviewActions'" [name]="'documentReviewActions'" [placeholder]="'PLEASE_SELECT' | translate:lang"
+        [options]="documentReviewActions" (aeSelectChange)="onReviewedDocumentActionsSelection($event)" [value]="documentReviewAction"></ae-select>
+    </div>
+    <div class="button-bar__item">
+      <ae-button [class]="lightClass" [text]="'BUTTONS.SAVE' | translate:lang" [title]="'BUTTONS.SAVE' | translate:lang" [type]="'button'"
+        [disabled]="hasAnyActionNotSelected()" [id]="'saveCommentForm'" [name]="'saveCommentForm'" (aeClick)="saveReviewedDocument()"></ae-button>
+    </div>
+  </div>
+</section>

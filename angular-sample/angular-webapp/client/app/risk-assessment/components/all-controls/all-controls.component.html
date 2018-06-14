@@ -1,0 +1,26 @@
+<div class="controls-virtual-list">
+  <div class="text-with-search spacer--use-margin">
+    <div class="text-with-search__search">
+      <ae-input id="getChildId('AeInput', 1)" [name]="getChildName('AeInput', 1)" [placeholder]="'SEARCH_CONTROLS_TEXT' | translate:lang"
+        [value]="searchText" [readonly]="'false'" (aeChange)="searchAllHazards($event)" [cssClass]="'input--search'"></ae-input>
+    </div>
+  </div>
+  <ae-virtual-list [noOfVisibleItems]="defaultNumber" [itemsStream]="allControls" (change)="onChange($event)" [replace]="isSearch">
+    <ae-template [type]="'list'">
+      <ng-template let-control="item">
+        <div [title]="control.Description | limitTo : 150">
+          <div class="control-grid__item__icon">
+            <img src="{{control.PictureId ? getPictureUrl(control.PictureId, control.IsExample) : ''}}" alt="{{control.Name}}">
+          </div>
+          <div class="control-grid__item__label">
+            {{control.Name}}
+          </div>
+          <div class="icon-picker__checkbox">
+            <ae-icon [id]="getChildId('AeIcon',control.Id)" [name]="getChildName('AeIcon',control.Id)" [size]="iconTiny" [icon]="'icon-alert-add'"
+              [color]="'#009494'" (click)="addControlToRiskAssessment(control)"></ae-icon>
+          </div>
+        </div>
+      </ng-template>
+    </ae-template>
+  </ae-virtual-list>
+</div>

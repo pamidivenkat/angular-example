@@ -1,0 +1,16 @@
+<div class="control-grid">
+  <ng-template ngFor let-control [ngForOf]="suggestedControls" let-i="index">
+    <div class="control-grid__item" [title]="control.Description | limitTo : 150">
+      <div class="control-grid__item__icon">
+        <img src="{{control.PictureId ? getPictureUrl(control.PictureId, true) : ''}}" alt="{{control.Name}}">
+      </div>
+      <div class="control-grid__item__label">
+        <p>{{control.Name}}</p>
+      </div>
+      <div class="icon-picker__checkbox">
+        <ae-icon [id]="getChildId('AeIcon',control.Id)" [name]="getChildName('AeIcon',control.Id)" [size]="iconTiny" [icon]="'icon-alert-add'"
+          [color]="'#009494'" (click)="addControlToRiskAssessment(control)"></ae-icon>
+      </div>
+    </div>
+  </ng-template>
+</div>

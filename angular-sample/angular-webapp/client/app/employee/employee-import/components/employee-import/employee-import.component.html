@@ -1,0 +1,62 @@
+<div id="employee-import">
+  <ae-banner [id]="getChildId('AeBanner')" [name]="getChildName('AeBanner')" [titleText]="'EMPLOYEE_IMPORT.EMPLOYEE_IMPORT_HEADING' | translate:lang"
+    [backgroundImage]="'/assets/images/lp-employees.jpg'">
+    <ae2-breadcrumb [id]="'breadCrumb'" [name]="'breadCrumb'" [group]="bcGroup" class="bredcrumb-section"></ae2-breadcrumb>
+  </ae-banner>
+  <ae-notification [id]="'employee-import-information'" [name]="'import-information'" [iconName]="'icon-info'" [textInfo]="'EMPLOYEE_IMPORT.EMPLOYEE_IMPORT_NOTIFICATION_STEPS' | translate:lang"></ae-notification>
+  <div>
+    
+    <ae-message [id]="'message'" [name]="'message'" [text]="'Please select file to import, Template file should be in .xlsm format'"
+      [icon]="'icon-bell'" [messageType]="messagetType" *ngIf="showMessage()"></ae-message>
+  </div>
+  <div class="button-bar button-bar--offset spacer">
+    <div class="button-bar__item">
+      <ae-button [type]="'button'" [id]="'btnImport'" [name]="'btnImport'" [customClass]="'button button--cta'" [text]="'Import'"
+        (aeClick)="import()"></ae-button>
+    </div>
+    <div class="button-bar__item">
+      <ae-button [type]="'button'" [id]="'btnImportHistory'" [name]="'btnImportHistory'" [customClass]="'button button--cta'" [text]="'View Import History'"
+        (aeClick)="viewImportHistory()"></ae-button>
+    </div>
+    <div class="button-bar__item">
+      <ae-button [type]="'button'" [id]="'btnDownload'" [name]="'btnDownload'" [customClass]="'button button--cta'" [text]="'Download Template'"
+        (aeClick)="downloadTemplate()"></ae-button>
+    </div>
+  </div>
+  <div class="information-grid">
+    <div class="sg-grid grid--1-1-3">
+      <div>
+        <ae-file [id]="'fileUpload'" [title]="'Browse'" [name]="'fileUpload'" [multiple]="false" [accept]="'.xlsx,.xlsm'"
+          (onFilesSelected)="onFilesSelected($event)"></ae-file>
+      </div>
+    </div>
+
+    <div [innerHTML]="importDescription$ | async"></div>
+  </div>
+  <!--delete confirmation pop-up-->
+  <div *ngIf="showImportConfirmDialog">
+    <ae-modal-dialog [visible]="showImportConfirmDialog" (cancel)="confirmImportedEmployeeClosed($event)" [closable]="true"
+      [id]="getChildId('AeModel', 1)" [name]="getChildName('AeModel', 1)">
+      <form class="form" [formGroup]="importConfirmform" [id]="'importConfirm'" [name]="'importConfirm'">
+        <div class="modal-dialog-header">
+          <h3>{{'EMPLOYEE_IMPORT.Dialog_Import_Heading_text' | translate:lang }}</h3>
+        </div>
+        <div class="modal-dialog-body">
+          <p>{{'EMPLOYEE_IMPORT.Dialog_Import_Info' | translate: lang:{fileName: _uploadedFile.file.name,companyName: CompanyName} }}
+          </p>
+        </div>
+        <div class="modal-dialog-body">
+          <p>
+            <ae-checkbox (onAeChange)="OnChange($event)" formControlName="companyImport" [id]="'importConfirm'" [name]="'importConfirm'"
+              [checkText]="'EMPLOYEE_IMPORT.Import_Confirm' | translate:lang"  [checked]="companyImport"></ae-checkbox>
+          </p>
+        </div>
+        <div class="modal-dialog-footer">
+          <ae-button [text]="'EMPLOYEE_IMPORT.Btn_Import_No' | translate:lang" [type]="'button'" [id]="'deleteConfirmNo'" [name]="'deleteConfirmNo'"
+            (aeClick)="confirmImportedEmployeeClosed($event)"></ae-button>
+          <ae-button [class]="btnClass" [text]="'EMPLOYEE_IMPORT.Btn_Import_Yes' | translate:lang" [type]="'button'" [id]="'deleteConfirmYes'"
+            [name]="'deleteConfirmYes'" (aeClick)="confirmImportedEmployeeConfirmed($event)" [disabled]="!companyImport"></ae-button>
+        </div>
+      </form>
+    </ae-modal-dialog>
+  </div>

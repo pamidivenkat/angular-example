@@ -1,0 +1,94 @@
+.control-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.control-grid__item {
+  display: inline-block;
+  margin: $base-margin 0;
+  text-align: center;
+  width: 100%;
+  @include media-over-480 {
+    width: 50%;
+  }
+  // @include media-over-767 {
+  //   width: 33.33%;
+  // }
+  @include media-over-1049 {
+    width: 33.33%;
+  }
+  @include media-over-1239 {
+    width: 25%;
+  }
+
+  &.add {
+    // .button {
+    //   @include media-over-767 {
+    //     margin-bottom: 10%;
+    //     margin-top: 10%;
+    //   }
+    //   @include media-over-979 {
+    //     margin-bottom: 20%;
+    //     margin-top: 20%;
+    //   }
+    // }
+    &.no-items {
+      padding: 0 ($base-padding * 2);
+      width: 100%;
+    }
+  }
+
+  img {
+    margin: auto;
+  }
+}
+
+.control-grid__item__icon {
+  display: inline-block;
+  @include dimensions(50px);
+  @include media-over-767 {
+     @include dimensions(75px);
+  }
+  @include media-over-979 {
+     @include dimensions(100px);
+  }
+  
+}
+
+.control-grid__item__label {
+  margin-bottom: 10px;
+  font-size: 80%;
+  @include media-over-767 {
+    font-size: 90%;
+  }
+  @include media-over-979 {
+    font-size: 100%;
+  }
+}
+
+.control-grid__item__actions {
+  .icon--small {
+    svg {
+      @include dimensions(30px, 20px);
+    }
+  }
+}
+
+.hazard-control-panel__controls {
+  width: 100%;
+
+  & > .control-grid {
+    & > .no-items.add {
+      & > ae-bitton {
+        display: inline-block;
+      }
+    }
+  }
+}
+
+.control-grid__item.add ae-button,
+.control-grid__item__actions ae-button {
+  display: inline-block;
+}

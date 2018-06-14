@@ -1,0 +1,63 @@
+@import '../../../assets/scss/variablesMap';
+.icon-with-text__copy {
+  display: inline-block;
+  margin-left: 5px;
+  /* max-width: calc(100% - 60px);*/
+  vertical-align: middle;
+}
+
+.icon-with-text--action {
+  color: $red--0;
+}
+
+.icon-with-text--progress {
+  font-size: 1.8rem;
+  font-weight: $bold;
+}
+
+.icon-with-text__icon {
+  // display: block;
+  vertical-align: middle;
+  .icon-vertical {
+    width: 100%;
+    display: inline-block;
+    text-align: center;
+  }
+  /*.icon-with-text__copy {
+    white-space: nowrap;
+  }*/
+}
+
+.icon-horizontal {
+  display: inline-block;
+}
+
+.icon-with-text {
+  overflow: hidden;
+}
+
+.label__img {
+  width: 40px;
+  height: 40px;
+  vertical-align: middle;
+  margin-bottom: 10px;
+  display: table-cell;
+  margin-right: 10px;
+  img {
+    max-width: 40px;
+    max-height: 40px;
+  }
+  width: 40px;
+  height: 40px;
+  margin-bottom:10px;
+  img {
+    max-width: 100%;
+    max-height: 100%;
+  }
+  &+.icon-with-text__copy {
+    display: table-cell;
+    margin-left: 5px;
+    vertical-align: middle;
+    padding-left: 10px;
+  }
+}

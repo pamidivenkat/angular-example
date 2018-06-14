@@ -1,0 +1,114 @@
+<div class="general-form-data">
+    <ae-form [formBuilderData]="cppGeneralFormVM" [id]="'addCppGeneralForm'" [name]="'addCppGeneralForm'" [isPrimaryTitle]="false"
+        [displayFooter]="false" (onFormInit)="onFormInit($event)" (isFormValid)="onFormValidityChange($event)">
+
+        <ae-template [type]="'RASelector'">
+            <ng-template let-racontext="item">
+                <div class="general-risk-assessment">
+                    <div class="information-grid__item--input">
+                        <label class="add-risk-btn information-grid__item-label column-1of3">{{'CPP_ADD.RISK_ASSESSMENTS' | translate:lang}} </label>
+                        <div class="button-link information-grid__item-value column-2of3">
+                            <ae-anchor [id]="getChildId('addRAAnchor',1)" [name]="getChildName('addRAAnchor',1)" [anchorType]="'button'" [class]="'button button--small button--inline-block'"
+                                [anchorClass]="lightClass" (aeClick)="onAddRA($event)" [title]="'BUTTONS.SELECT' | translate:lang"
+                                [text]="'BUTTONS.SELECT' | translate:lang">
+                            </ae-anchor>
+                        </div>
+                    </div>
+
+                    <div class="add-risk-data">
+                        <ae-datatable [id]="getChildId('riskAssessments', 1)" [name]="getChildName('riskAssessments', 1)" [dataSource]="selectedRAs" [autoGenerateColumns]="false" [totalRecords]="totalCount$" [actions]="actions" [defaultOptions]="riskAssessmentDataTableOptions"
+                            [defaultOptions]="riskAssessmentDataTableOptions$ | async" (pageChanged)="onPageChange($event)" (onSort)="onSorting($event)">
+                            <ae-column [headerText]="'CPP_ADD.RISK_ASSESSMENT'| translate:lang" [sortable]="false">
+                                <ae-template [type]="'header'">
+                                    <ng-template>
+                                        <span>{{'CPP_ADD.RISK_ASSESSMENT'| translate:lang}}</span>
+                                    </ng-template>
+                                </ae-template>
+                                <ae-template [type]="'cell'" [keys]="_keys">
+                                    <ng-template let-context="item">
+                                        <div>
+                                            <span>{{context.Name}}</span>
+                                        </div>
+                                    </ng-template>
+                                </ae-template>
+                            </ae-column>
+
+                            <ae-column [headerText]="'REFERENCE'| translate:lang" [sortable]="false">
+                                <ae-template [type]="'header'">
+                                    <ng-template>
+                                        <span>{{'REFERENCE'| translate:lang}}</span>
+                                    </ng-template>
+                                </ae-template>
+                                <ae-template [type]="'cell'" [keys]="_keys">
+                                    <ng-template let-context="item">
+                                        <div>
+                                            <span>{{context.ReferenceNumber}}</span>
+                                        </div>
+                                    </ng-template>
+                                </ae-template>
+                            </ae-column>
+
+                        </ae-datatable>
+                    </div>
+                </div>
+            </ng-template>
+        </ae-template>
+
+        <ae-template [type]="'SafetyPrecautions'">
+            <ng-template let-context="item">
+                <div class="information-grid__item--input">
+                    <label class="information-grid__item-label column-1of3"> {{'CPP_ADD.SAFETY_PRECAUTIONS' | translate:lang}}  <span class="error-text">*</span></label>
+                    <div class="button-link information-grid__item-value column-2of3">
+                        <ae-anchor [id]="getChildId('addRAAnchor',1)" [name]="getChildName('addRAAnchor',1)" [anchorType]="'button'" [class]="'button button--small button--inline-block'"
+                            [anchorClass]="lightClass" (aeClick)="onShowSafetyPrecations($event, context)" [title]="getButtonTitle() | translate:lang"
+                            [text]="getButtonTitle() | translate:lang">
+                        </ae-anchor>
+                    </div>
+                </div>
+            </ng-template>
+        </ae-template>
+
+        <ae-template [type]="'SequenceOfEvents'">
+            <ng-template let-context="item">
+                <div class="information-grid__item--input">
+                    <label class="information-grid__item-label column-1of3"> {{'CPP_ADD.SEQUENCE_OF_EVENTS' | translate:lang}}  <span class="error-text">*</span></label>
+                    <div class="button-link information-grid__item-value column-2of3">
+                        <ae-anchor [id]="getChildId('addRAAnchor',1)" [name]="getChildName('addRAAnchor',1)" [anchorType]="'button'" [class]="'button button--small button--inline-block'"
+                            [anchorClass]="lightClass" (aeClick)="onShowSequnceOfEvents($event, context)" [title]="getButtonTitle() | translate:lang"
+                            [text]="getButtonTitle() | translate:lang">
+                        </ae-anchor>
+
+                    </div>
+                </div>
+            </ng-template>
+        </ae-template>
+
+    </ae-form>
+</div>
+
+
+<ae-slideout [id]="'raSelectorSlideout'" [name]="'raSelectorSlideout'" [modelState]="getRASelectorSlideoutState()" [class.slide--animate]="showRASelectorSlide">
+    <ng-container *ngIf="showRASelectorSlide">
+        <risk-assessment-selector [id]="'riskAssessmentSelector'" [name]="'riskAssessmentSelector'" [selectedRiskAssessments]="selectedRiskAssessments" (selectRA)="onRASelected($event)" (aeClose)="onRASelectClose($event)">
+        </risk-assessment-selector>
+    </ng-container>
+</ae-slideout>
+
+
+<ae-slideout [id]="'safetyPrecautionsSlideout'" [name]="'safetyPrecautionsSlideout'" [modelState]="getSafetyPrecautionsState()"
+    [class.slide--animate]="showSafetyPrecautionsSlide">
+    <ng-container *ngIf="showSafetyPrecautionsSlide">
+        <add-safety-precautions [id]="'safetyPrecautionsAddUpdate'" [name]="'safetyPrecautionsAddUpdate'" [safetyPrecautions]="safetyPrecautions"
+            [action]="getAction()" [context]="context" (onAeSubmit)="onSafetyPrecautionsSubmit($event)" (aeClose)="onSafetyPrecautionsClose($event)">
+        </add-safety-precautions>
+    </ng-container>
+</ae-slideout>
+
+<ae-slideout [id]="'sequenceOfEventsSlide'" [name]="'sequenceOfEventsSlide'" [modelState]="getSequneceOfEventsSlideoutState()"
+    [class.slide--animate]="showSeqOfEventsSlide">
+    <ng-container *ngIf="showSeqOfEventsSlide">
+        <add-sequence-events [id]="'sequenceOfEventsAddUpdate'" [context]="context" (onAeSubmit)="onSequnceOfEventsSubmit($event)"
+            [sequenceOfEventsModel]="cppEvents" (aeClose)="onSequenceOfEventsClose($event)" [action]="getAction()">
+        </add-sequence-events>
+    </ng-container>
+</ae-slideout>

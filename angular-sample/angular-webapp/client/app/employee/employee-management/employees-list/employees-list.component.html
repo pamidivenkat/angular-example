@@ -1,0 +1,143 @@
+<div class="table spacer--use-margin">
+  <div class="table__filter-bar" id="enployeeFilter-barID">
+    <div class="filter-bar">
+      <div class="filter-bar__label label">{{'MANAGE_EMPLOYEE.Filter_By'| translate:lang}}</div>
+      <div class="sg-grid grid--1-1-3">
+        <div>
+          <ae-input [id]="getChildId('AeInput', 1)" [name]="getChildName('AeInput', 1)" [placeholder]="'MANAGE_EMPLOYEE.SEARCH_PLACEHOLDER'| translate:lang"
+            [delay]="SearchDebounce" [type]="InputType" (aeChange)="onSearchTextChange($event)" [value]="''"></ae-input>
+        </div>
+        <div>
+          <ae-select [id]="getChildId('AeSelect', 2)" [name]="getChildName('AeSelect', 2)" [options]="StatusTypes" [value]="'0'" (aeSelectChange)="onStatusTypeChange($event)"></ae-select>
+        </div>
+        <div>
+          <ae-select [id]="getChildId('AeSelect', 3)" [name]="getChildName('AeSelect', 3)" [options]="EmployeeTypes" [value]="''" (aeSelectChange)="onEmployeeTypeChange($event)"></ae-select>
+        </div>
+        <div>
+          <ae-select [id]="getChildId('AeSelect', 4)" [name]="getChildName('AeSelect', 4)" [placeholder]="''" [options]="UserTypes"
+            (aeSelectChange)="onUserTypeChange($event)" [value]="''"></ae-select>
+        </div>
+        <div>
+          <ae-autocomplete [id]="'ddlDepartment'" [name]="'ddlDepartment'" [placeholder]="'Select Department'" [multiselect]="'true'"
+            [items]="Departments" [dstype]="DataSourceType" [field]="'Name'" [valuefield]="'Id'" (aeOnSelect)="onDepartmentFilterChanged($event)"
+            (aeOnClearSelected)="onDepartmentFilterCleared($event)"></ae-autocomplete>
+        </div>
+        <div>
+          <ae-autocomplete [id]="'ddlLocation'" [name]="'ddlLocation'" [placeholder]="'Select Location'" [multiselect]="'true'" [items]="Locations"
+            [dstype]="DataSourceType" [field]="'SiteNameAndPostcode'" [valuefield]="'Id'" (aeOnSelect)="onLocationFilterChanged($event)"
+            (aeOnClearSelected)="onLocationFilterCleared($event)"></ae-autocomplete>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ae-datatable [id]="getChildId('DataTable', 1)" [name]="getChildName('DataTable', 1)" [dataSource]="EmployeesData$" [autoGenerateColumns]="false"
+    [totalRecords]="TotalCount$" [defaultOptions]="DefaultOptions$ | async" [loading]="EmployeesLoading$ | async" (pageChanged)="onPageChange($event)"
+    (onSort)="onSort($event)">
+    <ae-column [headerText]="'MANAGE_EMPLOYEE.INDICATORS'| translate:lang" [sortable]="false">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span></span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="Keys">
+        <ng-template let-context="item">
+          <div class="icons text--right">
+            <ae-icon *ngIf="context.IsManager" [title]="'MANAGE_EMPLOYEE.Holiday_approver' | translate:lang" [id]="getChildId('AeIcon', 1)"
+              [name]="getChildName('AeIcon', 1)" [size]="IconSize" [icon]="'icon-org-chart'"></ae-icon>
+            <ae-icon *ngIf="context.IsLeaver" [title]="'MANAGE_EMPLOYEE.Leaver' | translate:lang" [id]="getChildId('AeIcon', 4)" [name]="getChildName('AeIcon', 4)"
+              [size]="IconSize" [icon]="'icon-alert-cancel'"></ae-icon>
+            <ae-icon *ngIf="context.IsUser && context.HasEmail" [title]="'MANAGE_EMPLOYEE.Email_login' | translate:lang" [id]="getChildId('AeIcon', 2)"
+              [name]="getChildName('AeIcon', 2)" [size]="IconSize" [icon]="'icon-alert-envelope'"></ae-icon>
+            <ae-icon *ngIf="context.IsUser &&  !context.HasEmail" [title]="'MANAGE_EMPLOYEE.Username_login' | translate:lang" [id]="getChildId('AeIcon', 3)"
+              [name]="getChildName('AeIcon', 3)" [size]="IconSize" [icon]="'icon-employee'"></ae-icon>
+          </div>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+
+    <ae-column [headerText]="'MANAGE_EMPLOYEE.NAME' | translate:lang" [sortable]="true" [sortKey]="'FullName'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'MANAGE_EMPLOYEE.NAME' | translate:lang }}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="Keys">
+        <ng-template let-context="item">
+          <div>
+            <span>{{context.FullName}}</span>
+          </div>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'MANAGE_EMPLOYEE.JOB_TITLE' | translate:lang" [sortable]="true" [sortKey]="'Job.JobTitle.Name'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'MANAGE_EMPLOYEE.JOB_TITLE' | translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="Keys">
+        <ng-template let-context="item">
+          <span>{{context.JobTitle}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'MANAGE_EMPLOYEE.DEPARTMENT' | translate:lang" [sortable]="true" [sortKey]="'Job.Department.Name'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'MANAGE_EMPLOYEE.DEPARTMENT' | translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="Keys">
+        <ng-template let-context="item">
+          <span>{{context.DepartmentName}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'MANAGE_EMPLOYEE.LOCATION' | translate:lang" [sortable]="true" [sortKey]="'Job.Site.Name'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'MANAGE_EMPLOYEE.LOCATION' | translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="Keys">
+        <ng-template let-context="item">
+          <span>{{context.Location}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'MANAGE_EMPLOYEE.START_DATE' | translate:lang" [sortable]="true" [sortKey]="'Job.StartDate'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'MANAGE_EMPLOYEE.START_DATE' | translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="Keys">
+        <ng-template let-context="item">
+          <span for="StartDate">{{context.StartDate | localeDate:defaultLocale:'shortDate'}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'MANAGE_EMPLOYEE.VIEW' | translate:lang" [sortable]="false">
+      <ae-template [type]="'header'">
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="Keys">
+        <ng-template let-context="item">
+          <div [class]="'grid-action'">
+            <ae-button [class]="LightClass" [customClass]="'button--condensed'" [btnIcon]="'icon-alert-eye'" [title]="'MANAGE_EMPLOYEE.VIEW' | translate:lang"
+            [type]="'button'" [id]="'buttonView'" [name]="'buttonView'" (aeClick)="onViewEmployeeDetails(context)"></ae-button>
+          </div>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+  </ae-datatable>
+</div>
+<ae-legend [options]="LegendOptions" [headText]="'MANAGE_EMPLOYEE.Types' | translate:lang"></ae-legend>
+<ae-template [type]="'popOver'">
+  <ng-template let-context="item">
+    <span style="background-color:red">{{context.FirstName}}</span>
+    <span style="background-color:red">{{context.DepartmentId}}</span>
+  </ng-template>
+</ae-template>
+<ae-popover [visibleChange]="popOverVisibilityChange" [id]="'AePopover'" [name]="'AePopover'">
+
+</ae-popover>

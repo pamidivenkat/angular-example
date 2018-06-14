@@ -1,0 +1,8 @@
+<div>
+  <div class="so-panel__title" [id]="id">
+    <h3>{{'COPY_RISK_ASSESSMENT' | translate:lang}}</h3>
+  </div>
+  <ae-form [formBuilderData]="riskAssessmentCopyFormVM" [id]="getChildId('AeForm', 1)" [name]="getChildName('AeForm', 1)" [isPrimaryTitle]="false"
+    (onSubmit)="onCopyFormSubmit()" (onCancel)="onCopyFormCancel($event)" (onFormInit)="onFormInit($event)" [footerBtnText]="formButtonNames()">
+  </ae-form>
+</div>

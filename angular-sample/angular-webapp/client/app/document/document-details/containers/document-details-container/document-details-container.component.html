@@ -1,0 +1,24 @@
+<document-full-details [documentDetails]="documentDetails$ | async" [documentType]="documentType" [id]="'documentDetails'" [name]="'documentDetails'" (docDistribute)="onShowDistribute($event)" (docExportToCQC)="onShowExportToCQC($event)">
+
+</document-full-details>
+
+<div id="contentArea" class="tab-content">
+    <router-outlet>
+
+    </router-outlet>
+</div>
+
+<ae-slideout [id]="'documentDistributeSelectSlide'" [name]="'documentDistributeSelectSlide'" [modelState]="getDocDistributeSlideoutState()" [class.slide--animate]="showRemoveDocumentDistributeSelectSlideOut">
+<ng-container *ngIf="showRemoveDocumentDistributeSelectSlideOut">
+    <document-review-distribute [id]="'documentDistribute'" [name]="'documentDistribute'" [documentType]="documentType" [documentDetails]="documentDetails$ | async" (aeCancel)="onAeCancel($event)" (aeDistribute)="onDocumentDistribute($event)">
+
+    </document-review-distribute>
+</ng-container>
+</ae-slideout>
+
+<ae-slideout [id]="'documentExportToCQCSlide'" [name]="'documentExportToCQCSlide'" [modelState]="getDocumentExportToCQCSlideoutState()" [class.slide--animate]="showDocumentExportToCQCProSlideOut">
+    <ng-container *ngIf="showDocumentExportToCQCProSlideOut">
+        <document-export-to-cqc [id]="'documentExportToCQC'" [name]="'documentExportToCQC'" [documentDetails]="documentDetails$ | async" (onCQCCancel)="onCQCCancel($event)" (onCQCSubmit)="onCQCSubmit($event)">
+        </document-export-to-cqc>
+    </ng-container>
+</ae-slideout>

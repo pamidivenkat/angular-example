@@ -1,0 +1,75 @@
+<div id="distributionHistory" class="document-distribute-history">
+    <ae-notification [id]="'documentdistributehistoryMsg'" [name]="'documentdistributehistoryMsg'" [iconName]="'icon-info'" [textInfo]="'DOC_DISTRIBUTION.DISTRIBUTION_HISTORY_NOTIFICATION_MESSAGE' | translate:lang">
+    </ae-notification>
+    <div class="spacer">
+        <ae-datatable [id]="getChildId('AeDatatable',1)" [name]="getChildName('AeDatatable',1)" [dataSource]="distributionHistoryList$"
+            [totalRecords]="recordsCount$" [autoGenerateColumns]="false" [defaultOptions]="dataTableOptions$ | async" (pageChanged)="onGridPageChange($event)"
+            (onSort)="onGridSort($event)" [loading]="!(distributionHistoryListLoaded$ | async)">
+            <ae-column [headerText]="'DocumentDetails.DistributedTo' | translate:lang" [sortable]="true" [sortKey]="'RegardingObjectEntiyType'">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span [title]="'DocumentDetails.DistributedTo' | translate:lang">{{'DocumentDetails.DistributedTo' | translate:lang}}</span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+                        <span for="soPanel">{{context.RegardingObjectEntiyType}}</span>
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+            <ae-column [headerText]="" [sortable]="false">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span [title]=""></span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+
+                        <span for="soPanel">{{context.RegardingOjbectEntityValues}}</span>
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+            <ae-column [headerText]="'DocumentDetails.DocumentVersion' | translate:lang" [sortable]="true" [sortKey]="'DocumentVersion'">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span [title]="'DocumentDetails.DocumentVersion' | translate:lang">{{'DocumentDetails.DocumentVersion' | translate:lang}}</span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+
+                        <span for="soPanel">{{context.DocumentVersion}}</span>
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+            <ae-column [headerText]="'DocumentDetails.DistributedOn' | translate:lang" [sortable]="true" [sortKey]="'ActionedDate'">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span [title]="'DocumentDetails.DistributedOn' | translate:lang">{{'DocumentDetails.DistributedOn' | translate:lang}}</span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+
+                        <span for="soPanel">{{context.ActionedDate | localeDate:defaultLocale:'shortDate'}}</span>
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+            <ae-column [headerText]="'DocumentDetails.RecallDistribution' | translate:lang" [sortable]="false">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span [title]="'DocumentDetails.RecallDistribution' | translate:lang">{{'DocumentDetails.RecallDistribution' | translate:lang}}</span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+                        <span (click)="removeDistributedDoc(context)">
+                             <ae-icon  [title]="'DocumentDetails.RecallDistribution' | translate:lang" [id]="getChildId('AeIcon', 1)" [name]="getChildName('AeIcon', 1)" [size]="iconSize" [icon]="'icon-alert-cancel'"></ae-icon>
+                        </span>
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+        </ae-datatable>
+    </div>
+</div>

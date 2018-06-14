@@ -1,0 +1,140 @@
+<div id='manage-yearendprocedures'>
+  <ae-banner [id]="getChildId('AeBanner', 1)" [name]="getChildName('AeBanner', 1)" [titleText]="'YEAR_END_PROCEDURE.BANNER_TITLE' | translate:lang"
+    [backgroundImage]="'/assets/images/lp-employees.jpg'">
+    <ae2-breadcrumb [id]="getChildId('Ae2Breadcrumb', 2)" [name]="getChildName('Ae2Breadcrumb', 2)" [group]="bcGroup" class="bredcrumb-section"></ae2-breadcrumb>
+    <div class="image-text banner-image-text">
+    </div>
+  </ae-banner>
+
+  <ae-notification *ngIf="!canHaveAccessToYEP" [id]="getChildId('AeNotification', 6)" [name]="getChildName('AeNotification', 6)"
+    [iconName]="'icon-alert-cancel'" [textInfo]="'YEAR_END_PROCEDURE.INVALID_ACCESS_MSG'| translate:lang" [isAlert]="true">
+  </ae-notification>
+
+  <ng-container *ngIf="canHaveAccessToYEP">
+    <div class="button-bar spacer" *ngIf="canProcessYEP">
+      <div class="button-bar__item">
+        <ae-button [id]="getChildId('AeButton', 12)" [name]="getChildName('AeButton',12)" [customClass]="'button--cta'" [text]="'YEAR_END_PROCEDURE.HOLIDAY_SETTINGS' | translate:lang"
+          [title]="'YEAR_END_PROCEDURE.HOLIDAY_SETTINGS' | translate:lang" (aeClick)="openHolidaySettingsPanel()"></ae-button>
+      </div>
+    </div>
+
+    <ae-notification [id]="getChildId('AeNotification', 3)" [name]="getChildName('AeNotification', 3)" [iconName]="'icon-info'"
+      [textInfo]="yepStatusMessage" *ngIf="yepStatusMessage">
+    </ae-notification>
+    <div class="yearendprocedure-content">
+      <p>{{'YEAR_END_PROCEDURE.STATIC_TEXT_ONE' | translate:lang}}</p>
+      <p>{{'YEAR_END_PROCEDURE.STATIC_TEXT_TWO' | translate:lang}}</p>
+      <p>{{'YEAR_END_PROCEDURE.STATIC_TEXT_THREE' | translate:lang}}</p>
+      <p>{{'YEAR_END_PROCEDURE.STATIC_TEXT_FOUR' | translate:lang:{startMonth: startMonth,endMonth: endMonth,nextEndDate: nextEndDate}
+        }}
+      </p>
+      <p>{{'YEAR_END_PROCEDURE.STATIC_TEXT_FIVE' | translate:lang}}</p>
+      <p>{{'YEAR_END_PROCEDURE.STATIC_TEXT_SIX' | translate:lang}}</p>
+    </div>
+
+    <div id="yearendprocedureWizard" class="yep-wizard" *ngIf="canProcessYEP">
+      <div class="spacer">
+        <ae-wizard #wizard [steps]="yepWizardSteps$" [previousURL]="'/company/year-end-procedure'" id="'yearendprocedurewizard'"
+          name="'yearendprocedurewizard'" [hideFooter]="true" [canNavigate]="canNavigate()">
+          <ae-template [type]="'requestsStep'">
+            <ng-template let-context="item">
+              <pending-holiday-absence-requests [context]="context" [id]="getChildId('PendingHolidayAbsenceRequests', 5)" [name]="getChildName('PendingHolidayAbsenceRequests', 5)"
+                (continueEvent)="submitStepData($event)" (declineRequest)="onDeclineRequest($event)" (approveRequest)="onApproveRequest($event)"
+                (viewTeamCalendarRequest)="onViewTeamCalendarRequest($event)" [loading]="loadingPendingRequests" (selectTeamRoaster)="onSelectTeamRoaster($event)"></pending-holiday-absence-requests>
+            </ng-template>
+          </ae-template>
+          <ae-template [type]="'yepreadyStep'">
+            <ng-template let-context="item">
+              <yearendprocedure-ready [id]="getChildId('YearendprocedureReady', 6)" [name]="getChildName('YearendprocedureReady', 6)" [context]="context"
+                (continueEvent)="submitStepData($event)"></yearendprocedure-ready>
+            </ng-template>
+          </ae-template>
+          <ae-template [type]="'yepReviewStep'">
+            <ng-template let-context="item">
+              <yearendprocedure-results [id]="getChildId('YearendprocedureResults', 8)" [name]="getChildName('YearendprocedureResults', 8)"
+                [context]="context" (continueEvent)="submitStepData($event)"></yearendprocedure-results>
+            </ng-template>
+          </ae-template>
+
+          <ae-template [type]="'yepConfirmedStep'">
+            <ng-template let-context="item">
+              <yearendprocedure-review [id]="getChildId('YearendprocedureReview', 9)" [name]="getChildName('YearendprocedureReview', 9)"
+                [context]="context" (continueEvent)="submitStepData($event)"></yearendprocedure-review>
+            </ng-template>
+          </ae-template>
+        </ae-wizard>
+      </div>
+    </div>
+
+    <div class="up-to-date top-30" *ngIf="isYEPCompleted">
+      <div class="up-to-date__text">
+        <p>{{'YEAR_END_PROCEDURE.PENDING_HOLIDAYS.UP_TO_DATE' | translate:lang}}</p>
+      </div>
+      <div class="up-to-date__icon">
+        <ae-icon [id]="getChildId('AeIcon',1)" [name]="getChildName('AeIcon',1)" [size]="bigIconSize" [title]="'YEAR_END_PROCEDURE.PENDING_HOLIDAYS.UP_TO_DATE' | translate:lang"
+          [icon]="'icon-thumbs-up'"></ae-icon>
+      </div>
+    </div>
+  </ng-container>
+</div>
+
+<div class="holiday-slideout">
+  <ae-slideout [id]="getChildId('AeSlideOut', 15)" [name]="getChildName('AeSlideOut', 15)" [modelState]="getMyAbsenceDeclineSlideoutState()"
+    (cancel)="closeMyAbsenceDeclineForm()" [class.slide--animate]="showMyAbsenceDeclineForm">
+    <ng-container *ngIf="showMyAbsenceDeclineForm">
+      <my-absence-decline (declineFormClose)="closeMyAbsenceDeclineForm()" [id]="getChildId('MyAbsenceDecline',8)" [name]="getChildName('MyAbsenceDecline',8)"
+        (declineComplete)="onDeclineComplete($event)" [absenceStatuses]="absenceStatusList" [myAbsence]="employeeAbsence"></my-absence-decline>
+    </ng-container>
+  </ae-slideout>
+</div>
+
+<div class="holiday-slideout">
+  <ae-slideout [id]="getChildId('AeSlideOut', 16)" [name]="getChildName('AeSlideOut', 16)" [modelState]="getMyAbsenceManageSlideoutState()"
+    [class.slide--animate]="showMyAbsenceManageForm">
+    <my-absence-manage *ngIf="showMyAbsenceManageForm" [id]="getChildId('MyAbsenceApprove',9)" [name]="getChildName('MyAbsenceApprove',9)"
+      [operationMode]="operationMode" (aeOnClose)="closeMyAbsenceManageForm($event)" [fiscalYears]="fiscalYearData" [employeeSettings]="employeeSettings"
+      [absenceStatuses]="absenceStatusList" [approve]="true" [onestep]="false" [myAbsence]="employeeAbsence" [approvedBy]="userId"
+      [employeeConfig]="employeeConfig" [myabsenceVM]="myHolidayAbsenceVM" [absenceTypes]="absenceTypes" [fiscalYearSummary]="fiscalYearSummary"
+      (formSubmit)="saveEmployeeHoliday($event)" (pullFiscalYearSummary)="onPullFiscalYearSummary($event)"></my-absence-manage>
+  </ae-slideout>
+</div>
+
+<div class="calendar-slideout">
+  <ae-slideout [hidden]="!showTeamCalendar" [class.slide--animate]="showTeamCalendar" [modelState]="getViewTeamCalendarSlideoutState()"
+    (cancel)="closeViewTeamCalendar()" [id]="'calendarSlider'" [name]="'calendarSlider'">
+    <div class="so-panel__title">
+      <h3 class="grey-strip">Team Calendar ( {{selectedEmployeeDepartmentName}} )</h3>
+    </div>
+    <div class="so-panel__content">
+      <yep-team-calendar-loader [isLoaded]="showTeamCalendar$"></yep-team-calendar-loader>
+    </div>
+    <div class="so-panel__footer">
+      <nav>
+        <ul>
+          <li><label for="soPanel" class="button button--inline-block" (click)="closeViewTeamCalendar()" [title]="'BUTTONS.SLIDE_CLOSE' | translate: lang">{{'BUTTONS.SLIDE_CLOSE' | translate: lang}}</label></li>
+        </ul>
+      </nav>
+    </div>
+  </ae-slideout>
+</div>
+
+
+<div class="roster-slideout">
+  <ae-slideout [id]="'teamRoster'" [name]="'teamRoster'" [modelState]="getTeamRoasterSlideoutState()" [class.slide--animate]="showTeamRoaster">
+    <ng-container *ngIf="showTeamRoaster">
+      <team-roaster [id]="'myHolidayAbsenceManage'" [name]="'myHolidayAbsenceManage'" [loading]="rosterLoaded$" [rosterData]="rosterData$"
+        [recordsCount]="rosterTotalCount$" [dataTableOptions]="rosterDataTableOptions$ | async" [DepartmentName]="selectedEmployeeDepartmentName"
+        [DepartmentId]="selectedEmployeeDepartmentId" [initialWeekModel]="selectedEmployeeRequestWeekModel" (aeOnClose)="closeTeamRoaster($event)"
+        (aeWeekChange)="onWeekChange($event)">
+      </team-roaster>
+    </ng-container>
+  </ae-slideout>
+</div>
+
+<ae-slideout [id]="getChildId('AeSlideOut', 20)" [name]="getChildName('AeSlideOut', 20)" [modelState]="getHolidaySettingsSlideoutState()"
+  [class.slide--animate]="showHolidaySettings">
+  <ng-container *ngIf="showHolidaySettings">
+    <holidaysettings-basicinfo [id]="getChildId('HolidaysettingsBasicinfo', 24)" [name]="getChildName('HolidaysettingsBasicinfo', 24)"
+      [employeeSettings]="employeeSettings" (closePanel)="closeHolidaySettingsSlideout($event)"></holidaysettings-basicinfo>
+  </ng-container>
+</ae-slideout>

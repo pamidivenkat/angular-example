@@ -1,0 +1,238 @@
+%input {
+  background-color: $white;
+  border: 1px solid $grey--3;
+  border-radius: $base-border-radius;
+  box-shadow: inset 0 -3px 6px rgba($black, .05);
+  display: block;
+  font-family: $base-font;
+  padding: 10px;
+  transition: border-color $base-transition;
+  width: 100%;
+}
+
+.select {
+  @extend %input;
+  appearance: none;
+  background: $white url('/images/select-bg.png') no-repeat center right 10px;
+  box-shadow: inset 0 -3px 6px rgba($black, .05);
+  padding-right: $base-padding * 2;
+
+  &::-ms-expand {
+    display: none;
+  }
+
+  &.select--inline {
+    display: inline-block;
+    float: left;
+    width: initial;
+
+    + .button--inline {
+      float: right;
+    }
+  }
+}
+
+.select--left {
+  .select {
+    @include media-over-979 {
+      max-width: 60vw;
+    }
+  }
+}
+
+.select--white-sharp {
+  border-color: $white;
+}
+
+input {
+  @extend %input;
+
+  &::placeholder {
+    color: $grey--3;
+    font-style: italic;
+  }
+
+  &:focus::placeholder {
+    color: $grey--4;
+    font-style: normal;
+  }
+
+  &.ng-invalid {
+    border-color: $alert-color;
+    box-shadow: 0 0 9px 0 $alert-color;
+  }
+}
+
+.input--search {
+  appearance: none;
+  background: $white url('/images/search-bg.png') no-repeat center right 10px;
+  padding-right: $base-padding * 2;
+}
+
+.input--no-styling {
+  border: 0;
+  box-shadow: none;
+  outline: 0;
+}
+
+.helper-text {
+  color: $grey--2;
+  display: block;
+  font-size: 90%;
+  margin-top: ($base-margin / 3);
+}
+
+[type="checkbox"],
+[type="radio"] {
+  @include vh();
+
+  &:focus,
+  &:hover {
+    + label {
+      &::before {
+        border-color: $grey--1;
+      }
+    }
+  }
+
+  &:active {
+    + label {
+      &::before {
+        filter: brightness(.2);
+        transition-duration: 0;
+      }
+    }
+
+  }
+
+  &[disabled] {
+    + label {
+      color: $grey--2;
+
+      &::before {
+        border-color: $grey--2;
+      }
+
+      &::after {
+        border-color: $grey--2;
+      }
+    }
+  }
+
+  + label {
+    padding: 10px;
+    padding-left: 2em;
+    position: relative;
+    user-select: none;
+    vertical-align: middle;
+
+    &::before {
+      border: $input-border-width solid $grey--1;
+      box-sizing: content-box;
+      color: $teal--0;
+      content: '';
+      height: $input-height;
+      left: 0;
+      margin-top: -(($input-height / 2) + $input-border-width);
+      position: absolute;
+      text-align: center;
+      top: 50%;
+      width: $input-width;
+      //font-size: 18px;
+    }
+
+    &::after {
+      background-color: $teal--0;
+      box-sizing: content-box;
+      content: '';
+      height: ($input-height - $input-active-scale);
+      left: ($input-border-width + ($input-active-scale / 2));
+      margin-top: -(($input-height - $input-active-scale) / 2);
+      position: absolute;
+      top: 50%;
+      transform: scale(0);
+      transform-origin: 50%;
+      transition: transform 200ms ease-out;
+      width: $input-width - $input-active-scale;
+    }
+  }
+}
+
+[type="checkbox"] {
+  + label {
+    &::after {
+      background-color: transparent;
+      border-color: $teal--0;
+      border-image: none;
+      border-style: solid;
+      border-width: 0 0 3px 3px;
+      height: 3px;
+      left: 4px;
+      margin-top: -4px;
+      top: 50%;
+      transform: rotate(-45deg) scale(0);
+      transition: none;
+      width: 8px;
+    }
+  }
+
+  &:checked {
+    + label {
+      &::before {
+        animation: borderscale 200ms ease-in;
+      }
+
+      &::after {
+        content: ''; //\2713';
+        transform: rotate(-45deg) scale(1);
+        transition: transform 200ms ease-out;
+      }
+    }
+  }
+}
+
+[type="radio"] {
+  &:checked {
+    + label {
+      &::before {
+        animation: borderscale 300ms ease-in;
+        background-color: $white;
+      }
+
+      &::after {
+        transform: scale(1);
+      }
+    }
+  }
+
+  + label {
+    &::before,
+     &::after {
+      border-radius: 50%;
+    }
+  }
+}
+
+@keyframes borderscale {
+  50% {
+    box-shadow: 0 0 0 2px $teal--0;
+  }
+}
+
+.sidebar {
+  [type="checkbox"]:checked {
+    &[disabled] {
+      + label {
+        color: $grey--0;
+
+        &::before {
+          border-color: $grey--0;
+        }
+
+        &::after {
+          border-color: $grey--0;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,65 @@
+<div>
+  <ae-form [formBuilderData]="employeeEventForm" [id]="'eventForm'" [name]="'eventForm'" [Title]="getTitle()" (onSubmit)="onFormSubmit($event)"
+    (onCancel)="onFormCancel($event)" (onFormInit)="onFormInit($event)"  [footerBtnText]="getFooterButtonText()">
+    <form class="form form-spacer" [formGroup]="commonForm" [id]="getChildId('form', 2)">
+      <div *ngIf="showReminderDaysSwitch()">
+        <div class="form__input icon-switch">
+          <ae-icon [id]="getChildId('AeIcon',1)" [name]="getChildName('AeIcon',1)" [icon]="'icon-alert-circle-question'" [title]="'EMPLOYEE_TIMELINE.NOTIFICATION_REQUIRED_TOOLTIP' | translate:lang"></ae-icon>
+          <ae-switch formControlName="IsReminderRequired" [id]="getChildId('AeSwitch',1)" [name]="getChildName('AeSwitch',i)" [switchText]="getIsNotificationRequiredMessage() | translate:lang"
+            [class]="switchTextLeft" [checked]="isReminderInDaysChecked" [disabled]="disableReminderDaysSwitch()"></ae-switch>
+        </div>
+        <div class="form__input" *ngIf="showReminderInDaysField">
+          <label><ae-icon [id]="getChildId('AeIcon',2)" [name]="getChildName('AeIcon',2)" [icon]="'icon-alert-circle-question'" [title]="'EMPLOYEE_TIMELINE.NOTIFICATION_REMINDER_TOOLTIP' | translate:lang"></ae-icon> {{ getReminderNotificationMessage() | translate:lang }}
+                <ae-input [id]="'remainderInDays'" [name]="'remainderInDays'" formControlName="ReminderInDays" [type]="ctrlType" [step]="1"
+                  [min]="0" [placeholder]="'EMPLOYEE_TIMELINE.REMINDER_NOTIFICATION' | translate:lang" ></ae-input>
+              </label>
+          <span *ngIf="showErrorMessage && showReminderInDaysField" class="form__input__error">{{errorMessage | translate:lang }}</span>
+        </div>
+      </div>
+
+      <div class="form__input">
+        <label [id]="getChildId('label', 1)">{{'SELECT_FILE' | translate:lang}}</label>
+        <ae-file [id]="'fileUpload'" [name]="'fileUpload'" [multiple]="false" [accept]="'*'" (onFilesSelected)="onFilesSelected($event)"></ae-file>
+      </div>
+      <div class="form__input" *ngIf="hasDocuments()">
+        <div *ngFor="let doc of employeeEvent.Documents;let i = index;">
+          <ae-anchor [id]="getChildId('AeAnchor',i)" [name]="getChildName('AeAnchor',i)" [class]="'button button--inline-block'" [anchorClass]="lightClass"
+            (aeClick)="downloadDocument(doc.Id)" [text]="doc.FileName"></ae-anchor>
+        </div>
+      </div>
+      <div *ngIf="showDescriptionAndNotes">
+        <div class="form__input">
+          <label [id]="getChildId('label', 2)">{{'DESCRIPTION' | translate:lang }}
+          <ae-input [id]="getChildId('AeInput', 1)" [name]="getChildName('AeInput', 1)" formControlName="Description" [placeholder]="'DESCRIPTION' | translate:lang"></ae-input>
+          </label>
+        </div>
+        <div class="form__input">
+          <label [id]="getChildId('label', 3)"> {{'NOTES' | translate:lang }}
+        <ae-input [id]="getChildId('AeInput', 2)" [name]="getChildName('AeInput', 2)" formControlName="Comment" [placeholder]="'NOTES' | translate:lang"></ae-input>
+        </label>
+        </div>
+      </div>
+      <div class="form__input">
+        <label [id]="getChildId('label', 4)">{{'TYPE' | translate:lang }} *
+        <ae-select [id]="getChildId('AeSelect',1)" [name]="getChildName('AeSelect',1)" [placeholder]="'PLEASE_SELECT' | translate:lang" [options]="sensitivityOptions"
+          formControlName="Sensitivity"></ae-select>
+          </label>
+        <span *ngIf="fieldHasRequiredError('Sensitivity')" class="form__input__error">{{'EMPLOYEE_TIMELINE.SENSITIVITY_REQUIRED' | translate:lang}}</span>
+      </div>
+    </form>
+    <hr class="blue">
+    <div>
+      <h3>{{'EMPLOYEE_TIMELINE.SENSITIVITY' | translate:lang}}</h3>
+      <div class="information-grid__item" *ngIf="canSeeSensitivityText()">
+        <div class="information-grid__item-label">{{'EMPLOYEE_TIMELINE.SENSITIVE' | translate:lang}}</div>
+        <div class="information-grid__item-value">{{'EMPLOYEE_TIMELINE.SENSITIVE_TEXT' | translate:lang}}</div>
+      </div>
+      <div class="information-grid__item" *ngIf="canSeeAdvanceText()">
+        <div class="information-grid__item-label">{{'EMPLOYEE_TIMELINE.ADVANCED' | translate:lang}}</div>
+        <div class="information-grid__item-value">{{'EMPLOYEE_TIMELINE.ADVANCE_TEXT' | translate:lang}}</div>
+        <!--<div class="information-grid__item-label">{{'EMPLOYEE_TIMELINE.BASIC' | translate:lang}}</div>
+        <div class="information-grid__item-value">{{'EMPLOYEE_TIMELINE.BASIC_TEXT' | translate:lang}}</div>-->
+      </div>
+    </div>
+  </ae-form>
+</div>

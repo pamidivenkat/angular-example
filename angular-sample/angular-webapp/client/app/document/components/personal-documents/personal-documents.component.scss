@@ -1,0 +1,11 @@
+@import '../../../../assets/scss/variablesMap';
+.personal-document-content{
+    .text--right{
+        margin: 20px 30px 0;
+        display: block;
+        text-align: right;
+        .button{
+            display: inline-block;
+        }
+    }
+}

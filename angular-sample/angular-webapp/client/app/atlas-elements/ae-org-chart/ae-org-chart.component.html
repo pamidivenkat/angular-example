@@ -1,0 +1,16 @@
+<div [id]="id" #rootContainer class="org-chart-top-conatiner">
+  <div class="org-chart-nav no-print">
+    <ae-icon [icon]="'icon-zoom-in'" [ngClass]="{'disable':isHigherZoom()}" [title]="'Zoom in'" [id]="getChildId('zoomin', 1)"
+      [name]="getChildName('AeIcon', 1)" (click)="zoomIn($event)"></ae-icon>
+    <ae-icon [icon]="'icon-zoom-out'" [ngClass]="{'disable': isLowerZoom()}" [title]="'Zoom out'" [id]="getChildId('zoomout', 2)"
+      [name]="getChildName('AeIcon', 2)" (click)="zoomOut($event)"></ae-icon>
+    <ae-icon [icon]="'icon-printer'" [title]="'Print'" [id]="getChildId('print', 3)" [name]="getChildName('AeIcon', 3)" (click)="_print($event)"></ae-icon>
+    <ae-icon [icon]="'icon-alert-download'" [title]="'Download'" [id]="getChildId('download', 4)" [name]="getChildName('AeIcon', 4)"
+      (click)="download($event)"></ae-icon>
+  </div>
+
+  <div #container class="org-chart" [id]="getChildId('container',1)" >
+    <ae-org-chart-node #rootNode [id]="getChildId('AeOrgChartNode', 1)" [name]="getChildName('AeOrgChartNode', 1)" [context]="context"
+      (selectDetailItem)="_selectDetailItem($event)" [refresh]="refresh"></ae-org-chart-node>
+  </div>
+</div>

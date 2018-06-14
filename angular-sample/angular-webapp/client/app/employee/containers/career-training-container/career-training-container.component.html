@@ -1,0 +1,39 @@
+<div class="spacer--use-margin top-space0">
+  <h3>{{'EMPLOYEE.careers_training' | translate:lang}}</h3>
+  <ae-tabstrip [id]="getChildId('AeTabStrip',1)" [name]="getChildName('AeTabStrip',1)" [standardWithIcon]="true" [isTabButton]="true">
+    <ae-tabstrip-item [id]="getChildId('AeTabStripItem',1)" [name]="getChildName('AeTabItem',1)" [header]="'Education history'"
+      [navigateUrl]="getEducationHistoryUrl()">
+
+    </ae-tabstrip-item>
+
+    <ae-tabstrip-item [id]="getChildId('AeTabStripItem',2)" [name]="getChildName('AeTabItem',2)" [header]="'Qualification history'"
+      [navigateUrl]="getQualificationistoryUrl()">
+
+    </ae-tabstrip-item>
+
+    <ae-tabstrip-item [id]="getChildId('AeTabStripItem',3)" [name]="getChildName('AeTabItem',3)" [header]="'Training history'"
+      [navigateUrl]="getTrainingHistoryUrl()">
+
+    </ae-tabstrip-item>
+
+    <ae-tabstrip-item [id]="getChildId('AeTabStripItem',4)" [name]="getChildName('AeTabItem',4)" [header]="'Salary history'"
+      [navigateUrl]="getSalaryHistoryUrl()">
+
+    </ae-tabstrip-item>
+
+    <ae-tabstrip-item [id]="getChildId('AeTabStripItem',5)" [name]="getChildName('AeTabItem',5)" [header]="'Job history'" [navigateUrl]="getJobHistoryUrl()">
+
+    </ae-tabstrip-item>
+
+    <ae-tabstrip-item [id]="getChildId('AeTabStripItem',6)" [name]="getChildName('AeTabItem',6)" [header]="'Previous employment'"
+      [navigateUrl]="getPreviousEmploymentUrl()">
+
+    </ae-tabstrip-item>
+
+  </ae-tabstrip>
+  <div id="careerTrainingContentArea" class="tabbed-section-for-tabs__tabs">
+    <router-outlet>
+
+    </router-outlet>
+  </div>
+</div>

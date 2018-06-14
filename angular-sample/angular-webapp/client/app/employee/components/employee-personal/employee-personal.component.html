@@ -1,0 +1,85 @@
+<!---Personal section content start here -->
+<div [id]="id">
+  <div class="section-title">
+    <h3>{{'EMPLOYEE_PERSONAL.personal_details' | translate:lang}}</h3>
+    <ae-button [type]="'button'" *ngIf="canUpdate$ | async" [id]="getChildId('AeButton', 1)" [name]="getChildName('AeButton', 1)" (click)="openEmpPersonalUpdateForm($event)"
+      class="btn" [title]="'BUTTONS.UPDATE' | translate:lang" [text]="'BUTTONS.UPDATE' | translate:lang" [class]="btnStyle"
+      [disabled]="!dataLoadComplete"></ae-button>
+  </div>
+  <ae-slideout [id]="getChildId('AeSlideOut', 1)" [name]="getChildName('AeSlideOut', 1)" [modelState]="getSlideoutState()"
+    (cancel)="closeUpdateForm($event)" [class.slide--animate]="showUpdateEmpForm" >
+    <ng-container *ngIf="showUpdateEmpForm">
+    <employee-personal-update [id]="getChildId('EmployeePersonalUpdate', 1)" [name]="getChildName('EmployeePersonalUpdate', 1)"
+      (aeClose)="closeUpdateForm($event)" [toggle]="showUpdateEmpForm" [ethnicGroups]="ethincGroupData"></employee-personal-update>
+    </ng-container>
+  </ae-slideout>
+
+  <div class="information-grid">
+    <section class="information-grid__section">
+      <h3>{{'EMPLOYEE_PERSONAL.name' | translate:lang}}</h3>
+      <div class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.title' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" [class.text-muted]="!employee.Salutation" id="emppersonal_salutation">{{employee.Salutation || ' '}}</div>
+      </div>
+      <div class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.first_name' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" [class.text-muted]="!employee.FirstName" id="emppersonal_firstname">{{employee.FirstName || ' '}}</div>
+      </div>
+      <div class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.middle_name' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" [class.text-muted]="!employee.MiddleName" id="emppersonal_middlename">{{employee.MiddleName || ' '}} </div>
+      </div>
+      <div class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.surname' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" [class.text-muted]="!employee.Surname" id="emppersonal_surname">{{employee.Surname || ' '}} </div>
+      </div>
+      <div class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.known_as' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" [class.text-muted]="!employee.KnownAs" id="emppersonal_knownas">{{employee.KnownAs || ' '}}</div>
+      </div>
+      <div class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.previous_name' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" [class.text-muted]="!employee.PreviousName" id="emppersonal_previousname">{{employee.PreviousName || ' '}}</div>
+      </div>
+      <div class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.gender' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" [class.text-muted]="!employee.GenderText" id="emppersonal_gender">{{employee.GenderText || ' ' | translate:lang}}</div>
+      </div>
+    </section>
+    <section class="information-grid__section">
+      <h3>{{'EMPLOYEE_PERSONAL.birth_date_age' | translate:lang}}</h3>
+      <div class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.dob' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" [class.text-muted]="!employee.DOB" id="emppersonal_dob">{{employee.DOB | date:'dd/MM/y' || ' '}}</div>
+      </div>
+      <div class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.age' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" [class.text-muted]="!employee.Age" id="emppersonal_age">{{employee.Age || ' '}}</div>
+      </div>
+    </section>
+    <section class="information-grid__section">
+      <h3>{{'EMPLOYEE_PERSONAL.ethnicity' | translate:lang}}</h3>
+      <div class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.ethnicity' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" [class.text-muted]="!employee.EthnicGroup?.EthnicGroupValueName"
+          id="emppersonal_ethnicity">{{getEthnicity() || ' '}}</div>
+      </div>
+      <div class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.nationality' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" [class.text-muted]="!employee.Nationality" id="emppersonal_nationality">{{employee.Nationality || ' ' }}</div>
+      </div>
+    </section>
+    <section class="information-grid__section">
+      <h3>{{'EMPLOYEE_PERSONAL.tax' | translate:lang}}</h3>
+      <div class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.ni_number' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" [class.text-muted]="!employee.EmployeePayrollDetails?.NINumber" id="emppersonal_ninumber">{{employee.EmployeePayrollDetails?.NINumber || ' '}}</div>
+      </div>
+      <div class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_PERSONAL.tax_code' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" [class.text-muted]="!employee.EmployeePayrollDetails?.TaxCode" id="emppersonal_taxcode">{{employee.EmployeePayrollDetails?.TaxCode || ' '}}</div>
+      </div>
+    </section>
+  </div>
+</div>
+<!---Personal section content end here -->

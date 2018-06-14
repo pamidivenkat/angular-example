@@ -1,0 +1,62 @@
+<div class="so-panel__title">
+   <h3 class="grey-strip"  *ngIf="!isUpdateMode()">{{'EMPLOYEE_EDUCATION_HISTORY.add_education_history_details' | translate:lang}}</h3>
+  <h3 class="grey-strip"  *ngIf="isUpdateMode()">{{'EMPLOYEE_EDUCATION_HISTORY.update_education_history_details' | translate:lang}}</h3>
+</div>
+<div class="so-panel__content">
+  <div class="information-grid">
+    <form class="form" [formGroup]="empEducationHistoryAddUpdateForm">
+      <section class="information-grid__section">
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_EDUCATION_HISTORY.institution' | translate:lang}} <span class="error-text">*</span></div>
+          <div class="information-grid__item-value column-2of3 text-muted">
+            <ae-input [id]="'Institution'" [name]="'Institution'" [title]="'EMPLOYEE_EDUCATION_HISTORY.institution_tooltip' | translate:lang" formControlName="Institution" [placeholder]="'EMPLOYEE_EDUCATION_HISTORY.institution' | translate:lang"></ae-input>
+          </div>
+          <span *ngIf="fieldHasRequiredError('Institution') || fieldHasOnlySpaceCharacters('Institution')" class="form__input__error">{{'EMPLOYEE_EDUCATION_HISTORY.institution_required' | translate:lang}}.</span>
+          <span *ngIf="fieldHasInvalidName('Institution')" class="form__input__error">{{'EMPLOYEE_EDUCATION_HISTORY.only_alpha_msg' | translate:lang}}.</span>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_EDUCATION_HISTORY.start_date' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3 text-muted">
+            <ae-datetime-picker [id]="getChildId('AeDatetimePicker',1)" [name]="getChildName('AeDatetimePicker',1)" [monthNavigator]="true" [title]="'EMPLOYEE_EDUCATION_HISTORY.start_date_tooltip' | translate:lang"
+              [yearNavigator]="true" yearRange="1910:2030" [showIcon]="true" formControlName="StartDate">
+             </ae-datetime-picker>
+          </div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_EDUCATION_HISTORY.end_date' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3 text-muted">
+            <ae-datetime-picker [id]="getChildId('AeDatetimePicker',8)" [name]="getChildName('AeDatetimePicker',8)" [monthNavigator]="true" [title]="'EMPLOYEE_EDUCATION_HISTORY.end_date_tooltip' | translate:lang"
+              [yearNavigator]="true" yearRange="1910:2030" [showIcon]="true" formControlName="EndDate">
+              </ae-datetime-picker>
+          </div>
+           <span *ngIf="formHasError('endDateLessThanStartDate')" class="form__input__error">{{'EMPLOYEE_EDUCATION_HISTORY.EndDate_LessThan_Validation' | translate:lang}}</span>
+          
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_EDUCATION_HISTORY.qualification' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3 text-muted">
+            <ae-input [id]="'Qualification'" [name]="'Qualification'" [title]="'EMPLOYEE_EDUCATION_HISTORY.qualification_tooltip' | translate:lang" formControlName="Qualification" [placeholder]="'EMPLOYEE_EDUCATION_HISTORY.qualification' | translate:lang"></ae-input>
+          </div>
+        </div>
+      </section>
+      <div class="form__error">
+      </div>
+
+    </form>
+  </div>
+</div>
+<div class="so-panel__footer">
+  <nav>
+    <ul>
+      <li><label for="soPanel" class="button button--inline-block" [id]="getChildId('AeButton',1)" (click)="onAddUpdateFormClosed($event)" [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label></li>
+      <li class="pull--right"  *ngIf="!isUpdateMode()">
+        <ae-button [id]="getChildId('AeButton',1)" [name]="getChildName('AeButton',1)" [class]="light"
+         (aeClick)="onAddUpdateFormSubmit($event)" [title]="'BUTTONS.ADD' | translate:lang" [text]="'BUTTONS.ADD' | translate:lang"></ae-button>
+      </li>
+          <li class="pull--right"  *ngIf="isUpdateMode()">
+          <ae-button [id]="getChildId('AeButton',1)" [name]="getChildName('AeButton',1)" [class]="light"
+         (aeClick)="onAddUpdateFormSubmit($event)" [title]="'BUTTONS.UPDATE' | translate:lang" [text]="'BUTTONS.UPDATE' | translate:lang"></ae-button>
+      </li>
+    </ul>
+  </nav>
+</div>

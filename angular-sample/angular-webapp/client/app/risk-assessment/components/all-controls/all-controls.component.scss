@@ -1,0 +1,15 @@
+.controls-virtual-list {
+    ae-list-item{
+        padding: 15px 30px 20px;
+        overflow: hidden;
+
+        .control-grid__item__icon {
+            width: 80px; height: 80px; overflow: hidden; margin: auto; text-align: center;
+            img{max-height: 100%; max-width: 100%;}
+        }
+        .control-grid__item__label {
+            height: 70px;
+            margin-top: 15px;
+        }
+    }
+}

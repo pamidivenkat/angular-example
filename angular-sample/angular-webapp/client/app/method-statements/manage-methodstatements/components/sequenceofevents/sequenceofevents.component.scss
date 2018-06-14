@@ -1,0 +1,10 @@
+@import '../../../../../assets/scss/variablesMap';
+.sequence-events{
+    .add-btn{
+        @include media-over-979{
+            float: right;
+            margin-top: -95px;
+        }
+    }
+    .notification-bar.spacer{padding: 15px 0px;}
+}

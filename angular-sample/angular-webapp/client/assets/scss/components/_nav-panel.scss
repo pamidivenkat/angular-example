@@ -1,0 +1,25 @@
+.nav-panel {
+  @include clearfix;
+  background: $teal--4;
+
+  @include media-over-767 {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+
+.nav-panel__item {
+  background: transparent;
+  cursor: pointer;
+  padding: $base-padding;
+  transition: background $base-transition;
+
+  @include media-over-767 {
+    float: left;
+    width: 33.333%;
+  }
+
+  &:hover {
+    background: rgba($teal--0, .3);
+  }
+}

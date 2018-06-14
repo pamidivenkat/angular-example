@@ -1,0 +1,9 @@
+.add-contractors{
+    label{margin-bottom: 10px;}
+    .no-contractors{
+        .grid--1-2{
+            margin-top: 15px;
+            &:first-child {margin-top:0px;}
+        }
+    }
+}

@@ -1,0 +1,25 @@
+<div [id]="id">
+  <ae-banner [id]="getChildId('AeBanner',1)" [name]="getChildName('AeBanner',1)" [titleText]="(isHolidayHeader()?'Holidays':'Absences') +' <strong><small>'+getFullName()+'</small></strong>'"
+    [backgroundImage]="'/assets/images/lp-holidays.jpg'">
+    <div class="image-text banner-image-text">
+            <ae2-breadcrumb [id]="getChildId('Ae2Breadcrub',2)" [name]="getChildName('Ae2Breadcrub',2)" [group]="bcGroup"></ae2-breadcrumb>
+        </div>
+    <div class="icon-list banner-icon-list">
+      <ae-button *ngIf="isHolidayHeader()&&canApplyHoliday()" (aeClick)="addedMyAbsence($event)" [type]="'button'" [id]="getChildId('AeButton',3)"
+        [name]="getChildId('AeButton',3)" class="btn" [text]="'Add holiday'"></ae-button>
+      <ae-button *ngIf="isAbsenceHeader()&&canApplyAbsence()" (aeClick)="addedMyAbsence($event)" [type]="'button'" [id]="getChildId('AeButton',4)"
+        [name]="getChildId('AeButton',4)" class="btn" [text]="'Add absence'"></ae-button>
+    </div>
+  </ae-banner>
+  <ae-notification [id]="'customnonworkingdaysLandingAddMsg'" [name]="'customnonworkingdaysLandingAddMsg'" [iconName]="'icon-info'" [textInfo]="(isHolidayHeader()?'HOLIDAYS.MY_HOLIDAY_NOTIFICATION_INFO':'HOLIDAYS.MY_ABSENCES_NOTIFICATION_INFO') | translate:lang">
+  </ae-notification>
+    <div class="button-bar button-bar--offset spacer--use-margin">
+        <div class="button-bar__item" *ngIf="isHolidayHeader()">
+             <team-calendar [id]="'teamCalendar'" [name]="'teamCalendar'"></team-calendar> 
+        </div>
+        <div class="button-bar__item">
+            <ae-select [id]="getChildId('AeSelect',5)" [name]="getChildName('AeSelect',5)" [options]="fiscalYearsImmList" (aeSelectChange)="onFiscalYearChange($event)"
+                [value]="selectedFiscalYear"></ae-select>       
+      </div>
+  </div>
+</div>

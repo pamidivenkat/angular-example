@@ -1,0 +1,65 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "project": {
+    "name": "citation-atlas-webapp"
+  },
+  "apps": [
+    {
+      "root": "client",
+      "outDir": "dist",
+      "assets": [
+        "assets",
+        "favicon.ico",
+        "authcallback.html",
+        "silentauthcallback.html",
+        "locallogout.html"
+      ],
+      "index": "index.html",
+      "main": "main.ts",
+      "polyfills": "polyfills.ts",
+      "test": "test.ts",
+      "tsconfig": "tsconfig.app.json",
+      "prefix": "app",
+      "styles": [
+        "assets/scss/styles.scss"
+      ],
+      "scripts": [
+        "../node_modules/simplebar/dist/simplebar.js"
+      ],
+      "environmentSource": "environments/environment.ts",
+      "environments": {
+        "dev": "environments/environment.ts",
+        "prod": "environments/environment.prod.ts",
+        "nonauth": "environments/environment.nonauth.ts"
+      }
+    }
+  ],
+  "e2e": {
+    "protractor": {
+      "config": "./protractor.conf.js"
+    }
+  },
+  "lint": [
+    {
+      "project": "src/tsconfig.app.json"
+    },
+    {
+      "project": "src/tsconfig.spec.json"
+    },
+    {
+      "project": "e2e/tsconfig.e2e.json"
+    }
+  ],
+  "test": {
+    "karma": {
+      "config": "./karma.conf.js"
+    }
+  },
+  "defaults": {
+    "styleExt": "scss",
+    "component": {
+      "spec": true,
+      "inlineTemplate": false
+    }
+  }
+}

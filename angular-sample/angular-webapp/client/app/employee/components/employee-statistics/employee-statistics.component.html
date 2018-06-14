@@ -1,0 +1,14 @@
+<div class="banner__statistics">
+  <div class="banner__statistic" *ngFor="let employeeAeInformationBarItem of employeeAeInformationBarItems; let i=index ">
+    <div class="statistic">
+      <div class="statistic__icon">
+        <ae-icon [id]="getChildId('AeIcon', i)" [name]="getChildName('AeIcon', i)" [size]="iconSize" [icon]="employeeAeInformationBarItem.IconName"></ae-icon>
+      </div>
+
+      <div class="statistic__copy">
+        <div [id]="getStatisticCountId(i)" class="statistic__number">{{employeeAeInformationBarItem.Count}}</div>
+        <div [id]="getStatisticNameId(i)" class="statistic__name">{{employeeAeInformationBarItem.Title}}</div>
+      </div>
+    </div>
+  </div>
+</div>

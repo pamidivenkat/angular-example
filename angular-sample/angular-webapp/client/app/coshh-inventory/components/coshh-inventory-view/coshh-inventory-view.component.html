@@ -1,0 +1,63 @@
+<div id="slide-out-form-content" class="wrapper-for-slideout-conten">
+    <div class="so-panel__title">
+        <h3 class="grey-strip">{{'VIEW_COSHH_INVENTORY' | translate:lang}}</h3>
+    </div>
+    <div class="so-panel__content">
+        <div class="form__input">
+            <label>{{'SUBSTANCE' | translate:lang}}
+        <div [class.text-muted]="!vm?.Substance" id="coshhInventory_Substance">{{vm?.Substance || ''}}</div>
+      </label>
+        </div>
+        <div class="form__input">
+            <label>{{'COSHH_INVENTORY.REFERENCENUMBER' | translate:lang}}
+        <div [class.text-muted]="!vm?.ReferenceNumber" id="coshhInventory_ReferenceNumber">{{vm?.ReferenceNumber || ''}}
+        </div>
+      </label>
+        </div>
+        <div class="form__input">
+            <label>{{'COSHH_INVENTORY.DESCRIPTION' | translate:lang}}
+        <div [class.text-muted]="!vm?.Description" id="coshhInventory_Description">{{vm?.Description || ''}}</div>
+      </label>
+        </div>
+        <div class="form__input">
+            <label>{{'MANUFACTURER' | translate:lang}}
+      <div class="" [class.text-muted]="!vm?.Manufacturer" id="coshhInventory_Manufacturer">{{vm?.Manufacturer || ''}}
+      </div>
+      </label>
+        </div>
+        <div class="form__input">
+            <label>{{'QUANTITY' | translate:lang}}
+      <div class="" [class.text-muted]="!vm?.Quantity" id="coshhInventory_Quantity">{{vm?.Quantity || ''}}
+      </div>
+      </label>
+        </div>
+        <div class="form__input">
+            <label>{{'USEDFOR' | translate:lang}}
+        <div [class.text-muted]="!vm?.UsedFor" id="coshhInventory_UsedFor">{{vm?.UsedFor || ''}}
+        </div>
+      </label>
+        </div>
+        <div class="form__input">
+            <label>{{'EXPOSURELIMITS' | translate:lang}}
+        <div [class.text-muted]="!vm?.ExposureLimits" id="coshhInventory_ExposureLimits">{{vm?.ExposureLimits || ''}}
+        </div>
+      </label>
+        </div>
+        <div class="form__input">
+            <label>{{'COSHH_INVENTORY.DATASHEET' | translate:lang}}
+               <div><ae-anchor class="sheet-name" [id]="'sheetDownLoad'" [name]="'sheetDownLoad'" [text]="FileName" (aeClick)="onSheetDownLoad()">
+                        </ae-anchor></div>
+      </label>
+        </div>
+    </div>
+    <div class="so-panel__footer">
+        <nav>
+            <ul>
+                <li>
+                    <ae-button [text]="'BUTTONS.SLIDE_CLOSE' | translate:lang" [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang" [type]="'button'"
+                        [id]="'submitConfirmCancel'" [name]="'submitConfirmCancel'" (aeClick)="onFormClosed()"></ae-button>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>

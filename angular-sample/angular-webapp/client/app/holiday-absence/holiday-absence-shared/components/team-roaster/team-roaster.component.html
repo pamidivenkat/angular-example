@@ -1,0 +1,204 @@
+<div class="so-panel__title">
+
+    <h3 class="grey-strip">{{'HOLIDAYS.Employee_Roster_details' | translate:lang}} ( {{ DepartmentName }} )</h3>
+</div>
+<div class="so-panel__content team-roaster-slider">
+    <form [formGroup]="holidayRosterFrm" [id]="'holidayRosterForm'" [name]="'holidayRosterForm'">
+        <div class="filter-bar__filters date-block">
+            <div class="previous-btn">
+                <ae-anchor [id]="'previous'" [name]="'previous'" (aeClick)="onPrevious($event)" [anchorNav]="backward" [anchorType]="'button'" title="Previous">
+                </ae-anchor>
+            </div>
+            <div class="filter-bar__filter">
+                <label> {{'DATE' | translate:lang}} </label>
+                <ae-datetime-picker [id]="getChildId('date',1)" [name]="getChildName('enddate',1)" [monthNavigator]="true" [yearNavigator]="true" yearRange="1910:2099" [showIcon]="true" [placeholder]="'(dd/mm/yyyy)'" formControlName="selectedDate" (aeSelect)="onDateChange($event)">
+                </ae-datetime-picker>
+            </div>
+            <div class="filter-bar__filter">
+                <label>  {{'WEEK_START_DATE' | translate:lang}} </label>
+                <div class="date-value">{{ (WeekModel ? WeekModel.StartDate : '') | localeDate:defaultLocale:'shortDate' }}</div>
+            </div>
+
+            <div class="filter-bar__filter">
+                <label> {{'WEEK_END_DATE' | translate:lang}} </label>
+                <div class="date-value">{{ (WeekModel ? WeekModel.EndDate : '') | localeDate:defaultLocale:'shortDate' }}</div>
+            </div>
+            <div class="next-btn">
+                <ae-anchor [id]="'next'" [name]="'next'" (aeClick)="onNext($event)" [anchorNav]="forward" [anchorType]="'button'" title="Next">
+                </ae-anchor>
+
+            </div>
+        </div>
+    </form>
+    <div>
+
+        <ae-datatable [id]="'teamRosterGrid'" [name]="'teamRosterGrid'" [dataSource]="data$" [autoGenerateColumns]="false" [totalRecords]="RecordsCount" [defaultOptions]="DataTableOptions" [loading]="!(Loading | async)" >
+            <ae-column [headerText]="'Status'" [sortable]="false">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span> </span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+                        <span>
+                <ae-icon [id]="'empIcon'" [name]="'empIcon'" [size]="iconOneSize" [color]="'black'" [icon]="'icon-employee'"></ae-icon>
+              </span>
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+
+            <ae-column [headerText]="'Status'" [sortable]="false">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span>Name</span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+                        <span> {{ context.Name }} </span>
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+
+
+            <ae-column [headerText]="'Type'" [sortable]="false">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span>Mon</span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+
+                        <div>
+                            <ae-icon [title]="getImageTitle(1, context.NonWorkingDays, context.Monday)" [id]="'availabilityIcon'" [name]="'availabilityIcon'" [size]="iconOneSize" [color]="'black'" [icon]="getIconName(1, context.NonWorkingDays, context.Monday)"></ae-icon>
+                        </div>
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+
+            <ae-column [headerText]="'Tue'" [sortable]="false">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span>Tue</span>
+                    </ng-template>
+                </ae-template>
+
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+
+                        <div>
+                            <ae-icon [title]="getImageTitle(2, context.NonWorkingDays, context.Tuesday)" [id]="'availabilityIcon'" [name]="'availabilityIcon'" [size]="iconOneSize" [color]="'black'" [icon]="getIconName(2, context.NonWorkingDays, context.Tuesday)"></ae-icon>
+                        </div>
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+
+            <ae-column [headerText]="'Wed'" [sortable]="false">
+
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span>Wed</span>
+                    </ng-template>
+                </ae-template>
+
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+
+                        <div>
+                            <ae-icon [title]="getImageTitle(3, context.NonWorkingDays, context.Wednesday)" [id]="'availabilityIcon'" [name]="'availabilityIcon'" [size]="iconOneSize" [color]="'black'" [icon]="getIconName(3, context.NonWorkingDays, context.Wednesday)"></ae-icon>
+                        </div>
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+
+            <ae-column [headerText]="'Wed'" [sortable]="false">
+
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span>Thu</span>
+                    </ng-template>
+                </ae-template>
+
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+
+                        <div>
+                            <ae-icon [title]="getImageTitle(4, context.NonWorkingDays, context.Thursday)" [id]="'availabilityIcon'" [name]="'availabilityIcon'" [size]="iconOneSize" [color]="'black'" [icon]="getIconName(4, context.NonWorkingDays, context.Thursday)"></ae-icon>
+                        </div>
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+
+            <ae-column [headerText]="'Wed'" [sortable]="false">
+
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span>Fri</span>
+                    </ng-template>
+                </ae-template>
+
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+
+                        <div>
+
+                            <ae-icon [title]="getImageTitle(5, context.NonWorkingDays, context.Friday)" [id]="'availabilityIcon'" [name]="'availabilityIcon'" [size]="iconOneSize" [color]="'black'" [icon]="getIconName(5, context.NonWorkingDays, context.Friday)"></ae-icon>
+
+                        </div>
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+
+            <ae-column [headerText]="'Sat'" [sortable]="false">
+
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span>Sat</span>
+                    </ng-template>
+                </ae-template>
+
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+
+                        <div>
+
+                            <ae-icon [title]="getImageTitle(6, context.NonWorkingDays, context.Saturday)" [id]="'availabilityIcon'" [name]="'availabilityIcon'" [size]="iconOneSize" [color]="'black'" [icon]="getIconName(6, context.NonWorkingDays, context.Saturday)"></ae-icon>
+
+                        </div>
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+
+            <ae-column [headerText]="'Sat'" [sortable]="false">
+
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span>Sun</span>
+                    </ng-template>
+                </ae-template>
+
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+
+                        <div>
+
+                            <ae-icon [title]="getImageTitle(0, context.NonWorkingDays, context.Sunday)" [id]="'availabilityIcon'" [name]="'availabilityIcon'" [size]="iconOneSize" [color]="'black'" [icon]="getIconName(0, context.NonWorkingDays, context.Sunday)"></ae-icon>
+
+                        </div>
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+
+        </ae-datatable>
+
+    </div>
+</div>
+<div class="so-panel__footer">
+    <nav>
+        <ul>
+            <li><label for="soPanel" class="button button--inline-block" [id]="getChildId('AeButton',1)" (click)="slideClose($event)" [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label></li>
+        </ul>
+    </nav>
+</div>

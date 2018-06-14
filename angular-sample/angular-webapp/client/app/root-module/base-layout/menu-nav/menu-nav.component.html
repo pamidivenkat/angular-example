@@ -1,0 +1,100 @@
+<div class="nav__level-section">
+  <div class="nav__item--section">Your area</div>
+</div>
+<div class="nav__level-one nav__level-one--top">
+  <div class="js-level-control nav__item nav__item--primary" [class.js-level-expanded]="isMainMenuExpanded(menu.Id)" (click)="toggleMenuWithoutSubLevel(menu.Id)"
+    *ngFor="let menu of menuItemsWithoutSubLevel;let menuIndex = index">
+    <a [routerLink]="menu.NavigateTo" *ngIf="!IsThirdPartyWebsiteLink(menu) && !menu.PassParams " (click)="menuCloseOnClick()">
+      <div class="icon-with-text">
+        <span class="icon-with-text__icon">
+            <div class="icon icon--small">
+              <svg>
+                <use [attr.xlink:href]="getAbsoluteUrl(menu.CssClass)"></use>
+              </svg>
+            </div>
+          </span>
+        <span class="icon-with-text__copy">
+        {{menu.Title}}
+      </span>
+      </div>
+    </a>
+    <a [routerLink]="menu.NavigateTo" queryParamsHandling="merge" *ngIf="!IsThirdPartyWebsiteLink(menu) && menu.PassParams" (click)="menuCloseOnClick()">
+      <div class="icon-with-text">
+        <span class="icon-with-text__icon">
+            <div class="icon icon--small">
+              <svg>
+                <use [attr.xlink:href]="getAbsoluteUrl(menu.CssClass)"></use>
+              </svg>
+            </div>
+          </span>
+        <span class="icon-with-text__copy">
+        {{menu.Title}}
+      </span>
+      </div>
+    </a>
+    <a  *ngIf="IsThirdPartyWebsiteLink(menu)" (click)="menuCloseOnClick()" target="_blank" [href]="menu.NavigateTo">
+      <div class="icon-with-text">
+        <span class="icon-with-text__icon">
+            <div class="icon icon--small">
+              <svg>
+                <use [attr.xlink:href]="getAbsoluteUrl(menu.CssClass)"></use>
+              </svg>
+            </div>
+          </span>
+        <span class="icon-with-text__copy">
+        {{menu.Title}}
+      </span>
+      </div>
+    </a>
+  </div>
+</div>
+<div class="nav__level-section">
+  <div class="nav__item--section">Management area</div>
+</div>
+<div class="nav__level-one nav__level-one--middle">
+  <div *ngFor="let menu of menuItemsWithSubLevel;let menuIndex = index">
+    <div class="js-level-control nav__item nav__item--primary" (click)="toggleMenuOnClick(menu)" *ngIf="menuItemVisible(menu)"
+      [class.js-level-expanded]="isMainMenuExpanded(menu.Id)">
+      <div class="icon-with-text nav__item--indicator">
+        <span class="icon-with-text__icon">
+            <div class="icon icon--small">
+              <svg>
+                <use [attr.xlink:href]="getAbsoluteUrl(menu.CssClass)"></use>
+              </svg>
+            </div>
+          </span>
+        <span class="icon-with-text__copy">
+         {{menu.Title}}
+      </span>
+      </div>
+    </div>
+    <div class="js-level nav__level-two" [class.nav__level-two--active]="isMainMenuExpanded(menu.Id)">
+      <div class="nav__level-section">
+        <div class="nav__item--section">{{menu.Title}}</div>
+      </div>
+      <div *ngFor="let subMenu of subMenuItems(menu);let subMenuIndex = index" (click)="toggleSubMenuOnClick(subMenuIndex, menu)">
+        <div class="js-level-control " *ngIf="subMenuItemVisible(subMenu, subMenuItems(menu))">
+          <div *ngIf="subLevelItemsExists(subMenu)">
+            <a [routerLink]="subMenu.NavigateTo" class="nav__item--secondary nav__item" *ngIf="IsSameOriginLink(subMenu.LinkOrigin)"
+              queryParamsHandling="merge" (click)="menuCloseOnClick()">{{subMenu.Title}}</a>
+            <a [href]="navigateLink(subMenu)" class="nav__item--secondary nav__item" [target]="isTargetBlank(subMenu.Target)" *ngIf="!IsSameOriginLink(subMenu.LinkOrigin)">{{subMenu.Title}}</a>
+          </div>
+          <div class="nav__item--secondary nav__item nav__item--indicator" [class.menu-has-sublevel]="!subLevelItemsExists(subMenu)"
+            [class.js-level-expanded]="isExpanded(subMenu.Id)" *ngIf="!subLevelItemsExists(subMenu)">
+            {{subMenu.Title}}
+          </div>
+        </div>
+        <div class="js-level nav__level-three" [class.nav__level-three--active]="isExpanded(subMenu.Id)">
+          <div *ngFor="let subLevelMenu of subMenu.MenuItems">
+            <div *ngIf="subMenuItemVisible(subLevelMenu, subMenu.MenuItems)">
+              <a class="nav__item nav__item--tertiary" [routerLink]="subLevelMenu.NavigateTo" *ngIf="IsSameOriginLink(subLevelMenu.LinkOrigin)"
+                (click)="menuCloseOnClick()" queryParamsHandling="merge">{{subLevelMenu.Title}}</a>
+              <a class="nav__item nav__item--tertiary" [href]="navigateLink(subLevelMenu)" [target]="isTargetBlank(subLevelMenu.Target)"
+                *ngIf="!IsSameOriginLink(subLevelMenu.LinkOrigin)" (click)="menuCloseOnClick()">{{subLevelMenu.Title}}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

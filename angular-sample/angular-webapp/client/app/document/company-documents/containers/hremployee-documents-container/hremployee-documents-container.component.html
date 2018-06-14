@@ -1,0 +1,37 @@
+<div class="spacer--y">
+
+  <div>
+    <ae-tabstrip [id]="'hrDocumentList'" [name]="'hrDocumentList'" [standardWithIcon]="true" [isTabButton]="true">
+      <ae-tabstrip-item *ngIf="canViewELDocuments()" [id]="'appraisalReviews'" [name]="'appraisalReviews'" [header]="'COMPANY_DOCUMENTS_TAB.AppraisalAndReviews' | translate:lang"
+        [title]="'COMPANY_DOCUMENTS_TAB.APPRAISALS_REVIEWS_TITLE' | translate:lang" [navigateUrl]="appraisalReviewsUrl" [hasCount]="true"
+        [count]="(appraisalReviewsStat$  | async).Count">
+
+      </ae-tabstrip-item>
+      <ae-tabstrip-item *ngIf="canViewELDocuments()" [id]="'disciplinary'" [name]="'disciplinary'" [header]="'COMPANY_DOCUMENTS_TAB.DisciplinariesAndGrievances' | translate:lang"
+        [title]="'COMPANY_DOCUMENTS_TAB.DISCIPLINARY_TITLE' | translate:lang" [navigateUrl]="diciplinaryUrl" [hasCount]="true"
+        [count]="(diciplinaryStat$ | async).Count">
+      </ae-tabstrip-item>
+
+      <ae-tabstrip-item *ngIf="canViewELOrHSDocuments()" [id]="'trainingCertificates'" [name]="'trainingCertificates'" [header]="'COMPANY_DOCUMENTS_TAB.TrainigCertificates' | translate:lang"
+        [title]="'COMPANY_DOCUMENTS_TAB.TRAINING_TITLE' | translate:lang" [navigateUrl]="trainingCertificatesUrl" [hasCount]="true"
+        [count]="(trainingCertificatesStat$ | async).Count">
+      </ae-tabstrip-item>
+
+      <ae-tabstrip-item *ngIf="canViewELDocuments()" [id]="'startersAndLeavers'" [name]="'startersAndLeavers'" [header]="'COMPANY_DOCUMENTS_TAB.StartersAndLeavers' | translate:lang"
+        [title]="'COMPANY_DOCUMENTS_TAB.STARTERS_TITLE' | translate:lang" [navigateUrl]="startersUrl" [hasCount]="true" [count]="(startersStat$ | async).Count">
+
+      </ae-tabstrip-item>
+
+      <ae-tabstrip-item *ngIf="canViewELOrHSDocuments()" [id]="'general'" [name]="'general'" [header]="'COMPANY_DOCUMENTS_TAB.GENERAL' | translate:lang"
+        [title]="'COMPANY_DOCUMENTS_TAB.GENERAL_TITLE' | translate:lang" [navigateUrl]="generalUrl" [hasCount]="true" [count]="(generalStat$ | async).Count">
+
+      </ae-tabstrip-item>
+
+    </ae-tabstrip>
+  </div>
+  <div id="HSDocumentsArea">
+    <router-outlet>
+
+    </router-outlet>
+  </div>
+</div>

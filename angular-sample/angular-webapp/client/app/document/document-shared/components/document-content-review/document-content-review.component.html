@@ -1,0 +1,17 @@
+<div class="document-content-review">
+    <div class="block" [class.active]="isCurrrentSelectedBlock(block)" [innerHTML]="getBlockDescription(block)" (click)="currentSelectedBlock(block)" [scrollIntoView]="isEmployeeContract ? '' : getScrollIntoView(block)" *ngIf="!isEditing">
+    </div>
+    <ng-container *ngIf="canEdit">
+        <!-- <ae-rte id="'rte'" name="'rte'" [value]="block?.Description" (onModelConentChange)="onModelConentChange($event,block)" *ngIf="isEditing && isCurrrentSelectedBlock(block)"></ae-rte> -->
+        <ae-ckeditor [id]="'rte'" [name]="'rte'" [value]="currentEditContent" (change)="onModelConentChange($event,block)" *ngIf="isEditing && isCurrrentSelectedBlock(block)"></ae-ckeditor>
+        <div class="button-bar spacer-lr">
+            <div class="button-bar__item">
+                <ae-button [type]="'button'" [id]="'cancelEditor'" [name]="'cancelEditor'" [text]="'BUTTONS.CANCEL' | translate:lang" [customClass]="'button--small'" [title]="'BUTTONS.CANCEL' | translate:lang" (aeClick)="onCancelClick()" *ngIf="isEditing &&isCurrrentSelectedBlock(block)"></ae-button>
+            </div>
+            <div class="button-bar__item">
+                <ae-button [type]="'button'" [id]="'bulkDistribution'" [name]="'bulkDistribution'" [customClass]="'button--small'" [class]="lightClass" [text]="editButtonText()" [title]="editButtonText()" (aeClick)="onEditClick(block)" *ngIf="isCurrrentSelectedBlock(block)"></ae-button>
+            </div>
+        </div>
+    </ng-container>
+    <document-content-review [id]="'document-content-child'" [name]="'document-content-child'" [canEdit]="canEdit" [block]="childBlock" *ngFor="let childBlock of block.Blocks | blockChecked"></document-content-review>
+</div>

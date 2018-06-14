@@ -1,0 +1,97 @@
+<div [id]="'id-vehicle'" class="table">
+    <div class="section-title">
+        <h3>{{'EMPLOYEE_VEHICLE.vehicle_details' | translate:lang}}</h3>
+        <ae-button *ngIf="canUpdate$ | async" [type]="'button'" [id]="getChildId('AeButton', 1)" [name]="getChildName('AeButton', 1)"
+            (aeClick)="openVehicleInfoAddForm($event)" class="btn" [class]="lightClass" [title]="'EMPLOYEE_VEHICLE.add' | translate:lang"
+            [text]="'EMPLOYEE_VEHICLE.add' | translate:lang"></ae-button>
+    </div>
+    <ae-datatable [id]="'vehicke-info'" [name]="'vehicke-info'" [dataSource]="vehicleList$" [autoGenerateColumns]="false" [totalRecords]="totalCount"
+        [actions]="actions" [defaultOptions]="vehicleDataTableOptions$ | async" (pageChanged)="onPageChange($event)" (onSort)="onSort($event)"
+        [loading]="!(vehicleDetailsLoaded$ | async)">
+        <ae-column [headerText]="'EMPLOYEE_VEHICLE.make' | translate:lang" [sortable]="true" [sortKey]="'Make'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>{{'EMPLOYEE_VEHICLE.make' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <span>{{ context.Make }}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+        <ae-column [headerText]="'EMPLOYEE_VEHICLE.model' | translate:lang" [sortable]="true" [sortKey]="'Model'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>{{'EMPLOYEE_VEHICLE.model' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <span>{{ context.Model }}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+        <ae-column [headerText]="'EMPLOYEE_VEHICLE.insurance_start_date' | translate:lang" [sortable]="true" [sortKey]="'InsuranceStartDate'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>{{'EMPLOYEE_VEHICLE.insurance_start_date' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <span>{{context.InsuranceStartDate | localeDate:defaultLocale:'shortDate'}}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+        <ae-column [headerText]="'EMPLOYEE_VEHICLE.date_issued' | translate:lang" [sortable]="true" [sortKey]="'DateIssued'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>{{'EMPLOYEE_VEHICLE.date_issued' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <span>{{context.DateIssued | localeDate:defaultLocale:'shortDate'}}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+        <ae-column [headerText]="'EMPLOYEE_VEHICLE.return_date' | translate:lang" [sortable]="true" [sortKey]="'ReturnDate'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>{{'EMPLOYEE_VEHICLE.return_date' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <span>{{context.ReturnDate | localeDate:defaultLocale:'shortDate'}}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+    </ae-datatable>
+</div>
+<ae-slideout [id]="getChildId('AeSlideOut', 1)" [name]="getChildName('AeSlideOut', 1)" [modelState]="getSlideoutState()"
+    (cancel)="closeUpdateForm($event)" [class.slide--animate]="slideoutState">
+    <ng-container *ngIf="slideoutState">
+        <employee-vehicle-add-update [id]="getChildId('EmployeeVehicleUpdate', 1)" [name]="getChildName('EmployeeVehicleUpdate', 1)"
+            [toggle]="slideoutState" [action]="actionType" (aeClose)="closeUpdateForm($event)"></employee-vehicle-add-update>
+    </ng-container>
+</ae-slideout>
+
+<div *ngIf="showDeleteConfirmDialog">
+    <ae-modal-dialog [visible]="showDeleteConfirmDialog" (cancel)="deleteConfirmModalClosed($event)" [closable]="true" [id]="getChildId('AeModel', 1)"
+        [name]="getChildName('AeModel', 1)">
+        <div class="modal-dialog-header">
+            <h3>{{ 'EMPLOYEE_VEHICLE.Dialog.Heading_text' | translate:lang }}</h3>
+        </div>
+        <div class="modal-dialog-body">
+            <p>{{'EMPLOYEE_VEHICLE.Dialog.Info' | translate: lang:{historyName: _selectedvehicle.Model} }}</p>
+        </div>
+        <div class="modal-dialog-footer">
+            <ae-button [text]="'EMPLOYEE_VEHICLE.Dialog.Btn_No' | translate:lang" [type]="'button'" [id]="'deleteConfirmNo'" [name]="'deleteConfirmNo'"
+                (aeClick)="deleteConfirmModalClosed($event)"></ae-button>
+            <ae-button [class]="lightClass" [text]="'EMPLOYEE_VEHICLE.Dialog.Btn_Yes' | translate:lang" [type]="'button'" [id]="'deleteConfirmYes'"
+                [name]="'deleteConfirmYes'" (aeClick)="deleteVehicleDetails($event)"></ae-button>
+        </div>
+    </ae-modal-dialog>
+</div>

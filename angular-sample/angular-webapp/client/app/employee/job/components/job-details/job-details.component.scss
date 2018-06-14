@@ -1,0 +1,8 @@
+.parent-element {
+    .so-panel {z-index: 99;
+        width: 100%;
+        @media only screen and (min-width: 767px) {
+          width: 650px;
+        }
+    }
+}

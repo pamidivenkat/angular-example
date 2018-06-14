@@ -1,0 +1,30 @@
+<div class="so-panel__title">
+  <h3>{{'MANAGE_METHOD_STM.PLANT-EQUIPMENT.BANNER_ADD_ITEMS' | translate:lang}}</h3>
+</div>
+
+<div>
+  <ae-form [formBuilderData]="plantAndEquipmentFormVM" [id]="'addUpdatePlantEquipmentForm'" [name]="'addUpdatePlantEquipmentForm'"
+    [Title]="title() | translate:lang" [isPrimaryTitle]="true" (onSubmit)="onSubmitPlantAndEquipmentForm($event)" (onCancel)="closePlantAndEquipmentSlideOut($event)"
+    (onFormInit)="onFormInit($event)" [footerBtnText]="formButtonNames()">
+
+    <ae-template [type]="'addButton'">
+      <ng-template let-context="item">
+        <div top-info class="text--right btn-inline">
+          <ae-button [id]="getChildId('AeButton', 1)" [name]="getChildName('AeButton', 1)" (aeClick)="openPlantAndEquipmentAddSlideOut()"
+            [text]="'MANAGE_METHOD_STM.PLANT-EQUIPMENT.ADD_ITEM' | translate:lang" [class]="lightClass"></ae-button>
+        </div>
+      </ng-template>
+    </ae-template>
+  </ae-form>
+</div>
+
+
+<div *ngIf="slideoutState">
+  <ae-slideout [id]="getChildId('AeSlideOut', 1)" [name]="getChildName('AeSlideOut', 1)" [modelState]="getSlideoutState()"
+    (cancel)="closePlantAndEquipmentAddSlideOut($event)" [class.slide--animate]="slideoutState">
+    <ng-container *ngIf="slideoutState">
+      <plantandequipment-addupdate [id]="getChildId('PlantEquipmentAdd', 1)" [name]="getChildName('PlantEquipmentAdd', 1)" (onCancel)="closePlantAndEquipmentAddSlideOut($event)"
+        [action]="action"></plantandequipment-addupdate>
+    </ng-container>
+  </ae-slideout>
+</div>

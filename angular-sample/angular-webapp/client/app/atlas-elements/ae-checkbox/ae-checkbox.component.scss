@@ -1,0 +1,137 @@
+@import '../../../assets/scss/variablesMap';
+[type="checkbox"] {
+  @include vh();
+  &:focus,
+  &:hover {
+    +label {
+      &::before {
+        border-color: $grey--1;
+      }
+    }
+  }
+  &:active {
+    +label {
+      &::before {
+        filter: brightness(.2);
+        transition-duration: 0;
+      }
+    }
+  }
+  &[disabled] {
+    + label {
+      color: $grey--2;
+
+      &::before {
+        border-color: $grey--2;
+      }
+
+      &::after {
+        border-color: $grey--2;
+      }
+    }
+  }
+  
+  +label {
+    padding: 10px 10px 10px 26px !important;
+    position: relative;
+    user-select: none;
+    vertical-align: middle;
+    min-height:20px;
+    &::before {
+      border: $input-border-width solid $grey--1;
+      box-sizing: content-box;
+      color: $teal--0;
+      content: '';
+      height: $input-height;
+      left: 0;
+      margin-top: -(($input-height / 2) + $input-border-width);
+      position: absolute;
+      text-align: center;
+      top: 50%;
+      width: $input-width; //font-size: 18px;
+    }
+    &::after {
+      background-color: $teal--0;
+      box-sizing: content-box;
+      content: '';
+      height: ($input-height - $input-active-scale);
+      left: ($input-border-width + ($input-active-scale / 2));
+      margin-top: -(($input-height - $input-active-scale) / 2);
+      position: absolute;
+      top: 50%;
+      transform: scale(0);
+      transform-origin: 50%;
+      transition: transform 200ms ease-out;
+      width: $input-width - $input-active-scale;
+    }
+  }
+}
+
+[type="checkbox"] {
+  +label {
+    &::after {
+      background-color: transparent;
+      border-color: $teal--0;
+      border-image: none;
+      border-style: solid;
+      border-width: 0 0 3px 3px;
+      height: 3px;
+      left: 4px;
+      margin-top: -4px;
+      top: 50%;
+      transform: rotate(-45deg) scale(0);
+      transition: none;
+      width: 8px;
+    }
+  }
+  &:checked {
+    +label {
+      &::before {
+        animation: borderscale 200ms ease-in;
+      }
+      &::after {
+        content: ''; //\2713';
+        transform: rotate(-45deg) scale(1);
+        transition: transform 200ms ease-out;
+      }
+    }
+  }
+}
+
+@keyframes borderscale {
+  50% {
+    box-shadow: 0 0 0 2px $teal--0;
+  }
+}
+
+.checkbox {
+  display: block;
+  font-size: 0;
+}
+
+.checkbox__img {
+  float: left;
+  width: 40px;
+  height: 40px;
+  img {
+    max-width: 100%;
+    max-height: 100%;
+  }
+}
+
+.checkbox__icon,
+.checkbox__img {
+  float: left;
+  +input {
+    +label {
+      margin-left: 55px;
+    }
+  }
+}
+
+.checkbox__copy {
+  font-size: 1.6rem;
+  vertical-align: middle;
+  padding-left: 25px !important;
+  > :first-child{margin-top:0}
+}

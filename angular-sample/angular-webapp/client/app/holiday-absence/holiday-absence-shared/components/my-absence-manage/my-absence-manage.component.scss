@@ -1,0 +1,181 @@
+@import '../../../../../assets/scss/variablesMap';
+div#radio-test-group ae-radiobutton {
+    display: inline-block;
+}
+.so-panel__content{
+    .am-pm{display: none;}
+    .information-grid__section:not(:first-of-type){margin-top: 20px;}
+    .information-grid__item:first-of-type{margin-top: 10px;}
+    .days-block{ position: relative;
+        .no-days{padding-right: 90px;}
+        .am-pm{display:block; position: absolute; right:0px; top:0px;}
+    }
+    .sub__title + .form-container{margin-left:10px;}
+}
+
+.btn-group, .btn-group-vertical {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    label{ display: inline-block; margin: 0px; padding: 10px 7px; border: 1px solid $grey--3; cursor:pointer;
+        &:hover{ background: $grey--4; color: $black; }
+        &:first-child{ border-right: none; float: left;}
+    }
+    .active{background: $teal--0; color: $white;
+    &:hover{background: $teal--1; color: $white;}
+    }
+}
+
+
+
+div.scrollableContainer { 
+position: relative; 
+padding-top: 44px;   
+border: 1px solid #fff;
+background: #d8d8d8;
+}
+
+div.scrollingArea { 
+max-height: 240px; 
+overflow: auto; 
+margin-bottom: 40px;
+background: #fff;
+}
+
+div.scrollingArea .scrollable > thead > tr > th, div.scrollingArea .scrollable > tfoot > tr > td {
+        height: 0;
+        padding: 0;
+}
+
+table.scrollable div.fixedCol {     
+    position: absolute;
+    top: 0;
+    padding: 12px 5px; 
+    border-left: solid 1px #d8d8d8;
+}
+
+table.scrollable div.fixed-ft-col {     
+    position: absolute;
+    padding: 10px 12px; 
+    border-left: solid 1px #d8d8d8;
+    bottom: 0;
+}
+
+table.scrollable > tfoot {
+    color: #000;
+}
+
+    table.scrollable > tfoot .total-ft-text {
+        width: 100px;
+        display: inline-block;
+        margin-left: -100px;
+        text-align: right;
+        border: none;
+    }
+
+.scrollable > thead > tr > th:first-child div.fixedCol {
+    border: none;
+}
+
+.scrollable > tbody > tr:hover{background: $grey--pale;}
+
+table.scrollable {
+    margin: 0px auto;
+    width:100%;
+    input{padding: 6px 8px !important;}
+    .section input{
+        padding: 0px 1px !important;
+        border-radius: 0px;
+        border: none;
+    }
+    :focus {
+        outline: none;
+    }
+}
+table.scrollable td, table.scrollable th {width: 25%; text-align: left; padding: 5px 10px;}
+
+.text-right{text-align: right !important;}
+.form__input__error-bg{
+    color:$red--1;
+    padding: 5px 15px;
+    background: $red--4;
+}
+
+.holiday-slideout{
+    .so-panel {
+        width: 100%;
+        @include media-over-767{
+            width: 650px;
+        }
+        z-index: 99;
+        .loader {
+            position: absolute;
+            top: 50px;
+            width: 100%;
+            bottom: 0px;
+            .loader-inner {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            width: 100px;
+            height: 44px;
+            margin: auto;
+            }
+        }
+        .form__input__error{
+            display: block;
+            width:100%;
+        }
+    }
+    
+.accordion{
+        label{background: $white; color: $teal--0; border: 1px solid $teal--0; }
+        .accordion__content{padding: 15px 0; 
+
+                .cf:after { visibility: hidden; display: block; font-size: 0; content: " "; clear: both; height: 0; }
+                * html .cf { zoom: 1; }
+                *:first-child+html .cf { zoom: 1; }
+        
+                table { width: 100%; border-collapse: collapse; border-spacing: 0; }
+                th,
+                td { margin: 0; vertical-align: top; padding:10px 5px; border-bottom: 2px solid $white; font-size: .9em; height: 40px;}
+                th { text-align: left; }
+        
+                table { display: block; position: relative; width: 100%; }
+                thead { display: block; float: left; }
+                tbody { display: block; width: auto; position: relative; overflow-x: auto; white-space: nowrap; }
+                thead tr { display: block; }
+                th { display: block; text-align: right; background: $grey--4; }
+                tbody tr { display: inline-block; vertical-align: top; }
+                td { display: block; min-height: 1.25em; text-align: left; }
+    
+                td { padding-left:10px;}
+                tbody tr:hover { background: $white; }
+                tbody tr { background: $grey--pale }
+                th:last-child,
+                td:last-child { border-bottom: 1px solid #babcbf; }
+                // tr{
+                //     td:nth(1), td:nth(5){width: 15%;}
+                // }
+            
+            
+        }
+        
+    } 
+    .five-column{
+                table.scrollable td, table.scrollable th {width: 18%;  padding: 5px;}
+                tr th:nth-child(4), tr td:nth-child(4){width:34%;}
+                tr td:nth-child(4){
+                    .display{width: 42px;}
+                }
+                tr th:nth-child(4){
+                    .fixedCol{padding-left: 18px;}
+                    .icon{position: absolute; left:-5px;}
+                }
+                ae-switch{float: left; margin-top: -2px; margin-right: 5px; margin-left: -5px;}
+                th:first-child, tr td:first-child { padding-left: 10px; }
+                th:last-child, tr td:last-child { width: 10%; }
+            }
+}

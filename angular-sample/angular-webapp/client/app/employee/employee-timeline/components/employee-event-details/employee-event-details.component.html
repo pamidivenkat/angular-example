@@ -1,0 +1,53 @@
+<div [id]="'empEventDetails'">
+  <div *ngIf="employeeEvent">
+    <div class="so-panel__title">
+      <h3>{{getHeaderTitle()}}</h3>
+    </div>
+    <div class="so-panel__content">
+      <div><label>{{'EMPLOYEE_TIMELINE.EMP_NAME' | translate: lang}}</label></div>
+      <div>
+        <p>{{getEmployeeName()}}</p>
+      </div>
+      <div *ngFor="let field of _dataFields ">
+        <div><label>{{field.displayText}}</label></div>
+        <div *ngIf="(field.displayType !== 10) && (field.displayType !==8) && (field.displayType !==11)">
+          <p>{{getValue(field.name)}}</p>
+        </div>
+        <div *ngIf="field.displayType === 10">
+          <p>{{getDateValue(field.name) ? (getDateValue(field.name) | localeDate:defaultLocale:'shortDate') : '' }}</p>
+        </div>
+        <div *ngIf="field.displayType === 8">
+          <p>{{getSelectValue(field)}}</p>
+        </div>
+        <div *ngIf="field.displayType === 11">
+          <p>{{getYesNoValue(field)}}</p>
+        </div>
+      </div>
+      <div *ngIf="employeeEvent.Documents.length > 0">
+        <div><label>{{'EMPLOYEE_TIMELINE.FILE_NAME' | translate: lang}}</label></div><br/>
+        <div *ngFor="let doc of employeeEvent.Documents;let i=index;">
+          <div class="link-color">
+            <ae-anchor [id]="getChildId('AeAnchor',i)" [name]="getChildName('AeAnchor',i)" [class]="'button button--inline-block'" [anchorClass]="lightClass"
+              (aeClick)="downloadDocument(doc.Id)" [text]="doc.FileName"></ae-anchor>
+          </div>
+        </div>
+      </div>
+      <br/>
+      <div><label>{{'EMPLOYEE_TIMELINE.TYPE' | translate: lang}}</label></div>
+      <div>
+        <p>{{getTypeName()}}</p>
+      </div>
+    </div>
+    <div class="so-panel__footer">
+      <nav>
+        <ul>
+          <li>
+            <ae-button [class]="darkClass" [text]="'BUTTONS.SLIDE_CLOSE' | translate: lang" [type]="'button'" [id]="'btnCancel'" [name]="'btnCancel'"
+              (aeClick)="onDetaisCancel()"></ae-button>
+          </li>
+
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>

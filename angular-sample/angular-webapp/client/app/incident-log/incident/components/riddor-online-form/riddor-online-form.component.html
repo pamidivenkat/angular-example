@@ -1,0 +1,130 @@
+<div id="slide-out-form-content" class="wrapper-for-slideout-conten riddor-form">
+  <div class="so-panel__title">
+    <ae-anchor [id]="'print-pdf'" [name]="'print-pdf'" [anchorType]="'button'" [class]="'button button--condensed button--inline-block button--cta'"
+      [anchorClass]="0" (aeClick)="generatePDF($event)" [title]="'BUTTONS.PRINT_TO_PDF' | translate:lang" [text]="'BUTTONS.PRINT_TO_PDF' | translate:lang"></ae-anchor>
+    <h3 class="grey-strip">{{'INCIDENT_RIDDOR.RIDDOR_ONLINE_FORM.riddor_online_form' | translate:lang}}</h3>
+  </div>
+  <div class="so-panel__content" #riddorForm>
+    <div class="information-grid">
+      <h2>{{'INCIDENT_RIDDOR.RIDDOR_ONLINE_FORM.report_of_injury' | translate:lang}}</h2>
+      <p>{{'INCIDENT_RIDDOR.RIDDOR_ONLINE_FORM.riddor_preview_note' | translate:lang}}</p>
+      <h3>{{'INCIDENT_RIDDOR.RIDDOR_ONLINE_FORM.about_orgnization' | translate:lang}}</h3>
+      <div class="form__input">
+        <label>{{'INCIDENT_RIDDOR.RIDDOR_ONLINE_FORM.notifier_name' | translate:lang}}</label>
+        <div>{{riddorFormVM.ReportedByFirstname}} {{riddorFormVM.ReportedBySurname}}</div>
+      </div>
+      <div class="form__input">
+        <label>{{'INCIDENT_RIDDOR.RIDDOR_ONLINE_FORM.job_title' | translate:lang}}</label>
+        <div>{{riddorFormVM.ReportedByJobTitle}}</div>
+      </div>
+      <div class="form__input">
+        <label>{{'INCIDENT_RIDDOR.RIDDOR_ONLINE_FORM.org_name' | translate:lang}}</label>
+        <div>{{riddorFormVM.CompanyName}}</div>
+      </div>
+      <div class="form__input">
+        <label>{{'INCIDENT_RIDDOR.RIDDOR_ONLINE_FORM.email_addr' | translate:lang}}</label>
+        <div>{{riddorFormVM.Email}}</div>
+      </div>
+      <hr />
+      <h3>{{'INCIDENT_RIDDOR.RIDDOR_ONLINE_FORM.where_incident_happen' | translate:lang}}</h3>
+      <h4>{{'INCIDENT_RIDDOR.RIDDOR_ONLINE_FORM.about_incident' | translate:lang}}</h4>
+      <div class="form__input">
+        <label>{{'INCIDENT_RIDDOR.RIDDOR_ONLINE_FORM.incident_date' | translate:lang}}</label>
+        <div>{{riddorFormVM.WhenHappened ? (riddorFormVM.WhenHappened| date: 'dd/MM/yyyy'):''}}</div>
+      </div>
+      <div class="form__input">
+        <label>{{'INCIDENT_RIDDOR.RIDDOR_ONLINE_FORM.incident_time' | translate:lang}}</label>
+        <div>{{riddorFormVM.WhenHappened ? (riddorFormVM.WhenHappened| date: 'jms'):''}}</div>
+      </div>
+      <div class="form__input">
+        <strong>{{'INCIDENT_RIDDOR.RIDDOR_ONLINE_FORM.which_locality' | translate:lang}}</strong>
+        <div>{{riddorPrintInfo.LocalAuthority || ''}}</div>
+      </div>
+      <div class="form__input">
+        <strong>{{'INCIDENT_RIDDOR.RIDDOR_ONLINE_FORM.which_dept' | translate:lang}}</strong>
+        <div>{{riddorFormVM.WhereHappened}}</div>
+
+      </div>
+      <div class="form__input">
+        <strong>{{'INCIDENT_RIDDOR.RIDDOR_ONLINE_FORM.what_type_work' | translate:lang}}</strong>
+        <div>{{riddorPrintInfo.MainIndustryName || ''}}</div>
+      </div>
+      <hr />
+      <h4>{{'INCIDENT_RIDDOR.RIDDOR_ONLINE_FORM.about_kind_incident' | translate:lang}}</h4>
+      <div class="form__input">
+        <label>{{'INCIDENT_RIDDOR.RIDDOR_ONLINE_FORM.kind_incident' | translate:lang}}</label>
+        <div>{{riddorFormVM.IncidentTypeName}}</div>
+      </div>
+      <div class="form__input">
+        <label>{{'INCIDENT_RIDDOR.RIDDOR_ONLINE_FORM.work_process_involved' | translate:lang}}</label>
+        <div>{{riddorPrintInfo.WorkProcessName}}</div>
+      </div>
+      <div class="form__input">
+        <label>{{'INCIDENT_RIDDOR.RIDDOR_ONLINE_FORM.main_factor_involved' | translate:lang}}</label>
+        <div>{{riddorPrintInfo.MainFactorName}}</div>
+      </div>
+      <div class="form__input">
+        <label>{{'INCIDENT_RIDDOR.RIDDOR_ONLINE_FORM.what_happened' | translate:lang}}</label>
+        <div>{{riddorFormVM.InjuryDescription}}</div>
+      </div>
+      <hr />
+      <h4>{{'INCIDENT_RIDDOR.RIDDOR_ONLINE_FORM.about_injured_person' | translate:lang}}</h4>
+      <div class="form__input">
+        <label>{{'INCIDENT_RIDDOR.RIDDOR_ONLINE_FORM.injured_person_name' | translate:lang}}</label>
+        <div>{{riddorFormVM.InjuredPersonName}}</div>
+      </div>
+      <div class="form__input">
+        <label>{{'INCIDENT_RIDDOR.RIDDOR_ONLINE_FORM.injured_person_address' | translate:lang}}</label>
+        <div>{{riddorFormVM.FullAddress}}</div>
+      </div>
+      <div class="form__input">
+        <label>{{'INCIDENT_RIDDOR.RIDDOR_ONLINE_FORM.phone_no' | translate:lang}}</label>
+        <div>{{riddorFormVM.HomePhone}}</div>
+      </div>
+      <div class="form__input">
+        <label>{{'INCIDENT_RIDDOR.RIDDOR_ONLINE_FORM.injured_person_occupation' | translate:lang}}</label>
+        <div>{{riddorFormVM.InjuredPersonOccupation}}</div>
+      </div>
+      <div class="form__input">
+        <label>{{'INCIDENT_RIDDOR.RIDDOR_ONLINE_FORM.injured_person_gender' | translate:lang}}</label>
+        <div>{{riddorFormVM.GenderText}}</div>
+      </div>
+      <div class="form__input">
+        <label>{{'INCIDENT_RIDDOR.RIDDOR_ONLINE_FORM.injured_person_age' | translate:lang}}</label>
+        <div>{{riddorFormVM.Age}}</div>
+      </div>
+      <div class="form__input">
+        <label>{{'INCIDENT_RIDDOR.RIDDOR_ONLINE_FORM.injured_person_work_status' | translate:lang}}</label>
+        <div>{{riddorFormVM.InjuredPartyName}}</div>
+      </div>
+      <div *ngIf="riddorFormVM.InjuryTypesText && riddorFormVM.InjuredPartsText">
+        <hr />
+        <h4>{{'INCIDENT_RIDDOR.RIDDOR_ONLINE_FORM.about_injured_person_injuries' | translate:lang}}</h4>
+        <div class="form__input">
+          <label>{{'INCIDENT_RIDDOR.RIDDOR_ONLINE_FORM.injury_severity' | translate:lang}}	</label>
+          <div></div>
+        </div>
+        <div class="form__input">
+          <label>{{'INCIDENT_RIDDOR.RIDDOR_ONLINE_FORM.injuries' | translate:lang}}</label>
+          <div>{{riddorFormVM.InjuryTypesText}}</div>
+        </div>
+        <div class="form__input">
+          <label>{{'INCIDENT_RIDDOR.RIDDOR_ONLINE_FORM.affected_part' | translate:lang}}</label>
+          <div>{{riddorFormVM.InjuredPartsText}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="so-panel__footer">
+    <nav>
+      <ul>
+        <li><label for="soPanel" [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang" class="button button--inline-block" [id]="getChildId('AeButton',1)"
+            (click)="onPanelClosed($event)">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label></li>
+        <li class="pull--right">
+          <a id="update-employee-link" class="button button--inline-block button--light" name="update-employee-link" [title]="'INCIDENT_RIDDOR.goto_riddor_website' | translate:lang"
+            href="https://extranet.hse.gov.uk/lfserver/external/F2508IE" target="_blank">{{'INCIDENT_RIDDOR.goto_riddor_website' | translate:lang}}</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>

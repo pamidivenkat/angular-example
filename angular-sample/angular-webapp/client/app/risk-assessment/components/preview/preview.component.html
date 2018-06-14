@@ -1,0 +1,746 @@
+<risk-assessment-header [id]="getChildId('RiskAssessmentHeader')" [name]="getChildName('RiskAssessmentHeader')" [showButtons]="false"
+  *ngIf="showBanner" [riskAssessmentName] = "getRiskAssessmentName()"></risk-assessment-header>
+
+<ae-notification [id]="getChildId('AeNotification', 1)" [name]="getChildName('AeNotification', 1)" [iconName]="'icon-info'"
+  [textInfo]="'RA_HELP_TEXT.PREVIEW' | translate:lang">
+</ae-notification>
+<div class="button-bar button-bar--scroll" [class.spacer]="!isPending" [class.spacer--y]="isPending">
+  <div class="button-bar__item">
+    Last update <b>{{getLastReviewedDate()}}</b> <b>{{getApprovedUserName()}}</b>
+  </div>
+  <div class="button-bar__item" [hidden]="isArchived">
+    <ae-anchor [id]="getChildId('ae-anchor', 1)" [name]="getChildName('ae-anchor', 1)" [anchorType]="'button'" [class]="'button button--cta'"
+      [anchorClass]="" (aeClick)="openEmailSlideOut()" [text]="'EMAIL' | translate:lang" [title]="'RA_HELP_TEXT.EMAIL' | translate:lang"></ae-anchor>
+  </div>
+  <div class="button-bar__item" [hidden]="isArchived">
+    <ae-anchor [id]="getChildId('ae-anchor', 2)" [name]="getChildName('ae-anchor', 2)" [anchorType]="'button'" [class]="'button button--cta'"
+      [anchorClass]="" (aeClick)="exportRiskAssessmentPreview()" [text]="'EXPORT' | translate:lang" [title]="'RA_HELP_TEXT.EXPORT' | translate:lang"></ae-anchor>
+  </div>
+  <div class="button-bar__item" [hidden]="isArchived">
+    <ae-anchor [id]="getChildId('ae-anchor', 3)" [name]="getChildName('ae-anchor', 3)" [anchorType]="'button'" [class]="'button button--cta'"
+      [anchorClass]="" (aeClick)="printRiskAssessmentPreview()" [text]="'PRINT' | translate:lang"></ae-anchor>
+  </div>
+  <div class="button-bar__item">
+    <ae-anchor [id]="getChildId('ae-anchor', 5)" [name]="getChildName('ae-anchor', 5)" [anchorType]="'button'" [class]="'button button--cta'"
+      (aeClick)="openCopyRiskAssessmentSlide()" [text]="'COPY' | translate:lang" [title]="'RA_HELP_TEXT.COPY' | translate:lang"></ae-anchor>
+  </div>
+  <div class="button-bar__item" [hidden]="isArchived">
+    <ae-anchor *ngIf="showReviewButton" [id]="getChildId('AeButton', 1)" [name]="getChildName('AeButton', 1)" [anchorType]="'button'"
+      [class]="'button button--cta'" [anchorClass]="" (aeClick)="onReviewClick()" [text]="'Review' | translate: lang"></ae-anchor>
+    <ae-anchor *ngIf="showApproveButton" [id]="getChildId('AeButton', 1)" [name]="getChildName('AeButton', 1)" [anchorType]="'button'"
+      [class]="'button button--cta'" [anchorClass]="" (aeClick)="onApprove()" [text]="'Approve' | translate: lang"></ae-anchor>
+  </div>
+  <div class="button-bar__item" *ngIf="cqcPruchased$ | async">
+    <ae-button [type]="'button'" [text]="'DocumentDetails.EXPORT_TO_CQC_PRO'| translate:lang" [title]="'DocumentDetails.EXPORT_TO_CQC_PRO'| translate:lang"
+      (aeClick)="onExportToCQC($event)" [name]="'DocumentDetails.EXPORT_TO_CQC_PRO'| translate:lang" [customClass]="'button button--cta'"></ae-button>
+  </div>
+</div>
+<div [id]="'riskassessment'" [class.spacer--x]="!isPending">
+  <div class="export-header" [hidden]="true">
+    <div class="headersec">Risk Assessment For : {{claims.getCompanyName()}}</div>
+  </div>
+  <div class="export-preview">
+    <div class="preview-page preview-page-scroll">
+      <div class="content-scroll-x">
+        <!-- General information start -->
+        <h3 class="text--centered no-pdf">{{claims.getCompanyName()}}</h3>
+        <div class="general-info">
+          <div class="preview-logo"><img [src]="getLogoUrl()" [alt]="'SiteLogo'"></div>
+          <div>
+            <div class="div-table" [id]="'general'">
+              <div class="div-table-row">
+                <div class="div-table-head">{{'ASSESSMENT_NAME'| translate:lang}}</div>
+                <div class="div-table-col">{{currentRiskAssessment.Name}}</div>
+                <div class="div-table-head">{{'ASSESSMENT_TYPE'| translate:lang}}</div>
+                <div class="div-table-col">
+                  <ae-label [id]="getChildId('labelAssessmentType', 1)" [name]="getChildName('labelAssessmentType', 1)" [text]="getRiskAssessmentType()" [src]="getPictureUrl(currentRiskAssessment.RiskAssessmentType && currentRiskAssessment.RiskAssessmentType.PictureId, true)"
+                    [imgVisible]="true"></ae-label>
+                </div>
+              </div>
+              <div class="div-table-row" *ngIf="!isExample()">
+                <div class="div-table-head">{{'ASSESSOR_NAME'| translate:lang}}</div>
+                <div class="div-table-col">{{getAssessor()}}</div>
+                <div class="div-table-head">{{'AFFECTED_SITES'| translate:lang}}</div>
+                <div class="div-table-col">{{getSiteLocation()}}</div>
+              </div>
+              <div class="div-table-row">
+                <div class="div-table-head">{{'ASSESSMENT_DATE'| translate:lang}}</div>
+                <div class="div-table-col">{{currentRiskAssessment.AssessmentDate | localeDate:defaultLocale:'shortDate' }}</div>
+                <div class="div-table-head">{{'REVIEW_PERIOD'| translate:lang}}</div>
+                <div class="div-table-col">{{currentRiskAssessment.ReviewPeriodDesc}}</div>
+              </div>
+              <div class="div-table-row">
+                <div class="div-table-head">{{'APPROVED_BY'| translate:lang}}</div>
+                <div class="div-table-col">{{getApprovedUserName()}}</div>
+                <div class="div-table-head">{{'REVIEW_DATE'| translate:lang}}</div>
+                <div class="div-table-col">{{currentRiskAssessment.ReviewDate | localeDate:defaultLocale:'shortDate'}}</div>
+              </div>
+              <div class="div-table-row">
+                <div class="div-table-head">{{'APPROVED_DATE'| translate:lang}}</div>
+                <div class="div-table-col">{{currentRiskAssessment.ApprovedDate | localeDate:defaultLocale:'shortDate'}}</div>
+                <div class="div-table-head">{{'REFERENCE'| translate:lang}}</div>
+                <div class="div-table-col">{{currentRiskAssessment.ReferenceNumber}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- General information end -->
+        <!-- workspaces start -->
+        <table class="table__table-preview" [id]="workspaces" *ngIf="canShowDescription()">
+          <thead>
+            <tr>
+              <th class="table__heading">{{'WORKSPACES'| translate:lang}}</th>
+              <th class="table__heading">{{'DESCRIPTION' | translate:lang}}<span *ngIf="isMigrated()">/{{'IDENTIFIED_HAZARD' | translate:lang }}</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="table__row v-align-top">
+              <td class="table__item width-55pc">
+                <div class="table__item-inner">
+                  <ul class="workspace-list">
+                    <ng-template ngFor let-item [ngForOf]="WorkspaceTypes" let-i="index">
+                      <li>
+                        <div class="checklist__item">
+                          <ae-label [id]="getChildId('AeLabel', i)" [name]="getChildName('AeLabel', i)" [text]="item.Name" [src]="getPictureUrl(item.PictureId, true)"
+                            [imgVisible]="true"></ae-label>
+                        </div>
+                      </li>
+                    </ng-template>
+                  </ul>
+                </div>
+              </td>
+              <td class="table__item">
+                <div class="table__item-inner" [innerText]="currentRiskAssessment.Description"></div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="table__table-preview" [id]="workspaces" *ngIf="isMigratedGeneral() && !hasAnySectorWorkSpaces()">
+          <thead>
+            <tr>
+              <th class="table__heading">{{'DESCRIPTION' | translate:lang}} / {{'IDENTIFIED_HAZARD' | translate:lang }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="table__row">
+              <td class="table__item">
+                <div class="table__item-inner" [innerText]="currentRiskAssessment.Description"></div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- workspaces end -->
+        <!-- substances start -->
+        <div [id]="'substance'" *ngIf="!isMigrated() && hasSubstances()">
+          <h3>{{'SUBSTANCE' | translate:lang}}</h3>
+          <table class="table__table-preview">
+            <thead>
+              <tr>
+                <th class="table__heading">{{'SUBSTANCE_NAME'| translate:lang}}</th>
+                <th class="table__heading">{{'REFERENCE_NUMBER' | translate:lang}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-template ngFor let-item [ngForOf]="getRASubstances()" let-i="index">
+                <tr class="table__row">
+                  <td class="table__item">
+                    <div class="table__item-inner">{{item.Substance}}</div>
+                  </td>
+                  <td class="table__item">
+                    <div class="table__item-inner">{{item.ReferenceNumber}}</div>
+                  </td>
+                </tr>
+              </ng-template>
+            </tbody>
+          </table>
+        </div>
+
+        <div [id]="substances" *ngIf="isMigratedCOSHH() && currentRiskAssessment.RASubstances && currentRiskAssessment.RASubstances.length > 0">
+          <h3>
+            {{'SUBSTANCE' | translate:lang}}
+          </h3>
+          <table class="table__table-preview v-align-top">
+            <thead>
+              <tr>
+                <th class="table__heading">{{'PREVIEW_SUBSTANCE.SUBSTANCE_BEING_ASSESSED'| translate:lang}}</th>
+                <th class="table__heading">{{'PREVIEW_SUBSTANCE.WHERE_IS_SUBSTANCE_USED'| translate:lang}}</th>
+                <th class="table__heading">{{'PREVIEW_SUBSTANCE.WHO_MIGHT_BE_HARMED'| translate:lang}}</th>
+                <th class="table__heading">{{'PREVIEW_SUBSTANCE.COSHH_REFERENCE_NUMBER'| translate:lang}}</th>
+                <th class="table__heading">{{'PREVIEW_SUBSTANCE.EMERGENCY_CONTACT_NUMBER'| translate:lang}}</th>
+                <th class="table__heading">{{'PREVIEW_SUBSTANCE.WORK_PLACE_EXPOSURE_LIMIT'| translate:lang}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-template ngFor let-item [ngForOf]="currentRiskAssessment.RASubstances" let-i="index">
+                <tr class="table__row" *ngIf="item.IsDeleted === false">
+                  <td class="table__item">
+                    <div class="table__item-inner text--centered">
+                      {{item.Substance}}
+                    </div>
+                  </td>
+                  <td class="table__item">
+                    <div class="table__item-inner text--centered">
+                      {{item.UsedFor}}
+                    </div>
+                  </td>
+                  <td class="table__item">
+                    <div class="table__item-inner text--centered">
+                      {{item.PeopleAffected}}
+                    </div>
+                  </td>
+                  <td class="table__item">
+                    <div class="table__item-inner text--centered">
+                      {{item.ReferenceNumber}}
+                    </div>
+                  </td>
+                  <td class="table__item">
+                    <div class="table__item-inner text--centered">
+                      {{item.Mig_EmergencyContactNumber}}
+                    </div>
+                  </td>
+                  <td class="table__item">
+                    <div class="table__item-inner text--centered">
+                      {{item.ExposureLimits}}
+                    </div>
+                  </td>
+                </tr>
+              </ng-template>
+            </tbody>
+          </table>
+        </div>
+        <!-- substances end -->
+        <!-- overall risk start -->
+        <div *ngIf="!isMigrated() && showOverallRiskRating()" [id]="'overallRiskRating'">
+          <h3 class="text--centered top-20">
+            {{'OVERALL_RISK_RATING' | translate:lang}} : {{overallRA(currentRiskAssessment.Likelihood,currentRiskAssessment.Severity)}}
+            <span class="margin-auto">(<b [style.color]="getRiskLevelOrClass(currentRiskAssessment, false) | translate:lang">{{getRiskLevelOrClass(currentRiskAssessment, true) | translate:lang}}</b>)</span>
+          </h3>
+        </div>
+        <!-- overall risk end -->
+        <!-- Individual risk / hazard start -->
+        <table [id]="'hazards'" *ngIf="hasHazards() && !isMigrated()" class="table__table-preview v-align-top top-20">
+          <thead>
+            <tr>
+              <th class="table__heading">{{'HAZARD'| translate:lang}}</th>
+              <th class="table__heading">{{'WHO_COULD_BE_HARMED_AND_HOW' | translate:lang}}</th>
+              <th class="table__heading">{{'EXISTING_CONTROLS'| translate:lang}}</th>
+              <th class="table__heading text--centered" *ngIf="showIndividualAssessments">{{'RISK_RATING' | translate:lang}}<br/>{{'LXS' | translate:lang}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-template ngFor let-item [ngForOf]="hazards" let-i="index">
+              <tr class="table__row">
+                <td class="table__item width-15pc">
+                  <div class="table__item-inner text--centered">
+                    <div class="preview-hazard">
+                      <span class="hazard-img">
+                      <img [src]="getPictureUrl(item.PictureId, item.IsSharedPrototype, true)" [alt]="item.Name"/>
+                  </span>
+                      <span class="hazard-title">
+                    {{item.Name}}
+                  </span>
+                      <span *ngIf="currentRiskAssessment.IncludeHazardDescription">{{item.Description}}</span>
+                    </div>
+                  </div>
+                </td>
+                <td class="table__item width-20pc">
+                  <div class="table__item-inner">
+                    <div class="top-10" *ngIf="(item.Affected) && (item.Affecteds != '')" [innerHtml]="item.Affected"></div>
+                    <div class="top-10" *ngIf="item.OthersAffected" [innerHtml]="item.OthersAffected"></div>
+                    <div class="top-10" *ngIf="(item.HowManyAffected != null && item.HowManyAffected.length > 0)">How Many? {{item.HowManyAffected}}</div>
+                    <div class="top-10" *ngIf="(item.PeopleAffected != null && item.PeopleAffected.length > 0)">How?
+                      <pre class="pre-wordbeaknormal">{{item.PeopleAffected}}</pre>
+                    </div>
+                  </div>
+                </td>
+                <td class="table__item">
+                  <div class="table__item-inner">
+                    <ul class="preview-controls">
+                      <ng-template ngFor let-control [ngForOf]="getControlsByHazard(item.Id)" let-j="index">
+                        <li *ngIf="control.RiskAssessmentHazardId == item.Id" [class.full-row]="control.Description != null && control.Description.length>200">
+                          <div class="container-box">
+                            <div class="img-control">
+                              <img [src]="getPictureUrl(control.PictureId, control.IsSharedPrototype)" [alt]="item.Name" />
+                            </div>
+                            <div class="control-info">
+                              <strong>{{control.Name}}</strong>
+                              <pre>{{control.Description}}</pre>
+                            </div>
+                          </div>
+                        </li>
+                      </ng-template>
+                    </ul>
+                  </div>
+                </td>
+                <td class="table__item width-10pc" *ngIf="showIndividualAssessments">
+                  <div class="table__item-inner text--centered">
+                    <span class="preview-rating-text" *ngIf="item.Likelihood || item.Severity">{{item.Likelihood}} x {{item.Severity}}</span>
+                    <div class="preview-rating-graph" *ngIf="item.Likelihood || item.Severity">
+                      <div>
+                        <risk-chart [id]="getChildId('RiskChart', j)" [name]="getChildName('RiskChart', j)" [riskData]="getChartData(item)"></risk-chart>
+                      </div>
+                    </div>
+                    <div class="preview-rating-text">{{getRiskLevelOrClass(item, true) | translate:lang}}</div>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+          </tbody>
+        </table>
+        <div class="panel-container top-20" [id]="'hazards'" *ngIf="hasHazards() && isMigrated()">
+          <div class="panel-container__title">
+            <h3 *ngIf="!isMigratedCOSHH()">{{'HAZARD'| translate:lang}}</h3>
+            <h3 *ngIf="isMigratedCOSHH()">{{'SUBSTANCE_HAZARDS'| translate:lang}}</h3>
+          </div>
+          <div class="panel-container__content">
+            <ul class="migrated-controls">
+              <ng-template ngFor let-item [ngForOf]="hazards" let-i="index">
+                <li>
+                  <div class="container-box">
+                    <div class="img-control">
+                      <img [src]="getPictureUrl(item.PictureId, item.IsSharedPrototype)" [alt]="item.Name" />
+                    </div>
+                    <div class="control-info">
+                      {{item.Name}}
+                    </div>
+                  </div>
+                </li>
+              </ng-template>
+            </ul>
+            <div *ngIf="isMigratedCOSHH()">
+              <pre class="pre-wordbeaknormal">{{hazardNotes && hazardNotes.Text}}</pre>
+            </div>
+          </div>
+        </div>
+        <!-- harzards end -->
+        <!-- Migration info start -->
+        <div *ngIf="isMigratedGeneral()" [id]="'WhoIsAtRisk'">
+          <div class="panel-container top-20">
+            <div class="panel-container__title">
+              <h3>{{'WHO_IS_AT_RISK'| translate:lang}}</h3>
+            </div>
+            <div class="panel-container__content">
+              <pre class="pre-wordbeaknormal">{{currentRiskAssessment.Mig_WhoIsAtRisk}}</pre>
+            </div>
+          </div>
+
+          <div class="panel-container">
+            <div class="panel-container__title">
+              <h3>{{'HOW_IS_THE_RISK_CONTROLLED'| translate:lang}}</h3>
+            </div>
+            <div class="panel-container__content">
+              <pre class="pre-wordbeaknormal">{{currentRiskAssessment.Mig_HowRiskControlled}}</pre>
+            </div>
+          </div>
+        </div>
+        <!-- Migration info end -->
+        <!-- roe for migrated -->
+        <div class="panel-container" [id]="'routesOfExposure'" *ngIf="isMigratedCOSHH() && (hasRoutesOfExposure() || (ROENotes && ROENotes.Text))">
+          <div class="panel-container__title">
+            <h3>{{'ROUTES_OF_EXPOSURE' | translate:lang}}</h3>
+          </div>
+          <div class="panel-container__content">
+            <ul class="migrated-controls">
+              <ng-template ngFor let-item [ngForOf]="exposures" let-i="index">
+                <li *ngIf="(item.IsDeleted === false)">
+                  <div class="container-box">
+                    <div class="img-control">
+                      <img [src]="getPictureUrl(item.PictureId, item.IsSharedPrototype)" [alt]="item.Name" />
+                    </div>
+                    <div class="control-info">
+                      {{item.Name}}
+                    </div>
+                  </div>
+                </li>
+              </ng-template>
+            </ul>
+            <div *ngIf="isMigratedCOSHH()">
+              <pre class="pre-wordbeaknormal">{{ROENotes && ROENotes.Text}}</pre>
+            </div>
+          </div>
+        </div>
+        <!-- roe for migrated end-->
+        <!-- controls start -->
+        <div class="panel-container" *ngIf="(isMigrated() && (currentRiskAssessment.RAControls && currentRiskAssessment.RAControls.length > 0))">
+          <div class="panel-container__title">
+            <h3>{{'CONTROLS' | translate:lang}}</h3>
+          </div>
+          <div class="panel-container__content">
+            <ul class="migrated-controls">
+              <ng-template ngFor let-item [ngForOf]="currentRiskAssessment.RAControls" let-i="index">
+                <li *ngIf="item.IsDeleted === false">
+                  <div class="container-box">
+                    <div class="img-control">
+                      <img [src]="getPictureUrl(item.PictureId, item.IsSharedPrototype)" [alt]="item.Name" />
+                    </div>
+                    <div class="control-info">{{item.Name}}</div>
+                  </div>
+                </li>
+              </ng-template>
+            </ul>
+            <div *ngIf="isMigratedCOSHH()">
+              <pre class="pre-wordbeaknormal">{{controlNotes && controlNotes.Text}}</pre>
+            </div>
+          </div>
+        </div>
+        <!-- routs of exposure start -->
+        <div class="panel-container" [id]="'routesOfExposure'" *ngIf="hasRoutesOfExposure() && isCOSHH() && !isMigrated()">
+          <div class="panel-container__title">
+            <h3>{{'ROUTES_OF_EXPOSURE' | translate:lang}}</h3>
+          </div>
+          <div class="panel-container__content">
+            <ul class="preview-controls">
+              <ng-template ngFor let-item [ngForOf]="exposures" let-i="index">
+                <li *ngIf="(item.IsDeleted === false)">
+                  <div class="container-box">
+                    <div class="img-control">
+                      <img [src]="getPictureUrl(item.PictureId, item.IsSharedPrototype)" [alt]="item.Name" />
+                    </div>
+                    <div class="control-info">
+                      <strong>{{item.Name}}</strong>
+                      <pre class="pre-wordbeaknormal">{{item.Description}}</pre>
+                    </div>
+                  </div>
+                </li>
+              </ng-template>
+            </ul>
+          </div>
+        </div>
+        <!-- routs of exposure end -->
+
+        <!-- additional controls start -->
+        <div class="panel-container" [id]="'additionalControls'" *ngIf="(isCOSHH() || isMigratedCOSHH())&& additionalControls.size > 0">
+          <div class="panel-container__title">
+            <h3>{{'FURTHER_CONTROLS' | translate:lang}}</h3>
+          </div>
+          <div class="panel-container__content">
+            <ng-template ngFor let-key [ngForOf]="additionalControls.keys()" let-i="index">
+              <div>
+                <h6 class="sub-title">{{key}}</h6>
+                <ul class="preview-controls">
+                  <ng-template ngFor let-control [ngForOf]="additionalControls.get(key)" let-i="index">
+                    <li>
+                      <div class="container-box">
+                        <div class="img-control">
+                          <img [src]="getPictureUrl(control.PictureId, control.IsSharedPrototype)" [alt]="control.Name" />
+                        </div>
+                        <div class="control-info">
+                          <strong>{{control.Name}}</strong>
+                          <pre class="pre-wordbeaknormal">{{control.Description}}</pre>
+                        </div>
+                      </div>
+                    </li>
+                  </ng-template>
+                </ul>
+              </div>
+              <div>
+                <div>
+                  <label>{{'ADDITIONAL_NOTES'| translate:lang}}</label>
+                </div>
+                <div>
+                  <p>{{categoryTexts && categoryTexts.get(key)}}</p>
+                </div>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+        <!-- additional controls end -->
+        <div *ngIf="isMigrated() || isMigratedCOSHH()" [id]="'calculatedRiskFactor'" class="panel-container">
+          <div class="panel-container__content">
+            <div>{{'CALCULATED_RISK_FACTOR_TEXT' | translate:lang}} <b>{{currentRiskAssessment.Likelihood * currentRiskAssessment.Severity}}.</b>
+            (Probability: {{currentRiskAssessment.Likelihood}} X Severity: {{currentRiskAssessment.Severity}})</div>
+            <div>This is classed as a <span [style.color]="getRiskLevelOrClass(currentRiskAssessment, false) | translate:lang">
+            <b>{{getRiskLevelOrClass(currentRiskAssessment, true) | translate:lang}}</b></span> risk
+            </div>
+          </div>
+        </div>
+        <!-- further control measures start -->
+        <div [id]="'furtherControlMeasures'">
+          <h3 *ngIf="!isMigrated()">{{'FURTHER_CONTROL_MEASURES' | translate:lang}}</h3>
+          <h3 *ngIf="isMigrated()">{{'ADDITIONAL_MEASURES' | translate:lang}}</h3>
+          <table class="table__table-preview">
+            <thead>
+              <tr *ngIf="measures && measures.count() > 0">
+                <th class="table__heading" *ngIf="!isMigrated()" align="center">{{'HAZARD'| translate:lang}}</th>
+                <th class="table__heading">{{'ACTION_REQUIRED' | translate:lang}}</th>
+                <th class="table__heading">{{'ASSIGNED_TO'| translate:lang}}</th>
+                <th class="table__heading">{{'PLANNED_COMPLETION_DATE' | translate:lang}}</th>
+                <th class="table__heading" *ngIf="!isMigrated()">{{'TRAINEE' | translate:lang}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-template ngFor let-item [ngForOf]="measures" let-i="index">
+                <tr class="table__row">
+                  <td class="table__item" *ngIf="!isMigrated()">
+                    <div class="table__item-inner text--centered">
+                      <img style="max-width:36px;max-height:36px;" [src]="item.HazardImageURL" [alt]="item.HazardName" />
+                      <div>{{isMigrated() ? (item.HazardName || 'All Hazards') :(item.HazardName || 'N/A')}}</div>
+                    </div>
+                  </td>
+                  <td class="table__item">
+                    <div class="table__item-inner">{{item.Description}}</div>
+                  </td>
+                  <td class="table__item">
+                    <div class="table__item-inner">{{item.AssignedUserName}}</div>
+                  </td>
+                  <td class="table__item">
+                    <div class="table__item-inner">{{item.DueDate | localeDate:defaultLocale:'shortDate'}}</div>
+                  </td>
+                  <td class="table__item" *ngIf="!isMigrated()">
+                    <div class="table__item-inner">{{(item.IndividualToTrain && item.IndividualToTrain) || 'N/A'}}</div>
+                  </td>
+                </tr>
+              </ng-template>
+              <tr *ngIf="measures && measures.count() <= 0" class="table__row">
+                <td class="table__item">
+                  <div class="table__item-inner">
+                    None required
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- further control measures end -->
+        <!-- operating procedures start -->
+        <div class="panel-container" [id]="'opertatingProcedures'" *ngIf="currentRiskAssessment.RAProcedures && currentRiskAssessment.RAProcedures.Procedures">
+          <div class="panel-container__title">
+            <h3>{{'OPERATING_PROCEDURES' | translate:lang}}</h3>
+          </div>
+          <div class="panel-container__content" [innerText]="currentRiskAssessment.RAProcedures.Procedures"></div>
+        </div>
+        <!-- operating procedures end -->
+        <!-- supporting evidance start -->
+        <div class="panel-container" [id]="'supportingEvidance'" *ngIf="documentsLength > 0">
+          <div class="panel-container__title">
+            <h3>{{'SUPPORTING_EVIDENCE' | translate:lang}}</h3>
+          </div>
+          <div class="panel-container__content">
+            <div class="control-grid">
+              <ng-template ngFor let-item [ngForOf]="documents" let-i="index">
+                <div class="control-grid__item">
+                  <div class="control-grid__item__icon" [title]="item.FileName">
+                    <a [href]="getFileName(item.Id)" target="_blank" [title]="item.FileName">
+                      <ae-icon [id]="getChildId('aeIcon', 1)" [name]="getChildName('aeIcon', 1)" [size]="iconMedium" [icon]="'icon-document'"></ae-icon>
+                    </a>
+                  </div>
+                  <div class="control-grid__item__label">
+                    <p><a [href]="getFileName(item.Id)" target="_blank" [title]="item.FileName" class="preivew-text-link">{{item.FileName}}</a></p>
+                    {{item.CreatedOn ? (item.CreatedOn | localeDate:defaultLocale:'dd/MM/yyyy') : ''}} {{item.Size ? '-' + item.Size + ' kb'
+                    : ''}}
+                  </div>
+
+                </div>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+        <!-- supporting evidance end -->
+        <!-- risk rating explanation start -->
+        <div class="panel-container bottom-30 page-break-before: always" *ngIf="currentRiskAssessment.IncludeRatingLegend" [id]="'riskRatingExplanation'">
+          <div class="panel-container__title">
+            <h3>{{'RISK_RATING_EXPLANATION' | translate: lang}}</h3>
+          </div>
+          <div class="panel-container__content">
+            {{'RISK_RATING_EXPLANATION_TEXT' | translate: lang}}
+            <div class="sg-grid grid--1-2 top-20" *ngIf="(currentRiskAssessment.Matrix == 2)">
+              <div>
+                <div class="rating-line">
+                  <div class="line-l">{{'HIGH_UNLIKELY' | translate: lang}}<br />1</div>
+                  <div class="line-m">{{'LIKELY' | translate: lang}}<br />5</div>
+                  <div class="line-r">{{'HIGH_LIKELY' | translate: lang}}<br>9</div>
+                </div>
+                <div class="rating-line flip-v">
+                  <div class="line-l">1<br />{{'NO_INJURY_HARM' | translate: lang}}</div>
+                  <div class="line-m">5<br />{{'MINOR_INJURY_HARM' | translate: lang}}</div>
+                  <div class="line-r">9<br />{{'FATALITY' | translate: lang}}</div>
+                </div>
+              </div>
+              <div class="text--centered">
+                <img src="{{riskMatrixHigh}}" class="margin-auto" style="min-width:248px;min-height:216px;" />
+              </div>
+            </div>
+            <div class="sg-grid grid--1-2 top-20" *ngIf="(currentRiskAssessment.Matrix == 1)">
+              <div>
+                <div class="rating-line">
+                  <div class="line-l">{{'HIGH_UNLIKELY' | translate: lang}}<br />1</div>
+                  <div class="line-m">{{'LIKELY' | translate: lang}}<br />3</div>
+                  <div class="line-r">{{'HIGH_LIKELY' | translate: lang}}<br>5</div>
+                </div>
+                <div class="rating-line flip-v">
+                  <div class="line-l">1<br />{{'MINOR_INJURY_HARM' | translate: lang}}</div>
+                  <div class="line-m">3<br />{{'MAJOR_INJURY_HARM' | translate: lang}}</div>
+                  <div class="line-r">5<br />{{'FATALITY' | translate: lang}}</div>
+                </div>
+              </div>
+              <div class="text--centered">
+                <img src="{{riskMatrixMedium}}" class="margin-auto" style="min-width:248px;min-height:216px;" />
+              </div>
+            </div>
+
+
+            <div class="sg-grid grid--1-2 top-20" *ngIf="(currentRiskAssessment.Matrix == 0)">
+              <div>
+                <div class="rating-line">
+                  <div class="line-l">{{'HIGH_UNLIKELY' | translate: lang}}<br />1</div>
+                  <div class="line-m">{{'LIKELY' | translate: lang}}<br />2</div>
+                  <div class="line-r">{{'HIGH_LIKELY' | translate: lang}}<br>3</div>
+                </div>
+                <div class="rating-line flip-v">
+                  <div class="line-l">1<br />{{'MINOR_INJURY_HARM' | translate: lang}}</div>
+                  <div class="line-m">2<br />{{'MAJOR_INJURY_HARM' | translate: lang}}</div>
+                  <div class="line-r">3<br />{{'FATALITY' | translate: lang}}</div>
+                </div>
+              </div>
+              <div class="text--centered">
+                <img src="{{riskMatrixLow}}" class="margin-auto" style="min-width:248px;min-height:216px;" />
+              </div>
+            </div>
+            <h3 class="top-20">{{'RISK_RATING_MEAN' | translate: lang}}</h3>
+            <ae-legend [id]="'legend2'" [options]="legendOptions" [headText]="''" [shape]="indicatorType" [legendType]="legendType"></ae-legend>
+          </div>
+        </div>
+        <!-- risk rating explanation end -->
+
+        <!-- signature start -->
+        <div [id]="'signature'" class="spacer-15 review-section">
+          <div>
+            <span>{{'ASSESSOR_SIGNATURE' | translate:lang}}:</span>
+            <span> 
+          <img src="{{getSignaturePictureUrl(currentRiskAssessment.Assessor.Signature)}}" id="img_assessorsSignature" height="70" *ngIf="currentRiskAssessment.Assessor && currentRiskAssessment.Assessor.Signature"
+          />
+           <span *ngIf="currentRiskAssessment.Assessor && !currentRiskAssessment.Assessor.Signature && !isMigrated()">{{currentRiskAssessment.Assessor.FullName}}</span>
+            <span *ngIf="currentRiskAssessment.Assessor && !currentRiskAssessment.Assessor.Signature && isMigrated()">{{currentRiskAssessment.Assessor_Name}}</span>
+            </span>
+          </div>
+          <div>
+            <span>{{'APPROVED_BY_SIGNATURE' | translate:lang}}:</span>
+            <span>
+           <img src="{{getSignaturePictureUrl(currentRiskAssessment.ApprovedUser.Signature)}}" id="img_assessorsSignature" height="70" *ngIf="currentRiskAssessment.ApprovedUser && currentRiskAssessment.ApprovedUser.Signature && isLive()"
+          />
+          <span *ngIf="currentRiskAssessment.ApprovedUser && !currentRiskAssessment.ApprovedUser.Signature && isLive()">{{currentRiskAssessment.ApprovedUser.FullName}}</span>
+            </span>
+          </div>
+        </div>
+        <!-- signature end -->
+
+        <!-- employee(s) acknowledgement start -->
+        <div [id]="'emplyeeAckowledgement'" *ngIf="currentRiskAssessment && currentRiskAssessment.HasAcknowledgement" class="page-break-before">
+          <hr class="hr-grey no-print" />
+          <h3 class="h3-title top-20">{{'EMPLOYEES_ACKNOWLEDGEMENT' | translate:lang}}</h3>
+          <p>{{'EMPLOYEES_ACKNOWLEDGEMENT_TEXT' | translate:lang}}</p>
+          <div class="table-ack pull-left">
+            <div class="thead">
+              <div class="col1">{{'EMPLOYEE_NAME' | translate:lang}}</div>
+              <div class="col2">{{'SIGNATURES' | translate:lang}}</div>
+              <div class="col3">{{'DATE' | translate:lang}}</div>
+            </div>
+            <div class="tbody">
+              <div class="col1" id="info_empName"></div>
+              <div class="col2" id="info_signature"></div>
+              <div class="col3" id="info_date"></div>
+            </div>
+          </div>
+          <div class="table-ack pull-right">
+            <div class="thead">
+              <div class="col1">{{'EMPLOYEE_NAME' | translate:lang}}</div>
+              <div class="col2">{{'SIGNATURES' | translate:lang}}</div>
+              <div class="col3">{{'DATE' | translate:lang}}</div>
+            </div>
+            <div class="tbody">
+              <div class="col1" id="info_empName1"></div>
+              <div class="col2" id="info_signature1"></div>
+              <div class="col3" id="info_date1"></div>
+            </div>
+          </div>
+        </div>
+        <!-- employee(s) acknowledgement end -->
+      </div>
+    </div>
+  </div>
+  <div class="export-footer" [hidden]="true">
+    <div class="footersec">
+      <table style="width: 100%">
+        <tbody>
+          <tr>
+            <td>{{claims.getCompanyName()}}</td>
+            <td align="center">{{currentRiskAssessment.ReferenceNumber}}:{{currentRiskAssessment.Name}} Printed:{{printedDate | localeDate:defaultLocale:'shortDate'}}</td>
+            <td style="text-align:right">
+              Page <span class="page"></span> of <span class="topage"></span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!-- review details start -->
+  <div [id]="'review'" class="review-section spacer-15" *ngIf="isMigrated()">
+    <div>
+      <span>{{'REVIEW_DATE' | translate:lang}}: </span>
+      <span>{{currentRiskAssessment.ReviewDate | localeDate:defaultLocale:'shortDate'}} </span>
+    </div>
+    <div>
+      <span>{{'APPROVED_DATE' | translate:lang}}: </span>
+      <span>{{currentRiskAssessment.ApprovedDate | localeDate:defaultLocale:'shortDate'}} </span>
+    </div>
+  </div>
+  <!-- review details end -->
+</div>
+
+<!-- Copy risk assessment slideout  -->
+  <ae-slideout [id]="getChildId('AeSlideOut', 1)" [name]="getChildName('AeSlideOut', 1)" [modelState]="getCopySlideoutState()"
+    (cancel)="closeCopySlideOut()" [class.slide--animate]="copyRASlideOut">
+    <ng-container *ngIf="copyRASlideOut">
+      <risk-assessment-copy [id]="getChildId('RACopy', 1)" [name]="getChildName('RACopy', 1)" [currentRiskAssessment]="currentRiskAssessment"
+        (slideOutClose)="closeCopySlideOut()" (copyRiskAssessment)="copyRiskAssessmentSubmit($event)"></risk-assessment-copy>
+    </ng-container>
+  </ae-slideout>
+<!-- Copy risk assessment slideout end -->
+
+<!-- Email risk assessment slideout  -->
+<div class="email-slideout">
+  <ae-slideout [id]="getChildId('AeSlide', 1)" [name]="getChildName('AeSlide', 1)" [modelState]="getEmailSlideoutState()" [class.slide--animate]="emailSlideOut"
+    [sliderBig]="true">
+    <ng-container *ngIf="emailSlideOut">
+      <email [id]="getChildId('Email', 1)" [id]="getChildName('Email', 1)" [emailModel]="emailModel" (onCancel)="closeEmailSlideOut($event)"></email>
+    </ng-container>
+  </ae-slideout>
+</div>
+<!-- Email risk assessment slideout end  -->
+
+<!-- Review risk assessment slideout  -->
+<ae-slideout [id]="getChildId('AeSlideOut', 1)" [name]="getChildName('AeSlideOut', 1)" [modelState]="getReviewSlideoutState()"
+  [class.slide--animate]="getReviewSlideoutAnimateState()">
+  <risk-assessment-review *ngIf="showReviewSlideout" [RiskAssessmentVm]="currentRiskAssessment" (cancel)="closeReviewSlideOut($event)"
+    (reviewSubmit)="onReviewSubmit($event)"></risk-assessment-review>
+</ae-slideout>
+<!-- Review risk assessment slideout end  -->
+
+<!-- Approve risk assessment modal  -->
+<ae-modal-dialog [visible]="showApproveConfirmDialog" (cancel)="approveModalClosed($event)" [closable]="true" [id]="getChildId('Aemodal', 1)"
+  [name]="getChildName('Aemodal', 1)" *ngIf="showApproveConfirmDialog">
+  <div class="modal-dialog-header">
+    <h3> {{'APPROVE_DIALOG.Heading_text'| translate:lang}}</h3>
+  </div>
+  <div class="modal-dialog-body">
+    <p> {{'APPROVE_DIALOG.Heading_text.Info'| translate:lang:{riskAssessmentName: currentRiskAssessment.Name} }}</p>
+  </div>
+  <div class="modal-dialog-footer">
+    <ae-button [text]="'APPROVE_DIALOG.Heading_text.Btn_No'| translate:lang" [type]="'button'" [id]="getChildId('ConfirmNo', 1)"
+      [name]="getChildName('ConfirmNo', 1)" (aeClick)="approveModalClosed($event)"></ae-button>
+    <ae-button [class]="lightClass" [text]="'APPROVE_DIALOG.Heading_text.Btn_Yes'| translate:lang" [type]="'button'" [id]="getChildId('ConfirmYes', 1)"
+      [name]="getChildName('ConfirmYes', 1)" (aeClick)="approveRiskAssessment($event)"></ae-button>
+  </div>
+</ae-modal-dialog>
+<!-- Approve risk assessment modal end  -->
+
+<!-- cqc risk assessment slideout  -->
+<ae-slideout [id]="'documentExportToCQCSlide'" [name]="'documentExportToCQCSlide'" [modelState]="getDocumentExportToCQCSlideoutState()"
+  [class.slide--animate]="showDocumentExportToCQCProSlideOut">
+  <ng-container *ngIf="showDocumentExportToCQCProSlideOut">
+    <document-export-to-cqc [id]="'documentExportToCQC'" [name]="'documentExportToCQC'" [documentDetails]="documentDetails" (onCQCCancel)="onCQCCancel($event)"
+      (onCQCSubmit)="onCQCSubmit($event)">
+    </document-export-to-cqc>
+  </ng-container>
+</ae-slideout>
+<!-- cqc risk assessment slideout end  -->

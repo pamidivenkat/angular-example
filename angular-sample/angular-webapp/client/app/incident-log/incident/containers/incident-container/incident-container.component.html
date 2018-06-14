@@ -1,0 +1,43 @@
+<div id="incidentContainer">
+  <incident-banner [id]="'incidentBanner'" [name]="'incidentBanner'"></incident-banner>
+  <ae-notification [id]="'incidentNotification'" [name]="'incidentNotification'" [iconName]="'icon-info'" [textInfo]="'INCIDENT_ABOUT_YOU_DETAILS.incident_header_message' | translate:lang"></ae-notification>
+  <div id="incidentWizard">
+    <div class="spacer">
+      <ae-wizard [steps]="incidentWizardSteps$" [previousURL]="'/incident'" id="incidentWizard" name="incidentWizard" [showComplete]="getShowDoneButtonStatus()"
+        [completeButtonText]="'Approve'" (completed)="onComplete($event)">
+        <ae-template [type]="'step1'">
+          <ng-template let-context="item">
+            <incident-add-update [id]="'incidentAddUpdate'" [name]="'incidentAddUpdate'" [counties]="counties$" [headOfficeSite]="companyAddress$ | async"
+              [context]="context"></incident-add-update>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]="'step2'">
+          <ng-template let-context="item">
+            <incident-about-injury [id]="'aboutInjuryAddUpdate'" [name]="'aboutInjuryAddUpdate'" [counties]="counties$" [context]="context"></incident-about-injury>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]="'step3'">
+          <ng-template let-context="item">
+            <injured-person-add-update [id]="'injuredPersonAddUpdate'" [name]="'injuredPersonAddUpdate'" [counties]="counties$" [context]="context"></injured-person-add-update>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]="'step4'">
+          <ng-template let-context="item">
+            <riddor-add-update [id]="'riddorAddUpdate'" [name]="'riddorAddUpdate'" [context]="context"></riddor-add-update>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]="'step5'">
+          <ng-template let-context="item">
+            <incident-formal-investigation [id]="'formalInvestigationAddUpdate'" [name]="'formalInvestigationAddUpdate'" [context]="context"></incident-formal-investigation>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]="'step6'">
+          <ng-template let-context="item">
+            <incident-preview [id]="'incidentPreview'" [name]="'incidentPreview'" [context]="context" [onComplete]="onCompleteSubject"
+              (onApprove)="onComplete($event)" (canShowDoneButton)="updateShowDoneButtonStatus($event)"></incident-preview>
+          </ng-template>
+        </ae-template>
+      </ae-wizard>
+    </div>
+  </div>
+</div>

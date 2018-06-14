@@ -1,0 +1,69 @@
+<div *ngIf="selectedTask">
+  <div class="so-panel__title">
+    <h3>Task details</h3>
+  </div>
+  <div class="so-panel__content">
+    <div class="information-grid">
+      <section class="information-grid__section">
+        <h3><span class="indicator" [class.indicator--Immediate]="isImmediatePriorityTask(selectedTask.Priority)" [class.indicator--High]="isHighPriorityTask(selectedTask.Priority)"
+            [class.indicator--Medium]="isMediumPriorityTask(selectedTask.Priority)" [class.indicator--Low]="isLowPriorityTask(selectedTask.Priority)"></span>Summary
+          <a (click)="onTaskUpdate($event)" class="label">{{getStatus(selectedTask.Status)}}<span class="icon icon--tiny"><svg><use xmlns:xlink="http://www.w3.org/1999/xlink" [attr.xlink:href]="getAbsoluteUrl('icon-alert-pencil')"></use></svg></span></a>
+        </h3>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">
+            <span *ngIf="isSiteVisitTask()"> Observation </span>
+            <span *ngIf="!isSiteVisitTask()"> Title </span>
+          </div>
+          <div class="information-grid__item-value column-2of3">{{selectedTask.Title}}</div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">Description</div>
+          <div class="information-grid__item-value column-2of3" [innerHTML]="selectedTask.Description"></div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">Due date</div>
+          <div class="information-grid__item-value column-2of3 alert">{{selectedTask.DueDate | date: 'dd/MM/yyyy'}}</div>
+        </div>
+      </section>
+      <section class="information-grid__section" *ngIf="isSiteVisitTask()">
+        <h3>Details</h3>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">Corrective action taken</div>
+          <div class="information-grid__item-value column-2of3 text-muted">{{selectedTask.CorrectiveActionTaken}}</div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">Cost of rectification</div>
+          <div class="information-grid__item-value column-2of3 text-muted">{{selectedTask.CostOfRectification}}</div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">Percentage completed</div>
+          <div class="information-grid__item-value column-2of3 text-muted">{{selectedTask.PercentageCompleted}}</div>
+        </div>
+      </section>
+      <section class="information-grid__section">
+        <h3>Information</h3>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">Category</div>
+          <div class="information-grid__item-value column-2of3">{{selectedTask.TaskCategoryName}}</div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">Assigned to</div>
+          <div class="information-grid__item-value column-2of3">{{selectedTask.AssignedUserName}}</div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">Created by</div>
+          <div class="information-grid__item-value column-2of3">{{selectedTask.CreatedByUserName}}</div>
+        </div>
+      </section>
+    </div>
+
+  </div>
+  <div class="so-panel__footer">
+    <nav>
+      <ul>
+        <li><label for="soPanel" class="button button--inline-block" (click)="onTaskCancel()" [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label></li>
+        <li class="pull--right"><a href="#" class="button button--inline-block button--light" (click)="onTaskUpdate($event)" [title]="'BUTTONS.UPDATE' | translate:lang">{{'BUTTONS.UPDATE' | translate:lang}}</a></li>
+      </ul>
+    </nav>
+  </div>
+</div>

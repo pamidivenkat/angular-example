@@ -1,0 +1,96 @@
+<div id="absenceTypeAddUpdate">
+  <div class="so-panel__title">
+    <h3 class="grey-strip" *ngIf="!isUpdateMode()">{{'ABSENCETYPE.ADD_ABSENCETYPE' | translate:lang}}</h3>
+    <h3 class="grey-strip" *ngIf="isUpdateMode()">{{'ABSENCETYPE.UPDATE_ABSENCETYPE' | translate:lang}}</h3>
+  </div>
+  <div class="so-panel__content">
+    <div class="information-grid">
+      <form class="form" [id]="getChildId('form', 1)" [name]="getChildName('form', 1)" [formGroup]="absenceTypeAddUpdateForm">
+        <section class="information-grid__section">
+          <ae-message [id]="getChildId('AeMessage',1)" [name]="getChildName('AeMessage',1)" [text]="errorAbsenceTypeMessage | translate:lang"
+            [icon]="'icon-bell'" (aeClose)="hideMessage()" [messageType]="messagetType" *ngIf="showMessage()">
+          </ae-message>
+          <div class="information-grid__item">
+            <div class="information-grid__item-label column-1of3">{{'ABSENCETYPE.TYPE_NAME' | translate:lang}} <span class="error-text">*</span></div>
+            <div class="information-grid__item-value column-2of3 text-muted">
+              <ae-input [id]="getChildId('TypeName',1)" [name]="getChildName('TypeName',1)" [title]="'ABSENCETYPE.TYPE_NAME' | translate:lang"
+                formControlName="TypeName" [placeholder]="'ABSENCETYPE.TYPE_NAME_PLACEHOLDER' | translate:lang"></ae-input>
+            </div>
+            <span *ngIf="fieldHasRequiredError('TypeName')" class="form__input__error">{{'ABSENCETYPE.REQUIRED_ERROR' | translate:lang:{fieldName: 'Type name'} }}</span>
+          </div>
+          <div class="information-grid__item">
+            <div class="information-grid__item-label column-1of3">{{'ABSENCETYPE.ABSENCE_CODE' | translate:lang}} <span class="error-text">*</span></div>
+            <div class="information-grid__item-value column-2of3 text-muted">
+              <ae-select [id]="getChildId('AbsenceCodeId',1)" [name]="getChildName('AbsenceCodeId',1)" formControlName="AbsenceCodeId"
+                [placeholder]="'PLEASE_SELECT' | translate: lang" [options]="absenceCodes"></ae-select>
+            </div>
+            <span *ngIf="fieldHasRequiredError('AbsenceCodeId')" class="form__input__error">{{'ABSENCETYPE.REQUIRED_ERROR' | translate:lang:{fieldName: 'Code'} }}</span>
+          </div>
+          <div class="information-grid__item" *ngIf="aceesLevel">
+            <div class="information-grid__item-label column-1of3">
+              {{'ABSENCETYPE.IS_EXAMPLE' | translate:lang}} </div>
+            <div class="information-grid__item-value column-2of3">
+              <ae-switch formControlName="IsExample" [id]="getChildId('IsExample',1)" [name]="getChildName('IsExample',1)" [switchText]="' '"
+                [class]="switchTextLeft" [checked]="data.IsExample" [title]="'ABSENCETYPE.IS_EXAMPLE' | translate:lang"></ae-switch>
+            </div>
+          </div>
+          <div class="information-grid__item">
+            <div class="information-grid__item-label column-1of3">{{'ABSENCETYPE.ABSENCE_SUBTYPE' | translate:lang}}</div>
+            <ul class="add-list" *ngIf="absenceSubType?.length >0">
+              <li *ngFor="let subTypes of absenceSubType; let i = index">
+                {{ subTypes.Name }} &nbsp;&nbsp;
+                <ae-icon [id]="'icon'" [name]="'icon'" (click)="deleteSubType(i)" [icon]="'icon-alert-cancel'" [title]="'ABSENCETYPE.ABSENCE_SUBTYPE' | translate:lang"></ae-icon>
+              </li>
+            </ul>
+            <span *ngIf="absenceSubType?.length ==0" class="absence-type">{{'ABSENCETYPE.ABSENCE_NO_SUBTYPE' | translate:lang}} : </span> <span class="absence-type" *ngIf="absenceSubType?.length ==0 && isUpdateMode()">{{data.TypeName}}</span>
+          </div>
+          <!-- <div class="information-grid__item">
+            <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_JOB_DETAILS.job_title' | translate:lang}} <span class="error-text">*</span></div>
+            <div class="information-grid__item-value column-2of3 text-muted">
+              <div class="input-group">
+                <ae-autocomplete [id]="getChildId('JobTitle',1)" [name]="getChildName('JobTitle',1)" formControlName="JobTitle" [placeholder]="'Select job title'"
+                  [value]="datasourceSelectedJobTitle" [multiselect]="false" [items]="JobTitles" [dstype]="dsType" [field]="'Text'"
+                  [valuefield]="'Value'" (aeInputChange)="onJobTitleSearchChange($event)"> </ae-autocomplete>
+                <ae-button [type]="'button'" [id]="getChildId('AeButton', 1)" [class]="'ui-datepicker-trigger'" [name]="getChildName('AeButton', 1)"
+                  (aeClick)="openJobTitleAddForm($event)" class="btn" [class]="btnStyle" [title]="'BUTTONS.ADD' | translate:lang"
+                  [btnIcon]="'icon-plus'"></ae-button>
+              </div>
+            </div>
+            <span *ngIf="fieldHasRequiredError('JobTitle')" class="form__input__error">{{'EMPLOYEE_JOB_DETAILS.job_title_required' | translate:lang}}.</span>
+          </div> -->
+          <div class="information-grid__item">
+            <div class="information-grid__item-value column-2of3 text-muted add-subtype">
+              <div class="input-group">
+              <ae-input [id]="getChildId('subName',1)" [name]="getChildName('subName',1)" [title]="'ABSENCETYPE.ABSENCE_SUBTYPE' | translate:lang"
+                formControlName="subName" [placeholder]="'ABSENCETYPE.ABSENCE_SUBTYPE_PLACEHOLDER' | translate:lang"></ae-input>
+              <!-- <ae-icon [id]="'icon'" (click)="onSubtypeSubmit($event)" [size]="iconMedium" [name]="'icon'" [icon]="'icon-alert-add'" [title]="'ABSENCETYPE.ABSENCE_SUBTYPE' | translate:lang"></ae-icon> -->
+              <ae-button [type]="'button'" [id]="getChildId('AeButton', 12)" [class]="'ui-datepicker-trigger'" [name]="getChildName('AeButton', 12)"
+                  (aeClick)="onSubtypeSubmit($event)" class="btn" [class]="btnStyle" [title]="'ABSENCETYPE.ABSENCE_SUBTYPE' | translate:lang"
+                  [btnIcon]="'icon-plus'"></ae-button>
+              </div>
+              <span *ngIf="absenceSubTypeFormsubmitted" class="error-text">{{'ABSENCETYPE.REQUIRED_ERROR' | translate:lang:{fieldName: 'Sub type'} }}</span>
+            </div>
+          </div>
+        </section>
+      </form>
+    </div>
+  </div>
+  <div class="so-panel__footer">
+    <nav>
+      <ul>
+        <li><label for="soPanel" class="button button--inline-block" [id]="getChildId('AeLabel',1)" (click)="onAddOrUpdateAbsenceTypeCancel($event)"
+            [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label></li>
+        <li class="pull--right" *ngIf="!isUpdateMode()">
+          <ae-anchor [id]="getChildId('AeAnchor',1)" [name]="getChildName('AeAnchor',1)" [anchorType]="'button'" [class]="'button button--inline-block '"
+            [anchorClass]="lightClass" (aeClick)="onAddOrUpdateFormSubmit($event)" [title]="'BUTTONS.ADD' | translate:lang"
+            [text]="'BUTTONS.ADD' | translate:lang"></ae-anchor>
+        </li>
+        <li class="pull--right" *ngIf="isUpdateMode()">
+          <ae-anchor [id]="getChildId('AeAnchor',1)" [name]="getChildName('AeAnchor',1)" [anchorType]="'button'" [class]="'button button--inline-block '"
+            [anchorClass]="lightClass" (aeClick)="onAddOrUpdateFormSubmit($event)" [title]="'BUTTONS.UPDATE' | translate:lang"
+            [text]="'BUTTONS.UPDATE' | translate:lang"></ae-anchor>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>

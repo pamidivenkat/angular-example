@@ -1,0 +1,127 @@
+<div class="so-panel__title">
+    <h3>{{ headerTitle | translate:lang}} </h3>
+</div>
+<div class="so-panel__content">
+    <form class="form" [formGroup]="documentForm">
+        <div class="form__input">
+
+            <label>
+                <ae-icon [id]="getChildId('AeIcon',1)" [name]="getChildName('AeIcon',1)" [icon]="'icon-alert-circle-question'" [title]="'TITLE_HELP' | translate: lang"></ae-icon>
+                {{'TITLE' | translate:lang}}
+                <ae-input [id]="'txtTitle'" [name]="'txtTitle'" formControlName="Title" [placeholder]="'TITLE' | translate:lang"></ae-input>
+            </label>
+        </div>
+        <div class="form__input" *ngIf="isAdd()">
+            <label>
+                <ae-icon [id]="getChildId('AeIcon',2)" [name]="getChildName('AeIcon',2)" [icon]="'icon-alert-circle-question'" [title]="'DOCUMENT_CATEGORY_HELP' | translate:lang"></ae-icon>
+                {{'DOCUMENT_CATEGORY' | translate:lang}} *
+                <ae-select [id]="'DocumentCategoryId'" [name]="'DocumentCategoryId'" formControlName="Category" [options]="docCategoryList"
+                    [placeholder]="'PLEASE_SELECT' | translate:lang"></ae-select>
+            </label>
+            <span id="categoryRequiredError" *ngIf="fieldHasRequiredError('Category')" class="form__input__error">{{'DOCUMENT_CATEGORY' | translate:lang}} {{'IS_REQUIRED' | translate:lang}}</span>
+        </div>
+        <div class="message message--okay slideout-msg" *ngIf="uploadDocFolder">
+            <div>{{'DOCUMENT_CATEGORY_INFO' | translate: lang:{uploadDocFolder: uploadDocFolder} }}</div>
+            <div>
+                <span *ngIf="isDocDistributable">{{ 'DOCUMENT_CANBE_DISTRIBUTE' | translate: lang }}</span>
+                <span *ngIf="!isDocDistributable">{{ 'DOCUMENT_CANT_DISTRIBUTE' | translate: lang }}</span>
+            </div>
+        </div>
+        <div class="form__input" *ngIf="isSensitivityObject.visible">
+            <label>{{'DOCUMENT_TYPE' | translate:lang}}
+                <span id='sensitivityRequired' *ngIf="isSensitivityObject.mandatory">*</span>
+                <ae-select [id]="'sensitivity'" [name]="'sensitivity'" formControlName="Sensitivity" [options]="sensitivityOptions" [placeholder]="'PLEASE_SELECT' | translate:lang"></ae-select>
+            </label>
+            <span *ngIf="fieldHasRequiredError('Sensitivity')" class="form__input__error">{{'DOCUMENT_TYPE' | translate:lang}} {{'IS_REQUIRED' | translate:lang}}</span>
+        </div>
+        <div class="form__input" *ngIf="isSiteRegardingObject.visible">
+            <label>
+                <ae-icon [id]="getChildId('AeIcon',3)" [name]="getChildName('AeIcon',3)" [icon]="'icon-alert-circle-question'" [title]="'SITE_HELP' | translate:lang"></ae-icon>
+                {{'Site' | translate:lang}}
+                <span id='siteRequired' *ngIf="isSiteRegardingObject.mandatory">*</span>
+                <ae-select [id]="'DocumentSiteId'" [name]="'DocumentSiteId'" formControlName="DocumentSite" [options]="docSiteList" [placeholder]="'Please Select'"></ae-select>
+                <span id="siteRequiredError" *ngIf="fieldHasRequiredError('DocumentSite')" class="form__input__error">{{'Site' | translate:lang}} {{'IS_REQUIRED' | translate:lang}}</span>
+            </label>
+        </div>
+        <div class="form__input" *ngIf="isEmployeeRegardingObject.visible">
+            <label>{{'EMPLOYEE_LABEL' | translate:lang}}
+                <span id='empRequired' *ngIf="isEmployeeRegardingObject.mandatory">*</span>
+            </label>
+            <ae-autocomplete formControlName="Employee" [id]="getChildId('employeeSelected',1)" [name]="getChildName('employeeSelected',1)"
+                [placeholder]="'Select employee'" [multiselect]="'false'" [items]="employees$ | async" [automatch]="false" (aeOnComplete)="searchEmployees($event)"
+                [dstype]="remoteDataSourceType" [field]="'Text'" [debounce]="500" [valuefield]="'Value'" (aeOnSelect)="onSelectEmployee($event)"
+                (aeOnUnselect)="aeOnUnselectEmployee($event)" (aeOnClearSelected)="aeOnClearEmployee($event)"></ae-autocomplete>
+            <span id="employeeRequiredError" *ngIf="fieldHasRequiredError('Employee')" class="form__input__error">{{'EMPLOYEE_LABEL' | translate:lang}} {{'IS_REQUIRED' | translate:lang}}</span>
+        </div>
+        <div class="form__input" *ngIf="isAdd()">
+            <label>{{'SELECT_FILE'| translate:lang }} *</label>
+            <ae-file [id]="'fileUpload'" [name]="'fileUpload'" [multiple]="false" (onFilesSelected)="onFilesSelected($event)" [accept]="'*'"></ae-file>
+            <span id="fileRequiredError" *ngIf="isFileSelected()" class="form__input__error">{{'FILE_REQUIRED_ERROR_MESSAGE' | translate:lang }}</span>
+        </div>
+        <div *ngIf="showDesciptionAndNotes && isAdd()">
+            <div class="form__input">
+                <label>{{'DESCRIPTION' | translate: lang}}
+                    <ae-input [id]="'txtDescription'" [name]="'txtDescription'" formControlName="Description" [placeholder]="'DESCRIPTION' | translate: lang"></ae-input>
+                </label>
+            </div>
+            <div class="form__input">
+                <label> {{'NOTES' | translate:lang }}
+                    <ae-input [id]="'txtNotes'" [name]="'txtNotes'" formControlName="Comment" [placeholder]="'NOTES' | translate:lang"></ae-input>
+                </label>
+            </div>
+        </div>
+        <div class="form__input">
+            <label>
+
+                {{documentExpiryLabelText | translate:lang }}</label>
+            <ae-datetime-picker [id]="'expiry-date'" [name]="'expiry-date'" formControlName="ExpiryDate" [monthNavigator]="true" [yearNavigator]="true"
+                [showIcon]="true" (aeBlur)="isValidDate($event)" [minDate]="minDate"> </ae-datetime-picker>
+        </div>
+        <div *ngIf="isDateValid">
+            <div class="form__input icon--switch">
+                <ae-icon [id]="getChildId('AeIcon',4)" [name]="getChildName('AeIcon',4)" [icon]="'icon-alert-circle-question'" [title]="'IS_NOTIFICATION_HELP' | translate:lang"></ae-icon>
+                <ae-switch formControlName="IsReminderRequired" [id]="'reminder'" [name]="'reminder'" [switchText]="'Is notification required before expiry?'"
+                    [class]="switchTextLeft" [checked]="showReminderInDaysField"></ae-switch>
+            </div>
+            <div class="form__input" *ngIf="showReminderInDaysField">
+                <label>
+                    <ae-icon [id]="getChildId('AeIcon',5)" [name]="getChildName('AeIcon',5)" [icon]="'icon-alert-circle-question'" [title]="'DOCUMENT_EXPIRY_NOTIFICATION_TEXT_HELP' | translate:lang"></ae-icon>
+                    {{ documentExpiryNotificationLabelText | translate:lang }}
+                    <ae-input [id]="'remainderInDays'" [name]="'remainderInDays'" formControlName="ReminderInDays" [type]="ctrlType" [step]="1"
+                        [min]="0" [placeholder]="'REMINDER_NOTIFICATION' | translate:lang"></ae-input>
+                </label>
+                <span id="reminderError" *ngIf="showerrorMessage && showReminderInDaysField" class="form__input__error">{{errorMessage}}</span>
+            </div>
+        </div>
+        <hr class="blue" *ngIf="isSensitivityObject.visible">
+        <div *ngIf="isSensitivityObject.visible">
+            <h3>{{'EMPLOYEE_TIMELINE.SENSITIVITY' | translate:lang}}</h3>
+            <div class="information-grid__item">
+                <div class="information-grid__item-label">{{'EMPLOYEE_TIMELINE.SENSITIVE' | translate:lang}}</div>
+                <div class="information-grid__item-value">{{'EMPLOYEE_TIMELINE.SENSITIVE_TEXT' | translate:lang}}
+                </div>
+            </div>
+            <div class="information-grid__item">
+                <div class="information-grid__item-label">{{'EMPLOYEE_TIMELINE.ADVANCED' | translate:lang}}</div>
+                <div class="information-grid__item-value">{{'EMPLOYEE_TIMELINE.ADVANCE_TEXT' | translate:lang}}</div>
+            </div>
+            <div class="information-grid__item">
+                <div class="information-grid__item-label">{{'EMPLOYEE_TIMELINE.BASIC' | translate:lang}}</div>
+                <div class="information-grid__item-value">{{'EMPLOYEE_TIMELINE.BASIC_TEXT' | translate:lang}}</div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="so-panel__footer">
+    <nav>
+        <ul>
+            <li>
+                <label for="soPanel" [id]="getChildId('AeLabel',1)" class="button button--inline-block" (click)="onAddCancel()" [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label>
+            </li>
+            <li class="pull--right">
+                <ae-anchor [id]="getChildId('AeAnchor',1)" [name]="getChildName('AeAnchor',1)" [anchorType]="'button'" [class]="'button button--inline-block'"
+                    [anchorClass]="lightClass" (aeClick)="onAddFormSubmit()" [text]="actionText"></ae-anchor>
+            </li>
+        </ul>
+    </nav>
+</div>

@@ -1,0 +1,71 @@
+<!--actual content div-->
+<div id="slide-out-form-content" class="wrapper-for-slideout-conten">
+  <div class="so-panel__title">
+    <h3 class="grey-strip">{{ headerTitle | translate:lang}}</h3>
+  </div>
+
+  <div class="so-panel__content">
+    <div *ngIf="addOrUpdateActionType=='ADD'" class="information-grid__item">
+      <div class="information-grid__item-value">{{'TRAINING_COURSE.ADD_TRAININF_COURSES_CONTENT' | translate:lang}} </div>
+    </div>
+    <div class="information-grid">
+      <form id="training-course-form" name="training-course-form" class="form" [formGroup]="trainingCourseForm">
+        <section class="information-grid__section">
+          <div class="form__column">
+            <div class="information-grid__item">
+              <div class="information-grid__item-label column-1of3">{{'TRAINING_COURSE.TITLE_HEADER' | translate:lang}} <span class="error-text">*</span></div>
+              <div class="information-grid__item-value column-2of3 text-muted">
+                <ae-input [id]="'Title'" [name]="'Title'" formControlName="Title" [placeholder]="'TRAINING_COURSE.Enter_Title' | translate:lang"></ae-input>
+              </div>
+              <span *ngIf="fieldHasRequiredError('Title')" class="form__input__error">{{'VALIDATION_ERROR_MESSAGE.TITLE_REQUIRED' | translate:lang}}</span>
+            </div>
+
+          </div>
+          <div class="form__column">
+            <div class="information-grid__item">
+              <div class="information-grid__item-label column-1of3">{{'TRAINING_COURSE.DESCRIPTION' | translate:lang}}</div>
+              <div class="information-grid__item-value column-2of3 text-muted">
+                <ae-textarea [id]="'Description'" [name]="'Description'" formControlName="Description" [placeholder]="'TRAINING_COURSE.Enter_Description' | translate:lang"></ae-textarea>
+              </div>
+            </div>
+
+          </div>
+          <div class="form__column" *ngIf="canAddStandardCourse()">
+            <div class="information-grid__item">
+              <div class="information-grid__item-value column-2of3 text-muted">
+                <ae-switch formControlName="IsExample" [checked]="trainingCourseForm.get('IsExample').value" [id]="'standard-course'" [name]="'standard-course'"
+                  [switchText]="'TRAINING_COURSE.ISSTANDARDCOURSE' | translate:lang" [class]="switchTextLeft"></ae-switch>
+              </div>
+            </div>
+          </div>
+          <div class="form__column">
+            <div class="information-grid__item">
+              <div class="information-grid__item-label column-1of3">{{'TRAINING_COURSE.MODULE' | translate:lang}} <span class="error-text">*</span></div>
+              <div class="information-grid__item-value column-2of3 text-muted">
+                <ae-autocomplete [id]="'ddlDepartment'" [name]="'ddlDepartment'" formControlName="TrainingModules" [placeholder]="'TRAINING_COURSE.SEARCH_MODULES' | translate:lang"
+                  [multiselect]="'true'" [items]="TrainingModules" [dstype]="dataSourceType" [field]="'Title'" [valuefield]="'Id'"
+                  (aeOnSelect)="onTrainingModuleFilterChanged($event)" (aeOnClearSelected)="onTrainingModuleFilterCleared($event)"></ae-autocomplete>
+              </div>
+              <span *ngIf="fieldHasRequiredError('TrainingModules')" class="form__input__error">{{'VALIDATION_ERROR_MESSAGE.TITLE_REQUIRED' | translate:lang}}</span>
+
+            </div>
+
+          </div>
+        </section>
+
+      </form>
+    </div>
+  </div>
+  <div class="so-panel__footer">
+    <nav>
+      <ul>
+        <li><label for="soPanel" class="button button--inline-block" [id]="getChildId('AeButton',1)" (click)="onFormClosed($event)" [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label></li>
+        <li class="pull--right">
+          <ae-anchor [id]="getChildId('AeAnchor',1)" [name]="getChildName('AeAnchor',1)" [anchorType]="'button'" [class]="'button button--inline-block'"
+            [anchorClass]="lightClass" (aeClick)="onFormSubmit($event)" [title]="buttonTextReturn() | translate: lang" [text]="buttonTextReturn() | translate: lang"></ae-anchor>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
+<!--actual content div end -->

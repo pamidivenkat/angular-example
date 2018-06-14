@@ -1,0 +1,62 @@
+@import '../../../../assets/scss/variablesMap';
+
+.holiday-filters {
+  margin-bottom: 20px;
+
+  .requests {
+    .filter-bar__filter {
+      &:last-child {
+        .button {
+          width: 100%;
+        }
+      }
+      @include media-over-767 {
+        flex-grow: 1;
+        width: 33.33%;
+
+        &:last-child {
+          width: 90px;
+
+          .button {
+            width: auto;
+          }
+        }
+      }
+      @include media-over-1239 {
+        width: 14%;
+      }
+      font-size: 15px;
+      line-height: 19px;
+
+      &:first-child {
+        padding-left: 0;
+      }
+
+    }
+  }
+}
+
+.employee-summary {
+  margin-bottom: 30px;
+
+  .select {
+    max-width: 350px;
+    margin-bottom: 10px;
+  }
+
+  .grid--chart > * {
+    width: auto;
+  }
+
+  ae-chart {
+    margin-top: -30px;
+  }
+}
+
+#holidayRequestForm {
+  .requests {
+    ae-input {
+      margin-top: 0;
+    }
+  }
+}

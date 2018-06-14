@@ -1,0 +1,80 @@
+<div class="personal-document-content">
+  <div class="notification-bar notification-bar--button spacer" [id]="'Documents'">
+    <div class="icon-with-text">
+      <span class="icon-with-text__icon">
+        <ae-icon [id]="getChildId('AeIcon')" [name]="getChildName('AeIcon', 1)" [icon]="'icon-info'" [size]="iconMedium"></ae-icon>
+      </span>
+      <span class="icon-with-text__copy">
+        {{'PERSONAL_DOCUMENTS_MESSAGE' | translate:lang}}
+      </span>
+    </div>
+    <ae-button [class]="lightClass" [text]="'Add'" [type]="'button'" [id]="getChildId('AeButton', 1)" [name]="getChildName('AeButton', 1)"
+      (aeClick)="addNewDocument()"></ae-button>
+  </div>
+</div>
+<ae-loader [loaderType]="loaderBars" *ngIf="!(hasDocumentsLoaded$ | async)"></ae-loader>
+<section class="cards">
+  <ae-card class="card" *ngFor="let document of documents$ | async; let i = index ">
+    <div class="card__icon">
+      <div class="icon icon--big">
+        <div class="doc-icon">
+          <ae-icon [id]="getChildId('AeIcon', i)" [name]="'personal-document-card'" [icon]="'icon-unknown'" *ngIf="document.DocumentSubCategory !== 'Passport' && document.DocumentSubCategory !== 'Driving License' && document.DocumentSubCategory !== 'Visa' && document.DocumentSubCategory !== 'Other'  && document.DocumentSubCategory !=='Profile Picture' && document.Category !== 65543">
+          </ae-icon>
+          <ae-icon [id]="getChildId('AeIcon', i)" [name]="'personal-document-card'" [icon]="'icon-passport'" *ngIf="document.DocumentSubCategory === 'Passport'">
+          </ae-icon>
+          <ae-icon [id]="getChildId('AeIcon', i)" [name]="'personal-document-card'" [icon]="'icon-steering-wheel'" *ngIf="document.DocumentSubCategory === 'Driving License'">
+          </ae-icon>
+          <ae-icon [id]="getChildId('AeIcon', i)" [name]="'personal-document-card'" [icon]="'icon-visa'" *ngIf="document.DocumentSubCategory === 'Visa'">
+          </ae-icon>
+          <ae-icon [id]="getChildId('AeIcon', i)" [name]="'personal-document-card'" [icon]="'icon-unknown'" *ngIf="document.DocumentSubCategory === 'Other'">
+          </ae-icon>
+          <ae-icon [id]="getChildId('AeIcon', i)" [name]="'personal-document-card'" [icon]="'icon-certificate'" *ngIf="document.Category === 65543">
+          </ae-icon>
+        </div>
+      </div>
+    </div>
+    <div class="card__content">
+      <div [attr.id]="'card__title_' +i" class="card__title"> {{ document.FileNameAndTitle }}</div>
+      <div [attr.id]="'card__text_' +i" class="card__text">
+        <p> {{document.DocumentSubCategory != null && document.DocumentSubCategory != '' ? document.DocumentSubCategory : document.CategoryName}}
+        </p>
+        <p> {{document.UpdatedDateTime | localeDate:defaultLocale:'shortDate'}} &nbsp; {{document.Version}} </p>
+
+      </div>
+      <ae-anchor [class]="'button--cta card__button'" [text]="'Download'" [anchorType]="'button'" [id]="'btnDownload'" [name]="'btnDownload'"
+        (aeClick)="downloadDocument(document.Id)" *ngIf="document.Category === 65543"></ae-anchor>
+      <ae-anchor [class]="'button--cta card__button'" [text]="'Details'" [anchorType]="'button'" [id]="'btnDetails'" [name]="'btnDetails'"
+        (aeClick)="showDocumentDetails(document.Id)" *ngIf="document.Category !== 65543"></ae-anchor>
+
+    </div>
+  </ae-card>
+</section>
+
+
+<ae-slideout [id]="getChildId('AeSlideOut', 1)" [name]="getChildName('AeSlideOut', 1)" [modelState]="getSlideoutState()"
+  [class.slide--animate]="getSlideoutAnimateState()">
+  <div *ngIf="showDetailsSlideOut()">
+    <document-details (onCancel)="onDocumentCancel($event)" (onDelete)="onDocumentDelete($event)" (onUpdate)="onDocumentUpdate($event)"></document-details>
+  </div>
+  <div *ngIf="showAddSlideOut() || showUpdateSlideOut()">
+    <add-personal-document [Action]="isAdd ? 'Add' : 'Update'" (onCancel)="onDocumentAddOrUpdateCancel($event)" (onFormSubmit)="onDocumentAddOrUpdateSubmit($event)"></add-personal-document>
+  </div>
+</ae-slideout>
+
+<div>
+  <ae-modal-dialog [visible]="showRemoveDialog" (cancel)="modalClosed($event)" [closable]="true" [id]="'confirmModal'" [name]="'confirmModal'"
+    *ngIf="showRemoveDialog">
+    <div class="modal-dialog-header">
+      <h3>{{'PERSONAL_DOCUMENT_REMOVE_DIALOG.Remove_Document_Heading_text' | translate: lang}}</h3>
+    </div>
+    <div class="modal-dialog-body">
+      <p>{{'PERSONAL_DOCUMENT_REMOVE_DIALOG.Info' | translate: lang:{docName: _selectedDocument.FileNameAndTitle} }}</p>
+    </div>
+    <div class="modal-dialog-footer">
+      <ae-button [text]="'PERSONAL_DOCUMENT_REMOVE_DIALOG.Btn_No' | translate: lang" [type]="'button'" [id]="'confirmNo'" [name]="'confirmNo'"
+        (aeClick)="modalClosed('no')"></ae-button>
+      <ae-button [class]="lightClass" [text]="'PERSONAL_DOCUMENT_REMOVE_DIALOG.Btn_Yes' | translate: lang" [type]="'button'" [id]="'confirmYes'"
+        [name]="'confirmYes'" (aeClick)="modalClosed('yes')"></ae-button>
+    </div>
+  </ae-modal-dialog>
+</div>

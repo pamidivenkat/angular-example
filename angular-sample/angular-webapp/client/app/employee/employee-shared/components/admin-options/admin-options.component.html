@@ -1,0 +1,251 @@
+<div [id]="'options'" class="options">
+  <div class="section-title">
+    <h3>{{'EMPLOYEE_ADMIN_DETAILS.Options_title' | translate:lang}}</h3>
+  </div>
+  <form class="form" id="formOptions" name="formOptions" [formGroup]="optionsForm">
+    <div class="information-grid ">
+      <section class="information-grid__section">
+        <div *ngIf="showManageNoEmailUsers" class="information-grid__item--input">
+          <div class="information-grid__item-label column-1of3">
+            <ae-icon [id]="'icon'" [name]="'icon'" [icon]="'icon-alert-circle-question'" [title]="'EMPLOYEE_ADMIN_DETAILS.has_email_helptext' | translate:lang"></ae-icon> {{'EMPLOYEE_ADMIN_DETAILS.HasEmail' | translate: lang}}
+          </div>
+          <div class="information-grid__item-value column-2of3" id="admindetails_accesstoatlas">
+            <div class="switch-block">
+              <ae-switch formControlName="HasEmail" [id]="'atlasaccessSwitch'" [name]="'atlasaccessSwitch'" [switchText]="' '" [checked]="adminOptionsVM.HasEmail"
+                (aeChange)="hasEmailChange($event)" [disabled]='disableHasEmail()' [class]="switchTextRight"></ae-switch>
+            </div>
+          </div>
+        </div>
+
+        <div class="information-grid__item--input" *ngIf="showManageNoEmailUsers && adminOptionsVM.HasEmail && isNew">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_ADMIN_DETAILS.email_address' | translate:lang}} <span class="error-text">*</span></div>
+          <div class="information-grid__item-value column-2of3">
+            <div class="update-profile">
+              <ae-input [id]="'EmpEmailUser'" [name]="'EmpEmailUser'" [placeholder]="'EMPLOYEE_ADMIN_DETAILS.email_address' | translate:lang"
+                formControlName="EmpEmailUser" [readonly]="'false'" [hasError]="isFieldInvalid('EmpEmailUser')"></ae-input>
+              <span *ngIf="fieldIsCustomRequired('EmpEmailUser')" class="form__input__error">{{'EMPLOYEE_CONTACTS.email_required' | translate:lang}}.</span>
+              <span *ngIf="fieldHasInvalidEmail('EmpEmailUser')" class="form__input__error">{{'EMPLOYEE_CONTACTS.email_invalid' | translate:lang}}.</span>
+            </div>
+          </div>
+        </div>
+        <div class="information-grid__item--input" *ngIf="showManageNoEmailUsers && adminOptionsVM.HasEmail && !isNew">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_ADMIN_DETAILS.email_address' | translate:lang}} <span class="error-text">*</span></div>
+          <div class="information-grid__item-value column-2of3">
+            <div class="update-profile">
+              <ae-input [id]="'EmpEmailUser'" [name]="'EmpEmailUser'" [placeholder]="'EMPLOYEE_ADMIN_DETAILS.email_address' | translate:lang"
+                formControlName="EmpEmailUser" [readonly]="!isNew && adminOptionsVM.ExistingHasEmail && adminOptionsVM.HasUser"
+                (aeBlur)="validateEmployeeEmail()" [hasError]="isFieldInvalid('EmpEmailUser')" (aeChange)="onEmpEmailUser(optionsForm.controls.EmpEmailUser)"></ae-input>
+              <span *ngIf="fieldIsCustomRequired('EmpEmailUser')" class="form__input__error">{{'EMPLOYEE_CONTACTS.email_required' | translate:lang}}.</span>
+              <span *ngIf="fieldHasInvalidEmail('EmpEmailUser')" class="form__input__error">{{'EMPLOYEE_CONTACTS.email_invalid' | translate:lang}}.</span>
+              <span *ngIf="employeeDuplicateEmail('EmpEmailUser')" class="form__input__error">Email already exists.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="information-grid__item--input" *ngIf="!originalHasUserData">
+          <div class="information-grid__item-label column-1of3">
+            <ae-icon *ngIf="!adminOptionsVM.HasUser" [id]="'icon'" [name]="'icon'" [icon]="'icon-alert-circle-question'" [title]="'EMPLOYEE_ADMIN_DETAILS.access_to_atlas_helptext' | translate:lang"></ae-icon>
+            {{'EMPLOYEE_ADMIN_DETAILS.give_access_to_atlas' | translate:lang}}
+          </div>
+          <div class="information-grid__item-value column-2of3" id="admindetails_accesstoatlas">
+            <div class="switch-block">
+              <ae-switch formControlName="CreateUser" [id]="'leaverSwitch'" [name]="'leaverSwitch'" [switchText]="' '" [class]="switchTextRight"
+                [disabled]='disableCreateUser()' [checked]="adminOptionsVM.HasUser"></ae-switch>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="information-grid__item--input" *ngIf="adminOptionsVM.HasUser && originalHasUserData">
+          <div class="information-grid__item-label column-1of3">
+            {{'EMPLOYEE_ADMIN_DETAILS.associated_user' | translate:lang}}
+          </div>
+          <div class="information-grid__item-value column-2of3">
+            {{adminOptionsVM.UserName}}
+          </div>
+        </div>
+
+
+        <div *ngIf="adminOptionsVM.CreateUser">
+          <div class="information-grid__item--input">
+            <div class="information-grid__item-label column-1of3"> </div>
+            <div class="information-grid__item-value column-2of3 padding-left">
+              <ae-radio-group [id]="getChildId('AeRadioGroup',1)" [name]="getChildName('AeRadioGroup',1)" [options]="userCreateModes" formControlName="UserCreateMode"
+                (aeChange)="changeUserCreateMode($event)"></ae-radio-group>
+            </div>
+          </div>
+          <div class="information-grid__item--input" *ngIf="isExistingUserCreateMode()">
+            <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_ADMIN_DETAILS.username_email_address' | translate:lang}} <span class="error-text">*</span></div>
+            <div class="information-grid__item-value column-2of3">
+              <div class="update-profile">                
+                <ae-autocomplete formControlName="ExistingUserEmail" [id]="'autEmailOrUserName'" [name]="'autEmailOrUserName'" [placeholder]="'EMPLOYEE_ADMIN_DETAILS.Search_for_user' | translate:lang"
+                  [multiselect]="false" [items]="usersListToAssociate | async" [field]="'UserName'" [valuefield]="'Id'" (aeOnSelect)="onUserChanged($event)"
+                  (aeOnClearSelected)="onUserUnSelect($event)" [dstype]="localDsType"></ae-autocomplete>
+                <span *ngIf="fieldIsCustomRequired('ExistingUserEmail')" class="form__input__error">{{'EMPLOYEE_ADMIN_DETAILS.validation_select_from_autocomplete' | translate:lang}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="information-grid__item--input" *ngIf="isNewUserCreateMode() && adminOptionsVM.HasEmail">
+            <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_ADMIN_DETAILS.email_address' | translate:lang}} <span class="error-text">*</span></div>
+            <div class="information-grid__item-value column-2of3">
+              <div class="update-profile">
+                <ae-input [id]="'emailInputUser'" [name]="'emailInputUser'" [placeholder]="'EMPLOYEE_ADMIN_DETAILS.email_address' | translate:lang"
+                  formControlName="Email" (aeChange)="onEmpEmailUser($event)" (aeBlur)="validateUserNameOrEmail()" [hasError]="isFieldInvalid('Email')"></ae-input>
+                <span *ngIf="fieldIsCustomRequired('Email')" class="form__input__error">{{'EMPLOYEE_CONTACTS.email_required' | translate:lang}}.</span>
+                <span *ngIf="fieldHasInvalidEmail('Email')" class="form__input__error">{{'EMPLOYEE_CONTACTS.email_invalid' | translate:lang}}.</span>
+                <span *ngIf="userEmailDuplicate('Email')" class="form__input__error">{{'EMPLOYEE_ADMIN_DETAILS.validation_email_is_not_available' | translate:lang}}</span>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="isNewUserCreateMode() && !adminOptionsVM.HasEmail">
+
+            <div class="information-grid__item--input">
+              <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_ADMIN_DETAILS.username' | translate:lang}} <span class="error-text">*</span></div>
+              <div class="information-grid__item-value column-2of3">
+                <div class="update-profile">
+                  <ae-input [id]="'UserName'" [name]="'UserName'" [placeholder]="_getUserNamePlaceholder()" formControlName="UserName" [readonly]="'false'"
+                    (aeBlur)="validateUserNameOrEmail()" [hasError]="isFieldInvalid('UserName')"></ae-input>
+                  <span *ngIf="fieldIsCustomRequired('UserName')" class="form__input__error">User name is required.</span>
+                  <span *ngIf="fieldHasInvalidUserNameFormat('UserName')" class="form__input__error">{{'EMPLOYEE_ADMIN_DETAILS.username_invalid_criteria' | translate:lang}}.</span>
+                  <span *ngIf="userNameDuplicate('UserName')" class="form__input__error">{{'EMPLOYEE_ADMIN_DETAILS.username_is_not_available' | translate:lang}}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="information-grid__item--input" *ngIf="userNameErrorList.length > 0">
+              <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_ADMIN_DETAILS.username_criteria' | translate:lang}}</div>
+              <div class="information-grid__item-value column-2of3">
+                <div class="update-profile">
+                  <ul class="rest-ul top7">
+                    <li ng-repeat="error in userNameErrorList">{{error}}</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="information-grid__item--input">
+              <div class="information-grid__item-label column-1of3"></div>
+              <div class="information-grid__item-value column-2of3">
+                <div class="update-profile">
+                  <p>{{'EMPLOYEE_ADMIN_DETAILS.please_ensure' | translate:lang}}:</p>
+                  <ul class="list-unstyled">
+                    <li data-class="the-length"><span class="fa fa-check"></span>{{'EMPLOYEE_ADMIN_DETAILS.suggestion_Username_validity' | translate:lang}}</li>
+                    <li data-class="upper-lower"><span class="fa fa-check"></span>{{'EMPLOYEE_ADMIN_DETAILS.suggestion_username_text_validity' | translate:lang}}
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="adminOptionsVM.HasUser || isNewUserCreateMode()">
+            <div class="information-grid__item--input">
+              <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_ADMIN_DETAILS.password' | translate:lang}} <span class="error-text">*</span></div>
+              <div class="information-grid__item-value column-2of3">
+                <div class="update-profile">
+                  <ae-input [id]="'Password'" [name]="'Password'" [placeholder]="'EMPLOYEE_ADMIN_DETAILS.password' | translate:lang" formControlName="Password"
+                    [readonly]="'false'" [hasError]="isFieldInvalid('Password')" [type]="inputType"></ae-input>
+
+                  <span *ngIf="fieldIsCustomRequired('Password')" class="form__input__error">{{'EMPLOYEE_ADMIN_DETAILS.Password_required' | translate:lang}}</span>
+                  <span *ngIf="fieldHasInvalidPasswordPattern('Password')" class="form__input__error">{{'EMPLOYEE_ADMIN_DETAILS.password_pattern_invalid_error_message' | translate:lang}}.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="information-grid__item--input">
+              <div class="information-grid__item-label column-1of3"> </div>
+              <div class="information-grid__item-value column-2of3">
+                <div class="update-profile">
+                  <ul class="list">
+                    <li>{{'CHANGEPASSWORD.LOWER_CASE' | translate:lang}}</li>
+                    <li>{{'CHANGEPASSWORD.CAPITAL_LETTER' | translate:lang}}</li>
+                    <li>{{'CHANGEPASSWORD.ONE_DIGIT' | translate:lang}}</li>
+                    <li>{{'CHANGEPASSWORD.SPECIAL_CHARACTER' | translate:lang}})</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="information-grid__item--input">
+              <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_ADMIN_DETAILS.confirm_password' | translate:lang}} *</div>
+              <div class="information-grid__item-value column-2of3">
+                <div class="update-profile">
+                  <ae-input [id]="'ConfirmPassword'" [name]="'ConfirmPassword'" [placeholder]="'EMPLOYEE_ADMIN_DETAILS.confirm_password' | translate:lang"
+                    formControlName="ConfirmPassword" [hasError]="isFieldInvalid('ConfirmPassword')" [readonly]="'false'"
+                    [type]="inputType"></ae-input>
+                    <span *ngIf="fieldIsCustomRequired('ConfirmPassword')" class="form__input__error">{{'EMPLOYEE_ADMIN_DETAILS.Password_required' | translate:lang}}</span>
+                  <span *ngIf="fieldMatchPasswords('ConfirmPassword')" class="form__input__error">{{'EMPLOYEE_ADMIN_DETAILS.password_pattern_invalid_error_message' | translate:lang}}.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="information-grid__item--input" *ngIf="optionsChanged && !isNew">
+          <div class="information-grid__item-label column-1of3"> </div>
+          <div class="information-grid__item-value column-2of3" id="admindetails_saveoptions">
+            <ae-button [class]="lightClass" [text]="'EMPLOYEE_ADMIN_DETAILS.Save_options' | translate:lang" [id]="'saveoptions'" [name]="'saveoptions'"
+              (aeClick)="saveForm()"></ae-button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </form>
+</div>
+
+
+<!--Popup aleart for  : Without email and with user trying to update email address-->
+<div *ngIf="showWithoutEmailWithUserConfirmDialog">
+  <ae-modal-dialog [visible]="showWithoutEmailWithUserConfirmDialog" (cancel)="withoutEmailWithUserConfirmModalClosed($event)"
+    [closable]="true" [id]="getChildId('AeModel', 1)" [name]="getChildName('AeModel', 1)">
+    <div class="modal-dialog-header">
+      <h3 class="modal-title">User association alert </h3>
+    </div>
+    <div class="modal-dialog-body">
+      <span> Selected username will be udpated with given email address <b>{{adminOptionsVM.EmpEmailUser}}</b> Please use this email address to login into Atlas from next time for the selected user</span>
+    </div>
+    <div class="modal-dialog-footer">
+      <ae-button [text]="'BUTTONS.CLOSE' | translate:lang" [type]="'button'" [id]="'closeBtn'" [name]="'closeBtn'" (aeClick)="withoutEmailWithUserConfirmModalClosed($event)"></ae-button>
+      <ae-button [class]="lightClass" [text]="'BUTTONS.OK' | translate:lang" [type]="'button'" [id]="'okBtn'" [name]="'okBtn'"
+        (aeClick)="saveForm('accepted')"></ae-button>
+    </div>
+  </ae-modal-dialog>
+</div>
+
+
+<!--Popup aleart for  : to confirm latest email from two different emails selected at employee level and user mapping level-->
+<div *ngIf="showWithDifferentEmailaddressConfirmDialog">
+  <ae-modal-dialog [visible]="showWithDifferentEmailaddressConfirmDialog" (cancel)="withDifferentEmailsConfirmModalClosed($event)"
+    [closable]="true" [id]="getChildId('AeModel', 2)" [name]="getChildName('AeModel', 2)">
+    <div class="modal-dialog-header">
+      <h3 class="modal-title">User association alert </h3>
+    </div>
+    <div class="modal-dialog-body">
+      <span> Please choose one of the latest email address which will be updated against employee and user records ?</span>
+      <ae-radio-group [id]="getChildId('AeRadioGroup',2)" [name]="getChildName('AeRadioGroup',2)" [options]="getEmailaddresses()"
+        [value]="defaultEmailToSelect" (aeChange)="changeLatestEmailRadioButton($event)"></ae-radio-group>
+    </div>
+    <div class="modal-dialog-footer">
+      <ae-button [text]="'BUTTONS.CLOSE' | translate:lang" [type]="'button'" [id]="'closeBtn'" [name]="'closeBtn'" (aeClick)="withDifferentEmailsConfirmModalClosed($event)"></ae-button>
+      <ae-button [class]="lightClass" [text]="'BUTTONS.OK' | translate:lang" [type]="'button'" [id]="'okBtn'" [name]="'okBtn'"
+        (aeClick)="saveForm('accepted')"></ae-button>
+    </div>
+  </ae-modal-dialog>
+</div>
+
+
+<!--Popup aleart for  : Employees with no email-->
+<div *ngIf="showEmployeesWithNoemailConfirmDialog">
+  <ae-modal-dialog [visible]="showEmployeesWithNoemailConfirmDialog" (cancel)="employeesWithNoemailConfirmDialogConfirmModalClosed($event)"
+    [closable]="true" [id]="getChildId('AeModel', 2)" [name]="getChildName('AeModel', 2)">
+    <div class="modal-dialog-header">
+      <h3 class="modal-title">Employees with no email </h3>
+    </div>
+    <div class="modal-dialog-body">
+      <span> Citation recommends that where ever possible employee access to Atlas should be given using their email address. l agree that Atlas functionality will be reduced by having an employee without a user account or email address.</span>
+    </div>
+    <div class="modal-dialog-footer">
+      <ae-button [text]="'BUTTONS.CLOSE' | translate:lang" [type]="'button'" [id]="'closeBtns'" [name]="'closeBtns'" (aeClick)="employeesWithNoemailConfirmDialogConfirmModalClosed($event)"></ae-button>
+      <ae-button [class]="lightClass" [text]="'BUTTONS.OK' | translate:lang" [type]="'button'" [id]="'okBtns'" [name]="'okBtns'"
+        (aeClick)="saveForm('accepted')"></ae-button>
+    </div>
+  </ae-modal-dialog>
+</div>

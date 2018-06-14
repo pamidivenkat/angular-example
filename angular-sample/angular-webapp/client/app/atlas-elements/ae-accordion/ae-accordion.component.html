@@ -1,0 +1,13 @@
+<input [id]="id" [name]="name" type="checkbox" hidden />
+<label for="{{id}}" class="accordion__header">
+        <div class="accordion__header--grid">
+          <div class="accordion__title">{{titleText}}</div>
+            <div class="accordion__indicator icon"><svg><use  [attr.xlink:href]="getAbsoluteUrl('icon-pointer-right')"></use></svg></div>
+        </div>
+      </label>
+<div class="accordion__contents">
+  <div class="accordion__content">
+    <ng-content></ng-content>
+  </div>
+
+</div>

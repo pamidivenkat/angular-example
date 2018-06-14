@@ -1,0 +1,107 @@
+@import '../../../../../assets/scss/variablesMap';
+.incident-preview {
+    position: relative;
+    .right-button {
+        position: relative;
+        margin-top: -10px;
+        margin-bottom: 10px;
+        @include media-over-979 {
+            position: absolute;
+            right: 0px;
+            top: -50px;
+        }
+    }
+    .information-grid__section h3 {
+        font-weight: 700;
+        margin-top: 30px !important;
+        margin-bottom: 7.5px;
+    }
+    .information-grid__item-label {
+        -webkit-align-self: flex-start;
+        -ms-flex-item-align: flex-start;
+        -ms-grid-row-align: flex-start;
+        align-self: flex-start;
+        position:relative;
+        &:after{
+            content: ":";
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            font-weight: 700;
+        }
+    }
+    &.preview-scroll {
+        @media only screen {
+            border: 1px solid #d8d8d8;
+            height: 930px;
+            overflow: auto;
+            padding: 35px;
+            position: relative;
+        }
+    }
+    .highlight {
+        padding-bottom: 15px;
+    }
+    .overlay {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 998;
+        .loader {
+            background-color: transparent !important;
+            margin: 250px auto;
+        }
+    }
+    .download-block {
+        display: block;
+        text-align: left;
+        color: $teal--0;
+    }
+    .information-grid__item a {
+        color: $teal--0;
+    }
+    .witness-grid {
+        @include media-over-767 {
+            align-items: flex-end;
+            display: flex;
+            justify-content: space-between;
+            +.witness-grid {
+                margin-top: ($base-margin / 3) !important;
+            }
+            [class*="witness-grid__"] {
+                width: 31%;
+            }
+            label {
+                margin-top: 0 !important;
+            }
+        }
+        +.witness-grid {
+            margin-top: ($base-margin * 2);
+        }
+        label {
+            margin-bottom: ($base-margin / 3);
+            margin-top: $base-margin;
+        }
+    }
+}
+
+.highlight-block {
+    background-color: $white;
+    padding-bottom: $base-padding !important;
+}
+.witness-grid-block {
+    .row{
+        width: 100%; margin-bottom: 10px;
+        fieldset{
+            background: none;
+            legend{background: none;  padding: 5px 15px;}
+        }
+    }
+}
+.border-t-grey{
+    border-top: 1px solid #c0c0c0;
+}
+.spacer-t-30{margin-top:30px;}

@@ -1,0 +1,80 @@
+<div class="table spacer">
+    <ae-datatable [id]="getChildId('AeDatatable',1)" [name]="getChildName('AeDatatable',1)" [dataSource]="employeeList$" [totalRecords]="totalRecords$"
+        [autoGenerateColumns]="false" [defaultOptions]="dataTableOptions$ | async" (pageChanged)="onPageChange($event)" (onSort)="onSort($event)"
+        [loading]="employeeContractLoading$ | async">
+        <ae-column [headerText]="'CONTRACT_PERSONALISATION.FULL_NAME' | translate:lang" [sortable]="true" [sortKey]="'Fullname'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span title="{{ 'CONTRACT_PERSONALISATION.FULL_NAME' | translate:lang  }}">{{'CONTRACT_PERSONALISATION.FULL_NAME' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <span>{{context.Fullname}}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+        <ae-column [headerText]="'CONTRACT_PERSONALISATION.JOB_TITLE' | translate:lang" [sortable]="true" [sortKey]="'JobTitle'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span title="{{ 'CONTRACT_PERSONALISATION.JOB_TITLE' | translate:lang  }}">{{'CONTRACT_PERSONALISATION.JOB_TITLE' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <span>{{context.JobTitle}}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+        <ae-column [headerText]="'CONTRACT_PERSONALISATION.CONTRACT_VERSION' | translate:lang" [sortable]="true" [sortKey]="'LatestContractVersion'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span title="{{ 'CONTRACT_PERSONALISATION.CONTRACT_VERSION' | translate:lang  }}">{{'CONTRACT_PERSONALISATION.CONTRACT_VERSION' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <span>{{context.LatestContractVersion}}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+        <ae-column [headerText]="'CONTRACT_PERSONALISATION.DISTRIBUTION_DATE' | translate:lang" [sortable]="true" [sortKey]="'DistributionDate'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span title="{{ 'CONTRACT_PERSONALISATION.DISTRIBUTION_DATE' | translate:lang  }}">{{'CONTRACT_PERSONALISATION.DISTRIBUTION_DATE' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <span>{{context.DistributionDate | localeDate:defaultLocale:'shortDate'}}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+        <ae-column [headerText]="'CONTRACT_PERSONALISATION.ACKNOWLEDGEMENT_DATE' | translate:lang" [sortable]="true" [sortKey]="'AcknowledgementDate'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span title="{{ 'CONTRACT_PERSONALISATION.ACKNOWLEDGEMENT_DATE' | translate:lang  }}">{{'CONTRACT_PERSONALISATION.ACKNOWLEDGEMENT_DATE' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <span>{{context.AcknowledgementDate | localeDate:defaultLocale:'shortDate'}}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+        <ae-column [headerText]="'CONTRACT_PERSONALISATION.HAS_PERSONALISED' | translate: lang" [sortable]="false ">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <ae-checkbox [id]="'allEmployees'" [name]="'allEmployees'" [checkText]="'BUTTONS.SELECT_ALL' | translate: lang" [checked]="checkedAllEmployees()"
+                        [disabled]="isAllHasContract()" (onAeChange)="onAllEmployeesSelect($event)"></ae-checkbox>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <ae-checkbox [id]="context.Id" [name]="context.Id" [checkText]="'BUTTONS.SELECT' | translate: lang" [checked]="checkStatus(context)"
+                        [disabled]="context.HasContract" (onAeChange)="onEmployeesChange(context)"></ae-checkbox>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+    </ae-datatable>
+</div>

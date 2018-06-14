@@ -1,0 +1,30 @@
+@import '../../../../../assets/scss/variablesMap';
+.yearendprocedure-container{
+    .icon-with-text{
+        .icon-with-text__copy{
+        ae-anchor a{
+        color: $teal--0;
+        text-decoration: underline;
+            }
+        }
+    }
+    .table__item{width: (100%/8);}
+    .input-row{
+        .input-box{
+            display: inline-block; 
+            width: 50%;
+            float: left;
+            ae-input input{
+                text-align: right;
+                width: 65px;
+                padding: 8px 5px;
+            }
+        }
+        .input-text{
+            display: inline-block;
+            width: 50%;
+            padding-left: 10px;
+            line-height: 35px;
+        }
+    }
+}

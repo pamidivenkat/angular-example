@@ -1,0 +1,33 @@
+<div class="modal-dialog-header">
+    <h3>{{ 'VIEW_SIGNATURE' | translate:lang }}</h3>
+</div>
+<div class="so-panel__content">
+    <div class="information-grid">
+        <section class="information-grid__section">
+            <div id="DocumentName" class="information-grid__item">
+                <div class="information-grid__item-label column-1of3">{{ 'DOCUMENT_NAME' | translate:lang }}</div>
+                <div class="information-grid__item-value column-2of3">
+                    {{documentSignatureDetails.DocumentName}}
+                </div>
+            </div>
+            <div id="SignedBy" class="information-grid__item">
+                <div class="information-grid__item-label column-1of3">{{ 'SIGNED_BY' | translate:lang }}</div>
+                <div class="information-grid__item-value column-2of3">
+                    {{documentSignatureDetails.SignedBy}}
+                </div>
+            </div>
+
+            <div id="SignedDate" class="information-grid__item">
+                <div class="information-grid__item-label column-1of3">{{ 'SIGNED_DATE' | translate:lang }}</div>
+                <div class="information-grid__item-value column-2of3">
+                    {{documentSignatureDetails.SignedDate | localeDate:defaultLocale:'dd/MM/yyyy'}}
+                </div>
+            </div>
+            <div id="Signature" class="information-grid__item">
+                <div class="information-grid__item-label column-1of3">{{ 'SIGNATURE' | translate:lang }}</div>
+                <div class="information-grid__item-value column-2of3"><img [id]="'imgPreview'" [name]="'imgPreview'" [src]="documentSignatureDetails.Signature" /></div>
+            </div>
+        </section>
+    </div>
+
+</div>

@@ -1,0 +1,17 @@
+<div class="widget__title">
+    <h2><b>{{'HELP' | translate: lang}}</b> {{'AREAS' | translate: lang}}</h2>
+</div>
+<div>
+    <div [id]="getChildId('helpAreaIcon', 51)" class="icon-grid">
+        <div [id]="getChildId('helpAreaIcon', 52)" class="icon-grid__item" *ngFor="let item of HelpAreas | async" (click)="showHelpAreaContent(item)">
+            <div [id]="getChildId('helpAreaIcon', 53)" class="icon icon--medium">
+                <ae-icon [id]="getChildId('ae-icon', i)" [name]="getChildName('ae-icon', i)" [size]="IconSize" [icon]="item.IconName"></ae-icon>
+            </div>
+            <div [id]="getChildId('helpAreaName', 5)" class="icon-grid__copy">
+                <span [id]="getChildId('helpAreaName', 6)">{{ item.Name }}</span>
+            </div>
+
+        </div>
+
+    </div>
+</div>

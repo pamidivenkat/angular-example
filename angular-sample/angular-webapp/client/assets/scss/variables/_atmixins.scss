@@ -1,0 +1,33 @@
+// Stylesheet: Mixins & Constants Stylesheet
+@mixin colorBlur($value, $bg-color, $color:$bg-color) {
+  filter: blur($value);
+  -webkit-filter: blur($value);
+  -moz-filter: blur($value);
+  -o-filter: blur($value);
+  -ms-filter: blur($value);
+  background-color: $bg-color;
+  color: $color;
+}
+
+@mixin contentCols($noCols, $colGap) {
+  -webkit-column-count: $noCols;
+  /* Chrome, Safari, Opera */
+  -moz-column-count: $noCols;
+  /* Firefox */
+  column-count: $noCols;
+  -webkit-column-gap: $colGap;
+  /* Chrome, Safari, Opera */
+  -moz-column-gap: $colGap;
+  /* Firefox */
+  column-gap: $colGap;
+}
+@mixin media-max-767 {
+  @media only screen and (max-width: 767px) {
+    @content;
+  }
+}
+@mixin print {
+  @media print {
+    @content;
+  }
+}

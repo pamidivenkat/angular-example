@@ -1,0 +1,39 @@
+<div id="constructionPhasePlansHeader">
+  <ae-banner [id]="getChildId('AeBanner')" [name]="getChildName('AeBanner')" [titleText]="getCPPBannerTitle() | translate:lang" [backgroundImage]="'/assets/images/lp-construction-phase-plans.jpg'">
+    <ae2-breadcrumb [id]="'breadCrumb'" [name]="'breadCrumb'" class="bredcrumb-section" [group]="bcGroup"></ae2-breadcrumb>
+    <div class="image-text banner-image-text">
+    </div>
+    <div class="icon-list banner-icon-list">
+
+    </div>
+  </ae-banner>
+  <ae-notification [id]="'cppAddLandingMsg'" [name]="'cppAddLandingMsg'" [iconName]="'icon-info'" [textInfo]="'CPP_ADD.CPP_ADD_NOTIFICATION_MESSAGE' | translate:lang">
+  </ae-notification>
+</div>
+
+<div id="incidentWizard">
+  <div class="spacer">
+    <ae-wizard [steps]="_cppWizardSteps$" [previousURL]="'/construction-phase-plan'" [id]="'cppWizard'" [name]="'cppWizard'" *ngIf="isGeneralStepShown$ | async" [showComplete]="showComplete">
+      <ae-template [type]="'generalStep'">
+        <ng-template let-context="item">
+          <general [id]="'generalWizardStep'" [context]="context" [name]="'generalWizardStep'" [constructionPhasePlan]="constructionPhasePlan"
+            (onAeSubmit)="onGeneralStepSave($event)"></general>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'clientDetailsStep'">
+        <ng-template let-context="item">
+          <client-details [id]="'clientDetailsWizardStep'" [context]="context" [name]="'clientDetailsWizardStep'" [constructionPhasePlan]="objectToSave" [cppAddtionalInformation$]="(cppAdditionalInfo$)" 
+            (onAeSubmit)="onClientDetailsStepSave($event)"></client-details>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'supportingEvidenceStep'">
+        <ng-template let-context="item">
+          <supporting-evidence [id]="'suppoeviWizardStep'" [context]="context" [cppId]="cppId" [isExample]="isExample" [name]="'suppoeviWizardStep'" (onAeSubmit)="onSupportingEvidenceStepDone($event)"></supporting-evidence>
+        </ng-template>
+      </ae-template>
+
+    </ae-wizard>
+  </div>
+</div>
+
+<ae-loader [loaderType]="loaderBars" *ngIf="!(isGeneralStepShown$ | async)"></ae-loader>

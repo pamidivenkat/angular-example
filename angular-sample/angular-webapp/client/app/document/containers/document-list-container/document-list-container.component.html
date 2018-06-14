@@ -1,0 +1,49 @@
+<div>
+  <document-informationbar [id]="getChildId('documentInformationBar',1)" [name]="getChildName('documentInformationBar',1)"
+    [hasDocumentsInformationBarLoaded]="DocumentsInformationBarLoaded$ | async" [documentsInformationBarItems]="DocumentsInformationItems$ | async"
+    (onInformationItemSelected)="onDocumentInformationClick($event)">
+  </document-informationbar>
+
+  <ae-banner [id]="'banner'" [name]="'banner'" [titleText]="'Documents'" [backgroundImage]="'/assets/images/lp-documents.jpg'">
+    <ae2-breadcrumb [id]="'breadCrumb'" [name]="'breadCrumb'" class="bredcrumb-section" [group]="bcGroup"></ae2-breadcrumb>
+    <div class="icon-list banner-icon-list" *ngIf="getCanAccessClientLibrary()">
+      <ae-button [class]="lightClass" [text]="'ADD_DOCUMENT_TEXT' | translate:lang" [type]="'button'" [id]="'btnAdd'" [name]="'btnAdd'"
+        (aeClick)="_addNewDocument()"></ae-button>
+    </div>
+  </ae-banner>
+  <ae-notification [id]="'Documents'" [name]="'Documents'" [iconName]="'icon-info'" [textInfo]="'DOCUMENT_LANDING_MESSAGE' | translate:lang"></ae-notification>
+  <ae-tabstrip [id]="getChildId('AeTabStrip',1)" [name]="getChildName('AeTabStrip',1)" [standardWithIcon]="true">
+    <ae-tabstrip-item [id]="getChildId('AeTabStripItem',1)" *ngIf="canViewHSOrELDocuments()" [name]="getChildName('AeTabItem',1)"
+      [header]="'DOCUMENTS_CITATION_DRAFTS' | translate:lang" [navigateUrl]="_getDraftsUrl()">
+
+    </ae-tabstrip-item>
+
+    <ae-tabstrip-item [id]="getChildId('AeTabStripItem',1)" *ngIf="canCompanyDocumentsShown()" [name]="getChildName('AeTabItem',1)"
+      [header]="'COMPANY_DOCUMENTS' | translate:lang" [navigateUrl]="_getCompanyDocsUrl()">
+
+    </ae-tabstrip-item>
+
+    <ae-tabstrip-item *ngIf="canSharedDocumentsShown()"  [id]="getChildId('AeTabStripItem',2)" [name]="getChildName('AeTabStripItem',2)" [header]="'SHARED_WITH_EMP__DOCUMENTS' | translate:lang"
+      [navigateUrl]="getSharedDocumentsUrl()">
+
+    </ae-tabstrip-item>
+    <ae-tabstrip-item *ngIf="canPersonalDocumentsShown()"  [id]="getChildId('AeTabStripItem',3)" [name]="getChildName('AeTabStripItem',3)" [header]="'PERSONAL_DOCUMENTS' | translate:lang"
+      [navigateUrl]="getPersonalDocsUrl()">
+
+    </ae-tabstrip-item>
+
+  </ae-tabstrip>
+  <span *ngIf="navigateAutomatic()"></span>
+  <div id="contentArea" class="tab-content">
+    <router-outlet>
+
+    </router-outlet>
+  </div>
+</div>
+<ae-slideout [id]="getChildId('AeSlideOut', 1)" [name]="getChildName('AeSlideOut', 1)" [modelState]="getSlideoutState()"
+  [class.slide--animate]="getSlideoutAnimateState()">
+  <div *ngIf="showAddSlideOut()">
+    <add-document-to-distribute [id]="getChildId('addDocumentToDistribute')" [name]="getChildName('addDocumentToDistribute')"
+      [Action]="'Add'" (onCancel)="onDocumentAddOrUpdateCancel($event)" (onFormSubmit)="onDocumentAddOrUpdateSubmit($event)"></add-document-to-distribute>
+  </div>
+</ae-slideout>

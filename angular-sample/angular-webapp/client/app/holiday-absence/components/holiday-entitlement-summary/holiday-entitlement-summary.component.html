@@ -1,0 +1,21 @@
+<div *ngIf="hasFiscalYearSummary()" [id]="id">
+  <span *ngIf="isHolidayRequested()" [innerHTML]="'HOLIDAYS.entitlement_description' | translate: lang:{title: getYoursTitle(), entitlementUnits: FiscalYearSummary.EntitlementUnitsToDisplay,applicableHoliday:FiscalYearSummary.ApplicableHolidayUnit}">
+  </span>
+  <span *ngIf="!isHolidayRequested()" [innerHTML]="'HOLIDAYS.entitlement_previous_description' | translate: lang:{title: getYoursTitle(), entitlementUnits: FiscalYearSummary.EntitlementUnitsToDisplay,applicableHoliday:FiscalYearSummary.ApplicableHolidayUnit}">
+  </span>
+  <div *ngIf="hasRemainingHolidays()" [id]="getChildId('exceedingDiv', 1)">
+    <label class="text-warning"> {{ 'HOLIDAYS.holiday_entitlement_exceeding' | translate:lang }}.</label>
+  </div>
+  <div>
+    <span *ngIf="isHolidayRequested() && selectedEmployeeSummary()" [id]="getChildId('availableUnitsDiv', 1)" [innerHTML]="'HOLIDAYS.employee_remaining_entitlement' | translate: lang:{title: selectedEmployee,  remainingUnits: FiscalYearSummary.RemainingUnitsToDisplay,applicableHoliday:FiscalYearSummary.ApplicableHolidayUnit}"></span>
+    <span *ngIf="isHolidayRequested() && !selectedEmployeeSummary()" [id]="getChildId('availableUnitsDiv', 1)" [innerHTML]="'HOLIDAYS.remaining_entitlement' | translate: lang:{title: getYourTitle(), remainingUnits: FiscalYearSummary.RemainingUnitsToDisplay,applicableHoliday:FiscalYearSummary.ApplicableHolidayUnit}"></span>
+  </div>
+  <div *ngIf="isRequestedForCurrentFY()" [id]="getChildId('pastyearUUnitsDiv', 1)">
+    <span *ngIf="!selectedEmployeeSummary()" [innerHTML]="'HOLIDAYS.carryforward_entitlement' | translate: lang:{title: getYourTitle(), carryForwardUnits: FiscalYearSummary.CarryForwardedUnitsToDisplay,applicableHoliday:FiscalYearSummary.ApplicableHolidayUnit}"> </span>
+    <span *ngIf="selectedEmployeeSummary()" [innerHTML]="'HOLIDAYS.employee_carryforward_entitlement' | translate: lang:{title: selectedEmployee, carryForwardUnits: FiscalYearSummary.CarryForwardedUnitsToDisplay,applicableHoliday:FiscalYearSummary.ApplicableHolidayUnit}"> </span>
+    <br />
+    <span *ngIf="hasCarryForwardedUnitsExpiredExists()" [id]="getChildId('carryForwardExpiredUnitsSpan', 1)" [innerHTML]="'HOLIDAYS.expired_entitlement' | translate: lang:{title: getYoursTitle(), expiredCarryForwardUnits: FiscalYearSummary.ExpiredCarryForwardedUnitsToDisplay,applicableHoliday:FiscalYearSummary.ApplicableHolidayUnit}">    </span>
+  </div>
+  <div *ngIf="hasHolidayResubmitted()" [id]="getChildId('holidayUnitsTaken', 1)" [innerHTML]="'HOLIDAYS.holidays_submitted' | translate: lang:{title: getYourTitle(), unitsTaken: FiscalYearSummary.UnitsTakenToDisplay,applicableHoliday:FiscalYearSummary.ApplicableHolidayUnit}">
+  </div>
+</div>

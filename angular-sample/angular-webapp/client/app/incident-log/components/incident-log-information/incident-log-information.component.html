@@ -1,0 +1,11 @@
+<ae-informationbar [items]="incidentLogTiles" *ngIf="statesLoaded$ | async" [id]="getChildId('incidentloginfo',1)" [name]="getChildName('incidentlogonfo',1)"
+  (aeClick)="onInformationTileClicked($event)">
+</ae-informationbar>
+<div class="statistics-bar display-flex" *ngIf="!(statesLoaded$ | async)">
+    <div class="infomation-bar-loader"></div>
+    <div class="infomation-bar-loader"></div>
+    <div class="infomation-bar-loader"></div>
+    <div class="infomation-bar-loader"></div>
+    <div class="infomation-bar-loader"></div>
+    <div class="infomation-bar-loader"></div>
+</div>

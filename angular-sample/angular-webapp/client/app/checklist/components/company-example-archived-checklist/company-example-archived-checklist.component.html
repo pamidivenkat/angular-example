@@ -1,0 +1,81 @@
+<div>
+    <ae-notification [id]="'companyChecklist'" [name]="'companyChecklist'" [iconName]="'icon-info'" [textInfo]="getHelpText() | translate:lang">
+    </ae-notification>
+</div>
+
+<div class="table spacer">
+  <div class="table__filter-bar">
+    <div class="filter-bar">
+      <div *ngIf="isCompanyChecklistActive || isExampleChecklistActive" class="filter-bar__label label">{{'Filter_by'| translate:lang}}</div>
+      <div *ngIf="isCompanyChecklistActive" class="filter-bar__filter">
+        <ae-select [id]="getChildId('AeSelect',1)" [name]="getChildName('AeSelect',1)" [options]="_siteOptionList" [value]="selectedSite"
+          [placeholder]="" [isOptGroup]="false" (aeSelectChange)="onChangeSite($event)" [title]="'site' | translate:lang"></ae-select>
+      </div>
+      <div *ngIf="isExampleChecklistActive" class=" filter-bar__filter ">
+        <ae-autocomplete [id]=" 'acn' " [name]=" 'sectors' " [placeholder]=" 'Sectors' | translate:lang" [multiselect]="true " [items]="sectorItems "
+          [value]="defaultSelectedSectorItems" [dstype]="dataSouceType " [field]=" 'Name' " [valuefield]=" 'Id' " (aeOnSelect)="onSectorSelected($event) "
+          (aeOnClearSelected)="onClearSelected($event) "></ae-autocomplete>
+      </div>
+    </div>
+  </div>
+  <ae-datatable [id]="getChildId( 'DataTable', 1) " [name]="getChildName( 'DataTable', 1) " [dataSource]="companyOrExampleOrArchivedList$ "
+    [autoGenerateColumns]="false " [totalRecords]="totalCount$ " [actions]="actions" [defaultOptions]="dataTableOptions$
+    | async " [loading]="loading$ | async " (pageChanged)="onPageChange($event) " (onSort)="onSort($event)">
+    <ae-column [headerText]=" 'CHECKLIST_NAME'| translate:lang " [sortable]="true " [sortKey]=" 'Name' ">
+      <ae-template [type]=" 'header' ">
+        <ng-template>
+          <span>{{'CHECKLIST_NAME'| translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]=" 'cell' " [keys]="keys ">
+        <ng-template let-context="item ">
+          <div>
+            <span>{{context.Name}}</span>
+          </div>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column *ngIf="!isExampleChecklistActive " [headerText]=" 'SITE'| translate:lang " [sortable]="true " [sortKey]=" 'SiteId' ">
+      <ae-template [type]=" 'header' ">
+        <ng-template>
+          <span>{{'SITE'| translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys ">
+        <ng-template let-context="item ">
+          <div>
+            <span>{{getSiteName(context.SiteName,context.SiteLocation)}}</span>
+          </div>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]=" 'WORKSPACE'| translate:lang " [sortable]="false " [sortKey]=" 'Id' ">
+      <ae-template [type]=" 'header' ">
+        <ng-template>
+          <span>{{'WORKSPACE'| translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]=" 'cell' " [keys]="keys ">
+        <ng-template let-context="item ">
+          <div *ngIf="context.WorkspaceTypes" class="max-width-container">
+            <ae-stamp *ngFor="let item of context.WorkspaceTypes" [text]="item.Name" [class]="'stamp--grey'"></ae-stamp>
+          </div>          
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column *ngIf="isExampleChecklistActive " [headerText]=" 'SECTOR'| translate:lang " [sortable]="false " [sortKey]=" 'Id' ">
+      <ae-template [type]=" 'header' ">
+        <ng-template>
+          <span>{{'SECTOR'| translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]=" 'cell' " [keys]="keys ">
+        <ng-template let-context="item ">
+          <div *ngIf="context.Sectors" class="max-width-container">
+            <ae-stamp *ngFor="let item of context.Sectors" [text]="item.Name" [class]="'stamp--grey'"></ae-stamp>
+          </div>         
+        </ng-template>
+      </ae-template>
+    </ae-column>
+  </ae-datatable>
+</div>

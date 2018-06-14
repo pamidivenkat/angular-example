@@ -1,0 +1,125 @@
+<div id="'workingProfiles'" class="custom-non-working">
+    <div class="section-title top0">
+        <h3 class="top-space0">{{'CUSTOM_NON_WORKING_PROFILES_TAB_TEXT' | translate:lang}}</h3>
+        <div class="pull-right">
+            <ae-anchor [id]="'add-custom-hwp'" [name]="'add-custom-hwp'" [anchorType]="'button'" [class]="'button button--inline'" [anchorClass]="1"
+                (aeClick)="addCustomWorkingProfile($event)" [title]="'BUTTONS.ADD' | translate:lang" [text]="'BUTTONS.ADD' | translate:lang"></ae-anchor>
+        </div>
+    </div>
+    <div>
+        <ae-notification [id]="'customnonworkingdaysLandingAddMsg'" [name]="'customnonworkingdaysLandingAddMsg'" [iconName]="'icon-info'"
+            [textInfo]="'CUSTOM_WORKING_PROFILES_TAB_HELP_TEXT' | translate:lang">
+        </ae-notification>
+
+        <ae-notification *ngIf="canCompanyDefaultProfileMsgShown()" [id]="'customnonworkingdaysLandingMsg'" [name]="'customnonworkingdaysLandingMsg'"
+            [iconName]="'icon-info'" [textInfo]="'COMPANY_DEFAULT_WORKING_PROFILES' | translate:lang:{profileType:nonWorkingdaysModelType,profileName:nonWorkingdaysModelName}">
+        </ae-notification>
+    </div>
+    <div class="spacer--y">
+        <ae-datatable [id]="'customnonworkingdaysgrid'" [name]="'customnonworkingdaysgrid'" [dataSource]="nonWorkingDays$" [autoGenerateColumns]="false"
+            [totalRecords]="recordsCount$" [defaultOptions]="nonWorkingDaysDataTableOptions$ | async" (pageChanged)="onPageChange($event)"
+            (onSort)="onSort($event)" [loading]="!(loading$ | async)" [actions]="actions" [rowSelector]="isDefaultProfile">
+            <ae-column [headerText]="'NAME' | translate:lang" [sortable]="true" [sortKey]="'Name'">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span>{{'NAME' | translate:lang }}</span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+                        <span>{{ context.Name }} </span>
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+
+            <ae-column [headerText]="'DESCRIPTION' | translate:lang" [sortable]="true" [sortKey]="'Description'">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span>{{'DESCRIPTION' | translate:lang }}</span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+                        <span>{{ context.Description }} </span>
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+
+            <ae-column [headerText]="'COUNTRY' | translate:lang" [sortable]="true" [sortKey]="'CountryName'">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span>{{'COUNTRY' | translate:lang }}</span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+                        <span>{{ context.CountryName }} </span>
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+        </ae-datatable>
+    </div>
+</div>
+
+
+
+<div class="copy-slidout">
+    <ae-slideout [id]="'customNonWorkingdaysCopySlideout'" [name]="'customNonWorkingdaysCopySlideout'" [modelState]="getCustomNonWorkingdaysCopySlideoutState()"
+        [class.slide--animate]="showCustomNonWorkingDayCopy">
+        <ng-container *ngIf="showCustomNonWorkingDayCopy">
+            <nonworkingdays-copy [id]="'customNonWorkingdaysCopy'" [name]="'customNonWorkingdaysCopy'"
+                [sourceNonWorkingdaysModel]="selectedNonWorkingDayProfile" [operationMode]="customNonWorkingDayOperationMode"
+                (aeOnClose)="closeCustomNonWorkingDayCopy($event)" (aeOnCopy)="onCustomProfileCopy($event)">
+            </nonworkingdays-copy>
+        </ng-container>
+    </ae-slideout>
+
+</div>
+
+
+<div class="nonworkingdays-remove">
+
+    <ae-modal-dialog *ngIf="showCustomNonWorkingDayRemove" [visible]="showCustomNonWorkingDayRemove" (cancel)="removeConfirmModalClosed('no')"
+        [closable]="true" [id]="'removeCustomNonworkingday'" [name]="'removeCustomNonworkingday'">
+        <div class="modal-dialog-header">
+            <h3>{{ 'NON_WORKING_DAYS_IS_REMOVE_TITLE' | translate:lang }}</h3>
+        </div>
+        <div class="modal-dialog-body">
+            <p>{{'NON_WORKING_DAYS_IS_REMOVE_MSG' | translate: lang:{profileName: nonWorkingDayProfileName} }}</p>
+        </div>
+        <div class="modal-dialog-footer">
+            <ae-button [text]="'NON_WORKING_DAYS_IS_REMOVE_MSG_NO_BUTTON' | translate:lang" [type]="'button'" [id]="'deleteConfirmNo'"
+                [name]="'deleteConfirmNo'" (aeClick)="removeConfirmModalClosed('no')"></ae-button>
+            <ae-button [class]="lightClass" [text]="'NON_WORKING_DAYS_IS_REMOVE_MSG_YES_BUTTON' | translate:lang" [type]="'button'" [id]="'deleteConfirmYes'"
+                [name]="'deleteConfirmYes'" (aeClick)="removeConfirmModalClosed('yes')"></ae-button>
+        </div>
+    </ae-modal-dialog>
+
+
+</div>
+
+
+<div class="nonworkingdays-view">
+    <ae-slideout [id]="'customNonWorkingdaysViewSlideout'" [name]="'customNonWorkingdaysViewSlideout'" [modelState]="getCustomNonWorkingdaysViewSlideoutState()"
+        [class.slide--animate]="showCustomNonWorkingDayView">
+        <ng-container *ngIf="showCustomNonWorkingDayView">
+            <nonworkingdays-view [id]="'customNonWorkingdaysView'" [name]="'customNonWorkingdaysView'" [nonWorkingdaysModel]="selectedNonWorkingDayProfileForView"
+                (aeOnClose)="closeCustomNonWorkingDayView($event)">
+            </nonworkingdays-view>
+        </ng-container>
+    </ae-slideout>
+
+</div>
+
+
+<div class="assign-slideout">
+    <ae-slideout [id]="'customNonWorkingdaysAssignSlideout'" [name]="'customNonWorkingdaysAssignSlideout'" [modelState]="getCustomNonWorkingdaysAssignSlideoutState()"
+        [class.slide--animate]="showCustomNonWorkingDayAssign">
+        <ng-container *ngIf="showCustomNonWorkingDayAssign">
+            <nonworkingdays-assign [id]="'customNonWorkingdaysAssign'" [name]="'customNonWorkingdaysAssign'" [nonWorkingdaysModel]="selectedNonWorkingDayProfileForAssign"
+                (aeOnClose)="closeCustomNonWorkingDayAssign($event)" (aeOnAssign)="saveNonWorkingDaysProfileAssignment($event)">
+            </nonworkingdays-assign>
+        </ng-container>
+    </ae-slideout>
+
+</div>

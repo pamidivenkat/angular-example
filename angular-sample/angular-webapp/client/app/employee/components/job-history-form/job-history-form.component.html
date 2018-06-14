@@ -1,0 +1,151 @@
+<!--actual content div-->
+<div *ngIf="isFormContentLoaded" class="wrapper-for-slideout-conten">
+  <div class="so-panel__title">
+    <h3 class="grey-strip">{{_titleTextReturn() | translate:lang}}</h3>
+  </div>
+  <div class="so-panel__content">
+    <div class="information-grid">
+      <form class="form" [formGroup]="jobHistoryForm">
+        <section class="information-grid__section">
+          <div class="form__column">
+            <div class="information-grid__item">
+              <div class="information-grid__item-value column-2of3 text-muted">
+                <ae-checkbox [id]="'IsCurrentJob'" [name]="'IsCurrentJob'" [value]="IsCurrentJob" formControlName="IsCurrentJob" [checkText]="currentJobCheckboxText"
+                  class="inline-block"></ae-checkbox>
+              </div>
+            </div>
+            <div class="information-grid__item">
+              <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_JOB_HISTORY.job_title' | translate:lang}} <span class="error-text">*</span></div>
+              <div class="information-grid__item-value column-2of3 text-muted">
+                <ae-select [id]="'JobTitleId'" [name]="'JobTitleId'" [placeholder]="'PLEASE_SELECT' | translate:lang" formControlName="JobTitleId"
+                  [options]="jobTitleOptionList"></ae-select>
+              </div>
+              <span *ngIf="fieldHasRequiredError('JobTitleId')" class="form__input__error">{{'EMPLOYEE_JOB_HISTORY.job_title' | translate:lang}} {{'IS_REQUIRED' | translate:lang}}</span>
+            </div>
+            <div class="information-grid__item">
+              <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_JOB_HISTORY.department' | translate:lang}} <span class="error-text">*</span></div>
+              <div class="information-grid__item-value column-2of3 text-muted">
+                <ae-select [id]="'DepartmentId'" [name]="'DepartmentId'" [placeholder]="'PLEASE_SELECT' | translate:lang" formControlName="DepartmentId"
+                  [options]="departmentOptionList"></ae-select>
+              </div>
+              <span *ngIf="fieldHasRequiredError('DepartmentId')" class="form__input__error">{{'EMPLOYEE_JOB_HISTORY.department' | translate:lang}} {{'IS_REQUIRED' | translate:lang}}</span>
+            </div>
+            <div class="information-grid__item">
+              <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_JOB_HISTORY.location' | translate:lang}} <span class="error-text">*</span></div>
+              <div class="information-grid__item-value column-2of3 text-muted">
+                <ae-select [id]="'SiteId'" [name]="'SiteId'" [placeholder]="'PLEASE_SELECT' | translate:lang" formControlName="SiteId" [options]="siteOptionList"></ae-select>
+              </div>
+              <span *ngIf="fieldHasRequiredError('SiteId')" class="form__input__error">{{'EMPLOYEE_JOB_HISTORY.location' | translate:lang}} {{'IS_REQUIRED' | translate:lang}}</span>
+            </div>
+            <div class="information-grid__item">
+              <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_JOB_HISTORY.report_to' | translate:lang}} </div>
+              <div class="information-grid__item-value column-2of3 text-muted">
+                <ae-select [id]="'ReportTo'" [name]="'ReportTo'" [placeholder]="'PLEASE_SELECT' | translate:lang" formControlName="ReportTo"
+                  [options]="userOptionList"></ae-select>
+              </div>
+              <span *ngIf="fieldHasRequiredError('ReportTo')" class="form__input__error">{{'EMPLOYEE_JOB_HISTORY.report_to' | translate:lang}} {{'IS_REQUIRED' | translate:lang}}</span>
+            </div>
+
+            <div class="information-grid__item">
+              <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_JOB_HISTORY.start_date' | translate:lang}} <span class="error-text">*</span></div>
+              <div class="information-grid__item-value column-2of3 text-muted">
+                <ae-datetime-picker [id]="'JobStartDate'" [name]="'JobStartDate'" formControlName="JobStartDate" [readonlyInput]="false" [monthNavigator]="true"
+                  [yearNavigator]="true" yearRange="2000:2030" [showIcon]="true"></ae-datetime-picker>
+              </div>
+              <span *ngIf="fieldHasRequiredError('JobStartDate')" class="form__input__error">{{'EMPLOYEE_JOB_HISTORY.start_date' | translate:lang}} {{'IS_REQUIRED' | translate:lang}}</span>
+
+
+            </div>
+
+            <div class="information-grid__item">
+              <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_JOB_HISTORY.finish_date' | translate:lang}}  <span *ngIf="isFinishDateRequired"><span class="error-text">*</span></span></div>
+              <div class="information-grid__item-value column-2of3 text-muted">
+                <ae-datetime-picker [id]="'JobFinishDate'" [name]="'JobFinishDate'" formControlName="JobFinishDate" [readonlyInput]="false"
+                  [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030" [showIcon]="true"></ae-datetime-picker>
+              </div>
+              <span *ngIf="fieldHasRequiredError('JobFinishDate')" class="form__input__error">{{'EMPLOYEE_JOB_HISTORY.finish_date' | translate:lang}} {{'IS_REQUIRED' | translate:lang}}</span>
+              <span *ngIf=" !fieldHasRequiredError('JobFinishDate') && !fieldHasRequiredError('JobFinishDate') && fieldHasDateComparisonError()"
+                class="form__input__error">{{'EMPLOYEE_JOB_HISTORY.finish_date_error' | translate:lang}}</span>
+            </div>
+            <div class="information-grid__item">
+              <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_JOB_HISTORY.employment_status' | translate:lang}} <span class="error-text">*</span></div>
+              <div class="information-grid__item-value column-2of3 text-muted">
+                <ae-select [id]="'EmployeeStatusId'" [placeholder]="'PLEASE_SELECT' | translate:lang" [name]="'EmployeeStatusId'" formControlName="EmployeeStatusId"
+                  [options]="employmentStatusOptionList"></ae-select>
+              </div>
+              <span *ngIf="fieldHasRequiredError('EmployeeStatusId')" class="form__input__error">{{'EMPLOYEE_JOB_HISTORY.employment_status' | translate:lang}} {{'IS_REQUIRED' | translate:lang}}</span>
+            </div>
+            <div class="information-grid__item">
+              <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_JOB_HISTORY.employee_type' | translate:lang}} <span class="error-text">*</span></div>
+              <div class="information-grid__item-value column-2of3 text-muted">
+                <ae-select [id]="'EmploymentTypeId'" [placeholder]="'PLEASE_SELECT' | translate:lang" [name]="'EmploymentTypeId'" formControlName="EmploymentTypeId"
+                  [options]="employmentTypeOptionList"></ae-select>
+              </div>
+              <span *ngIf="fieldHasRequiredError('EmploymentTypeId')" class="form__input__error">{{'EMPLOYEE_JOB_HISTORY.employee_type' | translate:lang}} {{'IS_REQUIRED' | translate:lang}}</span>
+            </div>
+
+            <div class="information-grid__item" *ngIf="_isOtherJobType">
+              <div class="information-grid__item-label column-1of3"> {{'EMPLOYEE_JOB_HISTORY.other' | translate:lang}}</div>
+              <div class="information-grid__item-value column-2of3 text-muted">
+                <ae-input [id]="'OtherEmployeeType'" [name]="'OtherEmployeeType'" formControlName="OtherEmployeeType" [placeholder]="'EMPLOYEE_JOB_HISTORY.other_emp_type' | translate:lang"></ae-input>
+              </div>
+            </div>
+
+            <div class="information-grid__item">
+              <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_JOB_HISTORY.employee_group' | translate:lang}}</div>
+              <div class="information-grid__item-value column-2of3 text-muted">
+                <ae-input [id]="'EmploymentGroup'" [name]="'EmploymentGroup'" formControlName="EmploymentGroup" [placeholder]="'EMPLOYEE_JOB_HISTORY.employee_group' | translate:lang"></ae-input>
+              </div>
+            </div>
+
+            <div class="information-grid__item">
+              <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_JOB_HISTORY.workspace' | translate:lang}}</div>
+              <div class="information-grid__item-value column-2of3 text-muted">
+                <ae-select [id]="'WorkSpaceId'" [name]="'WorkSpaceId'" [placeholder]="'PLEASE_SELECT' | translate:lang" formControlName="WorkSpaceId"
+                  [options]="workSpaceTypeOptionList"></ae-select>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="form__error">
+        </div>
+
+      </form>
+    </div>
+  </div>
+  <div class="so-panel__footer">
+    <nav>
+      <ul>
+        <li><label for="soPanel" class="button button--inline-block" [id]="getChildId('AeButton',1)" (click)="onJobFormClosed($event)" [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label></li>
+        <li class="pull--right">
+          <ae-anchor [id]="getChildId('AeAnchor',1)" [name]="getChildName('AeAnchor',1)" [anchorType]="'button'" [class]="'button button--inline-block'" [title]="buttonTextReturn() | translate:lang"
+            [anchorClass]="lightClass" (aeClick)="onJobHistoryFormSubmit($event)" [text]="buttonTextReturn() | translate:lang"></ae-anchor>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
+<!--actual content div end -->
+
+<!-- loader block -->
+<div *ngIf="!isFormContentLoaded" class="loader-form">
+  <div class="so-panel__title">
+    <h3></h3>
+  </div>
+  <div class="so-panel__content">
+    <div class="loader--select"></div>
+    <div class="loader--date-input"></div>
+    <div class="loader--date-input"></div>
+    <div class="loader--input"></div>
+    <div class="loader--select"></div>
+    <div class="loader--input"></div>
+    <div class="loader--input"></div>
+    <div class="loader--checkbox"></div>
+  </div>
+  <div class="so-panel__footer">
+    <div class="button-loader"></div>
+    <div class="button-loader dark pull--right"></div>
+  </div>
+</div>
+<!-- loader block end -->

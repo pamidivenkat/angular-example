@@ -1,0 +1,14 @@
+<div id="constructionPhasePlansHeader">
+  <ae-banner [id]="getChildId('AeBanner',1)" [name]="getChildName('AeBanner',1)" [titleText]="'CONSTRUCTIONPHASEPLAN.TITLE_HEADER' | translate:lang"
+    [backgroundImage]="'/assets/images/lp-construction-phase-plans.jpg'" [bannerTheme]="aeBannerTheme">
+    <ae2-breadcrumb [id]="'breadCrumb'" [name]="'breadCrumb'" class="bredcrumb-section" [group]="bcGroup"></ae2-breadcrumb>
+    <div class="image-text banner-image-text">
+    </div>
+    <div class="icon-list banner-icon-list">
+      <ae-button [type]="'button'" [id]="'testslider'" [name]="'testslider'" class="btn" [text]="'CONSTRUCTIONPHASEPLAN.ADD_CONSTRUCTION_PHASE_PLANS' | translate:lang"
+        (aeClick)="addConstructionPhasePlans()"></ae-button>
+    </div>
+  </ae-banner>
+  <ae-notification [id]="'nonworkingdaysLandingMsg'" [name]="'nonworkingdaysLandingMsg'" [iconName]="'icon-info'" [textInfo]="'CONSTRUCTIONPHASEPLAN.CPP_NOTIFICATION_MESSAGE' | translate:lang">
+  </ae-notification>
+</div>

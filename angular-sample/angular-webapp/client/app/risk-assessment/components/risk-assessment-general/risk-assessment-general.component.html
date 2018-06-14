@@ -1,0 +1,47 @@
+<div>
+  <div>
+    <ae-notification [id]="getChildId('AeNotification')" [name]="getChildName('AeNotification')" [iconName]="'icon-info'" [textInfo]="'RA_HELP_TEXT.GENERAL' | translate:lang">
+    </ae-notification>
+  </div>
+  <ae-form [formBuilderData]="riskAssessmentFormVM" [id]="getChildId('AeForm', 1)" [name]="getChildName('AeForm', 1)" [isPrimaryTitle]="false"
+    (onFormInit)="onFormInit($event)" [displayFooter]="false" (isFormValid)="onFormValidityChange($event)">
+  </ae-form>
+  <br/>
+  <form id="risk-assessment-common-form" name="risk-assessment-common-form" class="form" [formGroup]="generalForm">
+    <section class="information-grid__section">
+      <div formArrayName="WorkspaceTypes">
+        <div class="checklist__header">
+          <h3>{{'WORKSPACES' | translate:lang}}</h3>
+        </div>
+        <div class="spacer--x grid--1-1-3 wizard-grid--1-1-3">
+          <div *ngFor="let item of workspaceTypes; let i=index" class="checklist__item">
+            <div class="switch-block" [formGroupName]="i">
+              <ae-checkbox formControlName="isSelected" [id]="'workspace'+i" [name]="'workspace'+i" [checkText]="item.Name" [imgVisible]="true"
+                [src]="imageLink(item.PictureId)" [checked]="item.isSelected"></ae-checkbox>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div *ngIf="IsExampleRiskAssessment">
+        <div class="checklist__header">
+          <h3>{{'SECTORS' | translate:lang}}</h3>
+          <div class="right-sec">
+            <ae-checkbox formControlName="SelectALL" [id]="'SelectALL'" [name]="'SelectALL'" [checkText]="'SELECT_ALL' | translate:lang"></ae-checkbox>
+          </div>
+        </div>
+
+        <div class="spacer--x grid--1-1-3 wizard-grid--1-1-3" formArrayName="Sectors">
+          <div *ngFor="let sitem of _sectors; let j=index" class="checklist__item">
+            <div class="switch-block" [formGroupName]="j">
+              <ae-checkbox formControlName="isSelected" [id]="'sector'+j" [name]="'sector'+j" [checkText]="sitem.Name" [imgVisible]="true"
+                [src]="imageLink(sitem.PictureId)" [checked]="sitem.isSelected"></ae-checkbox>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </form>
+</div>

@@ -1,0 +1,69 @@
+<div class="bottom-30">
+    <ae-notification [id]="getChildId('AeNotification', 1)" [name]="getChildName('AeNotification', 1)" [iconName]="'icon-info'" [textInfo]="'RA_HELP_TEXT.FURTHER_CONTROLS' | translate:lang">
+    </ae-notification>
+</div>
+<form [formGroup]="additionalControlsForm" [id]="getChildId('additionalControlsForm', 1)" [name]="getChildName('additionalControlsForm', 1)">
+    <div class="exposure-tabs">
+        <ae-tab [id]="getChildId('AeTab', 1)" [name]="getChildName('AeTab', 1)" [standard]="true">
+            <ae-tab-item [id]="getChildId('AeTabItem',1)" [name]="getChildName('AeTabItem',1)" [header]="'FURTHER_CONTROL_TABS.FIRE_FIRSTAID' | translate:lang" [title]="'RA_HELP_TEXT.FIRE_AND_FIRST_AID'| translate:lang">
+                <ae-template [type]="'content'">
+                    <ng-template>
+                        <div class="icon-picker top-15">
+                            <div class="icon-picker__grid-item icon-picker__item" *ngFor="let item of fireANDFirstAidList" [title]="item.Description | limitTo:150">
+                                <img class="icon-picker__image" [src]="getPictureUrl(item.PictureId)" [alt]="item.Name" [id]="getChildId('Img', item.Id)" [name]="getChildName('Img', item.Id)">
+                                <span class="icon-picker__text">{{item.Name}}</span>
+                                <span class="icon-picker__checkbox"><ae-checkbox [id]="getChildId('AeCheckBox', item.Id)" [name]="getChildName('AeCheckBox', item.Id)" class="inline-block" [checked]="getSelectStatus(item)" [disabled]="false" [textVisible]="false" (onAeChange)="onSelectCheckbox($event, item)"></ae-checkbox></span>
+                            </div>
+                        </div>
+                        <div>
+                            <label>{{'ADDITIONAL_NOTES'| translate:lang}}
+              <ae-textarea [id]="getChildId('AeTextarea', 1)" [name]="getChildName('AeTextarea', 1)" formControlName="fireAndFirstAidTextArea"
+                [placeholder]="'ADDITIONAL_NOTES'| translate:lang"></ae-textarea>
+              </label>
+                        </div>
+                    </ng-template>
+                </ae-template>
+            </ae-tab-item>
+            <ae-tab-item [id]="getChildId('AeTabItem', 2)" [name]="getChildName('AeTabItem', 2)" [header]="'FURTHER_CONTROL_TABS.STORAGE_DISPOSAL_SPILLAGE' | translate:lang" [title]="'RA_HELP_TEXT.STORE_DISPOSAL_SPILLAGE'| translate:lang">
+                <ae-template [type]="'content'">
+                    <ng-template>
+                        <div class="icon-picker top-15">
+                            <div class="icon-picker__grid-item icon-picker__item" *ngFor="let item of storageDisposalANDSpillogeList" [title]="item.Description | limitTo:150">
+                                <img class="icon-picker__image" [src]="getPictureUrl(item.PictureId)" [alt]="item.Name" [id]="getChildId('Img', item.Id)" [name]="getChildName('Img', item.Id)">
+                                <span class="icon-picker__text">{{item.Name}}</span>
+                                <span class="icon-picker__checkbox"><ae-checkbox [id]="getChildId('AeCheckBox', item.Id)" [name]="getChildName('AeCheckBox', item.Id)" class="inline-block" [checked]="getSelectStatus(item)"
+                  [disabled]="false" [textVisible]="false" (onAeChange)="onSelectCheckbox($event, item)"></ae-checkbox></span>
+                            </div>
+                        </div>
+                        <div>
+                            <label>{{'ADDITIONAL_NOTES'| translate:lang}}
+              <ae-textarea [id]="getChildId('AeTextarea', 2)" [name]="getChildName('AeTextarea', 2)" formControlName="storageDisposalANDSpillogeText"
+                [placeholder]="'ADDITIONAL_NOTES'| translate:lang"></ae-textarea>
+              </label>
+                        </div>
+                    </ng-template>
+                </ae-template>
+            </ae-tab-item>
+            <ae-tab-item [id]="getChildId('AeTabItem', 3)" [name]="getChildName('AeTabItem', 3)" [header]="'FURTHER_CONTROL_TABS.PERSONAL_PROTECTIVE_EQUIPMENT' | translate:lang" [title]="'RA_HELP_TEXT.PPE'| translate:lang">
+                <ae-template [type]="'content'">
+                    <ng-template>
+                        <div class="icon-picker top-15">
+                            <div class="icon-picker__grid-item icon-picker__item" *ngFor="let item of personalProtectiveEquipmentList">
+                                <img class="icon-picker__image" [src]="getPictureUrl(item.PictureId)" [alt]="item.Name" [id]="getChildId('Img', item.Id)" [name]="getChildName('Img', item.Id)">
+                                <span class="icon-picker__text">{{item.Name}}</span>
+                                <span class="icon-picker__checkbox"><ae-checkbox [id]="getChildId('AeCheckBox', item.Id)" [name]="getChildName('AeCheckBox', item.Id)" class="inline-block" [checked]="getSelectStatus(item)"
+                  [disabled]="false" [textVisible]="false" (onAeChange)="onSelectCheckbox($event, item)"></ae-checkbox></span>
+                            </div>
+                        </div>
+                        <div>
+                            <label>{{'ADDITIONAL_NOTES'| translate:lang}}
+              <ae-textarea [id]="getChildId('AeTextarea', 3)" [name]="getChildName('AeTextarea', 3)" formControlName="personalProtectiveEquipmentText"
+                [placeholder]="'ADDITIONAL_NOTES'| translate:lang"></ae-textarea>
+              </label>
+                        </div>
+                    </ng-template>
+                </ae-template>
+            </ae-tab-item>
+        </ae-tab>
+    </div>
+</form>

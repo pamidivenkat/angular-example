@@ -1,0 +1,154 @@
+<div class="information-grid">
+  <section class="information-grid__section">
+
+    <div class="information-grid__item">
+      <div class="information-grid__item-label column-1of3">
+        <span> {{'NON_WORKING_DAYS_PROFILE_NAME' | translate:lang}} </span>
+      </div>
+      <div class="information-grid__item-value column-2of3">{{nonWorkingDaysModelName}}</div>
+    </div>
+    <div class="information-grid__item">
+      <div class="information-grid__item-label column-1of3">{{'DESCRIPTION' | translate:lang}}</div>
+      <div class="information-grid__item-value column-2of3" [innerHTML]="nonWorkingDaysModelDescription"></div>
+    </div>
+    <div class="information-grid__item">
+      <div class="information-grid__item-label column-1of3">{{'COUNTRY' | translate:lang}}</div>
+      <div class="information-grid__item-value column-2of3 alert">{{nonWorkingDaysModelCountryName}}</div>
+    </div>
+  </section>
+  <section class="information-grid__section">
+    <h3>{{'NON_WORKING_DAYS_PROFILE_DAYS_OF_WEEK' | translate:lang}}</h3>
+    <div class="information-grid__item">
+      <table class="table-history">
+        <thead>
+          <tr>
+            <th>{{'DAYOFWEEK.MONDAY' | translate:lang}}</th>
+            <th>{{'DAYOFWEEK.TUESDAY' | translate:lang}}</th>
+            <th>{{'DAYOFWEEK.WEDNESDAY' | translate:lang}}</th>
+            <th>{{'DAYOFWEEK.THURSDAY' | translate:lang}}</th>
+            <th>{{'DAYOFWEEK.FRIDAY' | translate:lang}}</th>
+            <th>{{'DAYOFWEEK.SATURDAY' | translate:lang}}</th>
+            <th>{{'DAYOFWEEK.SUNDAY' | translate:lang}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td [attr.data-title]="'DAYOFWEEK.MONDAY' | translate:lang"> <span *ngIf="isWorkingDay('Monday')">{{ getStartTime('Monday') }} - {{  getEndTime('Monday') }}</span>
+              <span *ngIf="!isWorkingDay('Monday')">{{'NON_WORKING_DAYS_PROFILE_NOT_WORKING_LBL' | translate:lang}}</span>
+            </td>
+            <td [attr.data-title]="'DAYOFWEEK.TUESDAY' | translate:lang"> <span *ngIf="isWorkingDay('Tuesday')">{{ getStartTime('Tuesday') }} - {{  getEndTime('Tuesday') }}</span>
+              <span *ngIf="!isWorkingDay('Tuesday')">{{'NON_WORKING_DAYS_PROFILE_NOT_WORKING_LBL' | translate:lang}}</span>
+            </td>
+            <td [attr.data-title]="'DAYOFWEEK.WEDNESDAY' | translate:lang"> <span *ngIf="isWorkingDay('Wednesday')">{{ getStartTime('Wednesday') }} - {{  getEndTime('Wednesday') }}</span>
+              <span *ngIf="!isWorkingDay('Wednesday')">{{'NON_WORKING_DAYS_PROFILE_NOT_WORKING_LBL' | translate:lang}}</span>
+            </td>
+            <td [attr.data-title]="'DAYOFWEEK.THURSDAY' | translate:lang"> <span *ngIf="isWorkingDay('Thursday')">{{ getStartTime('Thursday') }} - {{  getEndTime('Thursday') }}</span>
+              <span *ngIf="!isWorkingDay('Thursday')">{{'NON_WORKING_DAYS_PROFILE_NOT_WORKING_LBL' | translate:lang}}</span>
+            </td>
+            <td [attr.data-title]="'DAYOFWEEK.FRIDAY' | translate:lang"> <span *ngIf="isWorkingDay('Friday')">{{ getStartTime('Friday') }} - {{  getEndTime('Friday') }}</span>
+              <span *ngIf="!isWorkingDay('Friday')">{{'NON_WORKING_DAYS_PROFILE_NOT_WORKING_LBL' | translate:lang}}</span>
+            </td>
+            <td [attr.data-title]="'DAYOFWEEK.SATURDAY' | translate:lang"> <span *ngIf="isWorkingDay('Saturday')">{{ getStartTime('Saturday') }} - {{  getEndTime('Saturday') }}</span>
+              <span *ngIf="!isWorkingDay('Saturday')">{{'NON_WORKING_DAYS_PROFILE_NOT_WORKING_LBL' | translate:lang}}</span>
+            </td>
+            <td [attr.data-title]="'DAYOFWEEK.SUNDAY' | translate:lang"> <span *ngIf="isWorkingDay('Sunday')">{{ getStartTime('Sunday') }} - {{  getEndTime('Sunday') }}</span>
+              <span *ngIf="!isWorkingDay('Sunday')">{{'NON_WORKING_DAYS_PROFILE_NOT_WORKING_LBL' | translate:lang}}</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <section class="information-grid__section">
+    <h3>{{'NON_WORKING_DAYS_PROFILE_BANK_HOLIDAYS' | translate:lang}}</h3>
+    <div class="information-grid__item">
+      <div class="information-grid__item-label column-1of3">{{'NON_WORKING_DAYS_PROFILE_BANK_HOLIDAYS_MSG' | translate:lang}}</div>
+      <div class="information-grid__item-value column-2of3">
+        <label>{{'YEAR' | translate:lang}}
+        <ae-select [id]="'ddlYears'" [name]="'ddlYears'" [placeholder]="'ALL' | translate:lang" [options]="years" [value]="currentYear"
+          (aeSelectChange)="onYearChange($event)"></ae-select>
+          </label>
+      </div>
+      <div class="table-data bank-holidays">
+
+        <ae-datatable [id]="'yearsList'" [name]="'yearsList'" [dataSource]="bankHolidays$" [autoGenerateColumns]="false" [totalRecords]="bankHolidaysCount$"
+          [defaultOptions]="nonWorkingDaysDataTableOptions">
+          <ae-column [headerText]="'DATE' | translate:lang" [sortable]="false">
+            <ae-template [type]="'header'">
+              <ng-template>
+                <span>{{'DATE' | translate:lang }}</span>
+              </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+              <ng-template let-context="item">
+                <span>{{ context.HolidayDate | localeDate:defaultLocale:'shortDate' }} </span>
+              </ng-template>
+            </ae-template>
+          </ae-column>
+
+          <ae-column [headerText]="'DAY_OF_WEEK' | translate:lang" [sortable]="false">
+            <ae-template [type]="'header'">
+              <ng-template>
+                <span>{{'DAY_OF_WEEK' | translate:lang }}</span>
+              </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+              <ng-template let-context="item">
+                <span>{{ getTranslatedDayOfTheWeek(context.DayOfTheWeek) }} </span>
+              </ng-template>
+            </ae-template>
+          </ae-column>
+
+          <ae-column [headerText]="'NAME' | translate:lang" [sortable]="false">
+            <ae-template [type]="'header'">
+              <ng-template>
+                <span>{{'NAME' | translate:lang }}</span>
+              </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+              <ng-template let-context="item">
+                <span>{{ context.Name }} </span>
+              </ng-template>
+            </ae-template>
+          </ae-column>
+
+
+        </ae-datatable>
+
+      </div>
+    </div>
+
+  </section>
+
+  <section class="information-grid__section non-workingdays-profiles" *ngIf="showAssignedToSection">
+    <h3>{{'NON_WORKING_DAYS_EMPLOYEES_ASSIGNED' | translate:lang}}</h3>
+    <div class="information-grid__item">
+      <div class="information-grid__item-label column-1of3">{{'NON_WORKING_DAYS_ASSIGNED_TO' | translate:lang}}</div>
+      <div class="information-grid__item-value column-2of3"> {{ getAssignedTo() }} </div>
+    </div>
+    <div class="information-grid__item" *ngIf="isDefaultShown()">
+      <div class="information-grid__item-label column-1of3">{{'NON_WORKING_DAYS_IS_DEFAULT' | translate:lang}}:{{getIsDefaultText()}}
+      </div>
+    </div>
+    <div class="information-grid__item" *ngIf="canAssignedToItemsShown()">
+      <div class="information-grid__item-label column-1of3">{{'NON_WORKING_DAYS_ASSIGNED' | translate:lang}} {{ getAssignedTo() }}(s)
+      </div>
+       <div class="information-grid__item-value column-2of3" *ngIf="hasAnyAssignedItems()"> 
+        <ae-list [id]="'assignedToItems'" [name]="'assignedToItems'" [items]="assignedItems" [isClickable]="false" [requireCircle]="false"></ae-list>
+      </div>
+      <div class="information-grid__item-value column-2of3" *ngIf="!hasAnyAssignedItems()">  
+       <span>{{'NONE' | translate:lang}}</span>
+      </div>
+    </div>
+    <div class="information-grid__item" *ngIf="canExcludedItemsShown()">
+      <div class="information-grid__item-label column-1of3">{{'NON_WORKING_DAYS_EXCL_EMPLOYEES' | translate:lang}}
+      </div> 
+      <div class="information-grid__item-value column-2of3" *ngIf="hasAnyExclEmployees()">
+        <ae-list [id]="'excludedEmployees'" [name]="'excludedEmployees'" [items]="excludedEmployees" [isClickable]="false" [requireCircle]="false"></ae-list>
+      </div>
+      <div class="information-grid__item-value column-2of3" *ngIf="!hasAnyExclEmployees()">  
+       <span>{{'NONE' | translate:lang}}</span>
+      </div>
+    </div>
+  </section>
+</div>

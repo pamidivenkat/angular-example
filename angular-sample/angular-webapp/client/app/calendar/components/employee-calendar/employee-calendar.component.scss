@@ -1,0 +1,22 @@
+.title-block {
+  // max-width: 960px;
+  margin: 15px 30px;
+  overflow: hidden;
+  h3 {
+    float: left;
+    margin: 15px 0;
+  }
+  .employee-showpending {
+    text-align: left;
+    float: right;
+  }
+  .toggle-switch {
+    span {
+      margin-right: 10px;
+    }
+  }
+  .my-calendar {
+    float: right;
+    margin: 10px 0 0 10px;
+  }
+}

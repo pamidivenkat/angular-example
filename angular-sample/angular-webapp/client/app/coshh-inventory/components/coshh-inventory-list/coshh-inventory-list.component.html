@@ -1,0 +1,54 @@
+<div class="table spacer">
+    <ae-datatable [id]="'coshhInventoryTable'" [name]="'coshhInventoryTable'" [dataSource]="coshhInventoryList$" [actions]="actions" [autoGenerateColumns]="false" [totalRecords]="totalRecords$" [defaultOptions]="dataTableOptions$ | async" (pageChanged)="onPageChange($event)"
+        (onSort)="onSort($event)" [loading]="coshhInventoryLoading$ | async">
+        <ae-column [headerText]="'SUBSTANCE' | translate:lang" [sortable]="true" [sortKey]="'Substance'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>{{'SUBSTANCE' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <span>{{context.Substance}}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+        <ae-column [headerText]="'REFERENCENUMBER' | translate:lang" [sortable]="true" [sortKey]="'ReferenceNumber'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>{{'REFERENCENUMBER' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <span>{{context.ReferenceNumber}}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+        <ae-column [headerText]="'MANUFACTURER' | translate:lang" [sortable]="true" [sortKey]="'Manufacturer'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>{{'MANUFACTURER' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <span>{{context.Manufacturer}}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+        <ae-column [headerText]="'QUANTITY' | translate:lang" [sortable]="true" [sortKey]="'Quantity'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>{{'QUANTITY' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <span>{{context.Quantity}}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+    </ae-datatable>
+
+</div>

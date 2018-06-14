@@ -1,0 +1,30 @@
+<div id="plantAndEquipmentList" class="spacer">
+    <ae-datatable [id]="getChildId('AeDatatable',1)" [name]="getChildName('AeDatatable',1)" [actions]="actions" [dataSource]="plantEquipmentList$" [totalRecords]="recordsCount$" [autoGenerateColumns]="false" [defaultOptions]="dataTableOptions$ | async"
+        (pageChanged)="onGridPageChange($event)" (onSort)="onGridSort($event)" [loading]="plantEquipmentListLoaded$ | async">
+
+        <ae-column [headerText]="'PLANT_AND_EQUIPMENTS.ITEM' | translate:lang" [sortable]="true" [sortKey]="'Name'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span [title]="'PLANT_AND_EQUIPMENTS.ITEM' | translate:lang">{{'PLANT_AND_EQUIPMENTS.ITEM' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    {{context.Name}}
+                </ng-template>
+            </ae-template>
+        </ae-column>
+        <ae-column [headerText]="'PLANT_AND_EQUIPMENTS.ASSET_REFERENCE_NO' | translate:lang" [sortable]="true" [sortKey]="'AssetRefNo'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span [title]="'PLANT_AND_EQUIPMENTS.ASSET_REFERENCE_NO' | translate:lang">{{'PLANT_AND_EQUIPMENTS.ASSET_REFERENCE_NO' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    {{context.AssetRefNo}}
+                </ng-template>
+            </ae-template>
+        </ae-column>
+    </ae-datatable>
+</div>

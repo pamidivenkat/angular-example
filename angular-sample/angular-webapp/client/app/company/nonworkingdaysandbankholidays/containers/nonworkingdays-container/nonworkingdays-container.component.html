@@ -1,0 +1,53 @@
+<div [id]="'nonworkingdaysbankHolidaysSection'">
+
+  <ae-banner [id]="'banner'" [name]="'banner'" [titleText]="'NON_WORKING_DAYS_BANK_HOLIDAYS' | translate:lang" [backgroundImage]="'/assets/images/lp-employees.jpg'">
+    <ae2-breadcrumb [id]="'breadCrumb'" [name]="'breadCrumb'" [group]="bcGroup" class="bredcrumb-section"></ae2-breadcrumb>
+  </ae-banner>
+  <ae-notification [id]="'nonworkingdaysLandingMsg'" [name]="'nonworkingdaysLandingMsg'" [iconName]="'icon-info'" [textInfo]="'NON_WORKING_DAYS_LANDING_MESSAGE' | translate:lang">
+  </ae-notification>
+  <div class="spacer">
+
+    <form [formGroup]="nonWorkingDaysFilterForm" [id]="'nonWorkingDaysFilterForm'" [name]="'nonWorkingDaysFilterForm'">
+      <div class="filter-bar__filters">
+
+        <div class="filter-bar__filter">
+          <ae-select [id]="'ddlCountry'" [name]="'ddlCountry'" [placeholder]="'ALL' | translate:lang" [options]="countries$ | async"
+            formControlName="country" (aeSelectChange)="onCountryChange($event)"></ae-select>
+        </div>
+        <div class="filter-bar__filter">
+          <ae-select [id]="'ddlApplicableTo'" [name]="'ddlApplicableTo'" [placeholder]="'APPLICABLE_ANY' | translate:lang" [options]="applicableTo$ | async"
+            formControlName="applicableTo" (aeSelectChange)="onApplicableToChange($event)"></ae-select>
+        </div>
+        <div class="filter-bar__filter three no-labeltext" *ngIf="canEmployeeShown() || showElement()">
+          <ae-select *ngIf="showElement()" [id]="'ddldepartment'" [name]="'ddldepartment'" [placeholder]="'ALL' | translate:lang" [options]="applicableToItemsData$ | async"
+            formControlName="applicableToItems" (aeSelectChange)="onSelectorChange($event)"></ae-select>
+
+          <ae-autocomplete *ngIf="canEmployeeShown()" formControlName="employee" [id]="'autoEmployee'" [name]="'autoEmployee'" [placeholder]="'Select employee'"
+            [multiselect]="'false'" [items]="employees$ | async" [automatch]="false" (aeOnComplete)="searchEmployees($event)"
+            [dstype]="remoteDataSourceType" [field]="'Text'" [debounce]="500" [valuefield]="'Value'" (aeOnSelect)="onSelectEmployee($event)"></ae-autocomplete>
+        </div>
+
+      </div>
+    </form>
+
+  </div>
+  <div>
+    <ae-tabstrip [id]="'nonworkingdayprofiles'" [name]="'nonworkingdayprofiles'" [standardWithIcon]="true">
+      <ae-tabstrip-item [id]="'standardnonworkingdayprofilesItem'" [name]="'standardnonworkingdayprofilesItem'" [header]="'STANDARD_NON_WORKING_PROFILES_TAB_TEXT' | translate:lang"
+        [navigateUrl]="getStandardWorkingProfilesUrl()">
+
+      </ae-tabstrip-item>
+
+      <ae-tabstrip-item [id]="'standardnonworkingdayprofilesItem'" [name]="'standardnonworkingdayprofilesItem'" [header]="'CUSTOM_NON_WORKING_PROFILES_TAB_TEXT' | translate:lang"
+        [navigateUrl]="getCustomWorkingProfilesUrl()">
+
+      </ae-tabstrip-item>
+
+    </ae-tabstrip>
+  </div>
+  <div id="contentArea" class="tab-content spacer">
+    <router-outlet>
+
+    </router-outlet>
+  </div>
+</div>

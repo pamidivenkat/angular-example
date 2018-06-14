@@ -1,0 +1,8 @@
+<div>
+  <div class="so-panel__title" [id]="id">
+    <h3>{{'COPY_CHECKLIST' | translate:lang}}</h3>
+  </div>
+  <ae-form [formBuilderData]="checkListCopyFormVM" [id]="getChildId('AeForm', 1)" [name]="getChildName('AeForm', 1)" [isPrimaryTitle]="false"
+    (onSubmit)="onSubmit($event)" (onCancel)="onCancel($event)" (onFormInit)="onFormInit($event)" [footerBtnText]="formButtonNames()">
+  </ae-form>
+</div>

@@ -1,0 +1,12 @@
+.safty-precautions{
+    .tabs-nav__item{
+        border-radius: 9px;
+        margin-right: 3px;
+        border: 1px solid;
+        &:last-of-type{
+            border-right: 1px solid;
+            margin-right: 0px;
+        }
+    }
+    .notification-bar.spacer{padding: 0px 0px 15px;}
+}

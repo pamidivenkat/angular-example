@@ -1,0 +1,219 @@
+<div class="so-panel__title">
+  <h3 class="grey-strip" *ngIf="!isOngoingEdit&&!isApproveMode()&&!IsOneStepProcess">Request {{getMyAbsenceTypePlural()}}</h3>
+  <h3 class="grey-strip" *ngIf="!isOngoingEdit&&!isApproveMode()&&IsOneStepProcess">Book {{getTitleForOneStepProcess()}} on behalf of <span *ngIf="IsOneStepProcess">({{fullName}})</span></h3>
+  <h3 class="grey-strip" *ngIf="isOngoingEdit&&!isApproveMode()">Back from sick leave</h3>
+  <h3 class="grey-strip" *ngIf="isApproveMode()">Approve {{getMyAbsenceTypeText()}} ({{fullName}})</h3>
+</div>
+<div class="so-panel__content" *ngIf="myAbsenceForm">
+
+  <form id="myabsence-form" [formGroup]="myAbsenceForm">
+    <ng-container *ngIf="!isOngoingEdit">
+      <section *ngIf="isAbsenceMode()">
+        <div class="form__input">
+          <label>Absence type <span class="alert">*</span>
+              <ae-select [id]="getChildId('AeSelect',21)" [title]="'Absence type'" [name]="getChildName('AeSelect',21)" [placeholder]="'Please select'"
+                [options]="absenceTypesImm" formControlName="AbsenceTypeId" (aeSelectChange)="onAbsenceTypeChange($event)" [hasError]="isFieldInvalid('AbsenceTypeId')"></ae-select>
+            </label>
+          <span *ngFor="let message of hasError('AbsenceTypeId'); let i = index" class="form__input__error" id="AbsenceTypeId_field_error_{{i}}">{{message}}</span>
+        </div>
+        <div class="form__input">
+          <label>Sub type
+              <ae-select [id]="getChildId('AeSelect',22)" [title]="'Sub type'" [name]="getChildName('AeSelect',22)" [placeholder]="'Please select'"
+                [options]="absenceSubtypes" formControlName="AbsenceSubtypeId" (aeSelectChange)="onAbsenceSubtypeChange($event)"></ae-select>
+            </label>
+        </div>
+      </section>
+      <div class="form__input" *ngIf="!isEditMode()">
+        <ae-radio-group [id]="getChildId('AeRadioGroup',1)" [name]="getChildName('AeRadioGroup',1)" [options]="unitTypes" formControlName="UnitType"
+          (aeChange)="changeUnitType($event)"></ae-radio-group>
+      </div>
+
+      <h5 class="sub__title" *ngIf="isHolidayMode()">Request holiday ({{getUnitTypeText()}})</h5>
+      <div class="form-container">
+        <div class="form__input">
+          <label>Start date <span class="alert">*</span></label>
+          <ae-datetime-picker formControlName="StartDate" [id]="getChildId('AeDatetimePicker',8)" [name]="getChildName('AeDatetimePicker',8)"
+            [monthNavigator]="true" [title]="'Start date'" [yearNavigator]="true" yearRange="1910:2030" [showIcon]="true" (aeSelect)="_onStartDateSelect($event)"
+            (aeBlur)="_isStartDateValid($event)"></ae-datetime-picker>
+          <div *ngFor="let message of hasError('StartDate'); let i = index" class="form__input__error" id="StartDate_field_error_{{i}}">{{message}}</div>
+        </div>
+
+        <div class="form__input" *ngIf="showOrHideEndDate()">
+          <label>End date <span class="alert">*</span></label>
+          <ae-datetime-picker formControlName="EndDate" [id]="getChildId('AeDatetimePicker',9)" [name]="getChildName('AeDatetimePicker',9)"
+            [monthNavigator]="true" [title]="'End date'" [yearNavigator]="true" yearRange="1910:2030" [showIcon]="true" (aeSelect)="onEndDateSelect($event)"
+            (aeBlur)="isEndDateValid($event)"></ae-datetime-picker>
+          <div *ngFor="let message of hasError('EndDate'); let i = index" class="form__input__error" id="EndDate_field_error_{{i}}">{{message}}</div>
+        </div>
+        <div class="form__input" *ngIf="_isSickLeave()">
+          <ae-checkbox formControlName="Isongoing" [id]="getChildId('AeCheckbox',20)" [name]="getChildName('AeCheckbox',20)" [checkText]="'Ongoing'"></ae-checkbox>
+        </div>
+        <div class="form__input">
+          <ae-message *ngIf="hasValidationError()" [id]="getChildId('AeMessage',1)" [name]="getChildName('AeMessage',1)" [text]="getValidationMessage()"
+            [show-close-icon]="false" [icon]="'icon-alert-triangle'" [messageType]="messageType"></ae-message>
+        </div>
+        <section *ngIf="isDayMode() && !myAbsenceVM.Isongoing">
+          <div class="form__input">
+            <label>Duration (In days)
+              <ae-input formControlName="Duration" [id]="getChildId('AeInput',10)" [name]="getChildName('AeInput',10)" [title]="'Duration'"
+                [cssClass]="'input'"></ae-input>
+            </label>
+          </div>
+
+          <div class="form__input">
+            <label>No of days <span class="alert">*</span>
+              <ae-icon [id]="getChildId('AeIcon',13)" [name]="getChildName('AeIcon',13)" [icon]="'icon-alert-circle-question'" [title]="getNoOfUnitsTitle()"></ae-icon>
+            </label>
+            <div class="form__input" [class.days-block]="canShowAMPM()">
+              <div class="no-days">
+                <ae-input [type]="_numberType" [step]="0.5" [placeholder]="'No of days'" [min]="0" formControlName="NoOfUnits" [id]="getChildId('AeInput',11)"
+                  [name]="getChildName('AeInput',11)" [title]="'No of days'" [cssClass]="'input'" [hasError]="isFieldInvalid('NoOfUnits')"
+                  (aeChange)="onUnitsChange($event)"></ae-input>
+              </div>
+              <div class="btn-group am-pm">
+                <label class="btn" [class.active]="myAbsenceVM.HalfDayType == 1">
+                      <input type="radio" name="HalfDayType" formControlName="HalfDayType" id="HalfDayType" value="1" hidden>AM
+                  </label>
+                <label class="btn" [class.active]="myAbsenceVM.HalfDayType == 2">
+                      <input type="radio" name="HalfDayType" formControlName="HalfDayType" id="HalfDayType" value="2" hidden>PM
+                  </label>
+              </div>
+
+            </div>
+            <div *ngFor="let message of hasError('NoOfUnits'); let i = index" class="form__input__error" id="NoOfUnits_field_error_{{i}}">{{message}}</div>
+          </div>
+        </section>
+        <section *ngIf="isHourMode()">
+          <div class="scrollableContainer pushbottom-15" *ngIf="canShowWorkingDays()">
+            <div class="scrollingArea" [class.five-column]="canShowLunchDurationCol()">
+              <table class="table table-bordered scrollable" formArrayName="MyAbsenceDetails">
+                <thead>
+                  <tr>
+                    <th>
+                      <div class="fixedCol">Date</div>
+                    </th>
+                    <th>
+                      <div class="fixedCol">From hour</div>
+                    </th>
+                    <th>
+                      <div class="fixedCol">To hour</div>
+                    </th>
+                    <th *ngIf="canShowLunchDurationCol()">
+                      <div class="fixedCol">
+                        <ae-icon [id]="getChildId('AeIcon',33)" [name]="getChildName('AeIcon',33)" [icon]="'icon-info'" [title]="'Managers can deduct lunch duration from holidays and absences that are requested in hours.'"></ae-icon> {{getLunchDurationColText()}}</div>
+                    </th>
+                    <th>
+                      <div class="fixedCol">Hours</div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container *ngFor="let item of myAbsenceVM.MyAbsenceDetails; let i = index">
+                    <tr [formGroupName]="i">
+                      <td> {{item.Date | date:'dd/MM/y'}} </td>
+                      <td>
+                        <ae-time-selector (aeChange)="changeHour($event)" [min]="item.StartTimeHours" [max]="item.ToHour" formControlName="FromHour"
+                          [inputReadOnly]="'false'" [defaultValue]="item.StartTimeHours"  [minLength]="'2'"></ae-time-selector>
+                      </td>
+                      <td>
+                        <ae-time-selector (aeChange)="changeHour($event)" [min]="item.FromHour" [max]="item.EndTimeHours" formControlName="ToHour"
+                          [inputReadOnly]="'false'" [defaultValue]="item.EndTimeHours" [minLength]="'2'"></ae-time-selector>
+                      </td>
+                      <td *ngIf="canShowLunchDurationCol()">
+                        <div *ngIf="!showExcludedLunchDuration()">
+                          <ae-switch [id]="getChildId('AeSwitch',i)" [name]="getChildName('AeSwitch',i)" [checked]="myAbsenceVM.MyAbsenceDetails[i].CanExcludeLunchDuration"
+                            (aeChange)="toggleLunchDuration($event)" formControlName="CanExcludeLunchDuration" [switchText]="' '"
+                            [class]="_switchTextRight"></ae-switch>
+                          <ae-numeric-stepper (aeChange)="changeHour($event)" *ngIf="myAbsenceVM.MyAbsenceDetails[i].CanExcludeLunchDuration" formControlName="LunchDuration"
+                            [min]="0" [max]="lunchDuration" [step]="0.25"></ae-numeric-stepper>
+                        </div>
+                        <div *ngIf="showExcludedLunchDuration()">
+                          {{myAbsenceVM.MyAbsenceDetails[i].LunchDuration.toFixed(2)}} hrs.
+                        </div>
+                      </td>
+                      <td>
+                        <ae-input [cssClass]="'input'" formControlName="Hours" [id]="getChildId('AeInput',i)" [name]="getChildName('AeInput',i)"
+                          [readonly]="true" [placeholder]="'hours'"></ae-input>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td [attr.colspan]="canShowLunchDurationCol()?'5':'4'" class="form__input__error-bg" *ngIf="item && item.HasError">{{item.Message}}</td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+                <tfoot>
+                  <tr *ngIf="myAbsenceVM.MyAbsenceDetails.length>0" class="">
+                    <td [attr.colspan]="canShowLunchDurationCol()?'4':'3'" class="text-right">
+                      <div class="total-ft-text fixed-ft-col"><strong>Total : </strong></div>
+                    </td>
+                    <td class="text-right">
+                      <div class="total-count fixed-ft-col">{{myAbsenceVM.NoOfUnits}}</div>
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+          <div *ngIf="canShowWorkingDays()">
+            <div *ngFor="let message of hasError('NoOfUnits'); let i = index" class="form__input__error" id="NoOfUnits_field_error_{{i}}">{{message}}</div>
+          </div>
+        </section>
+        <div class="form__input">
+          <label>Reason
+              <ae-textarea *ngIf="!isApproveMode()" formControlName="Reason" [showcharleft]="true" [showOnFocus]="false" [placeholder]="'Reason'"
+                [maxlength]="500" [id]="getChildId('AeTextarea',12)" [name]="getChildName('AeTextarea',12)" [title]="'Reason'"></ae-textarea>
+
+              <span *ngIf="isApproveMode()">{{myAbsenceVM.Reason || 'NA'}}</span>
+            </label>
+        </div>
+        <div class="form__input" *ngIf="isApproveMode()">
+          <label>Comment
+              <ae-textarea formControlName="Comment" [showcharleft]="true" [placeholder]="'Comment'" [showOnFocus]="false" [maxlength]="500"
+                [id]="getChildId('AeTextarea',13)" [name]="getChildName('AeTextarea',13)" [title]="'Comment'"></ae-textarea>
+            </label>
+        </div>
+        <section *ngIf="isExeededHoliday&&isExcessHolidaysAllowed()">
+          <div class="form__input">
+            <div class="error-text">You are exceeding the entitlement limit, please confirm you wish to continue with over booking.</div>
+            <ae-switch formControlName="AllowExcessHolidays" [id]="'testSwitch'" [name]="'testSwitch'" [switchText]="'Continue with overbooking?'"
+              [class]="switchTextRight"></ae-switch>
+
+            <div *ngFor="let message of hasError('IsExcessHolidayAllowed'); let i = index" class="form__input__error" id="IsExcessHolidayAllowed_field_error_{{i}}">{{message}}</div>
+          </div>
+        </section>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="isOngoingEdit">
+      <div class="form__input">
+        <label>Date <span class="alert">*</span>
+              <ae-datetime-picker formControlName="EndDate" [id]="getChildId('AeDatetimePicker',29)" [name]="getChildName('AeDatetimePicker',29)"
+                [monthNavigator]="true" [title]="'End Date'" [yearNavigator]="true" [minDate]="_minDate" yearRange="1910:2030"
+                [showIcon]="true" (aeSelect)="onEndDateSelect($event)" (aeBlur)="isEndDateValid($event)"></ae-datetime-picker>
+            </label>
+        <div *ngFor="let message of hasError('EndDate'); let i = index" class="form__input__error" id="EndDate_field_error_{{i}}">{{message}}</div>
+      </div>
+      <div class="form__input">
+        <ae-message *ngIf="hasValidationError()" [id]="getChildId('AeMessage',36)" [name]="getChildName('AeMessage',36)" [text]="getValidationMessage()"
+          [show-close-icon]="false" [icon]="'icon-alert-triangle'" [messageType]="messageType"></ae-message>
+      </div>
+    </ng-container>
+
+  </form>
+  <div class="spacer-l-10">
+    <my-absence-history [id]="'myholidayHistory'" [name]="'myholidayHistory'" *ngIf="isEditMode() && !isOngoingEdit" [myAbsenceId]="myAbsenceVM?myAbsenceVM.Id:''"></my-absence-history>
+  </div>
+
+</div>
+<div class="so-panel__footer">
+  <nav>
+    <ul>
+      <li><label for="soPanel" class="button button--inline-block" [id]="getChildId('AeButton',16)" (click)="onMyAbsenceFormClosed()"
+          [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label></li>
+      <li class="pull--right">
+        <ae-anchor [id]="getChildId('AeAnchor',17)" [name]="getChildName('AeAnchor',17)" [anchorType]="'button'" [class]="'button button--inline-block'"
+          [anchorClass]="lightClass" (aeClick)="saveMyAbsence()" [title]="saveBtnText | translate:lang" [text]="saveBtnText | translate:lang"></ae-anchor>
+      </li>
+    </ul>
+  </nav>
+</div>
+<ae-loader [id]="'holidayAbsenceDataLoad'" [loaderType]="loaderType" *ngIf="loading"></ae-loader>

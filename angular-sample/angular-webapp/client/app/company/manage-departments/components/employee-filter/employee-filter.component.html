@@ -1,0 +1,29 @@
+<div class="employee-list-block">
+  <h3>{{'EMPLOYEE_LIST' | translate:lang}}</h3>
+  <ae-notification [id]="'incidentNotification'" [name]="'incidentNotification'" [iconName]="'icon-info'" [textInfo]="'HELP_MSG.EMPLOYEE_LIST_MSG' | translate:lang">
+  </ae-notification>
+  <form class="form-container" [formGroup]="employeeFilterForm">
+    <div class="form__input">
+      <ae-input formControlName="Name" [id]="'filter-name'" [name]="'filter-name'" [title]="'FILTER_BY_NAME' | translate:lang"
+        [placeholder]="'FILTER_BY_NAME' | translate:lang"></ae-input>
+    </div>
+    <div class="sg-grid grid--1-2">
+      <div>
+        <ae-select formControlName="Site" [id]="'site'" [name]="'site'" [options]="sites" [placeholder]="'ALL_LOCATION' | translate:lang"
+          [title]="'FILTER_BY_LOCATION' | translate:lang"></ae-select>
+      </div>
+      <div>
+        <ae-select formControlName="Department" [id]="'department'" [name]="'department'" [options]="departments" [title]="'FILTER_BY_DEPARTMENT' | translate:lang"></ae-select>
+      </div>
+    </div>
+  </form>
+  <div class="list-tems">
+    <ul class="list" *ngIf="hasEmployees()">
+      <li *ngFor="let item of employees" [aeDraggable]="getDraggableVm(item)"  [title]="item.Name" class="button button--small">{{item.Name}}</li>
+    </ul>
+    <p *ngIf="!hasEmployees() && !loading" class="text--centered">{{'NO_EMPLOYEES' | translate:lang}}</p>
+    <ae-loader [loaderType]="loaderType" *ngIf="hasLoading"></ae-loader>
+  </div>
+</div>
+
+<!--[dragData]="item.Id" dnd-draggable [dragEnabled]="true"-->

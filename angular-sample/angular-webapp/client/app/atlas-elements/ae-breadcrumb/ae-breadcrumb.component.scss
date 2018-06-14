@@ -1,0 +1,33 @@
+@import '../../../assets/scss/variablesMap';
+.banner__breadcrumbs {
+  left: $base-margin;
+  position: absolute;
+  top: 10px;
+  z-index: $breadcrumb-z-index;
+  .banner--grey-pale & {
+    color: $grey--0;
+  }
+}
+
+.breadcrumbs {
+  .breadcrumbs__link {
+    display: inline-block;
+    font-size: 1.3rem;
+    text-decoration: none;
+  }
+  &:not(:last-child) {
+    .breadcrumbs__link::after {
+      content: '>';
+      display: inline-block;
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+  }
+  &:last-child .breadcrumbs__link {
+    font-weight: $bold;
+  }
+}
+
+// div {
+//   background-color:red;
+// }

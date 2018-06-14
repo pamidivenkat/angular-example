@@ -1,0 +1,35 @@
+<div class="so-panel__title">
+    <h3>{{HelpAreaName}}</h3>
+</div>
+<div class="so-panel__content">
+    <section class="accordion" role="tablist">
+        <div class="accordion__list" *ngIf="HelpContentItems">
+            <ng-container *ngFor="let item of HelpcontentVM; let i = index">
+                <div class="accordion__list--item" [class.accordion-open]="isOpen(item)">
+                    <label [for]="'acc-'+ i" class="accordion__header" (click)="getHelpAreaContentbody(item)">
+                <div class="accordion__header--grid">
+                <div class="accordion__title">{{item.Title}}</div>
+        <div class="accordion__indicator icon">
+          <svg>
+            <use xmlns:xlink="http://www.w3.org/1999/xlink" [attr.xlink:href]="getAbsoluteUrl('icon-pointer-right')"></use>
+          </svg>
+        </div>
+    </div>
+
+    </label>
+                    <div class="accordion__contents help-anchor spacer-15" *ngIf="isOpen(item)">
+                        <p [innerHTML]="getBody(item.Body)"></p>
+                    </div>
+                </div>
+            </ng-container>
+
+        </div>
+    </section>
+</div>
+<div class="so-panel__footer">
+    <nav>
+        <ul>
+            <li><label for="soPanel" class="button button--inline-block" (click)="onHelpContentCancel()" [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label></li>
+        </ul>
+    </nav>
+</div>

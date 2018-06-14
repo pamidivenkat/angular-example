@@ -1,0 +1,8 @@
+<div>
+  <div class="so-panel__title" [id]="id">
+    <h3>{{'REFERRAL.REFER_A_FRIEND' | translate:lang}}</h3>
+  </div>
+  <ae-form [formBuilderData]="referralFormVM" [id]="'eventForm'" [name]="'eventForm'" [Title]="'REFERRAL.HEADER' | translate:lang"
+    [isPrimaryTitle]="false" (onSubmit)="onSubmit($event)" (onCancel)="onCancel()" (onFormInit)="onFormInit($event)">
+  </ae-form>
+</div>

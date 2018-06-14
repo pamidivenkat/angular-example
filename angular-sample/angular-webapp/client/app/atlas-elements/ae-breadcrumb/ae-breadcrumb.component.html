@@ -1,0 +1,8 @@
+<div class="banner__breadcrumbs" [id]="id">
+  <div class="breadcrumbs">
+    <ae-anchor *ngIf="breadcrumbs.length > 0" [id]="getChildId('aeBreadcrumb', -1)" [name]="getChildName('aeBreadcrumb', -1)" [class]="'breadcrumbs__link'" [text]="'Home'"
+      (aeClick)="redirectTo()"></ae-anchor>
+    <ae-anchor [id]="getChildId('aeBreadcrumb', i)" [name]="getChildName('aeBreadcrumb', i)" *ngFor="let option of breadcrumbs; let i = index"
+      [class]="'breadcrumbs__link'" text="> {{option.label}}" (aeClick)="redirectTo(option)"></ae-anchor>
+  </div>
+</div>

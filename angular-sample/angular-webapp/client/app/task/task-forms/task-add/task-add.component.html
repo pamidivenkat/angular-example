@@ -1,0 +1,94 @@
+<div class="so-panel__title">
+    <h3>{{'ADD_TASK' | translate: lang}}</h3>
+</div>
+<div class="so-panel__content">
+    <form class="form" [formGroup]="addTaskForm">
+        <div class="form__input">
+            <label>{{'ADD_TASK_FORM.TASK_CATEGORY' | translate: lang}} *
+                <ae-select [id]="'TaskCategoryId'" [name]="'TaskCategoryId'" formControlName="TaskCategoryId" (aeSelectChange)="onCategoryChange($event)"
+                    [options]="categoryList"></ae-select>
+            </label>
+        </div>
+        <div class="form__input" *ngIf="!siteVisitCategory">
+            <label>{{'ADD_TASK_FORM.TITLE' | translate: lang}} *
+                <ae-input [id]="'Title'" [name]="'Title'" formControlName="Title" [placeholder]="'ADD_TASK_FORM.TITLE' | translate: lang"></ae-input>
+            </label>
+            <span *ngIf="fieldHasRequiredError('Title')" class="form__input__error">{{'VALIDATION_ERRORS.TITLE_REQUIRED' | translate: lang}}</span>
+        </div>
+        <div class="form__input" *ngIf="siteVisitCategory">
+            <label>{{'ADD_TASK_FORM.OBSERVATION' | translate: lang}} *
+                <ae-input [id]="'Observation'" [name]="'Observation'" formControlName="Title" [placeholder]="'ADD_TASK_FORM.OBSERVATION' | translate: lang"></ae-input>
+            </label>
+            <span *ngIf="fieldHasRequiredError('Title')" class="form__input__error">{{'VALIDATION_ERRORS.OBSERVATION_REQUIRED' | translate: lang}}</span>
+        </div>
+
+        <div class="form__input">
+            <label>
+                <b *ngIf="!siteVisitCategory">{{'ADD_TASK_FORM.DESCRIPTION' | translate: lang}}</b>
+                <b *ngIf="siteVisitCategory">{{'ADD_TASK_FORM.RECOMMENDATION' | translate: lang}}</b>
+                <ae-textarea [id]="'Description'" [name]="'Description'" formControlName="Description"></ae-textarea>
+            </label>
+        </div>
+        <div class="form__input" *ngIf="siteVisitCategory">
+            <label>{{'ADD_TASK_FORM.COST_RECTIFICATION' | translate: lang}}
+                <ae-input [id]="'CostOfRectification'" [name]="'CostOfRectification'" formControlName="CostOfRectification" [type]="ctrlType"
+                    [step]="5" [min]="0"></ae-input>
+            </label>
+        </div>
+
+        <div class="form__input" *ngIf="siteVisitCategory">
+            <label>{{'ADD_TASK_FORM.PERCENTAGE_COMPLETED' | translate:lang}}
+                <ae-input [id]="'PercentageCompleted'" [name]="'PercentageCompleted'" formControlName="PercentageCompleted" [type]="ctrlType"
+                    [step]="5" [min]="0" [max]="100"></ae-input>
+            </label>
+            <span *ngIf="(fieldHasMinError('PercentageCompleted') || fieldHasMaxError('PercentageCompleted')) && siteVisitCategory" class="form__input__error">
+                {{'VALIDATION_ERRORS.PERCENTAGE_COMPLETED_MESSAGE' | translate:lang}}
+            </span>
+        </div>
+
+        <div class="form__input">
+            <label>{{'ADD_TASK_FORM.PRIORITY' | translate: lang}} *
+                <ae-select [id]="'taskPriority'" [name]="'taskPriority'" formControlName="Priority" [options]="taskPriorities"></ae-select>
+                <span *ngIf="fieldHasRequiredError('Priority')" class="form__input__error">{{'VALIDATION_ERRORS.SELECT_PRIORITY' | translate: lang}}</span>
+            </label>
+        </div>
+        <div class="form__input">
+            <label>{{'ADD_TASK_FORM.DEDLINE_DATE' | translate: lang}}</label>
+            <ae-datetime-picker [id]="'DueDate'" [name]="'DueDate'" formControlName="DueDate" [monthNavigator]="true" [yearNavigator]="true"
+                yearRange="2000:2030" [minDate]="minDate" [showIcon]="true" (aeBlur)="isValidDate($event)"></ae-datetime-picker>
+        </div>
+        <div class="form__input">
+            <label>{{'ADD_TASK_FORM.ASSIGNED_TO' | translate: lang}}</label>
+            <ae-autocomplete [id]="'taskAssignedUsers'" formControlName="AssignedUsers" [name]="'taskAssignedUsers'" [placeholder]="'ADD_TASK_FORM.ASSIGNED_USERS' | translate: lang"
+                [multiselect]="true" [items]="assignUsersOptions$ | async" [dstype]="dataSouceType" [field]="'FullName'" [valuefield]="'Id'"
+                (aeOnSelect)="onAssignUserChanged($event)" (aeOnClearSelected)="onClearselected($event)"></ae-autocomplete>
+        </div>
+
+        <div class="form__input">
+            <ae-anchor [id]="'_assignToMe'" [name]="'_assignToMe'" [disabled]="isAssignToMeBtnDisabled" [anchorType]="'button'" [class]="'button button--cta button--inline-block space-right-15'"
+                (aeClick)="onClickAssignToME($event)" [text]="'ADD_TASK_FORM.ASSIGN_TO_ME' | translate: lang"></ae-anchor>
+            <ae-checkbox [id]="'AssignToAll'" *ngIf="canAssignToAllBeShown()" [name]="'AssignToAll'" (change)="onChangeAllCheckbox($event)"
+                formControlName="AssignToAll" [checkText]="'ADD_TASK_FORM.ASSIGN_TO_ALL' | translate: lang" class="inline-block"></ae-checkbox>
+        </div>
+
+        <div class="form__input" *ngIf="isTaskAssigned()">
+            <ae-checkbox [id]="'SendNotification'" [disabled]="!isTaskAssigned()" [name]="'SendNotification'" (change)="onChangeSendEmailNotification($event)"
+                formControlName="SendNotification" [checkText]="'ADD_TASK_FORM.SEND_EMAIL_NOTIFICATION' | translate: lang"></ae-checkbox>
+        </div>
+        <div class="form__error">
+        </div>
+    </form>
+</div>
+<div class="so-panel__footer">
+    <nav>
+        <ul>
+            <li>
+                <label for="soPanel" class="button button--inline-block" (click)="onTaskCancel($event)" [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label>
+            </li>
+            <li class="pull--right">
+                <ae-anchor [id]="getChildId('AeAnchor',1)" [name]="getChildName('AeAnchor',1)" [anchorType]="'button'" [class]="'button button--inline-block'"
+                    [anchorClass]="lightClass" (aeClick)="onAddFormSubmit($event)" [text]="'BUTTONS.ADD' | translate: lang"></ae-anchor>
+            </li>
+        </ul>
+    </nav>
+</div>

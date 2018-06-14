@@ -1,0 +1,19 @@
+@import '../../../../assets/scss/variablesMap';
+@include media-over-767 {
+  .holiday-table .table__row .table__item:last-child {
+    overflow: visible;
+  }
+
+  .holiday-table .table__row .table__item:nth-child(5) {
+    overflow: visible;
+  }
+}
+
+.legend-section {
+  margin: 0 -30px -30px;
+}
+
+my-holidays-header + absence-list {
+  margin-top: -25px;
+  display:block;
+}

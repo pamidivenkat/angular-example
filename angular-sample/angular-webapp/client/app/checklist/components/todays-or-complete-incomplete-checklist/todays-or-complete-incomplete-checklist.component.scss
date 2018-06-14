@@ -1,0 +1,33 @@
+.worspace-icons-pop {
+  max-width: 320px;
+
+  > span {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    overflow: hidden;
+
+    img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+  }
+}
+
+.checklist-slideout {
+  @media only screen and (min-width: 980px) {
+    .so-panel {
+      width: 1000px !important;
+      text-align: left;  
+    }
+  }
+}
+@media only screen and (min-width: 768px) {
+  .max-width-container {
+    max-width: 400px;
+  }
+}
+
+.autocomplete-filter ae-input {
+  margin-top: 0;
+}

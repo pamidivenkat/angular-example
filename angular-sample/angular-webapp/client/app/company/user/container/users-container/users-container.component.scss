@@ -1,0 +1,10 @@
+.users-slideout{
+    .form, .user-list-data {width:100%;}
+    .so-panel .so-panel{
+        width: 100%;
+       @media (min-width:481px){
+            width: 480px;
+        }
+       
+    }
+}

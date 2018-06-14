@@ -1,0 +1,130 @@
+<div id="furtherInformation" class="further-information">
+    <form [formGroup]="furtherInformationForm">
+        <p>
+            <ae-tab [id]="getChildId('AeTab',1)" [name]="getChildName('AeTab',1)" [standard]="true">
+                <ae-tab-item [id]="getChildId('AeTabItem',1)" [name]="getChildName('AeTabItem',1)" [title]="''" [header]="'MANAGE_METHOD_STM.FURTHER_INFORMATION.RELATED_RISK_ASSESSMENTS' | translate:lang">
+                    <ae-template [type]="'content'">
+                        <ng-template>
+                            <div class="section-title">
+                                <h3>{{'MANAGE_METHOD_STM.FURTHER_INFORMATION.RELATED_RISK_ASSESSMENTS_INFO' | translate:lang}}</h3>
+                                <div class="icon-list banner-icon-list further-info-add">
+                                    <ae-splitbutton [id]="'furtherInformationSplitButton'" [name]="'furtherInformationSplitButton'" [text]="'ADD'" [options]="splitButtonOptions" (aeClick)="onSplitBtnClick()" [class]="buttonLight">
+                                    </ae-splitbutton>
+                                </div>
+                            </div>
+                            <ae-datatable [id]="getChildId('AeDatatable',1)" [name]="getChildName('AeDatatable',1)" [dataSource]="msRiskAssessmentsList" [actions]="actions" [totalRecords]="recordsCount" [autoGenerateColumns]="false" [defaultOptions]="dataTableOptions$ | async" (pageChanged)="onPageChange($event)"
+                                (onSort)="onSort($event)" [loading]="!(msRiskAssessmentsListLoaded)">
+
+
+                                <ae-column [headerText]="'REFERENCE_NUMBER' | translate:lang" [sortable]="false" [sortKey]="'ReferenceNumber'">
+                                    <ae-template [type]="'header'">
+                                        <ng-template>
+                                            <span>{{'MANAGE_METHOD_STM.FURTHER_INFORMATION.REFERENCE_NO' | translate:lang}}</span>
+                                        </ng-template>
+                                    </ae-template>
+                                    <ae-template [type]="'cell'" [keys]="keys">
+                                        <ng-template let-context="item">
+                                            {{ context.ReferenceNumber }}
+                                        </ng-template>
+                                    </ae-template>
+                                </ae-column>
+
+                                <ae-column [headerText]="'NAME' | translate:lang" [sortable]="false" [sortKey]="'Name'">
+                                    <ae-template [type]="'header'">
+                                        <ng-template>
+                                            <span>{{'MANAGE_METHOD_STM.FURTHER_INFORMATION.ASSESSMENT_NAME' | translate:lang}}</span>
+                                        </ng-template>
+                                    </ae-template>
+                                    <ae-template [type]="'cell'" [keys]="keys">
+                                        <ng-template let-context="item">
+                                            {{ context.Name }}
+                                        </ng-template>
+                                    </ae-template>
+                                </ae-column>
+
+
+                            </ae-datatable>
+                        </ng-template>
+                    </ae-template>
+                </ae-tab-item>
+
+                <ae-tab-item [id]="getChildId('AeTabItem',1)" [name]="getChildName('AeTabItem',1)" [title]="''" [header]="'MANAGE_METHOD_STM.FURTHER_INFORMATION.FACILITIES_AFFECTED' | translate:lang">
+                    <ae-template [type]="'content'">
+                        <ng-template>
+                            <div class="spacer--y">
+                                <div class="information-grid">
+                                    <section class="information-grid__section">
+                                        <div class="information-grid__item">
+                                            <div class="information-grid__item-label column-1of3 align--vertical">{{'FURTHER_INFORMATION.PLEASE_PROVIDE_FACILITIES' | translate:lang}}</div>
+                                            <div class="information-grid__item-value column-2of3">
+                                                <ae-textarea [id]="'FacilitiesAffected'" [name]="'FacilitiesAffected'" formControlName="FacilitiesAffectedText" [showcharleft]="'true'" [placeholder]="'insert text...'" [maxlength]="1000"></ae-textarea>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </ae-template>
+                </ae-tab-item>
+
+                <ae-tab-item [id]="getChildId('AeTabItem',1)" [name]="getChildName('AeTabItem',1)" [title]="''" [header]="'MANAGE_METHOD_STM.FURTHER_INFORMATION.FORSEEABLE_AFFECTS' | translate:lang">
+                    <ae-template [type]="'content'">
+                        <ng-template>
+                            <div class="spacer--y">
+                                <div class="information-grid">
+                                    <section class="information-grid__section">
+                                        <div class="information-grid__item">
+                                            <div class="information-grid__item-label column-1of3 align--vertical">{{'FURTHER_INFORMATION.PLEASE_PROVIDE_FORESEEABLE' | translate:lang}}</div>
+                                            <div class="information-grid__item-value column-2of3">
+                                                <ae-textarea [id]="'ForeseeableAffects'" [name]="'ForeseeableAffects'" formControlName="ForeseeableAffectsText" [showcharleft]="'true'" [placeholder]="'insert text...'" [maxlength]="1000"></ae-textarea>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </ae-template>
+                </ae-tab-item>
+
+                <ae-tab-item [id]="getChildId('AeTabItem',1)" [name]="getChildName('AeTabItem',1)" [title]="''" [header]="'MANAGE_METHOD_STM.FURTHER_INFORMATION.MONITORING_SYSTEMS' | translate:lang">
+                    <ae-template [type]="'content'">
+                        <ng-template>
+                            <div class="spacer--y">
+                                <div class="information-grid">
+                                    <section class="information-grid__section">
+                                        <div class="information-grid__item">
+                                            <div class="information-grid__item-label column-1of3 align--vertical">Please provide the details of any monitoring systems you have in place for the work being carried out</div>
+                                            <div class="information-grid__item-value column-2of3">
+                                                <ae-textarea [id]="'Monitoring'" [name]="'Monitoring'" formControlName="MonitoringText" [showcharleft]="'true'" [placeholder]="'insert text...'" [maxlength]="1000"></ae-textarea>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </ae-template>
+                </ae-tab-item>
+            </ae-tab>
+        </p>
+    </form>
+
+    <ae-slideout [id]="getChildId('aeSlideout', 1)" [class.slide--animate]="showSlider()" [modelState]="showSliderState()" [id]="'testslider'" [name]="'testslider'" [sliderBig]="true">
+        <risk-assessment-selector *ngIf="showLibrarySlideOut" [id]="'riskassesment'" [methodStatementExample]="methodStatement.IsExample" (aeClose)="sliderClosed($event)" (selectRA)="onAeSelectList($event)" [selectedRiskAssessments]="msSelectedRiskAssessments"></risk-assessment-selector>
+        <information-from-computer [methodstatement]="methodStatement" [context]="otherracontext" *ngIf="showComputerSlideOut" [id]="'computer'" [name]="'computer'" (onMSOtherRACancel)="sliderClosedOtherRA($event)" (onMSOtherRASubmit)="onMSOtherRASubmit($event)"></information-from-computer>
+    </ae-slideout>
+
+    <ae-modal-dialog [visible]="showRemoveDialog" (cancel)="modalClosed($event)" [closable]="true" [id]="'confirmModal'" [name]="'confirmModal'" *ngIf="showRemoveDialog">
+        <div class="modal-dialog-header">
+            <h3>{{ 'MANAGE_METHOD_STM.FURTHER_INFORMATION.Dialog.Heading_text' | translate:lang }}</h3>
+        </div>
+        <div class="modal-dialog-body">
+            <p>{{'MANAGE_METHOD_STM.FURTHER_INFORMATION.Dialog.Info' | translate: lang:{riskassessmentName: selectedRecordName} }}
+            </p>
+        </div>
+        <div class="modal-dialog-footer">
+            <ae-button [text]="'MANAGE_METHOD_STM.FURTHER_INFORMATION.Dialog.Btn_No' | translate:lang" [type]="'button'" [id]="'confirmNo'" [name]="'confirmNo'" (aeClick)="modalClosed('no')"></ae-button>
+            <ae-button [class]="lightClass" [text]="'MANAGE_METHOD_STM.FURTHER_INFORMATION.Dialog.Btn_Yes' | translate:lang" [type]="'button'" [id]="'confirmYes'" [name]="'confirmYes'" (aeClick)="modalClosed('yes')"></ae-button>
+        </div>
+    </ae-modal-dialog>
+
+</div>

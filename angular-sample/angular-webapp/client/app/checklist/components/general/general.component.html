@@ -1,0 +1,62 @@
+<div class="information-grid" id="CheckListWorkspace" name="CheckListWorkspace">
+  <form id="training-course-form" name="training-course-form" class="form" [formGroup]="generalTabForm">
+    <section class="information-grid__section">
+      <div class="information-grid__item--input">
+        <label class="information-grid__item-label column-1of3">{{'GENERAL.CHECKLIST_NAME' | translate:lang}} <span class="error-text">*</span></label>
+        <div class="information-grid__item-value column-2of3">
+          <ae-input [id]="'Name'" [name]="'Name'" formControlName="Name" [maxlength]="'200'" [placeholder]="'GENERAL.CHECKLIST_NAME' | translate:lang"></ae-input>
+          <span *ngIf="fieldHasRequiredError('Name')" class="form__input__error">{{'THIS_FIELD_REQUIRED' | translate:lang}}</span>
+        </div>
+      </div>
+
+      <div class="information-grid__item--input" *ngIf="!isExampleAddCheckList">
+        <label class="information-grid__item-label column-1of3">{{'GENERAL.AFFECTED_SITE_LOCATIONS' | translate:lang}} <span class="error-text">*</span></label>
+        <div class="information-grid__item-value column-2of3">
+          <ae-select formControlName="SiteName" [id]="getChildId('AeSelect', 2)" [name]="getChildName('AeSelect', 2)" [options]="locations"
+             (aeSelectChange)="onSiteLocationChange($event)"></ae-select>
+        </div>
+      </div>
+
+      <div class="information-grid__item--input" *ngIf="addNewLocationSiteFlag">
+        <label class="information-grid__item-label column-1of3">{{'GENERAL.ADD_EFFECTED_SITE_LOCATIONS' | translate:lang}} <span class="error-text">*</span></label>
+        <div class="information-grid__item-value column-2of3">
+          <ae-input [id]="'SiteLocation'" [name]="'SiteLocation'" formControlName="SiteLocation" [placeholder]="'GENERAL.ADD_EFFECTED_SITE_LOCATIONS' | translate:lang"></ae-input>
+          <span *ngIf="fieldHasRequiredError('SiteLocation')" class="form__input__error">{{'THIS_FIELD_REQUIRED' | translate:lang}}</span>
+        </div>
+      </div>
+      <div formArrayName="WorkspaceTypes">
+        <div class="checklist__header">
+          <h3>{{'GENERAL.WORKSPACES' | translate:lang}}</h3>
+        </div>
+        <div class="spacer--x grid--1-1-3">
+          <div *ngFor="let item of workspaceTypes; let i=index" class="checklist__item">
+            <div class="switch-block" [formGroupName]="i">
+              <ae-checkbox formControlName="isSelected" [id]="'IsWorkingDay'+i" [name]="'IsWorkingDay'+i" [checkText]="item.Name" [imgVisible]="true"
+                [src]="imageLink(item.PictureId)" [checked]="item.isSelected"></ae-checkbox>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div *ngIf="canCreateExampleChecklist() && isExampleAddCheckList">
+        <div class="checklist__header">
+          <h3>{{'SECTORS' | translate:lang}}</h3>
+          <div class="right-sec">
+            <ae-checkbox formControlName="SelectALL" [id]="'SelectALL'" [name]="'SelectALL'" [checkText]="'SELECT_ALL' | translate:lang"></ae-checkbox>
+          </div>
+        </div>
+
+        <div class="spacer--x grid--1-1-3" formArrayName="Sectors">
+          <div *ngFor="let sitem of _sectors; let j=index" class="checklist__item">
+            <div class="switch-block" [formGroupName]="j">
+              <ae-checkbox formControlName="isSelected" [id]="'sectors'+j" [name]="'sectors'+j" [checkText]="sitem.Name" [imgVisible]="true"
+                [src]="imageLink(sitem.PictureId)" [checked]="sitem.isSelected"></ae-checkbox>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </form>
+</div>

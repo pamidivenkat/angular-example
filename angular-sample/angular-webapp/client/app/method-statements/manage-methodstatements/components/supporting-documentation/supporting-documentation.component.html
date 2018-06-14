@@ -1,0 +1,82 @@
+<div [id]="'supportingDocumentation'" class="supporting-documentation">
+  <div class="wizard-button-bar top">
+        <ae-splitbutton [id]="'supportingDocumentationSplitButton'" [name]="'supportingDocumentationSplitButton'" [text]="'ADD'"
+          [options]="splitButtonOptions" (aeClick)="onSplitBtnClick()" [class]="buttonLight">
+        </ae-splitbutton>
+      </div>
+  <div>
+    <!-- <div class="section-title">
+      <h3>{{'MANAGE_METHOD_STM.SUPPORTING_DOCUMENTATION.ATTACHED_DOCUMENTS' | translate:lang}}</h3>
+      
+    </div>    -->
+    <ae-datatable [id]="getChildId('AeDatatable', 1)" [name]="getChildId('AeDatatable', 1)" [dataSource]="documents" [autoGenerateColumns]="false"
+      [defaultOptions]="dataTableOptions$ | async" [totalRecords]="recordsCount" [actions]="supportingEvidenceActions" (pageChanged)="onGridPageChange($event)" (onSort)="onSort($event)">
+      <ae-column [headerText]="'MANAGE_METHOD_STM.SUPPORTING_DOCUMENTATION.DOCUMENT_NAME' | translate: lang" [sortable]="true" [sortKey]="'FileName'">
+        <ae-template [type]="'header'">
+          <ng-template>
+            <span>{{'MANAGE_METHOD_STM.SUPPORTING_DOCUMENTATION.DOCUMENT_NAME' | translate: lang}}</span>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]="'cell'" [keys]="documentKeys">
+          <ng-template let-context="item">
+            <span>{{context.FileName}}</span>
+          </ng-template>
+        </ae-template>
+      </ae-column>
+      <ae-column [headerText]="'MANAGE_METHOD_STM.SUPPORTING_DOCUMENTATION.DOCUMENT_TITLE' | translate: lang" [sortable]="true" [sortKey]="'Title'">
+        <ae-template [type]="'header'">
+          <ng-template>
+            <span>{{'MANAGE_METHOD_STM.SUPPORTING_DOCUMENTATION.DOCUMENT_TITLE' | translate: lang}}</span>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]="'cell'" [keys]="documentKeys">
+          <ng-template let-context="item">
+            <span>{{context.Title}}</span>
+          </ng-template>
+        </ae-template>
+      </ae-column>
+      <ae-column [headerText]="'MANAGE_METHOD_STM.SUPPORTING_DOCUMENTATION.DOCUMENT_DESCRIPTION' | translate: lang" [sortable]="true" [sortKey]="'Description'">
+        <ae-template [type]="'header'">
+          <ng-template>
+            <span>{{'MANAGE_METHOD_STM.SUPPORTING_DOCUMENTATION.DOCUMENT_DESCRIPTION' | translate: lang}}</span>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]="'cell'" [keys]="documentKeys">
+          <ng-template let-context="item">
+            <span>{{context.Description}}</span>
+          </ng-template>
+        </ae-template>
+      </ae-column>
+    </ae-datatable>
+  </div>
+
+  <div [class.ms-sd-slideout]="showLibrarySlideOut" >
+    <ae-slideout [id]="getChildId('aeSlideout', 1)" [class.slide--animate]="showSlider()" [modelState]="showSliderState()" [id]="'ms-sd-slider'"
+      [name]="'ms-sd-slider'">
+      <document-selector *ngIf="showLibrarySlideOut" [id]="getChildId('selectDocument',1)" [name]="getChildName('selectDocument',1)"
+        (aeClose)="closeLibrarySlider($event)" (selectDocuments)="onSelectDocuments($event)" [selectedDocuments]="allDocuments"></document-selector>
+      <document-upload *ngIf="showComputerSlideOut" [id]="getChildId('addDocument',1)" [name]="getChildName('addDocument',1)" (onDocumentUploaded)="onDocumentUploadDone($event)"
+        (onCancel)="onDocumentUploadClose($event)" [usage]="userDocument" [isAttachable]="isAttachable" [regardingObjectId]="regardingObjectId"
+        [regardingObjectTypeCode]="regardingObjectTypeCode" [documentCategory]="documentCategory" [accept]="acceptedFileTypes" [showSnackBar]="true">
+      </document-upload>
+    </ae-slideout>
+  </div>
+
+  <ae-modal-dialog [visible]="showRemoveDialog" (cancel)="modalClosed($event)" [closable]="true" [id]="'confirmModal'" [name]="'confirmModal'"
+    *ngIf="showRemoveDialog">
+    <div class="modal-dialog-header">
+      <h3>{{ 'MANAGE_METHOD_STM.SUPPORTING_DOCUMENTATION.Dialog.Heading_text' | translate:lang }}</h3>
+    </div>
+    <div class="modal-dialog-body">
+      <p>{{'MANAGE_METHOD_STM.SUPPORTING_DOCUMENTATION.Dialog.Info' | translate: lang:{documentName: documentToBeDeleted.FileName}
+        }}
+    </div>
+    <div class="modal-dialog-footer">
+      <ae-button [text]="'MANAGE_METHOD_STM.SUPPORTING_DOCUMENTATION.Dialog.Btn_No' | translate:lang" [type]="'button'" [id]="'confirmNo'"
+        [name]="'confirmNo'" (aeClick)="modalClosed('no')"></ae-button>
+      <ae-button [class]="buttonLight" [text]="'MANAGE_METHOD_STM.SUPPORTING_DOCUMENTATION.Dialog.Btn_Yes' | translate:lang" [type]="'button'"
+        [id]="'confirmYes'" [name]="'confirmYes'" (aeClick)="modalClosed('yes')"></ae-button>
+    </div>
+  </ae-modal-dialog>
+
+</div>

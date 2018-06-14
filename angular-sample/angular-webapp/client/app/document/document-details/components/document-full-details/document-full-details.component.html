@@ -1,0 +1,165 @@
+<div id="detailspage" *ngIf="document">
+  <ae-banner [id]="'banner'" [name]="'banner'" [titleText]="document.FileName" [backgroundImage]="'/assets/images/lp-documents.jpg'">
+    <ae2-breadcrumb [id]="'breadCrumb'" [name]="'breadCrumb'" class="bredcrumb-section" [group]="bcGroup"></ae2-breadcrumb>
+  </ae-banner>
+  <div class="button-bar button-bar--offset spacer">
+    <div class="button-bar__item" id="lastupdated">
+      Last updated <b> {{document.LastUpdatedDays}} days ago </b>by <b>{{document.ModifiedByName}}</b>
+    </div>
+    <div class="button-bar__item" id="cqc" *ngIf="CanDocumentExportToCQC">
+      <div *ngIf="cqcPruchased$ | async">
+        <ae-button [type]="'button'" [text]="'DocumentDetails.EXPORT_TO_CQC_PRO'| translate:lang" [title]="'DocumentDetails.EXPORT_TO_CQC_PRO'| translate:lang"
+          (aeClick)="onExportToCQC($event)" [id]="getChildId('aeAnchor',1)" [name]="'DocumentDetails.EXPORT_TO_CQC_PRO'| translate:lang" [customClass]="'button button--cta'"></ae-button>
+      </div>
+    </div>
+    <div class="button-bar__item" id="distribute">
+      <ae-button [type]="'button'" *ngIf="canDistributeButtonShown()" [text]="'DocumentDetails.Distribute'| translate:lang" [title]="'DocumentDetails.Distribute'| translate:lang"
+        (aeClick)="onDistribute($event)" [id]="getChildId('aeAnchor',2)" [name]="'DocumentDetails.EXPORT_TO_CQC_PRO'| translate:lang" [customClass]="'button button--cta'"></ae-button>
+    </div>
+    <div class="button-bar__item" id="download">
+      <ae-button [type]="'button'" [text]="'DocumentDetails.Download'| translate:lang" [title]="'DocumentDetails.Download'| translate:lang" (aeClick)="onView($event)"
+        [id]="getChildId('aeAnchor',3)" [name]="'DocumentDetails.Download'| translate:lang" [customClass]="'button button--cta'"></ae-button>
+    </div>
+    <div class="button-bar__item" id="remove" *ngIf="removeButtonCanBeShown()">
+      <ae-button [type]="'button'" [text]="'DocumentDetails.REMOVE'| translate:lang" [title]="'DocumentDetails.REMOVE'| translate:lang"
+        (aeClick)="onRemove($event)" [id]="getChildId('aeAnchor',4)" [name]="'DocumentDetails.REMOVE'| translate:lang" [customClass]="'button button--cta'"></ae-button>
+    </div>
+    <div class="button-bar__item" id="update" *ngIf="updateButtonCanBeShown()">
+      <ae-button [type]="'button'" [text]="'DocumentDetails.UPDATE'| translate:lang" [title]="'DocumentDetails.UPDATE'| translate:lang"
+        (aeClick)="onUpdate($event)" [id]="getChildId('aeAnchor',5)" [name]="'DocumentDetails.UPDATE'| translate:lang" [customClass]="'button button--cta'"></ae-button>
+    </div>
+    <div class="button-bar__item" id="previous">
+      <ae-button [class]="button" [text]="'Previous'" [type]="'button'" [id]="'btnPrevJob'" [name]="'btnPrevJob'" (aeClick)="onPreviousClick()"></ae-button>
+    </div>
+  </div>
+
+
+  <!--<div class="section-title">
+    <h3>{{'DocumentDetails.DocumentDetails_Title' | translate:lang}}</h3>
+  </div>-->
+  <div class="information-grid">
+    <section class="information-grid__section" *ngIf="!isSharedDocument()">
+      <div class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'DocumentDetails.FileName' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" [class.text-muted]="!document.FileName" id="FileName">{{document.FileName}}</div>
+      </div>
+      <div class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'DocumentDetails.Category' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" [class.text-muted]="!document.CategoryLocalizedName" id="Category">{{document.CategoryLocalizedName || ' '}}</div>
+      </div>
+      <div class="information-grid__item site" *ngIf="siteName | async">
+        <div class="information-grid__item-label column-1of3" *ngIf="document.Category !== enum">{{'DocumentDetails.Site' | translate:lang}}</div>
+        <div class="information-grid__item-label column-1of3" *ngIf="document.Category === enum">{{'DocumentDetails.Employee' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" id="Site">{{siteName | async}}</div>
+      </div>
+      <div class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'DocumentDetails.Type' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" [class.text-muted]="!document.UsageName" id="Type">{{document.UsageName || ' '}} </div>
+      </div>
+      <div class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'DocumentDetails.Archived' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" [class.text-muted]="!document.Archived" id="Archived">{{document.Archived || ' '}} </div>
+      </div>
+      <div class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'DocumentDetails.ModifiedOn' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" [class.text-muted]="!document.ModifiedOn" id="ModifiedOn">
+          {{document.ModifiedOn === null ? 'Not mentioned' :(document.ModifiedOn) | localeDate:defaultLocale:'shortDate'}}
+        </div>
+      </div>
+      <div class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'DocumentDetails.ExpireOn' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" [class.text-muted]="!document.ExpiryDate" id="ExpireOn">
+          {{ document.ExpiryDate === null ? 'Not mentioned' : (document.ExpiryDate) | localeDate:defaultLocale:'shortDate' }}
+        </div>
+      </div>
+      <div class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'DocumentDetails.Description' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" [class.text-muted]="!document.Description" id="Description">{{document.Description || 'Not mentioned' | translate:lang}}</div>
+      </div>
+      <div class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'DocumentDetails.Notes' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" [class.text-muted]="!document.Notes" id="Notes">{{document.Notes || ' ' | translate:lang}}</div>
+      </div>
+    </section>
+
+
+    <section class="information-grid__section" *ngIf="isSharedDocument()">
+      <div class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'DocumentDetails.Title' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" [class.text-muted]="!document.Title" id="Title">{{document.Title || ' '}}</div>
+      </div>
+      <div class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'DocumentDetails.Service' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" [class.text-muted]="!document.Service" id="Service">{{document.Service || ' '}}</div>
+      </div>
+      <div class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'DocumentDetails.Category' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" [class.text-muted]="!document.CategoryLocalizedName" id="Category">{{document.CategoryLocalizedName || ' '}} </div>
+      </div>
+      <div class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'DocumentDetails.Sector' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" [class.text-muted]="!document.Sector" id="Sector">{{document.Sector || ' '}} </div>
+      </div>
+      <div class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'DocumentDetails.Country' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" [class.text-muted]="!document.Country" id="Country">{{document.Country || ' '}}</div>
+      </div>
+      <div class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'DocumentDetails.Keywords' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" [class.text-muted]="!document.Keywords" id="Keywords">{{document.Keywords || ' '}}</div>
+      </div>
+    </section>
+
+  </div>
+  <div id="tabContentDiv" *ngIf="!isSharedDocument()">
+    <ae-tabstrip [id]="getChildId('AeTabStrip',1)" [name]="getChildName('AeTabStrip',1)" [standardWithIcon]="true">
+      <ae-tabstrip-item [id]="getChildId('AeTabStripItem',1)" [name]="getChildName('AeTabItem',1)" [header]="'DocumentDetails.ChangeHistory' | translate:lang"
+        [navigateUrl]="getChangeHistoryUrl()">
+
+      </ae-tabstrip-item>
+
+      <ae-tabstrip-item *ngIf="!isPersonalDocument()" [id]="getChildId('AeTabStripItem',1)" [name]="getChildName('AeTabItem',1)" [header]="'DocumentDetails.DistributionHistoryAndRecall' | translate:lang"
+        [navigateUrl]="getDistributionHistoryUrl()">
+
+      </ae-tabstrip-item>
+
+      <ae-tabstrip-item *ngIf="!isPersonalDocument()" [id]="getChildId('AeTabStripItem',2)" [name]="getChildName('AeTabStripItem',2)" [header]="'DocumentDetails.EmployeeActionStatus' | translate:lang"
+        [navigateUrl]="getEmployeeActionStatusUrl()">
+
+      </ae-tabstrip-item>
+
+
+    </ae-tabstrip>
+
+  </div>
+</div>
+
+<ae-loader [loaderType]="loaderBars" *ngIf="!document"></ae-loader>
+
+<!--delete confirmation pop-up-->
+<div *ngIf="showRemovDocumentConfirm">
+  <ae-modal-dialog [visible]="showRemovDocumentConfirm" (cancel)="deleteConfirmModalClosed('No')" [closable]="true" [id]="getChildId('AeModel', 1)"
+    [name]="getChildName('AeModel', 1)">
+    <div class="modal-dialog-header">
+      <h3>{{'PERSONAL_DOCUMENT_REMOVE_DIALOG.Remove_Document_Heading_text' | translate: lang}}</h3>
+    </div>
+    <div class="modal-dialog-body">
+      <p>{{'PERSONAL_DOCUMENT_REMOVE_DIALOG.Info' | translate: lang:{docName: selectedDocument.FileNameAndTitle} }}</p>
+    </div>
+    <div class="modal-dialog-footer">
+      <ae-button [text]="'PERSONAL_DOCUMENT_REMOVE_DIALOG.Btn_No' | translate: lang" [type]="'button'" [id]="'deleteConfirmNo'"
+        [name]="'deleteConfirmNo'" (aeClick)="deleteConfirmModalClosed('No')"></ae-button>
+      <ae-button [class]="lightClass" [text]="'PERSONAL_DOCUMENT_REMOVE_DIALOG.Btn_Yes' | translate: lang" [type]="'button'" [id]="'deleteConfirmYes'"
+        [name]="'deleteConfirmYes'" (aeClick)="deleteConfirmModalClosed('Yes')"></ae-button>
+    </div>
+  </ae-modal-dialog>
+</div>
+
+<ae-slideout [id]="'documentUpdateSelectSlide'" [name]="'documentUpdateSelectSlide'" [modelState]="getDocUpdateSlideoutState()"
+  [class.slide--animate]="showUpdateDocumentSlideOut">
+  <ng-container *ngIf="showUpdateDocumentSlideOut">
+    <document-update [id]="'documentUpdate'" [name]="'documentUpdate'" [documentCategories]="documentCategoriesForUpdate" [document]="documentDetails"
+      (onCancel)="onDocumentUpdateCancel($event)" (onSubmit)="onDocumentUpdateSubmit($event)">
+    </document-update>
+  </ng-container>
+</ae-slideout>

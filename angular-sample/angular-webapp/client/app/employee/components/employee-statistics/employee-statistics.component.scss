@@ -1,0 +1,43 @@
+@import '../../../../assets/scss/variablesMap';
+@import '../../../atlas-elements/ae-statistic/ae-statistic.component';
+
+.banner__statistics, app-employeestatistics {
+  background: $grey--0;
+  display: none;
+  flex-grow: 1;
+  padding: 10px 0;
+
+  @include media-over-767 {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  @include media-over-1239 {
+    align-items: center;
+    flex-wrap: nowrap;
+  }
+}
+
+.banner__statistic {
+  @include media-over-1239 {
+    &:not(:last-child) {
+      //border-right: 1px solid $grey--1;
+    }
+  }
+}
+
+.banner--profile .statistic {
+    color: $white;
+    margin-top: 5px;
+    align-items: center;
+    background: transparent;
+    display: flex;
+    float: left;
+    padding: $base-padding 0;
+    transition: background $base-transition;
+    width: 16.66666667%;
+
+    &:not(:last-child) {
+    border-right: 1px solid rgba($black, .1);
+    }
+}

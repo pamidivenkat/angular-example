@@ -1,0 +1,15 @@
+<div [id]="id">
+<ul [id]="id + '_ul'" class="list" [dragula]='"bag-one"' [dragulaModel]='items'>
+  <li class="sort-item" [id]="id+'_ul_li_'+i" [class.separator]="hasLine"  [attr.data-OrderIndex]="item.OrderIndex" *ngFor="let item of items; let i=index;">  
+    <span>{{item.Text}}</span>
+    <ae-anchor *ngIf="item.HasAction" [id]="id+'_ul_li_'+i+'anc'" name="id+'_ul_li_'+i+'anc'" [text]="item.LinkText" (aeClick)="onAeAction(item,$event)">
+        {{item.LinkText}}
+    </ae-anchor>  
+    <span class="remove-btn">
+      <ae-anchor   [id]="id+'_ul_li_'+i+'remanc'" name="id+'_ul_li_'+i+'remanc'" [text]="'X'" (aeClick)="onAeRemove(item,$event)">
+      {{'Remove'}}
+    </ae-anchor> 
+     </span>  
+  </li>
+</ul>
+</div>

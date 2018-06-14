@@ -1,0 +1,69 @@
+<div class="so-panel__title">
+  <h3>{{ headerTitle | translate:lang}} </h3>
+</div>
+<div class="so-panel__content">
+  <form class="form" [formGroup]="documentForm">
+    <div class="form__input" *ngIf="isAdd()">
+      <label>{{'DOCUMENT_CATEGORY' | translate:lang}} *
+        <ae-select [id]="'DocumentCategoryId'" [name]="'DocumentCategoryId'" formControlName="Category" [options]="categoryDropDownList"
+          [placeholder]="'PLEASE_SELECT' | translate: lang"></ae-select>
+      </label>
+      <span *ngIf="fieldHasRequiredError('Category')" class="form__input__error">{{'DOCUMENT_CATEGORY' | translate:lang}} {{'IS_REQUIRED' | translate:lang}}</span>
+    </div>
+    <div class="form__input">
+      <label>{{'DOCUMENT_TYPE' | translate:lang}}*
+        <ae-select [id]="'DocumentSubCategoryId'" [name]="'DocumentSubCategoryId'" formControlName="DocumentVaultSubCategory" [options]="documentSubCategoryDropDownList$ | async"
+          [placeholder]="'PLEASE_SELECT' | translate: lang"></ae-select>
+      </label>
+      <span *ngIf="fieldHasRequiredError('DocumentVaultSubCategory')" class="form__input__error">{{'DOCUMENT_TYPE' | translate:lang}} {{'IS_REQUIRED' | translate:lang}}</span>
+    </div>
+    <div class="form__input" *ngIf="isAdd()">
+      <label>{{'SELECT_FILE'| translate:lang }} *     </label>
+      <ae-file [id]="'fileUpload'" [name]="'fileUpload'" [multiple]="false" (onFilesSelected)="onFilesSelected($event)" [accept]="'*'"></ae-file>
+      <span *ngIf="isFileSelected()" class="form__input__error">{{'FILE_REQUIRED_ERROR_MESSAGE' | translate:lang }}</span>
+    </div>
+    <div *ngIf="showDesciptionAndNotes && isAdd()">
+      <div class="form__input">
+        <label>{{'DESCRIPTION' | translate: lang}} 
+          <ae-input [id]="'txtDescription'" [name]="'txtDescription'" formControlName="Description" [placeholder]="'DESCRIPTION' | translate: lang"></ae-input>
+        </label>
+      </div>
+      <div class="form__input">
+        <label> {{'NOTES' | translate:lang }}
+          <ae-input [id]="'txtNotes'" [name]="'txtNotes'" formControlName="Comment" [placeholder]="'NOTES' | translate:lang"></ae-input>
+        </label>
+      </div>
+    </div>
+
+    <div class="form__input">
+      <label>{{documentExpiryLabelText | translate:lang }}</label>
+      <ae-datetime-picker [id]="'expiry-date'" [name]="'expiry-date'" formControlName="ExpiryDate" [monthNavigator]="true" [yearNavigator]="true"
+        [showIcon]="true" (aeBlur)="isValidDate($event)" [minDate]="minDate"> </ae-datetime-picker>
+    </div>
+   
+    <div *ngIf="isDateValid">
+      <div class="form__input">
+        <ae-switch formControlName="IsReminderRequired" [id]="'reminder'" [name]="'reminder'" [switchText]="'IS_NOTIFICATION' | translate:lang"
+          [class]="switchTextLeft" [checked]="showReminderInDaysField"></ae-switch>
+      </div>
+      <div class="form__input" *ngIf="showReminderInDaysField">
+        <label> {{ documentExpiryNotificationLabelText | translate:lang }}
+          <ae-input [id]="'remainderInDays'" [name]="'remainderInDays'" formControlName="ReminderInDays" [type]="ctrlType" [step]="1"
+            [min]="0" [placeholder]="'Reminder notification (in days)'"></ae-input>
+        </label>
+      </div>
+      <span *ngIf="showerrorMessage && showReminderInDaysField" class="form__input__error">{{errorMessage}}</span>
+    </div>
+  </form>
+</div>
+<div class="so-panel__footer">
+  <nav>
+    <ul>
+      <li><label for="soPanel" [id]="getChildId('Aelebel',1)" class="button button--inline-block" (click)="onAddCancel()" [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label></li>
+      <li class="pull--right">
+        <ae-button [id]="getChildId('Aebutton',1)" [name]="getChildName('Aebutton',1)" [class]="lightClass" (aeClick)="onAddFormSubmit()"
+          [text]="actionText"></ae-button>
+      </li>
+    </ul>
+  </nav>
+</div>

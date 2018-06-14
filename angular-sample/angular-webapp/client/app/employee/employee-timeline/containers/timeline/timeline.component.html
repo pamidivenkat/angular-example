@@ -1,0 +1,39 @@
+<div [id]="'employee-timeline-container'">
+    <employee-timeline [id]="'employeeTimeline'" [name]="'employeeTimeline'" (onAddClick)="onAddNew($event)" (onUpdateClick)="onUpdate($event)"
+        (onRemoveClick)="onRemove($event)" (onDetailsClick)="onDetailsClick($event)"></employee-timeline>
+
+    <ae-slideout [id]="getChildId('AeSlideOut', 1)" [name]="getChildName('AeSlideOut', 1)" [modelState]="getSlideoutState()"
+        [class.slide--animate]="getSlideoutAnimateState()">
+        <div *ngIf="showAddOrUpdateEventSlideOut()">
+            <add-update-employee-event [EventType]="selectedEvent" [Action]="action" [id]="'eventFormSlider'" [name]="'eventFormSlider'"
+                (onSubmit)="onSubmit($event)" (onCancel)="oncancel($event)"></add-update-employee-event>
+        </div>
+        <div *ngIf="showDocumentAddSlideOut() || showDocumentUpdateSlideOut()">
+            <add-update-employee-document [Action]="isAdd ? 'Add' : 'Update'" (onSubmit)="onSubmit($event)" (onCancel)="onDocumentAddOrUpdateCancel($event)"
+                (onFormSubmit)="onDocumentAddOrUpdateSubmit($event)"></add-update-employee-document>
+        </div>
+
+        <div *ngIf="showEventDetailsSlideOut()">
+            <employee-event-details [EventType]="selectedEvent" [id]="'eventDetailsSlider'" [name]="'eventDetailsSlider'" (onCancel)="onDetailsCancel($event)"></employee-event-details>
+        </div>
+        <div *ngIf="showDocumentDetailsSlideOut()">
+            <employee-document-details [id]="'documentDetailsSlider'" [name]="'documentDetailsSlider'" (onCancel)="onDetailsCancel($event)"></employee-document-details>
+        </div>
+    </ae-slideout>
+    <ae-modal-dialog [visible]="showRemoveConfirmationDialog" (cancel)="modalClosed($event)" [closable]="true" [id]="'confirmModal'"
+        [name]="'confirmModal'" *ngIf="showRemoveConfirmationDialog">
+        <div class="modal-dialog-header">
+            <h3>{{getConfirmationTitle() | translate:lang}}</h3>
+        </div>
+        <div class="modal-dialog-body">
+            <p>{{ getConfirmationMessage() | translate:lang:{title: getTitle(selectedEmployeeEvent.Title,selectedEmployeeEvent.FileName)}
+                }}
+            </p>
+        </div>
+        <div class="modal-dialog-footer">
+            <ae-button [text]="getConfirmNoButtonText() | translate:lang" [type]="'button'" [id]="'confirmNo'" [name]="'confirmNo'" (aeClick)="modalClosed('no')"></ae-button>
+            <ae-button [class]="lightClass" [text]="getConfirmYesButtonText() | translate:lang" [type]="'button'" [id]="'confirmYes'"
+                [name]="'confirmYes'" (aeClick)="modalClosed('yes')"></ae-button>
+        </div>
+    </ae-modal-dialog>
+</div>

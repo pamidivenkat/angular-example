@@ -1,0 +1,76 @@
+@import '../../../assets/scss/variablesMap';
+.text--right {
+  &>span {
+    margin-top: 5px;
+    padding-left: 10px;
+  }
+  .toggle-switch__indicator {
+    float: left;
+    vertical-align: middle;
+    margin-top: 0;
+  }
+}
+
+.text--left {
+  .toggle-switch__indicator {
+    vertical-align: middle;
+    margin-top: 0;
+  }
+}
+
+.toggle-switch {
+  // background: $grey--pale;
+  cursor: pointer; // height: 40px;
+  line-height: 32px; // padding: ($base-padding / 3);
+  >span {
+    font-weight: bold;
+    display: inline-block;
+    width:calc(100% - 70px);
+    line-height: normal;
+  }
+}
+
+.toggle-switch__input {
+  display: none !important;
+  width: auto !important;
+  visibility: hidden;
+  &:checked {
+    ~.toggle-switch__indicator {
+      background: $teal--0;
+      &::before {
+        left: 50%;
+      }
+    }
+  }
+}
+
+.toggle-switch__indicator {
+  @include dimensions(60px, 30px);
+  background: $grey--3;
+  border-radius: 30px;
+  cursor: pointer;
+  float: right;
+  overflow: hidden;
+  position: relative;
+  transition: background $base-transition;
+  &::before {
+    @include dimensions(24px);
+    background: $white;
+    border-radius: 50%;
+    content: '';
+    left: 0;
+    margin: 3px;
+    position: absolute;
+    top: 0;
+    transition: left $base-transition;
+  }
+}
+
+.toggle-switch-spacer {
+  padding: 5px;
+  label {
+    span {
+      text-align: right;
+    }
+  }
+}

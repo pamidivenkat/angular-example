@@ -1,0 +1,17 @@
+<div [id]="id">
+  <div class="widget__title">
+    <h2>{{'TRAINING.Training' | translate:lang }} {{'TRAINING.courses' | translate:lang}}</h2>
+  </div>
+  <section>
+    <p *ngIf="needToShowPendingMsg()">{{'TRAINING.Training_courses_pending_notification' | translate:lang}}:</p>
+    <p *ngIf="needToShowUptoUpdateMsg()">{{'TRAINING.Training_courses_uptodate_notification' | translate:lang}}</p>
+      <ae-list [items]="ImmutableItems" [id]="getChildId('AeList', 1)" [name]="getChildName('AeList', 1)" (aeAction)="onTrainingClick($event)"
+        [isClickable]="true" [requireCircle]="false" [scroll]="true" [maxheight]="'6em'">
+      </ae-list>
+    <div *ngIf="isHolidayAuthoriserOrManager() && myTeamTrainingTasksExists()">
+      {{'TRAINING.Team_training_tasks' | translate:lang}}
+      <ae-anchor [id]="getChildId('AeAnchor', 1)" [name]="getChildName('AeAnchor', 1)" [text]="'click here'" [class]="_linkStyle"
+        (aeClick)="onTeamTrainingTasksInfoClick()"></ae-anchor>
+    </div>
+  </section>
+</div>

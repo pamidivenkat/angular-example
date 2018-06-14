@@ -1,0 +1,114 @@
+<div class="so-panel__title">
+  <h3 class="grey-strip">{{'EMPLOYEE_CONTACTS.update_contact_details' | translate:lang}}</h3>
+</div>
+<div class="so-panel__content">
+  <div class="information-grid">
+    <form class="form" [formGroup]="updateEmpContactsForm">
+      <section class="information-grid__section">
+        <h3>{{'EMPLOYEE_CONTACTS.contact_details' | translate}}</h3>
+        <div class="form__column">
+
+          <div class="information-grid__item">
+            <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_CONTACTS.address_line_1' | translate:lang}}</div>
+            <div class="information-grid__item-value column-2of3 text-muted">
+              <ae-input [id]="'AddressLine1'" [name]="'AddressLine1'" [title]="'EMPLOYEE_CONTACTS.address_line_1_tooltip' | translate:lang"
+                formControlName="AddressLine1" [placeholder]="'EMPLOYEE_CONTACTS.address_line_1' | translate:lang"></ae-input>
+            </div>
+          </div>
+          <div class="information-grid__item">
+            <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_CONTACTS.address_line_2' | translate:lang}}</div>
+            <div class="information-grid__item-value column-2of3 text-muted">
+              <ae-input [id]="'AddressLine2'" [name]="'AddressLine2'" [title]="'EMPLOYEE_CONTACTS.address_line_2_tooltip' | translate:lang"
+                formControlName="AddressLine2" [placeholder]="'EMPLOYEE_CONTACTS.address_line_2' | translate:lang"></ae-input>
+            </div>
+          </div>
+          <div class="information-grid__item">
+            <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_CONTACTS.address_line_3' | translate:lang}}</div>
+            <div class="information-grid__item-value column-2of3 text-muted">
+              <ae-input [id]="'AddressLine3'" [name]="'AddressLine3'" [title]="'EMPLOYEE_CONTACTS.address_line_3_tooltip' | translate:lang"
+                formControlName="AddressLine3" [placeholder]="'EMPLOYEE_CONTACTS.address_line_3' | translate:lang"></ae-input>
+            </div>
+          </div>
+          <div class="information-grid__item">
+            <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_CONTACTS.town_or_city' | translate:lang}}</div>
+            <div class="information-grid__item-value column-2of3 text-muted">
+              <ae-input [id]="'Town'" [name]="'Town'" [title]="'EMPLOYEE_CONTACTS.town_or_city_tooltip' | translate:lang" formControlName="Town"
+                [placeholder]="'EMPLOYEE_CONTACTS.town_or_city' | translate:lang"></ae-input>
+            </div>
+          </div>
+          <div class="information-grid__item">
+            <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_CONTACTS.county' | translate:lang}}</div>
+            <div class="information-grid__item-value column-2of3 text-muted">
+              <ae-select [id]="'CountyName'" [name]="'CountyName'" [title]="'EMPLOYEE_CONTACTS.county_tooltip' | translate:lang" formControlName="CountyId"
+                [placeholder]="'Please Select'" [options]="countySelectList"></ae-select>
+            </div>
+          </div>
+          <div class="information-grid__item">
+            <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_CONTACTS.postcode' | translate:lang}}</div>
+            <div class="information-grid__item-value column-2of3 text-muted">
+              <ae-input [id]="'Postcode'" [name]="'Postcode'" [title]="'EMPLOYEE_CONTACTS.postcode_tooltip' | translate:lang" formControlName="Postcode"
+                [placeholder]="'EMPLOYEE_CONTACTS.postcode' | translate:lang"></ae-input>
+            </div>
+          </div>
+          <div class="information-grid__item">
+            <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_CONTACTS.country' | translate:lang}}</div>
+            <div class="information-grid__item-value column-2of3 text-muted">
+              <ae-select [id]="'CountryName'" [name]="'CountryName'" [title]="'EMPLOYEE_CONTACTS.country_tooltip' | translate:lang" formControlName="CountryId"
+                [placeholder]="'Please Select'" [options]="countrySelectList"></ae-select>
+            </div>
+          </div>
+          <div class="information-grid__item">
+            <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_CONTACTS.home_phone' | translate:lang}}</div>
+            <div class="information-grid__item-value column-2of3 text-muted">
+              <ae-input [id]="'HomePhone'" [name]="'HomePhone'" [title]="'EMPLOYEE_CONTACTS.home_phone_tooltip' | translate:lang" formControlName="HomePhone"
+                [placeholder]="'EMPLOYEE_CONTACTS.home_phone' | translate:lang"></ae-input>
+            </div>
+            <span *ngIf="fieldHasInvalidTelephoneNumber('HomePhone')" class="form__input__error">{{'EMPLOYEE_CONTACTS.telephone_number_invalid' | translate:lang}}.</span>
+          </div>
+          <div class="information-grid__item">
+            <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_CONTACTS.mobile_phone' | translate:lang}}</div>
+            <div class="information-grid__item-value column-2of3 text-muted">
+              <ae-input [id]="'MobilePhone'" [name]="'MobilePhone'" [title]="'EMPLOYEE_CONTACTS.mobile_phone_tooltip' | translate:lang"
+                formControlName="MobilePhone" [placeholder]="'EMPLOYEE_CONTACTS.mobile_phone' | translate:lang"></ae-input>
+            </div>
+            <span *ngIf="fieldHasInvalidMobileNumber('MobilePhone')" class="form__input__error">{{'EMPLOYEE_CONTACTS.mobile_number_invalid' | translate:lang}}.</span>
+          </div>
+          <div class="information-grid__item">
+            <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_CONTACTS.personal_email_address' | translate:lang}}</div>
+            <div class="information-grid__item-value column-2of3 text-muted">
+              <ae-input [id]="'PersonalEmail'" [name]="'PersonalEmail'" [title]="'EMPLOYEE_CONTACTS.personal_email_address_tooltip' | translate:lang"
+                formControlName="PersonalEmail" [placeholder]="'EMPLOYEE_CONTACTS.personal_email_address' | translate:lang"></ae-input>
+            </div>
+            <span *ngIf="fieldHasInvalidEmail('PersonalEmail')" class="form__input__error">{{'EMPLOYEE_CONTACTS.personal_email_invalid' | translate:lang}}.</span>
+          </div>
+          <div class="information-grid__item">
+            <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_CONTACTS.email_address' | translate}} <span class="error-text">*</span></div>
+            <div class="information-grid__item-value column-2of3 text-muted">
+              <ae-input [id]="'Email'" [name]="'Email'" [title]="'EMPLOYEE_CONTACTS.email_address_tooltip' | translate:lang" formControlName="Email"
+                [placeholder]="'EMPLOYEE_CONTACTS.email_address' | translate:lang"></ae-input>
+            </div>
+            <span *ngIf="fieldHasRequiredError('Email')" class="form__input__error">{{'EMPLOYEE_CONTACTS.email_required' | translate:lang}}.</span>
+            <span *ngIf="fieldHasInvalidEmail('Email')" class="form__input__error">{{'EMPLOYEE_CONTACTS.email_invalid' | translate:lang}}.</span>
+          </div>
+        </div>
+      </section>
+
+      <div class="form__error">
+      </div>
+
+    </form>
+  </div>
+</div>
+<div class="so-panel__footer">
+  <nav>
+    <ul>
+      <li><label for="soPanel" class="button button--inline-block" [id]="getChildId('AeButton',1)" (click)="onUpdateFormClosed($event)"
+          [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label></li>
+      <li class="pull--right">
+        <ae-anchor [id]="getChildId('AeAnchor',1)" [name]="getChildName('AeAnchor',1)" [anchorType]="'button'" [class]="'button button--inline-block'"
+          [anchorClass]="lightClass" (aeClick)="onUpdateFormSubmit($event)" [title]="'BUTTONS.UPDATE' | translate:lang"
+          [text]="'BUTTONS.UPDATE' | translate:lang"></ae-anchor>
+      </li>
+    </ul>
+  </nav>
+</div>

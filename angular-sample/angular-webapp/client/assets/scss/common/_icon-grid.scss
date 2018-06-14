@@ -1,0 +1,29 @@
+.icon-grid {
+  @include clearfix;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.icon-grid__item {
+  background: transparent;
+  cursor: pointer;
+  float: left;
+  padding: $base-padding 12px;
+  text-align: center;
+  transition: background $base-transition;
+  width: 33.333%;
+
+  &:hover {
+    background: rgba($teal--0, .3);
+  }
+
+  .icon {
+    color: $teal--0;
+  }
+}
+
+.icon-grid__copy {
+  margin-top: 12px;
+  word-break: break-all;
+}
+

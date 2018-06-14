@@ -1,0 +1,12 @@
+<div [id]="id" class="icon-with-text" [class.icon-with-text--action]="isAction()" [class.icon-with-text--medium]="isMedium()"
+  [class.icon-with-text--bold]="isBlod()">
+  <span *ngIf="isIcon()" [class.icon-horizontal]="isHorizontal()" [class.icon-vertical]="isVertical()" class="icon-with-text__icon">
+      <ae-icon [id]="aeiconId" [name]="aeiconName" [icon]="icon" [size]="getIconSize()"></ae-icon>
+   </span>
+  <span class="label__img" *ngIf="imgVisible">
+         <img [src]="imgSrc"  /> 
+    </span>
+  <div class="icon-with-text__copy" [id]="txtDivId">
+    {{text}}
+  </div>
+</div>

@@ -1,0 +1,36 @@
+<div class="so-panel__title">
+  <h3>{{ headerTitle | translate:lang}} </h3>
+</div>
+<div class="so-panel__content">
+  <form class="form" [formGroup]="documentForm">
+    <div class="form__input" *ngIf="isAdd()">
+      <label>{{'SELECT_FILE'| translate:lang }} *</label>
+      <ae-file [id]="'fileUpload'" [name]="'fileUpload'" [multiple]="false" (onFilesSelected)="onFilesSelected($event)" [accept]="'.png,.gif,.jpeg,.doc,.docx,.pdf,.xls,.xlsm'"></ae-file>
+      <span *ngIf="isFileSelected()" class="form__input__error">{{'FILE_REQUIRED_ERROR_MESSAGE' | translate:lang }}</span>
+    </div>
+    <div *ngIf="showDesciptionAndTitle && isAdd()">
+      <div class="form__input">
+        <label> {{'TITLE' | translate:lang }}
+          <ae-input [id]="'txtTitle'" [name]="'txtTitle'" formControlName="Title" [placeholder]="'TITLE' | translate:lang"></ae-input>
+        </label>
+      </div>
+      <div class="form__input">
+        <label>{{'DESCRIPTION' | translate: lang}}
+          <ae-input [id]="'txtDescription'" [name]="'txtDescription'" formControlName="Description" [placeholder]="'DESCRIPTION' | translate: lang"></ae-input>
+        </label>
+      </div>
+    </div>
+
+  </form>
+</div>
+<div class="so-panel__footer">
+  <nav>
+    <ul>
+      <li><label for="soPanel" class="button button--inline-block" (click)="onAddCancel()" [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label></li>
+      <li class="pull--right">
+        <ae-anchor [id]="getChildId('AeAnchor',1)" [name]="getChildName('AeAnchor',1)" [anchorType]="'button'" [class]="'button button--inline-block'"
+          [anchorClass]="lightClass" (aeClick)="onAddFormSubmit()" [text]="actionText"></ae-anchor>
+      </li>
+    </ul>
+  </nav>
+</div>

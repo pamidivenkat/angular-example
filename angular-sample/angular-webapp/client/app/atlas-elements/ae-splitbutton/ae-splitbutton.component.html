@@ -1,0 +1,11 @@
+<div class="nav--dropdown" [title]="labelText">
+  <a class="button button--cta button--inline-block button--dropdown" [class.button--light]="isLight()" data-toggle="collapse" data-target="#md-buttons-list" aria-expanded="true"
+    aria-controls="md-buttons-list" (click)="_onClick($event)">
+        {{labelText}} &#9662;
+    </a>
+  <ul class="list--dropdowns" id="md-buttons-list" aria-expanded="true" *ngIf="viewOptions()">
+    <li *ngFor="let option of splitOptions;let i = index" [title]="option.Text">
+      <ae-anchor [id]="'ae-anchor' + i" [name]="'name1'" [text]="option.Text" [disabled]="option.Disabled" (aeClick)="optionClick($event, option,i)"></ae-anchor>
+    </li>
+  </ul>
+</div>

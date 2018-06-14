@@ -1,0 +1,27 @@
+@import '../../../../../assets/scss/variablesMap';
+.team-roaster-slider{
+    .date-block{
+        padding: 0px 110px;
+        position: relative;
+        .previous-btn { position: absolute; left: 0px; top: 16px; }
+        .next-btn { position: absolute; right: 0px; top: 16px; }
+        input{
+            width: 160px;
+                @include media-0-767 {
+                width: 100%;
+                }
+            }
+            display: -webkit-box;
+            display: -ms-flexbox;
+            ae-datetime-picker{
+                margin-top: 5px;
+                display: inline-block;
+                @include media-0-767 {
+                    display: block;
+                }
+            }
+        @include media-0-767 {
+            display: block;
+        }
+    }
+}

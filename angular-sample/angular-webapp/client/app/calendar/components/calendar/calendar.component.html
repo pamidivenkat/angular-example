@@ -1,0 +1,60 @@
+<div id="calendarvisibility" *ngIf="!canViewPage">
+  {{'YOU_DO_NOT_HAVE' | translate: lang}}
+</div>
+<div id="ID" class="calendar" *ngIf="canViewPage">
+  <ae-banner [id]="'banner'" [name]="'banner'" [titleText]="'MY_CALENDAR' | translate: lang" [backgroundImage]="'/assets/images/lp-calendar.jpg'">
+    <ae2-breadcrumb [id]="'breadCrumb'" [name]="'breadCrumb'" [group]="bcGroup" class="bredcrumb-section"></ae2-breadcrumb>
+  </ae-banner>
+
+  <form class="form filter-bar" [formGroup]="calendarFilterForm" *ngIf="calendarFilterDataLoaded$ | async">
+    <div class="filter-bar__filters">
+      <div class="filter-bar__filter">
+        <label>{{'SITE' | translate: lang}}</label>
+        <div *ngIf="isServiceOwnerOrHRManager||isManager || adminView || canViewOthersCalendar" class="top-5">
+          <ae-autocomplete [id]="getChildId('AeAutocomplete',1)" [name]="getChildName('AeAutocomplete',1)" [placeholder]="'SELECT_SITES' | translate: lang"
+            [multiselect]="'true'" [items]="sites" [dstype]="filterDsType" [field]="'Text'" [valuefield]="'Value'" (aeOnSelect)="onChangeSite($event)"
+            (aeOnUnselect)="aeOnUnselectSite($event)" (aeOnClearSelected)="aeOnClearSelectedSite($event)" [value]="calendarFilterModel.Site"
+            formControlName="Site"></ae-autocomplete>
+        </div>
+        <div *ngIf="isEmployee" class="top-5">
+          {{siteName}}
+        </div>
+
+      </div>
+      <div class="filter-bar__filter">
+        <label>{{'DEPARTMENT' | translate: lang}}</label>
+        <div *ngIf="isServiceOwnerOrHRManager||isManager || adminView || canViewOthersCalendar" class="top-5">
+          <ae-autocomplete [value]="calendarFilterModel.Department" formControlName="Department" [id]="getChildId('AeAutocomplete',2)"
+            [name]="getChildName('AeAutocomplete',2)" [placeholder]="'SELECT_DEPARTMENT' | translate: lang" [multiselect]="'true'"
+            [items]="departments" [dstype]="filterDsType" [field]="'Name'" [valuefield]="'Id'" (aeOnSelect)="onChangeDept($event)"
+            (aeOnUnselect)="aeOnUnselectDept($event)" (aeOnClearSelected)="aeOnClearSelectedDept($event)"></ae-autocomplete>
+        </div>
+        <div *ngIf="isEmployee" class="top-5">
+          {{departmentName}}
+        </div>
+      </div>
+    </div>
+    <div class="filter-bar__filters">
+      <div class="filter-bar__filter">
+        <label>{{'EMPLOYEE_LABEL' | translate: lang}}</label>
+        <div class="top-5">
+          <ae-autocomplete [value]="calendarFilterModel.Employee" formControlName="Employee" [id]="getChildId('AeAutocomplete',3)"
+            [name]="getChildName('AeAutocomplete',3)" [placeholder]="'SELECT_EMPLOYEES' | translate: lang"
+            [multiselect]="'true'" [items]="employees | async" [automatch]="false" (aeOnComplete)="searchEmployees($event)" [dstype]="remoteDsType"
+            [field]="'Text'" [valuefield]="'Value'" (aeOnSelect)="onChangeEmployee($event)" (aeOnUnselect)="aeOnUnselectEmp($event)"
+            (aeOnClearSelected)="aeOnClearSelectedEmp($event)"></ae-autocomplete>
+        </div>
+      </div>
+      <div class="filter-bar__filter">
+        <div class="form-events">
+          <label class="label pull-left">{{'SHOW_PENDING_HOLIDAYS' | translate: lang}}</label>
+          <div class="pull-left">
+            <ae-switch formControlName="ShowPending" [id]="'testSwitch'" [name]="'testSwitch'" [textVisible]="false"
+              [class]="switchTextRight"></ae-switch>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <ae-fullcalendar [loading]="loadStatus | async" [events]="events" [calendarTitle]="calendarTitle" (viewDateChange)="dateChanged($event)"></ae-fullcalendar>
+</div>

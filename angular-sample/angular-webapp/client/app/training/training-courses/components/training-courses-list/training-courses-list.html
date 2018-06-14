@@ -1,0 +1,80 @@
+<div [id]="id" class="table spacer">
+  <div class="table__filter-bar" id="trainingCourseFilter-barID">
+    <div class="filter-bar">
+      <div class="filter-bar__label label">{{'Filter_by'| translate:lang}}</div>
+      <div class="filter-bar__filters">
+        <div class="filter-bar__filter">
+          <ae-input [id]="getChildId('AeInput', 1)" [name]="getChildName('AeInput', 1)" [placeholder]="'TRAINING_COURSE.SEARCH_PLACEHOLDER'| translate:lang"
+            [delay]="searchDebounce" [type]="inputType" (aeChange)="onSearchTextChange($event)" [value]="defaultCourseSearch"></ae-input>
+        </div>
+        <div class="filter-bar__filter">
+          <ae-select [id]="getChildId('AeSelect', 2)" [name]="getChildName('AeSelect', 2)" [options]="statusTypes" [value]="'0'" (aeSelectChange)="onStatusTypeChange($event)"></ae-select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ae-datatable [id]="getChildId('AeDataTable')" [name]="getChildName('AeDataTable')" [dataSource]="trainingCourseList" [autoGenerateColumns]="false"
+    [actions]="actions" [totalRecords]="recordsCount$" [loading]="loadingStatus" [defaultOptions]="dataTableOptions" (pageChanged)="onPageChange($event)"
+    (onSort)="onPageSort($event)">
+    <ae-column [headerText]="'TRAINING_COURSE.TITLE' | translate:lang" [sortable]="true" [sortKey]="'Title'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'TRAINING_COURSE.TITLE' | translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <span>{{context.Title}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'TRAINING_COURSE.DESCRIPTION' | translate:lang" [sortable]="true" [sortKey]="'Description'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'TRAINING_COURSE.DESCRIPTION' | translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <span>{{context.Description}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'TRAINING_COURSE.VERSION' | translate:lang" [sortable]="true" [sortKey]="'Version'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'TRAINING_COURSE.VERSION' | translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <span>{{context.Version}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'TRAINING_COURSE.TYPE' | translate:lang" [sortable]="true" [sortKey]="'IsExample'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'TRAINING_COURSE.TYPE' | translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <span>{{courseType(context.IsExample)}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'TRAINING_COURSE.CREATEDON' | translate:lang" [sortable]="true" [sortKey]="'CreatedOn'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'TRAINING_COURSE.CREATEDON' | translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <span>{{context.CreatedOn |  localeDate:defaultLocale:'shortDate'}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+  </ae-datatable>
+</div>

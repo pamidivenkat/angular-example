@@ -1,0 +1,17 @@
+<div class="icon-management-banner">
+  <ae-banner [id]="getChildId('banner')" [name]="getChildName('banner')" [titleText]="'ICON_MANAGEMENT.ICONMANAGEMENT' | translate:lang">
+    <div class="image-text banner-image-text">
+    </div>
+    <ae2-breadcrumb [id]="'breadCrumb'" [name]="'breadCrumb'" [group]="bcGroup" class="bredcrumb-section"></ae2-breadcrumb>
+    <div class="icon-list banner-icon-list">
+      <ae-splitbutton [id]="'iconManagementSplitButton'" [name]="'iconManagementSplitButton'" [text]="'ICON_MANAGEMENT.ADD' | translate:lang"
+        [options]="splitButtonOptions" (aeClick)="onSplitBtnClick($event)">
+      </ae-splitbutton>
+    </div>
+  </ae-banner>
+</div>
+<div>
+  <ae-notification [id]="getChildId('AeNotification')" [name]="getChildName('AeNotification')" [iconName]="'icon-info'" [textInfo]="'ICON_MANAGEMENT.NOTIFICATION' | translate:lang"
+    [svgUrl]="getIconSvgUrl()">
+  </ae-notification>
+</div>

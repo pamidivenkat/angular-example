@@ -1,0 +1,117 @@
+<!--actual content div-->
+<div *ngIf="isFormContentLoaded" class="wrapper-for-slideout-conten">
+  <div class="so-panel__title">
+    <h3 class="grey-strip">{{titleTextReturn() | translate:lang}}</h3>
+  </div>
+  <div class="so-panel__content">
+    <div class="information-grid">
+      <form class="form" [formGroup]="salaryHistoryForm">
+        <section class="information-grid__section">
+          <div class="form__column">
+            <div class="information-grid__item">
+              <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_SALARY_HISTORY.JOB_TITLE' | translate:lang}} <span class="error-text">*</span></div>
+              <div class="information-grid__item-value column-2of3 text-muted">
+                <ae-select [id]="'JobTitleId'" [name]="'JobTitleId'" [placeholder]="'EMPLOYEE.please_select' | translate:lang" formControlName="JobTitleId"
+                  [options]="jobTitleOptionList"></ae-select>
+              </div>
+              <span *ngIf="fieldHasRequiredError('JobTitleId')" class="form__input__error">{{'EMPLOYEE_SALARY_HISTORY.JOB_TITLE_REQUIRED' | translate:lang}}</span>
+            </div>
+            <div class="information-grid__item">
+              <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_SALARY_HISTORY.START_DATE' | translate:lang}} <span class="error-text">*</span></div>
+              <div class="information-grid__item-value column-2of3 text-muted">
+                <ae-datetime-picker [id]="'StartDate'" [name]="'StartDate'" formControlName="StartDate" [readonlyInput]="false" [monthNavigator]="true"
+                  [yearNavigator]="true" yearRange="2000:2030" [showIcon]="true"></ae-datetime-picker>
+              </div>
+              <span *ngIf="fieldHasRequiredError('StartDate')" class="form__input__error">{{'EMPLOYEE_SALARY_HISTORY.START_DATE_REQUIRED' | translate:lang}}</span>
+              
+            </div>
+            <div class="information-grid__item">
+              <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_SALARY_HISTORY.FINISH_DATE' | translate:lang}} <span class="error-text" *ngIf="isFinishDateRequired">*</span></div>
+              <div class="information-grid__item-value column-2of3 text-muted">
+                <ae-datetime-picker [id]="'FinishDate'" [name]="'FinishDate'" formControlName="FinishDate" [readonlyInput]="false" [monthNavigator]="true"
+                  [yearNavigator]="true" yearRange="2000:2030" [showIcon]="true"></ae-datetime-picker>
+              </div>
+              <span *ngIf="fieldHasRequiredError('FinishDate')" class="form__input__error">{{'EMPLOYEE_SALARY_HISTORY.FINISH_DATE_REQUIRED' | translate:lang}}</span>
+              <span *ngIf=" !fieldHasRequiredError('FinishDate') && !fieldHasRequiredError('FinishDate') && fieldHasDateComparisonError()"
+                class="form__input__error">{{'EMPLOYEE_SALARY_HISTORY.FINISH_DATE_ERROR' | translate:lang}}</span>
+            </div>
+            <div class="information-grid__item">
+              <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_SALARY_HISTORY.PAY' | translate:lang}} </div>
+              <div class="information-grid__item-value column-2of3 text-muted">
+                <ae-input [id]="'Pay'" [name]="'Pay'" [placeholder]="'EMPLOYEE_SALARY_HISTORY.ENTER_IN_POUNDS' | translate:lang" [type]="ctrlType"
+                  [step]="0.001" [max]="10000000" formControlName="Pay"></ae-input>
+              </div>
+            </div>
+
+            <div class="information-grid__item">
+              <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_SALARY_HISTORY.PERIOD' | translate:lang}} </div>
+              <div class="information-grid__item-value column-2of3 text-muted">
+                <ae-select [id]="'EmployeePeriodId'" [name]="'EmployeePeriodId'" [placeholder]="'EMPLOYEE.please_select' | translate:lang"
+                  formControlName="EmployeePeriodId" [options]="employeePeriodOptionList"></ae-select>
+              </div>
+            </div>
+
+            <div class="information-grid__item">
+              <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_SALARY_HISTORY.HOURS_A_WEEK' | translate:lang}} <span class="error-text">*</span></div>
+              <div class="information-grid__item-value column-2of3 text-muted">
+                <ae-input [id]="'HoursAWeek'" [name]="'HoursAWeek'" [type]="ctrlType" [step]="1" [max]="168" formControlName="HoursAWeek"
+                  [placeholder]="'EMPLOYEE_SALARY_HISTORY.HOURS' | translate:lang"></ae-input>
+              </div>
+              <span *ngIf="fieldHasRequiredError('HoursAWeek')" class="form__input__error">{{'EMPLOYEE_SALARY_HISTORY.HOURS_A_WEEK_REQUIRED' | translate:lang}}</span>
+              <span *ngIf="fieldHasMaxError('HoursAWeek')" class="form__input__error">{{'EMPLOYEE_SALARY_HISTORY.HOURS_A_WEEK_ERROR' | translate:lang}}</span>
+            </div>
+            <div class="information-grid__item">
+              <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_SALARY_HISTORY.REASON_FOR_CHANGE' | translate:lang}}</div>
+              <div class="information-grid__item-value column-2of3 text-muted">
+                <ae-input [id]="'ReasonForChange'" [name]="'ReasonForChange'" formControlName="ReasonForChange" [placeholder]="'EMPLOYEE_SALARY_HISTORY.REASON_FOR_CHANGE' | translate:lang"></ae-input>
+              </div>
+            </div>
+            <div class="information-grid__item">
+              <div class="information-grid__item-value column-2of3 text-muted">
+                <ae-checkbox [id]="'IsCurrentSalary'" [name]="'IsCurrentSalary'" [value]="IsCurrentSalary" formControlName="IsCurrentSalary"
+                  [checkText]="'EMPLOYEE_SALARY_HISTORY.IS_CURRENT_SALARY' | translate:lang" class="inline-block"></ae-checkbox>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="form__error">
+        </div>
+
+      </form>
+    </div>
+  </div>
+  <div class="so-panel__footer">
+    <nav>
+      <ul>
+        <li><label for="soPanel" class="button button--inline-block" [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang" [id]="getChildId('AeButton',1)" (click)="onSalaryFormClosed($event)">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label></li>
+        <li class="pull--right">
+          <ae-anchor [id]="getChildId('AeAnchor',1)" [name]="getChildName('AeAnchor',1)" [title]="buttonTextReturn() | translate:lang" [anchorType]="'button'" [class]="'button button--inline-block'"
+            [anchorClass]="lightClass" (aeClick)="onSalaryHistoryFormSubmit($event)" [text]="buttonTextReturn() | translate:lang"></ae-anchor>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
+<!--actual content div end -->
+<!-- loader block -->
+<div *ngIf="!isFormContentLoaded" class="loader-form">
+  <div class="so-panel__title">
+    <h3></h3>
+  </div>
+  <div class="so-panel__content">
+    <div class="loader--select"></div>
+    <div class="loader--date-input"></div>
+    <div class="loader--date-input"></div>
+    <div class="loader--input"></div>
+    <div class="loader--select"></div>
+    <div class="loader--input"></div>
+    <div class="loader--input"></div>
+    <div class="loader--checkbox"></div>
+  </div>
+  <div class="so-panel__footer">
+    <div class="button-loader"></div>
+    <div class="button-loader dark pull--right"></div>
+  </div>
+</div>
+<!-- loader block end -->

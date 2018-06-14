@@ -1,0 +1,86 @@
+<div [id]="getChildId('div', 1)" class="so-panel__title">
+  <h3>{{'SITES.SITE_DETAILS'| translate:lang}}</h3>
+  <h4>{{siteDetails.Name}}</h4>
+</div>
+
+<div [id]="getChildId('div', 2)" class="so-panel__content">
+  <div class="information-grid" [id]="getChildId('div', 3)">
+    <section class="information-grid__section" [id]="getChildId('section', 4)">
+      <h3>{{siteDetails.Name}}</h3>
+      <div class="information-grid__item">
+        <div class="information-grid__item-label">{{'SITES.SITE_LOGO' | translate:lang}}</div>
+        <div class="information-grid__item-value">
+          <p><img src="{{imageUrl}}" alt="SiteLogo"></p>
+        </div>
+      </div>
+      <div class="information-grid__item" *ngIf="canManageCompanySites()">
+        <div class="information-grid__item-value">
+          <ae-file [id]="'fileUpload'" [name]="'fileUpload'" [multiple]="false" [title]="'Upload Logo'" (onFilesSelected)="onFilesSelected($event)"
+            [accept]="'image/*'"></ae-file>
+          <span *ngIf="selectedFile">{{selectedFile.Name}}</span>
+        </div>
+        <div class="information-grid__item-value btn-submit" *ngIf="selectedFile">
+          <div>
+            <ae-anchor [id]="getChildId('ae-anchor', 12)" [name]="getChildName('ae-anchor', 12)" [anchorType]="'button'" [class]="'button button--inline-block'"
+              [anchorClass]="lightClass" (aeClick)="submitSiteLogo($event)" [text]="'SITES.SUBMIT' | translate:lang"></ae-anchor>
+          </div>
+        </div>
+      </div>
+      <div class="information-grid__item">
+        <div class="information-grid__item-label">{{'SITES.SITE' | translate:lang}}</div>
+        <div class="information-grid__item-value">{{siteDetails.Name}}</div>
+      </div>
+      <div class="information-grid__item">
+        <div class="information-grid__item-label">{{'SITES.ADDRESS' | translate:lang}}</div>
+        <div class="information-grid__item-value">{{getFullAddress()}}</div>
+      </div>
+      <div class="information-grid__item">
+        <div class="information-grid__item-label">{{'SITES.HEAD_OFFICE' | translate:lang}}</div>
+        <div class="information-grid__item-value">{{siteDetails.IsHeadOffice ? 'Yes' : 'No'}}</div>
+      </div>
+      <div class="information-grid__item" *ngIf="siteDetails.Sector">
+        <div class="information-grid__item-label">{{'SITES.SECTOR' | translate:lang}}</div>
+        <div class="information-grid__item-value">{{siteDetails.Sector.Name}}</div>
+      </div>
+      <div class="information-grid__item" *ngIf="isAdministrator || isConsultant">
+        <div class="information-grid__item-label">{{'SITES.SALESFORCE_SITE_ID' | translate:lang}}</div>
+        <div class="information-grid__item-value">{{siteDetails.SalesforceSiteID}}</div>
+      </div>
+      <div class="information-grid__item" *ngIf="isCareSector || isDentalSector">
+        <div class="information-grid__item-label">{{'SITES.CQC_PRO' | translate:lang}}</div>
+        <div class="information-grid__item-value" *ngIf="siteDetails.IsCQCProPurchased">{{'YES' | translate:lang}}</div>
+        <div class="information-grid__item-value" *ngIf="!siteDetails.IsCQCProPurchased">{{'NO' | translate:lang}}</div>
+      </div>
+      <div class="information-grid__item" *ngIf="siteDetails.IsCQCProPurchased">
+        <div class="information-grid__item-label">{{'SITES.CQC_PRO_PRODUCT' | translate:lang}}</div>
+        <div class="information-grid__item-value" *ngIf="siteDetails.CQCProProduct == cqcProProductCare">{{'SITES.CQC_PRO_CARE' | translate:lang}}</div>
+        <div class="information-grid__item-value" *ngIf="siteDetails.CQCProProduct == cqcProProductDental">{{'SITES.CQC_PRO_DENTAL' | translate:lang}}</div>
+      </div>
+      <div class="information-grid__item" *ngIf="siteDetails.IsCQCProPurchased">
+        <div class="information-grid__item-label">{{'SITES.CQC_PRO_PACKAGE' | translate:lang}}</div>
+        <div class="information-grid__item-value" *ngIf="siteDetails.CQCProPackage == cqcProPackageStandard">{{'SITES.STANDARD' | translate:lang}}</div>
+        <div class="information-grid__item-value" *ngIf="siteDetails.CQCProPackage == cqcProPackagePremium">{{'SITES.PREMIUM' | translate:lang}}</div>
+      </div>
+      <div class="information-grid__item" *ngIf="siteDetails.IsCQCProPurchased">
+        <div class="information-grid__item-label">{{'SITES.CQC_PRO_USERS' | translate:lang}}</div>
+        <div class="information-grid__item-value">{{siteDetails.NoOfCQCProSiteUsers}}</div>
+      </div>
+      <div class="information-grid__item" *ngIf="siteDetails.IsCQCProPurchased">
+        <div class="information-grid__item-label">{{'SITES.API_KEY' | translate:lang}}</div>
+        <div class="information-grid__item-value">{{siteDetails.CQCProAPIKey}}</div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<div class="so-panel__footer" [id]="getChildId('div', 6)">
+  <nav>
+    <ul>
+      <li><label class="button button--inline-block" (click)="ondetailsFormClosed($event)" [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label></li>
+      <li class="pull--right">
+        <ae-anchor [id]="getChildId('ae-anchor', 79)" [name]="getChildName('ae-anchor', 79)" [anchorType]="'button'" [class]="'button button--inline-block'"
+          [anchorClass]="lightClass" (aeClick)="removeSite()" [text]="'SITES.REMOVE' | translate:lang"></ae-anchor>
+      </li>
+    </ul>
+  </nav>
+</div>

@@ -1,0 +1,11 @@
+@import '../ae-button/ae-button.component';
+.button--light {
+  background: $yellow--0;
+  border-color: $yellow--0;
+  &:hover {
+    background: rgba($yellow--0, .5);
+  }
+  .footer__feedback & {
+    color: $grey--0;
+  }
+}

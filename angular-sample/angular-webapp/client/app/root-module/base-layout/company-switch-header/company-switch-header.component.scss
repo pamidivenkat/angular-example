@@ -1,0 +1,8 @@
+.company-name-header {
+  display: inline-block;
+  float: left;
+  padding: 0 15px;
+  @media (min-width:768px) {
+    padding: 5px 30px;
+  }
+}

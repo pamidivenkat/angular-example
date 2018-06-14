@@ -1,0 +1,106 @@
+<div>
+  <div class="so-panel__title">
+    <h3>{{'ADD_HAZARD' | translate:lang}}</h3>
+  </div>
+  <div class="so-panel__content">
+    <form class="form" [formGroup]="createHazardForm">
+      <div class="sg-grid grid--1-2">
+        <div>
+          {{'CREATE_HAZARD.PREVIEW' | translate: lang}}
+          <ae-card>
+            <div class="card top-5">
+              <div class="card__image img-height">
+                <img [id]="imgPreview" [name]="imgPreview" [src]="PreviewUrl()" *ngIf="showPreview" />
+              </div>
+              <div class="card__content spacer-15">
+                <span class="card__title">{{getHazardName()}}</span>
+              </div>
+            </div>
+          </ae-card>
+        </div>
+        <div>
+          <div class="buttons-hazard">
+            <ae-file [id]="'fileUpload'" [name]="'fileUpload'" [multiple]="false" (onFilesSelected)="onFilesSelected($event)" [accept]="'image/*'"
+              [title]="'CREATE_HAZARD.USER_IMAGE'| translate: lang" [showFileName]="false" [showIcon]="false"></ae-file>
+            <ae-button [text]="'CREATE_HAZARD.CLEAR'| translate: lang" [type]="'button'" [id]="getChildId('AeButton', 2)" [name]="getChildName('AeButton', 2)"
+              (aeClick)="clearImage()" [customClass]="'button-block'"></ae-button>
+          </div>
+        </div>
+      </div>
+      <div class="form__input">
+        <label>{{'CREATE_HAZARD.NAME' | translate: lang}} *
+              <ae-input [id]="getChildId('AeInput', 1)" [name]="getChildName('AeInput', 1)" formControlName="Name" [placeholder]="'CREATE_HAZARD.NAME' | translate: lang"></ae-input>
+           </label>
+        <span *ngIf="fieldHasRequiredError('Name')" class="form__input__error">{{'CREATE_HAZARD.REQUIRED_ERROR' | translate: lang}}</span>
+      </div>
+      <div class="form__input">
+        <label>{{'CREATE_HAZARD.DESCRIPTION' | translate: lang}}                  
+           <ae-textarea [id]="getChildId('AeTextArea', 1)" [name]="getChildName('AeTextArea', 1)" formControlName="Description" [placeholder]="'CREATE_HAZARD.DESCRIPTION' | translate: lang"></ae-textarea>
+           </label>
+      </div>
+      <div class="form__input">
+        <label>
+          <ae-icon [id]="getChildId('AeIcon', 1)" [name]="getChildName('AeIcon', 1)" [icon]="'icon-alert-circle-question'"
+          [title]="'RA_HELP_TEXT.WHO_EFFECTED' | translate:lang"> </ae-icon>
+          {{'CREATE_HAZARD.WHO_IS_AFFECTED' | translate: lang}} *
+              <ae-autocomplete [id]="getChildId('AeAutoComplete', 1)" formControlName="WhoAffecteds" [name]="getChildName('AeAutoComplete', 1)" [placeholder]="'CREATE_HAZARD.WHO_IS_AFFECTED_PLACEHOLDER' | translate: lang"
+        [multiselect]="true" [items]="affectedPeopleOptions"  [dstype]="dataSourceType" [field]="'Name'" [valuefield]="'Affected'"
+       ></ae-autocomplete>
+                   </label>
+        <span *ngIf="fieldHasRequiredError('WhoAffecteds')" class="form__input__error">{{'CREATE_HAZARD.REQUIRED_ERROR' | translate: lang}}</span>
+      </div>
+      <div class="form__input" *ngIf="toggleOthersAffectedFieldVisibility()">
+        <label>{{'CREATE_HAZARD.WHO_IS_AFFECTED_OTHER' | translate: lang}} *
+              <ae-input [id]="getChildId('AeInput', 2)" [name]="getChildName('AeInput', 2)" formControlName="OthersAffected" [placeholder]="'CREATE_HAZARD.WHO_IS_AFFECTED_OTHER' | translate: lang"></ae-input>
+           </label>
+        <span *ngIf="fieldHasRequiredError('OthersAffected')" class="form__input__error">{{'CREATE_HAZARD.REQUIRED_ERROR' | translate: lang}}</span>
+      </div>
+      <div class="form__input">
+        <label>
+          <ae-icon [id]="getChildId('AeIcon', 1)" [name]="getChildName('AeIcon', 1)" [icon]="'icon-alert-circle-question'"
+          [title]="'RA_HELP_TEXT.HOW_MANY_EFFECTED' | translate:lang"> </ae-icon>
+          {{'CREATE_HAZARD.HOW_MANY_AFFECTED' | translate: lang}}
+              <ae-input [id]="getChildId('AeInput', 3)" [name]="getChildName('AeInput', 3)" formControlName="HowManyAffected" [placeholder]="'CREATE_HAZARD.HOW_MANY_PLACEHOLDER' | translate: lang"></ae-input>
+           </label>
+      </div>
+
+      <div class="form__input">
+        <label>
+          <ae-icon [id]="getChildId('AeIcon', 1)" [name]="getChildName('AeIcon', 1)" [icon]="'icon-alert-circle-question'"
+          [title]="'RA_HELP_TEXT.HOW_PEOPLE_EFFECTED' | translate:lang"> </ae-icon>  
+          {{'CREATE_HAZARD.HOW_PEOPLE_AFFECTED' | translate: lang}}
+                   <ae-textarea [id]="getChildId('AeTextArea', 2)" [name]="getChildName('AeTextArea', 2)" formControlName="PeopleAffected" [placeholder]="'CREATE_HAZARD.HOW_PEOPLE_PLACEHOLDER' | translate: lang"></ae-textarea>
+           </label>
+      </div>
+      <div class="form__input">
+        <div class="iocns-select">
+          <label>{{'CREATE_HAZARD.SELECT_ICON' | translate: lang}}</label>
+          <div class="image-selectbox">
+            <div class="dropdown" id="iconDDL">
+              <button id="dLabel" type="button" (click)="toggleIconView()">
+               <span class="selected-img" *ngIf="iconUrl != null"><img [src]="iconUrl" [id]="'imgPreview'" [name]="'imgPreview'"/></span>
+                <span class="arrow-icon"><ae-icon [id]="'icon-pointer'" [name]="'icon-pointer'" [icon]="'icon-pointer-right'"></ae-icon></span>
+              </button>
+              <ul class="dropdown-menu" *ngIf="iconViewExpand">
+                <li *ngFor="let icon of standardHazardIconOptions" (click)="onIconSelect(icon.Id)">
+                  <img [src]="getPictureUrl(icon.Id,true)" [id]="'imgPreview'" [name]="'imgPreview'" />
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="so-panel__footer">
+    <nav>
+      <ul>
+        <li><label for="soPanel" class="button button--inline-block" (click)="onCreateHazardCancel()" [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label></li>
+        <li class="pull--right">
+          <ae-anchor [id]="getChildId('AeAnchor',1)" [name]="getChildName('AeAnchor',1)" [anchorType]="'button'" [class]="'button button--inline-block'"
+            [anchorClass]="lightClass" (aeClick)="onAddFormSubmit()" [text]="'BUTTONS.ADD' | translate: lang"></ae-anchor>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>

@@ -1,0 +1,4 @@
+<textarea [id]="id" [name]="name" [placeholder]="placeholder" [rows]="rows" [cols]="cols" [attr.maxlength]="maxlength"
+  [attr.readonly]="readOnly" [style.resize]="resizeStyle" (change)="_onChange($event)" (focus)="onFocus($event)" (blur)="onBlur($event)"
+  (input)="onInput($event)" class="text-area" [value]="getValue()"></textarea>
+  <div *ngIf="canShowCharactersRemaining()">{{charLeftMessage}}</div>

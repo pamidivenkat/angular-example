@@ -1,0 +1,38 @@
+<div id="slide-out-form-content" class="wrapper-for-slideout-conten">
+  <div class="so-panel__title">
+    <h3 class="grey-strip">{{'AUDIT_LOG_VERSION_DETAILS' | translate: lang}}</h3>
+  </div>
+  <div class="so-panel__content">
+    <div class="information-grid">
+      <h3 class="top-0">{{'AUDIT_LOG_VERSION_DETAILS' | translate: lang}}</h3>
+      <section class="information-grid__section">
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'MODIFIED_ON' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3">{{selectedLog.ValidFrom | date:'dd/MM/yyyy' }} {{ selectedLog.ValidFrom | date:'jms' }}</div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'MODIFIED_BY' | translate:lang}} </div>
+          <div class="information-grid__item-value column-2of3">{{selectedLog.ModifiedBy}}</div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'VERSION' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3">{{selectedLog.Version}}</div>
+        </div>
+        <div class="information-grid__item" *ngIf="permissionsList && permissionsList.length > 0">
+          <div class="information-grid__item-label column-1of3">{{'PERMISSIONS' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3" *ngFor="let item of permissionsList">
+            <span *ngIf="item.Action == 'Added'"><ae-icon [id]="'pencilIcon'" [name]="'pencilIcon'" [color]="'#009494'" [icon]="'icon-alert-add'" [size]="'small'"></ae-icon></span>
+            <span *ngIf="item.Action != 'Added'"><ae-icon [id]="'infoIcon'" [name]="'infoIcon'" [color]="'#df0000'" [icon]="'icon-alert-cancel'" [size]="'small'"></ae-icon></span>            {{ item.Name }}
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+  <div class="so-panel__footer">
+    <nav>
+      <ul>
+        <li><label for="soPanel" class="button button--inline-block" (click)="onFormClosed($event)" [title]="'BUTTONS.SLIDE_CLOSE' | translate: lang">{{'BUTTONS.SLIDE_CLOSE' | translate: lang}}</label></li>
+      </ul>
+    </nav>
+  </div>
+</div>

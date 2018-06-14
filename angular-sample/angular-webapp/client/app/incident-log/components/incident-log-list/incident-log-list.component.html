@@ -1,0 +1,125 @@
+<div class="table spacer incident-log-block">
+
+  <div class="table__filter-bar">
+    <div class="filter-bar">
+      <div class="filter-bar__label label">Filter by</div>
+      <form [formGroup]="incidentsFilterForm" id="incidentsFilterForm" name="incidentsFilterForm">
+        <div class="filter-bar__filters">
+          <div class="filter-bar__filter">
+            <ae-select [title]="'INCIDENT_LOG.FILTER_BY' | translate: lang:{ fieldName: 'site' }" formControlName="Site" [id]="'filter-sites'"
+              [name]="'filter-sites'" [options]="sites" [placeholder]="'INCIDENT_LOG.INCIDENT_ALL_SITES' | translate:lang"
+              (aeSelectChange)="onFiltersChange()"></ae-select>
+          </div>
+          <div class="filter-bar__filter">
+            <ae-select formControlName="Category" [title]="'INCIDENT_LOG.FILTER_BY' | translate: lang:{ fieldName: 'incident category' }"
+              [id]="'filter-categories'" [name]="'filter-categories'" [options]="incidentCategories$ | async" [placeholder]="'INCIDENT_LOG.INCIDENT_ALL_INCIDENT_TYPES' | translate:lang"
+              (aeSelectChange)="onFiltersChange()"></ae-select>
+          </div>
+          <div class="filter-bar__filter">
+            <ae-select formControlName="Year" [title]="'INCIDENT_LOG.FILTER_BY' | translate: lang:{ fieldName: 'year' }" [id]="'filter-years'"
+              [name]="'filter-years'" [options]="years" [placeholder]="'INCIDENT_LOG.INCIDENT_ALL_YEARS' | translate:lang"
+              (aeSelectChange)="onFiltersChange()"></ae-select>
+          </div>
+          <div class="filter-bar__filter">
+            <ae-select formControlName="Status" [title]="'INCIDENT_LOG.FILTER_BY' | translate: lang:{ fieldName: 'status' }" [id]="'filter-status'"
+              [name]="'filter-status'" [options]="statusList" [placeholder]="'INCIDENT_LOG.INCIDENT_ALL_STATUS' | translate:lang"
+              (aeSelectChange)="onFiltersChange()"></ae-select>
+          </div>
+          <div class="filter-bar__filter">
+            <ae-switch formControlName="IsRIDDOR" [id]="'isRIDDOR'" [name]="'isRIDDOR'" [switchText]="'INCIDENT_LOG.IS_RIDDOR' | translate: lang"
+              [checked]="isRiddorCheckedValue" (aeChange)="onFiltersChange()"></ae-switch>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <ae-datatable [id]="'incidents-list'" [name]="'incidents-list'" [dataSource]="incidentsData$" [autoGenerateColumns]="false"
+    [totalRecords]="totalRecords$" [loading]="loadingStatus$ | async" [defaultOptions]="dataTableOptions$ | async" (pageChanged)="onPageChange($event)"
+    (onSort)="onSort($event)" [actions]="actions">
+    <ae-column [headerText]="'INCIDENT_LOG.REFERENCE_NUMBER'| translate:lang" [sortKey]="'ReferenceNumber'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span [title]="'INCIDENT_LOG.REFERENCE_NUMBER'| translate:lang">{{'INCIDENT_LOG.REFERENCE_NUMBER'| translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <span [title]="context.ReferenceNumber">{{context.ReferenceNumber}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'INCIDENT_LOG.DATE'| translate:lang" [sortKey]="'WhenReported'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span [title]="'INCIDENT_LOG.DATE'| translate:lang">{{'INCIDENT_LOG.DATE'| translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <span [title]="context.WhenReported |  localeDate:defaultLocale:'dd/MM/yyyy'">{{(context.WhenReported == '0001-01-01T00:00:00'?null: context.WhenReported) |  localeDate:defaultLocale:'dd/MM/yyyy' }}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'INCIDENT_LOG.CATEGORY'| translate:lang" [sortKey]="'CategoryName'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span [title]="'INCIDENT_LOG.CATEGORY'| translate:lang">{{'INCIDENT_LOG.CATEGORY'| translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <span [title]="context.CategoryName">{{context.CategoryName}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'INCIDENT_LOG.REPORTED_BY'| translate:lang" [sortKey]="'ReportedUser'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span [title]="'INCIDENT_LOG.REPORTED_BY'| translate:lang">{{'INCIDENT_LOG.REPORTED_BY'| translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <span [title]="context.ReportedUser">{{context.ReportedUser}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'INCIDENT_LOG.CREATED_BY'| translate:lang" [sortKey]="'CreatedUser'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span [title]="'INCIDENT_LOG.CREATED_BY'| translate:lang">{{'INCIDENT_LOG.CREATED_BY'| translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <span [title]="context.CreatedUser">{{context.CreatedUser}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'INCIDENT_LOG.INJURED_PERSON'| translate:lang" [sortKey]="'InjuredPersonName'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span [title]="'INCIDENT_LOG.INJURED_PERSON'| translate:lang">{{'INCIDENT_LOG.INJURED_PERSON'| translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <span [title]="context.InjuredPersonName">{{context.InjuredPersonName}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'INCIDENT_LOG.STATUS'| translate:lang" [sortKey]="'StatusId'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span [title]="'INCIDENT_LOG.STATUS'| translate:lang">{{'INCIDENT_LOG.STATUS'| translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <span [title]="context.StatusName">{{context.StatusName}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+  </ae-datatable>
+</div>

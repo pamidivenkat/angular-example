@@ -1,0 +1,27 @@
+.notification-bar {
+  background: $white;
+}
+
+.notification-bar--alt {
+  background: $grey--pale;
+
+  + .widget--padded {
+    padding-top: 0 !important;
+  }
+}
+
+.notification-bar--button {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+
+  .button {
+    order: 1;
+  }
+
+  .icon-with-text {
+    .icon-with-text__copy {
+      //max-width: inherit;
+    }
+  }
+}

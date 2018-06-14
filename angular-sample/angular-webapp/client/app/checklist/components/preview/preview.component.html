@@ -1,0 +1,224 @@
+<div [id]="id">
+
+  <div [id]="perview-banner" *ngIf="hasOnlyPreviewTab()">
+    <ae-banner [id]="'checklist-banner'" [name]="'checklist-banner'" [titleText]="getName()" [backgroundImage]="'/assets/images/lp-checklists.jpg'"
+      [bannerTheme]="aeBannerTheme">
+      <ae2-breadcrumb [id]="'breadCrumb'" [name]="'breadCrumb'" [group]="bcGroup" class="bredcrumb-section"></ae2-breadcrumb>
+    </ae-banner>
+
+    <div class="button-bar spacer">
+      <div class="button-bar__item" *ngIf="canReinstateChecklist()">
+        <ae-anchor [id]="getChildId('ae-anchor', 3)" [name]="getChildName('ae-anchor', 3)" [anchorType]="'button'" [class]="'button button--cta'"
+          [anchorClass]="" (aeClick)="openReinstateCheckListModal($event)" [text]="'BTN_REINSTATE' | translate:lang"></ae-anchor>
+      </div>
+      <div class="button-bar__item" *ngIf="canCopyChecklist()">
+        <ae-anchor [id]="getChildId('ae-anchor', 4)" [name]="getChildName('ae-anchor', 4)" [anchorType]="'button'" [class]="'button button--cta'"
+          [anchorClass]="" (aeClick)="openCopyCheckListSlide(checklist.IsExample)" [text]="'BTN_COPY' | translate:lang"></ae-anchor>
+      </div>
+      <div class="button-bar__item" *ngIf="canCopyToLibraryChecklist()">
+        <ae-anchor [id]="getChildId('ae-anchor', 5)" [name]="getChildName('ae-anchor', 5)" [anchorType]="'button'" [class]="'button button--cta'"
+          [anchorClass]="" (aeClick)="openCopyCheckListSlide(false)" [text]="'BTN_COPY_TO_LIBRARY' | translate:lang"></ae-anchor>
+      </div>
+    </div>
+
+    <ae-notification [id]="'checklist-info'" [name]="'checklist-info'" [iconName]="'icon-info'" [textInfo]="'STATIC_TEXT'| translate:lang"></ae-notification>
+  </div>
+  <ae-loader [loaderType]="loaderType" *ngIf="loadingStatus"></ae-loader>
+  <div [class.spacer]="hasOnlyPreviewTab()" *ngIf="!loadingStatus">
+    <h3 class="title-primary text--centered">{{getName()}}</h3>
+    <div class="review-scroll">
+      <h3>{{'GENERAL.WORKSPACES' | translate:lang}}</h3>
+      <div class="spacer--x grid--1-1-3 preview-grid">
+        <ng-template ngFor let-item [ngForOf]="workspaces" let-i="index">
+          <div class="checklist__item">
+            <ae-label [id]="getChildId('AeLabel', i)" [name]="getChildName('AeLabel', i)" [text]="item.Name" [src]="getPictureUrl(item.PictureId)"
+              [imgVisible]="true"></ae-label>
+          </div>
+        </ng-template>
+      </div>
+      <div *ngIf="showSectors()">
+        <div class="checklist__header">
+          <h3>{{'SECTORS' | translate:lang}}</h3>
+        </div>
+        <div class="spacer--x grid--1-1-3 preview-grid">
+          <ng-template ngFor let-item [ngForOf]="sectors" let-i="index">
+            <div class="checklist__item">
+              <ae-label [id]="getChildId('AeLabel', i)" [name]="getChildName('AeLabel', i)" [text]="item.Name" [src]="getPictureUrl(item.PictureId)"
+                [imgVisible]="true"></ae-label>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+      <div *ngIf="showCheckItems()">
+        <ae-datatable [id]="getChildId('AeDatatable', 1)" [name]="getChildId('AeDatatable', 1)" [dataSource]="checkItems$" [autoGenerateColumns]="false"
+          [defaultOptions]="checkItemOptions" [totalRecords]="totalRecords$">
+          <ae-column [headerText]="'CHECK_ITEM' | translate: lang" [sortable]="false">
+            <ae-template [type]="'header'">
+              <ng-template>
+                <span>{{'CHECK_ITEM' | translate: lang}}</span>
+              </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+              <ng-template let-context="item">
+                <span>{{context.ItemText}}</span>
+              </ng-template>
+            </ae-template>
+          </ae-column>
+          <ae-column [headerText]="'NEGATIVE_ANSWER' | translate: lang" [sortable]="false">
+            <ae-template [type]="'header'">
+              <ng-template>
+                <span>{{'NEGATIVE_ANSWER' | translate: lang}}</span>
+              </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+              <ng-template let-context="item">
+                <span>{{context.YesNoAnswer}}</span>
+              </ng-template>
+            </ae-template>
+          </ae-column>
+          <ae-column [headerText]="'CORRECTIVE_ACTION' | translate: lang" [sortable]="false">
+            <ae-template [type]="'header'">
+              <ng-template>
+                <span>{{'CORRECTIVE_ACTION' | translate: lang}}</span>
+              </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+              <ng-template let-context="item">
+                <div>
+                  <ae-icon [id]="getChildId('AeIcon',1)" [name]="getChildName('AeIcon',1)" [icon]="'icon-alert-circle-tick'" [title]="context.CorrectiveActionText"
+                    [color]="'teal'"></ae-icon>
+                </div>
+              </ng-template>
+            </ae-template>
+          </ae-column>
+        </ae-datatable>
+      </div>
+      <div *ngIf="showAssignments() && !isExampleChecklist()" class="assignments-preview">
+        <div class="checklist__header">
+          <div class="button-bar__item">
+            <ae-button [type]="'button'" *ngIf="!isExampleChecklist()" [id]="getChildId('AeButton',1)" [name]="getChildId('AeButton',1)" (aeClick)="onAdd($event)"
+              [class]="lightClass" [text]="'BUTTONS.ADD' | translate:lang" [title]="'BUTTONS.ADD' | translate:lang">
+            </ae-button>
+          </div>
+          <h3>{{'ASSIGNMENTS' | translate: lang}}</h3>
+        </div>
+        <ae-notification [id]="'assignments'" [name]="'assignments'" [iconName]="'icon-info'" [textInfo]="'CHECKLIST_HELP_TEXT.ASSIGNMENTS_MSG' | translate:lang">
+        </ae-notification>
+        <ae-datatable [id]="getChildId('AeDatatable', 2)" [name]="getChildName('AeDatatable', 2)" [dataSource]="assignmentsList$"
+          [autoGenerateColumns]="false" [defaultOptions]="assignmentsDataTableOptions$ | async" [totalRecords]="assignmentsTotalCount$"
+          [loading]="assignmentsLoading$ | async" [actions]="actions" (onSort)="onSort($event)" (pageChanged)="onPageChange($event) " (onSort)="onSort($event)">
+          <ae-column [headerText]="'ASSIGN_TO' | translate: lang" [sortable]="true" [sortKey]="'AssignedTo.FirstName'">
+            <ae-template [type]="'header'">
+              <ng-template>
+                <span>{{'ASSIGN_TO' | translate: lang}}</span>
+              </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="assignmentsKeys">
+              <ng-template let-context="item">
+                <span>{{assignedToFullName(context)}}</span>
+              </ng-template>
+            </ae-template>
+          </ae-column>
+          <ae-column [headerText]="'SCHEDULED_FOR' | translate: lang" [sortable]="true" [sortKey]="'ScheduledDate'">
+            <ae-template [type]="'header'">
+              <ng-template>
+                <span>{{'SCHEDULED_FOR' | translate: lang}}</span>
+              </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="assignmentsKeys">
+              <ng-template let-context="item">
+                <span>{{context.ScheduledDate  | localeDate:defaultLocale:'shortDate'}}</span>
+              </ng-template>
+            </ae-template>
+          </ae-column>
+          <ae-column [headerText]="'SITE' | translate: lang" [sortable]="true" [sortKey]="'Site.Name'">
+            <ae-template [type]="'header'">
+              <ng-template>
+                <span>{{'SITE' | translate: lang}}</span>
+              </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="assignmentsKeys">
+              <ng-template let-context="item">
+                <span>{{showSiteName(context)}}</span>
+              </ng-template>
+            </ae-template>
+          </ae-column>
+          <ae-column [headerText]="'ISRECCURING' | translate: lang" [sortable]="true" [sortKey]="'IsReccuring'">
+            <ae-template [type]="'header'">
+              <ng-template>
+                <span>{{'ISRECCURING' | translate: lang}}</span>
+              </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="assignmentsKeys">
+              <ng-template let-context="item">
+                <span>{{context.IsReccuring ? 'Yes' : 'No'}}</span>
+              </ng-template>
+            </ae-template>
+          </ae-column>
+          <ae-column [headerText]="'FREQUENCY' | translate: lang" [sortable]="true" [sortKey]="'Periodicity'">
+            <ae-template [type]="'header'">
+              <ng-template>
+                <span>{{'FREQUENCY' | translate: lang}}</span>
+              </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="_assignmentsKeys">
+              <ng-template let-context="item">
+                <span>{{getFrequency(context.Periodicity)}}</span>
+              </ng-template>
+            </ae-template>
+          </ae-column>
+        </ae-datatable>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ae-slideout [modelState]="_getSlideoutState()" [class.slide--animate]="getSlideoutAnimateState()" [id]="getChildId('AeSlideout',2)"
+  [name]="getChildName('AeSlideout',2)">
+  <assignment [action]="actionType" (onCancel)="onAssignmentCancel($event)" (onSubmit)="onAssignmentSubmit($event)" [id]="getChildId('Assignment',3)"
+    [name]="getChildName('Assignment',3)" *ngIf="getSlideoutAnimateState()" [checklistId]="checklist.Id" [selectedAssignment]="selectedAssignment"></assignment>
+</ae-slideout>
+
+<div *ngIf="showRemoveConfirmation">
+  <ae-modal-dialog [visible]="showRemoveConfirmation" (cancel)="removeModalClosed($event)" [closable]="true" [id]="getChildId('AeModel', 1)"
+    [name]="getChildName('AeModel', 1)">
+    <div class="modal-dialog-header">
+      <h3>{{ 'ASSIGNMENT.REMOVE_HEADER' | translate:lang }}</h3>
+    </div>
+    <div class="modal-dialog-body">
+      <p>{{'ASSIGNMENT.INFO' | translate: lang:{assignedUserName: assignedUser,historyName: checklistName} }}</p>
+    </div>
+    <div class="modal-dialog-footer">
+      <ae-button [text]="'ASSIGNMENT.BTN_NO' | translate:lang" [type]="'button'" [id]="getChildId('AEButton', 1)" [name]="getChildName('AEButton', 1)"
+        (aeClick)="removeModalClosed($event)"></ae-button>
+      <ae-button [class]="lightClass" [text]="'ASSIGNMENT.BTN_YES' | translate:lang" [type]="'button'" [id]="getChildId('AEButton', 2)"
+        [name]="getChildName('AEButton', 2)" (aeClick)="removeAssignment($event)"></ae-button>
+    </div>
+  </ae-modal-dialog>
+</div>
+
+<div *ngIf="reinstateConfirmation">
+  <ae-modal-dialog [visible]="reinstateConfirmation" (cancel)="reinstateConfirmModalClosed($event)" [closable]="true" [id]="getChildId('AeModel', 3)"
+    [name]="getChildName('AeModel', 2)">
+    <div class="modal-dialog-header">
+      <h3>{{ 'REINSTATE_DIALOG.HEADER_TEXT' | translate:lang }}</h3>
+    </div>
+    <div class="modal-dialog-body">
+      <p>{{'REINSTATE_DIALOG.INFO' | translate: lang:{historyName: checklistName} }}</p>
+    </div>
+    <div class="modal-dialog-footer">
+      <ae-button [text]="'REINSTATE_DIALOG.BTN_NO' | translate:lang" [type]="'button'" [id]="getChildId('AeButton', 5)" [name]="getChildName('AeButton', 5)"
+        (aeClick)="reinstateConfirmModalClosed($event)"></ae-button>
+      <ae-button [class]="lightClass" [text]="'REINSTATE_DIALOG.BTN_YES' | translate:lang" [type]="'button'" [id]="getChildId('AeButton', 6)"
+        [name]="getChildName('AeButton', 6)" (aeClick)="reinstateChecklist($event)"></ae-button>
+    </div>
+  </ae-modal-dialog>
+</div>
+
+  <ae-slideout [id]="getChildId('AeSlideOut', 1)" [name]="getChildName('AeSlideOut', 1)" [modelState]="getSlideoutState()"
+    (cancel)="closeSlideOut($event)" [class.slide--animate]="copySlideOut">
+    <ng-container *ngIf="copySlideOut">
+      <checklist-copy [id]="getChildId('CheckListCopy', 1)" [name]="getChildName('CheckListCopy', 1)" [checklistToCopy]="checklistCopyModel"
+        (slideOutClose)="closeSlideOut($event)" (copyChecklistSubmit)="copyCheckList($event)"></checklist-copy>
+    </ng-container>
+  </ae-slideout>

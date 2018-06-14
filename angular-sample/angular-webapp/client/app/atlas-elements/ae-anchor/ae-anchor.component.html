@@ -1,0 +1,17 @@
+<a (click)="onClick($event)"
+   [id]="id"
+   [class]="class"
+   [name]="id"
+   [class.button]="isButton()"
+   [class.button--light]="isLight()"
+   [class.button--dark]="isDark()"
+   [class.button--disabled]="isDisabled()"
+   [class.button--forward]="isForward()"
+   [class.button--back]="isBack()"
+   [class.breadcrumbs__link]="isBreadcrumb()"
+   [class.nav-link]="isNavLink()"
+   [class.button--active]="isCurrentAction()" 
+   [href]="href"
+   [attr.target]="getAnchorTarget()"
+   [innerHTML]="anchorText" [attr.data-title]="anchorText">
+</a>

@@ -1,0 +1,63 @@
+<risk-assessment-header [id]="'riskassessment-header'" [name]="'riskassessment-header'" [informationBarItems]="riskAssessmentInformationBarItems | async"
+  (riskAssessmentComponentItemClick)="riskAssessmentComponentItemClick($event)">
+</risk-assessment-header>
+<ae-notification [id]="'riskassessment-info'" [name]="'riskassessment-info'" [iconName]="'icon-info'" [textInfo]="'RA_HELP_TEXT.INFO'| translate:lang"></ae-notification>
+<div class="filter-bar__spacer spacer">
+  <div class="filter-bar">
+    <div class="filter-bar__label label">{{'Filter_by'| translate:lang}}</div>
+    <div class="filter-bar__filters">
+      <div class="filter-bar__filter">
+        <ae-input [id]="'riskassessment-name-filter'" [name]="'riskassessment-name-filter'" [placeholder]="'NAME_SEARCH_TEXT' | translate:lang"
+          [value]="''" [readonly]="'false'" (aeChange)="onRiskAssessmentNameFilterChange($event)"></ae-input>
+      </div>
+      <div class="filter-bar__filter">
+        <ae-select [id]="getChildId('AeSelect', 2)" [name]="getChildName('AeSelect', 2)" [options]="siteOptionList" (aeSelectChange)="onSiteFilterChange($event)"></ae-select>
+      </div>
+    </div>
+    <div class="filter-bar__filters">
+      <div class="filter-bar__filter">
+        <ae-autocomplete [id]="'acn'" [name]="'workspaces'" [placeholder]="'WORK_SPACE_SEARCH_TEXT' | translate:lang" [multiselect]="true"
+          [items]="workSpaceItems" [dstype]="dataSourceType" [field]="'Name'" [valuefield]="'Id'" (aeOnSelect)="onWorkSpaceSelected($event)"
+          (aeOnClearSelected)="onClearWorkSpaceFilter($event)"></ae-autocomplete>
+      </div>
+      <div class="filter-bar__filter">
+        <ae-autocomplete [id]="'acn'" [name]="'assessment-type-filter'" [value]="defaultSelectedAssessmentTypes" [placeholder]="'ASSESSMENT_TYPE_SEARCH_TEXT' | translate:lang"
+          [multiselect]="true" [items]="assessmentTypeItems" [dstype]="dataSourceType" [field]="'Text'" [valuefield]="'Value'"
+          (aeOnSelect)="onAssessmentTypeSelected($event)" (aeOnClearSelected)="onClearAssessmentTypeFilter($event)"></ae-autocomplete>
+      </div>
+      <div class=" filter-bar__filter ">
+        <ae-autocomplete [id]="'sector-filter'" [value]="defaultSelectedSectorItems" [name]="'sector-filter'" [placeholder]=" 'SECTOR_SEARCH_TEXT' | translate:lang"
+          [multiselect]="true " [items]="sectorItems " [dstype]="dataSourceType " [field]=" 'Name' " [valuefield]=" 'Id' " (aeOnSelect)="onSectorSelected($event) "
+          (aeOnClearSelected)="onClearSectorFilter($event) "></ae-autocomplete>
+      </div>
+    </div>
+  </div>
+</div>
+<ae-tabstrip [id]="getChildId('AeTabStrip',1)" [name]="getChildName('AeTabStrip',1)" [standard]="true">
+  <ae-tabstrip-item [id]="getChildId('AeTabStripItem',1)" [name]="getChildName('AeTabItem',1)" [header]="'OVERDUE' | translate: lang"
+    [hasCount]="true" [count]="getRiskAssessmentsCountByStatus(3)" [navigateUrl]="getOverdueUrl()" *ngIf="canView('overdue')">
+  </ae-tabstrip-item>
+
+  <ae-tabstrip-item [id]="getChildId('AeTabStripItem',2)" [name]="getChildName('AeTabItem',1)" [header]="'PENDING' | translate: lang"
+    [hasCount]="true" [navigateUrl]="getPendingUrl()" [count]="getRiskAssessmentsCountByStatus(1)" *ngIf="canView('pending')">
+  </ae-tabstrip-item>
+
+  <ae-tabstrip-item [id]="getChildId('AeTabStripItem',3)" [name]="getChildName('AeTabItem',2)" [header]="'LIVE' | translate: lang"
+    [hasCount]="true" [navigateUrl]="getLiveUrl()" [count]="getRiskAssessmentsCountByStatus(2)" *ngIf="canView('live')">
+  </ae-tabstrip-item>
+
+  <ae-tabstrip-item [id]="getChildId('AeTabStripItem',4)" [name]="getChildName('AeTabItem',4)" [header]="'EXAMPLE' | translate: lang"
+    [hasCount]="true" [navigateUrl]="getExampleUrl()" [count]="getRiskAssessmentsCountByStatus(0)">
+
+  </ae-tabstrip-item>
+  <ae-tabstrip-item [id]="getChildId('AeTabStripItem',4)" [name]="getChildName('AeTabItem',4)" [header]="'ARCHIVED_TAB' | translate: lang"
+    [hasCount]="true" [navigateUrl]="getArchivedUrl()" [count]="getRiskAssessmentsCountByStatus(4)">
+
+  </ae-tabstrip-item>
+
+</ae-tabstrip>
+
+<!--Route params : {{ _queryParams }}-->
+<div id="contentArea" class="risk-assessement--tabs">
+  <router-outlet> </router-outlet>
+</div>

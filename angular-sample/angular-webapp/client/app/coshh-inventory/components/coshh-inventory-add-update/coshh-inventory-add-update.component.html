@@ -1,0 +1,14 @@
+<div>
+    <ae-form [formBuilderData]="addUpdateCoshhInventoryFormVM" [id]="'addUpdateCoshhInventoryForm'" [name]="'addUpdateCoshhInventoryForm'" [Title]="title() | translate:lang" [isPrimaryTitle]="true" (onSubmit)="onSubmit($event)" (onCancel)="onCancel($event)"
+        (onFormInit)="onFormInit($event)" [footerBtnText]="formButtonNames()">
+        <div class="information-grid__item--input">
+            <label class="information-grid__item-label column-1of3" [id]="getChildId('label', 1)">{{'DATASHEET' | translate:lang}}</label>
+            <div class="information-grid__item-value column-2of3">
+                <ae-anchor class="sheet-name" [id]="'sheetDownload'" [name]="'sheetDownload'" [text]="FileName" (aeClick)="onSheetDownload()">
+                </ae-anchor>
+                <ae-icon *ngIf="ShowCancelIcon" [id]="'icon-cross'" [name]="'icon-cross'" [size]="addressIconSize" [color]="'red'" [icon]="'icon-cross'" (click)="onSheetCancel()"></ae-icon>
+            </div>
+        </div>
+        <ae-file [id]="'fileUpload'" [name]="'fileUpload'" [multiple]="false" [accept]="'*'" (onFilesSelected)="onFilesSelected($event)" [clearSelectedFile]="ClearFile" (onFilesCleared)="ResetClearFile($event)"></ae-file>
+    </ae-form>
+</div>

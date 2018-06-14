@@ -1,0 +1,42 @@
+<div class="so-panel__title">
+  <h3 class="grey-strip">{{'DISTRIBUTE_ACTION.HEADER' | translate:lang}} </h3>
+</div>
+
+<div class="so-panel__content">
+  <div class="filter-bar__filters">
+    <section>
+      <div class="form__input">
+        <label>{{'DISTRIBUTE_ACTION.TITLE' | translate:lang}}
+          <div  id="Title">{{documentTitle}}</div>
+        </label>
+      </div>
+      <div class="form__input">
+        <label>{{'DISTRIBUTE_ACTION.CATEGORY' | translate:lang}}
+          <div id="EmployeeGroup">{{employeeGroup}}</div>
+        </label>
+      </div>
+    </section>
+  </div>
+  <form [formGroup]="documentDistributeForm" [id]="'documentDistributeForm'" [name]="'documentDistributeForm'">
+    <div>
+      <label class="form__input distribute-radio-group">{{'DISTRIBUTE_ACTION.ACTIONS' | translate:lang}}
+        <ae-radio-group [id]="getChildId('AeRadioGroup',1)" [name]="getChildName('AeRadioGroup',1)" [options]="actionOptions" formControlName="Action">
+        </ae-radio-group>
+      </label>
+    </div>
+  </form>
+</div>
+
+<div class="so-panel__footer">
+  <nav>
+    <ul>
+      <li><label for="soPanel" class="button button--inline-block" [id]="getChildId('AeButton',1)" (click)="slideClose($event)"
+          [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label></li>
+      <li class="pull--right">
+        <ae-anchor [id]="getChildId('AeAnchor',1)" [name]="getChildName('AeAnchor',1)" [anchorType]="'button'" [class]="'button'"
+          [anchorClass]="lightClass" (aeClick)="distributeActionClick()" [title]="'BUTTONS.DISTRIBUTE' | translate:lang"
+          [text]="'BUTTONS.DISTRIBUTE' | translate:lang"></ae-anchor>
+      </li>
+    </ul>
+  </nav>
+</div>

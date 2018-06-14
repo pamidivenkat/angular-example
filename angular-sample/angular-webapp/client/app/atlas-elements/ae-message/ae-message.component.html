@@ -1,0 +1,14 @@
+<div [id]="id" class="message" [class.message--okay]="setVisibilityOfMessageInfoClass()" [class.message--warning]="setVisibilityOfMessageWarningClass()"
+    [class.message--alert]="setVisibilityOfMessageAlertClass()">
+    <div class="icon-with-text icon-with-text__icon" [class.icon-with-text--action]="isAction()" [class.icon-with-text--medium]="isMedium()"
+        [class.icon-with-text--bold]="isBlod()">
+        <span *ngIf="isIcon()">
+            <ae-icon [id]="getChildId('AeIcon', 1)" [name]="getChildName('AeIcon', 1)" [icon]="icon" [size]="iconMedium"></ae-icon>
+         </span>
+        <span class="icon-with-text__copy " [innerHTML]="text">
+        </span>
+    </div>
+    <div class="close-icon" *ngIf="showCloseIcon">
+        <ae-icon [id]="'iconone'" [name]="'iconone'" [size]="iconOneSize" [icon]="'icon-alert-cancel'" [notify]="'notify'" (click)="closeMessage($event)"></ae-icon>
+    </div>
+</div>

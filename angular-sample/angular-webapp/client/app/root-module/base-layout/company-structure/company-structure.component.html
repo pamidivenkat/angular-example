@@ -1,0 +1,7 @@
+<div id="company-structure">
+  <a class="person__dropdown-link" id="lnk_company" (click)="toggleCompanyStructure($event)">Select company</a>
+  <ul class="person__dropdown-link__company-list" *ngIf="isCompanyStructureExpanded">
+    <company-structure-item *ngFor="let item of companyStructure" [companyStructureData]="companyStructureData" [id]="getChildId(item.Id,1)"
+      [name]="getChildName(item.Id, 1)" [context]="item"></company-structure-item>
+  </ul>
+</div>

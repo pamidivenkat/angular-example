@@ -1,0 +1,32 @@
+<section class="statistics-bar">
+  <ng-content select="[staticbar-info]"></ng-content>
+</section>
+<section class="banner">
+  <ng-content select="[banner-info]"></ng-content>
+</section>
+<section class="no-employee-msg">
+  <ng-content select="[no-emp-msg]"> </ng-content>
+</section>
+<section class="widget widget--padded">
+  <div class="widget__item widget__item--third widget__item--card widget-top-space">
+    <ng-content select="[widget-info3-1]"></ng-content>
+  </div>
+  <div class="widget__item widget__item--third widget__item--card">
+    <ng-content select="[widget-info3-2]"></ng-content>
+  </div>
+  <div class="widget__item widget__item--third widget__item--card">
+    <ng-content select="[widget-info3-3]"></ng-content>
+  </div>
+</section>
+<section class="widget widget--padded">
+  <div class="widget__item widget__item--half widget__item--card" *ngIf="isHRManagerOrServiceOwner() || isHSServiceOwnerOrCoordinator()">
+    <service-reporting [id]="'serviceReportingId'" [name]="'serviceReportingName'"></service-reporting>
+  </div>
+  <div class="widget__item widget__item--half widget__item--grey-pale" *ngIf="isHolidayAuthorizerOrManager() || isHSServiceOwnerOrCoordinator()">
+    <news [id]="'newsInfoId'" [name]="'newsInfoName'"></news>
+  </div>
+</section>
+<section>
+  <ng-content select="[adverts-section]"></ng-content>
+  <ng-content select="[whatsnew]"> </ng-content>
+</section>

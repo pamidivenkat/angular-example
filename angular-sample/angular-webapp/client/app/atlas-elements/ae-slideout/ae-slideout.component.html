@@ -1,0 +1,4 @@
+<aside [@slideInOut]="modelState" class="so-panel" [class.so-notification-panel]="notification" [class.so-panel--wide]="sPanelBig">
+    <ng-content></ng-content>
+</aside>
+<div class="so-overlay" [class.so-notification-overlay]="notification" *ngIf="isExpanded()" (click)="closeSlider()" ></div>

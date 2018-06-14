@@ -1,0 +1,75 @@
+<div [id]="'checklist'" class="checklist-container">
+  <ae-banner [id]="'checklist-banner'" [name]="'checklist-banner'" [titleText]="'CHECKLISTS' | translate: lang" [backgroundImage]="'/assets/images/lp-checklists.jpg'"
+    [bannerTheme]="aeBannerTheme">
+    <ae2-breadcrumb [id]="'breadCrumb'" [name]="'breadCrumb'" [group]="bcGroup" class="bredcrumb-section"></ae2-breadcrumb>
+    <div class="image-text banner-image-text">
+    </div>
+
+    <div class="icon-list button-bar banner-buttons">
+      <div class="banner-icon-list" [class.button-bar__item]="canCreateChecklist() && canCreateExampleChecklist()" *ngIf="canCreateChecklist() || ( canAddCheckListToClient() && cidExists$ | async)">
+        <ae-button [type]="'button'" [id]="'test-slider'" [name]="'test-slider'" (aeClick)="navigateToAdd()" class="btn" [text]="'ADD_CHECKLIST' | translate: lang"></ae-button>
+      </div>
+
+      <div class="banner-icon-list" [class.button-bar__item]="canCreateChecklist() && canCreateExampleChecklist()" *ngIf="(canCreateExampleChecklist() && !(cidExists$ | async))">
+        <ae-button [type]="'button'" [id]="'test-slider'" [name]="'test-slider'" (aeClick)="navigateToAddExample()" class="btn" [text]="'ADD_EXAMPLE_CHECKLIST' | translate:lang"></ae-button>
+      </div>
+    </div>
+  </ae-banner>
+  
+  <ae-notification [id]="'checklist-info'" [name]="'checklist-info'" [iconName]="'icon-info'" [textInfo]="'STATIC_TEXT'| translate:lang"></ae-notification>
+  <div class="filter-bar__spacer spacer">
+    <div class="filter-bar">
+      <div class="filter-bar__label label">{{'Filter_by'| translate:lang}}</div>
+      <div class="filter-bar__filters">
+        <div class="filter-bar__filter">
+          <ae-input id="'checklist-status-filter'" [name]="'check-list-name-status-filter'" [placeholder]="'SEARCH_TEXT' | translate:lang"
+            [value]="''" [readonly]="'false'" (aeChange)="onChecklistNameFilterChange($event)"></ae-input>
+        </div>
+        <div class="filter-bar__filter" *ngIf="canCreateChecklist() || canCreateExampleChecklist()">
+          <ae-autocomplete [id]="'acn'" [name]="'workspaces'" [placeholder]="'WORK_SPACE_SEARCH_TEXT' | translate:lang" [multiselect]="true"
+            [items]="workSpaceItems" [dstype]="dataSourceType" [field]="'Name'" [valuefield]="'Id'" (aeOnSelect)="onWorkSpaceSelected($event)"
+            (aeOnClearSelected)="onClearSelected($event)"></ae-autocomplete>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ae-tabstrip [id]="getChildId('AeTabStrip',1)" [name]="getChildName('AeTabStrip',1)" [standard]="true">
+    <ae-tabstrip-item [id]="getChildId('AeTabStripItem',1)" [name]="getChildName('AeTabItem',1)" [header]="'TODAYS_CHECKLIST' | translate: lang"
+      [navigateUrl]="getTodaysChecklistUrl()" *ngIf="canView('todays-checklist')" [hasCount]="true" [count]="ChecklistCount(1)">
+    </ae-tabstrip-item>
+
+    <ae-tabstrip-item [id]="getChildId('AeTabStripItem',2)" [name]="getChildName('AeTabItem',2)" [header]="'SCHEDULED' | translate: lang"
+      [navigateUrl]="getScheduledUrl()" *ngIf="canView('scheduled')" [hasCount]="true" [count]="ChecklistCount(2)">
+    </ae-tabstrip-item>
+
+    <ae-tabstrip-item [id]="getChildId('AeTabStripItem',3)" [name]="getChildName('AeTabItem',3)" [header]="'COMPLETE_INCOMPLETE' | translate: lang"
+      [navigateUrl]="getCompleteIncompleteStatusUrl()" *ngIf="canView('by-status')" [hasCount]="true" [count]="ChecklistCount(3)">
+    </ae-tabstrip-item>
+
+    <ae-tabstrip-item [id]="getChildId('AeTabStripItem',4)" [name]="getChildName('AeTabItem',4)" [header]="'COMPANY_CHECKLKISTS' | translate: lang"
+      [navigateUrl]="getCompanyChecklistsUrl()" *ngIf="canView('company-checklists')" [hasCount]="true" [count]="ChecklistCount(4)">
+
+    </ae-tabstrip-item>
+
+    <ae-tabstrip-item [id]="getChildId('AeTabStripItem',5)" [name]="getChildName('AeTabItem',5)" [header]="'EXAMPLES' | translate: lang"
+      [navigateUrl]="getExamplesUrl()" *ngIf="canView('examples')" [hasCount]="true" [count]="ChecklistCount(5)">
+
+    </ae-tabstrip-item>
+
+    <ae-tabstrip-item [id]="getChildId('AeTabStripItem',2)" [name]="getChildName('AeTabItem',2)" [header]="'ARCHIVED' | translate: lang"
+      [navigateUrl]="getArchivedUrl()" *ngIf="canView('archived')" [hasCount]="true" [count]="ChecklistCount(6)">
+
+    </ae-tabstrip-item>
+    <ae-tabstrip-item [id]="getChildId('AeTabStripItem',2)" [name]="getChildName('AeTabItem',2)" [header]="'Archived example'"
+      [navigateUrl]="getArchivedExampleUrl()" *ngIf="canView('archived-example')" [hasCount]="true" [count]="ChecklistCount(7)">
+
+    </ae-tabstrip-item>
+
+  </ae-tabstrip>
+
+  <!--Route params : {{ _queryParams }}-->
+  <div id="contentArea" class="checklist--tabs">
+    <router-outlet> </router-outlet>
+  </div>
+  <div style="clear:both;"></div>
+</div>

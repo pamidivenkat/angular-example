@@ -1,0 +1,75 @@
+<div class="table plant-equipment">
+    <div class="wizard-button-bar top">
+        <ae-button [type]="'button'" [id]="getChildId('AeButton', 1)" [name]="getChildName('AeButton', 1)" (aeClick)="openPlantAndEquipmentSlideOut()"
+            class="btn" [class]="lightClass" [title]="'PLANT-EQUIPMENT.ADD' | translate:lang" [text]="'PLANT-EQUIPMENT.ADD' | translate:lang"></ae-button>
+    </div>
+
+    <ae-datatable [id]="getChildId('AeDatatable', 1)" [name]="getChildName('AeDatatable', 1)" [dataSource]="plantAndEquipmentData"
+        [actions]="actions" (pageChanged)="onPageChange($event)" (onSort)="onSort($event)" [defaultOptions]="dataTableOptions$"
+        [totalRecords]="totalRecords$">
+        <ae-column [headerText]="'MANAGE_METHOD_STM.PLANT-EQUIPMENT.ITEM_NAME' | translate:lang" [sortable]="true" [sortKey]="'Name'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>{{'MANAGE_METHOD_STM.PLANT-EQUIPMENT.ITEM_NAME' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <span>{{context.Name}}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+
+        <ae-column [headerText]="'MANAGE_METHOD_STM.PLANT-EQUIPMENT.USED_FOR' | translate:lang" [sortable]="true" [sortKey]="'UsedFor'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>{{'MANAGE_METHOD_STM.PLANT-EQUIPMENT.USED_FOR' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <span>{{context.UsedFor}}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+
+        <ae-column [headerText]="'MANAGE_METHOD_STM.PLANT-EQUIPMENT.SPECIAL_REQUIREMENT' | translate:lang" [sortable]="true" [sortKey]="'SpecialRequirements'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>{{'MANAGE_METHOD_STM.PLANT-EQUIPMENT.SPECIAL_REQUIREMENT' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <span>{{context.SpecialRequirements}}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+    </ae-datatable>
+
+</div>
+
+<ae-slideout [id]="getChildId('AeSlideOut', 1)" [name]="getChildName('AeSlideOut', 1)" [modelState]="getSlideoutState()"
+    (cancel)="closePlantAndEquipmentSlideOut($event)" [class.slide--animate]="slideoutState">
+    <ng-container *ngIf="slideoutState">
+        <add-plant-equipment [id]="getChildId('PlantsAndEquipmentAdd', 1)" [name]="getChildName('PlantsAndEquipmentAdd', 1)" (aeClose)="closePlantAndEquipmentSlideOut($event)"
+            (displayGridData)="displayGridData($event)" (displayGridIdData)="selectedIdList($event)" [SelectedList]="getSelectedList()"></add-plant-equipment>
+    </ng-container>
+</ae-slideout>
+
+<ae-modal-dialog [visible]="showPlantEquipmentDeleteModal" (cancel)="modalClosed($event)" [closable]="true" [id]="'confirmModal'"
+    [name]="'confirmModal'" *ngIf="showPlantEquipmentDeleteModal">
+    <div class="modal-dialog-header">
+        <h3>{{ 'MANAGE_METHOD_STM.PLANT-EQUIPMENT.REMOVE_DIALOG_MSG' | translate:lang }}</h3>
+    </div>
+    <div class="modal-dialog-body">
+        <p>{{'MANAGE_METHOD_STM.PLANT-EQUIPMENT.REMOVE_DIALOG_MSG_CONFIRM' | translate: lang:{itemName: selectedPlantEquipment.Name}
+            }}</p>
+    </div>
+    <div class="modal-dialog-footer">
+        <ae-button [class]="defaultClass" [title]="'MANAGE_METHOD_STM.PLANT-EQUIPMENT.REMOVE_BTN_NO' | translate:lang" [text]="'MANAGE_METHOD_STM.PLANT-EQUIPMENT.REMOVE_BTN_NO' | translate:lang"
+            [type]="'button'" [id]="'confirmNo'" [name]="'confirmNo'" (aeClick)="modalClosed('No')"></ae-button>
+        <ae-button [class]="lightClass" [title]="'MANAGE_METHOD_STM.PLANT-EQUIPMENT.REMOVE_BTN_YES' | translate:lang" [text]="'MANAGE_METHOD_STM.PLANT-EQUIPMENT.REMOVE_BTN_YES' | translate:lang"
+            [type]="'button'" [id]="'confirmYes'" [name]="'confirmYes'" (aeClick)="modalClosed('Yes')"></ae-button>
+    </div>
+</ae-modal-dialog>

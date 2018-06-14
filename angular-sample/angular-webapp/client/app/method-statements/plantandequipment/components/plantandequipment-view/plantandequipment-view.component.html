@@ -1,0 +1,40 @@
+<div id="slide-out-form-content" class="wrapper-for-slideout-conten">
+    <div class="so-panel__title">
+        <h3 class="grey-strip">{{'VIEW_PLANT_EQUIPMENT' | translate:lang}}</h3>
+    </div>
+    <div class="so-panel__content">
+        <div class="form__input">
+            <label>{{'PLANT_AND_EQUIPMENTS.NAME' | translate:lang}}
+        <div [class.text-muted]="!plantAndEquipment?.Name" id="plantAndEquipment_Name">{{plantAndEquipment?.Name || ''}}</div>
+      </label>
+        </div>
+        <div class="form__input">
+            <label>{{'PLANT_AND_EQUIPMENTS.ASSET_REFERENCE_NO' | translate:lang}}
+        <div [class.text-muted]="!plantAndEquipment?.AssetRefNo" id="plantAndEquipment_refNo">{{plantAndEquipment?.AssetRefNo || ''}}</div>
+      </label>
+        </div>
+        <div class="form__input">
+            <label>{{'PLANT_AND_EQUIPMENTS.USED_FOR' | translate:lang}}
+      <div class="" [class.text-muted]="!plantAndEquipment?.UsedFor" id="plantAndEquipment_usedFor">
+          {{plantAndEquipment?.UsedFor || ''}}
+      </div>
+      </label>
+        </div>
+        <div class="form__input">
+            <label>{{'PLANT_AND_EQUIPMENTS.SPECIAL_REQUIREMENTS' | translate:lang}}
+      <div class="" [class.text-muted]="!plantAndEquipment?.SpecialRequirements" id="plantAndEquipment_specialRequirements">
+          {{plantAndEquipment?.SpecialRequirements || ''}}
+      </div>
+      </label>
+        </div>
+    </div>
+    <div class="so-panel__footer">
+        <nav>
+            <ul>
+                <li>
+                    <ae-button [text]="'BUTTONS.SLIDE_CLOSE' | translate:lang" [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang" [type]="'button'" [id]="'submitConfirmCancel'" [name]="'submitConfirmCancel'" (aeClick)="onFormClosed()"></ae-button>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>

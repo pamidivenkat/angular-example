@@ -1,0 +1,58 @@
+.sort {
+  @include dimensions(40px);
+}
+
+.sort__asc,
+.sort__desc {
+  cursor: pointer;
+  opacity: 1;
+  transition: opacity $base-transition;
+
+  &::before {
+    @include dimensions(14px);
+    border: 7px solid transparent;
+    content: '';
+    display: block;
+    margin: 0 auto;
+    pointer-events: none;
+    transition: border-color $base-transition;
+  }
+}
+
+
+.sort__asc--inactive,
+.sort__desc--inactive {
+  opacity: .5;
+}
+
+.sort__asc {
+  padding: 4px 13px 1px;
+
+  &::before {
+    border-bottom-color: $grey--0;
+  }
+}
+
+.sort__desc {
+  padding: 1px 13px 4px;
+
+  &::before {
+    border-top-color: $grey--0;
+  }
+}
+
+.sort__asc:hover {
+  opacity: 1;
+
+  &::before {
+    border-bottom-color: $grey--2;
+  }
+}
+
+.sort__desc:hover {
+  opacity: 1;
+
+  &::before {
+    border-top-color: $grey--2;
+  }
+}

@@ -1,0 +1,77 @@
+@import '../../../../../assets/scss/variablesMap';
+.bank-holidays{
+    ae-pagination{display: none;}
+}
+.nonworkingdays-view {
+  .so-panel {
+    width: 100%;
+    @include media-over-767{
+        width: 650px;
+    }
+    z-index: 99;
+   
+  }
+  .table-history {
+    font-size:90%;
+    border-collapse: collapse;
+    width: 100%;
+    th {
+      text-align: left;
+      background: $grey--4;
+      padding: 6px;
+      border: solid 1px $grey--4;
+    }
+    td {
+      text-align: left;
+      padding: 5px;
+      border: solid 1px $grey--4;
+    }
+  }
+  .table-data {
+    width: 100%;
+    margin-top: 20px;
+  }
+}
+
+.assign-slideout,
+.copy-slidout {
+  .so-panel__title {
+    height: 90px;
+  }
+  .so-panel__content {
+    top: 80px;
+  }
+}
+
+@media(max-width:767px) {
+  .table-history {
+    width: 100%;
+    thead {
+      display: none;
+    }
+    tbody,
+    tr {
+      display: block;
+      td {
+        display: block;
+        position: relative;
+        padding-left: 50% !important;
+        &:not(:first-child) {
+          border-top: none !important;
+        }
+        &:before {
+          content: attr(data-title);
+          position: absolute;
+          left: 0;
+          top: 0;
+          padding-top: 5px;
+          padding-left: 10px;
+          height: 100%;
+          background: $grey--pale;
+          width: 46%;
+          font-weight: 700;
+        }
+      }
+    }
+  }
+}

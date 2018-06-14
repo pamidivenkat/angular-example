@@ -1,0 +1,21 @@
+@import '../../../../../assets/scss/variablesMap';
+.admindetails{
+    ae-switch{float: left;}
+    .update-profile {position: relative; padding-right: 110px; max-width: 500px; 
+        .save-icon { position: absolute;top:0px; right: 0px;
+        }
+    }
+    .leaver-message{
+        padding: 10px 5px;
+        width: 80%;
+        margin: 0px auto;
+        ae-message{color: #009494;}
+    }
+}
+
+.options{
+    ae-switch{float: left;}
+    div#radio-test-group ae-radiobutton {
+        display: inline-block;
+    }
+}

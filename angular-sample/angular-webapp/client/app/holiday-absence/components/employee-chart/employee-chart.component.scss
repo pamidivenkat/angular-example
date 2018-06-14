@@ -1,0 +1,47 @@
+@import '../../../../assets/scss/variablesMap';
+
+.grid--chart {
+  overflow: hidden;
+
+  > * {
+    ae-chart,
+    ae-legend {
+      display: inline-block;
+      vertical-align: middle;
+
+      .indicator {
+        width: 14px;
+        height: 14px;
+      }
+    }
+    @include media-over-767 {
+      float: left;
+      width: 60%;
+
+      &:first-child {
+        width: 38%;
+        margin-right: 2%;
+      }
+    }
+  }
+}
+
+.chart-indicator--teal {
+  background: $teal--0 !important;
+}
+
+.chart-indicator--yellow {
+  background: $yellow--0 !important;
+}
+
+.chart-indicator--red {
+  background: $red--0 !important;
+}
+
+.chart-indicator--grey {
+  background: $grey--2 !important;
+}
+
+.chart-indicator--purple {
+  background: $indicator--purple !important;
+}

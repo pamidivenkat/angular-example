@@ -1,0 +1,10 @@
+<div id="manageEmployeesHeader">
+  <ae-banner [id]="getChildId('AeBanner')" [name]="getChildName('AeBanner')" [titleText]="'MANAGE_EMPLOYEE.Banner_title' | translate:lang" [backgroundImage]="'/assets/images/lp-employees.jpg'">
+    <ae2-breadcrumb [id]="'breadCrumb'" [name]="'breadCrumb'" [group]="bcGroup" class="bredcrumb-section"></ae2-breadcrumb>
+    <div class="image-text banner-image-text">
+    </div>
+    <div class="icon-list banner-icon-list">
+      <ae-button [type]="'button'" *ngIf="canAddEmployee()" [id]="'testslider'" [name]="'testslider'" class="btn" [text]="'MANAGE_EMPLOYEE.Add_employee' | translate:lang" (aeClick)="navigateToAddEmployeePage()"></ae-button>
+    </div>
+  </ae-banner>
+</div>

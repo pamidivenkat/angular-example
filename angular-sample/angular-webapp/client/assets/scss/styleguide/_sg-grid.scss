@@ -1,0 +1,9 @@
+.sg-grid {
+  background: $grey--pale;
+
+  > div {
+    background: $blue--sky;
+    border: 1px solid $grey--2;
+    height: 50px;
+  }
+}

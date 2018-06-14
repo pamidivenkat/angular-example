@@ -1,0 +1,83 @@
+@import '../../../assets/scss/variablesMap';
+.snackbar {
+  align-items: center;
+  animation: peek 7.5s forwards;
+  animation-delay: 300ms;
+  background: $grey--0;
+  border-bottom-left-radius: $widget-border-radius;
+  border-bottom-right-radius: $widget-border-radius;
+  box-shadow: 0 ($base-margin / 3) (($base-margin / 3) * 2) rgba($grey--0, .25);
+  color: $white;
+  display: flex;
+  justify-content: space-between;
+  left: 0;
+  margin: auto;
+  position: fixed;
+  right: 0;
+  top: -($snackbar-height);
+  width: 70%;
+  z-index: 999;
+
+  .snackbar__content {
+    align-items: center;
+    display: flex;
+    padding: $base-padding;
+
+    .snackbar__type {
+      align-self: center;
+      font-size: 80%;
+      padding: ($base-padding / 3);
+      text-transform: uppercase;
+
+      &.info {
+        background: $indicator--yellow;
+        color: $base-color;
+      }
+
+      &.error {
+        background: $indicator--red;
+      }
+
+      &.success {
+        background: $indicator--green;
+        color: $base-color;
+      }
+    }
+
+    .snackbar__message {
+      font-size: 90%;
+      margin-left: (($base-margin / 3) * 2);
+    }
+  }
+
+  .snackbar__close {
+    a {
+      align-self: center;
+      background: $teal--0;
+      border-radius: $base-border-radius;
+      font-size: 80%;
+      margin: (($base-margin / 3) * 2);
+      padding: (($base-padding / 3) * 2);
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+  }
+}
+
+@keyframes peek {
+  0% {
+    top: -($snackbar-height);
+  }
+
+  10% {
+    top: 0;
+  }
+
+  90% {
+    top: 0;
+  }
+
+  100% {
+    top: -($snackbar-height);
+  }
+}

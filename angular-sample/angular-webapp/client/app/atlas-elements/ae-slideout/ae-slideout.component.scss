@@ -1,0 +1,247 @@
+@import '../../../assets/scss/variablesMap';
+
+.so-panel {
+  background: $white;
+  box-shadow: 0 0 0 0 rgba($black, 0);
+  height: 100%;
+  position: fixed;
+  top: 0;
+  right: -$so-panel-width;
+  transition: all .3s ease-in-out;
+  -webkit-transition: all .3s ease-in-out;
+  width: $so-panel-width;
+  z-index: 32;
+  max-width: 100%;
+  @include media-over-480 {
+    right: -$so-panel-width--over-767;
+    width: $so-panel-width--over-767;
+    .so-panel {
+      width: $so-panel-width--over-767 - 10px;
+    }
+  }
+  @include media-over-979 {
+    right: -$so-panel-width--over-979;
+    width: $so-panel-width--over-979;
+    .so-panel {
+      width: $so-panel-width--over-979 - 10px;
+    }
+  }
+
+  .so-panel__title {
+    background: $grey--pale;
+    padding: $base-padding;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 70px;
+    //max-width: 100%;
+    // @include media-over-480 {
+    //   width: $so-panel-width--over-767;
+    // }
+    // @include media-over-979 {
+    //   width: 100%;
+    // }
+
+    h3 {
+      margin: 0;
+      @include media-over-480 {
+        font-size: 2rem;
+      }
+    }
+  }
+
+  .so-panel__content {
+    background: $white;
+    bottom: 70px;
+    overflow: auto;
+    padding: $base-padding;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    left: 0;
+
+    .form__input {
+      .form__input__error {
+        display: block;
+        padding: 5px 0;
+      }
+
+      label {
+        > ae-select {
+          display: block;
+        }
+      }
+
+      > ae-file,
+      ae-autocomplete,
+      ae-datetime-picker,
+      ae-textarea {
+        display: block;
+        margin-top: 8px;
+      }
+    }
+
+    p:after {
+      content: "";
+      display: table;
+    }
+  }
+
+  .so-panel__footer {
+    background: $grey--pale;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    padding: $base-padding;
+    position: absolute;
+    // width: $so-panel-width;
+    // max-width: 100%;
+    // @include media-over-480 {
+    //   width: $so-panel-width--over-767;
+    // }
+    // @include media-over-979 {
+    //   width: $so-panel-width--over-979;
+    // }
+  }
+
+  
+
+  ae-loader {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    height: 43px;
+    margin: auto;
+  }
+
+  .table__footer .table__filter {
+    display: none;
+  }
+
+  .so-panel__content .so-panel__content {
+    position: static;
+    padding: 0;
+
+    > h3 {
+      display: none;
+    }
+  }
+}
+
+.so-panel__footer {
+  nav {
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    li {
+      float: left;
+    }
+  }
+
+  .pull--right {
+    float: right;
+  }
+}
+
+.so-overlay {
+  background: rgba($black, .25);
+  left: 0;
+  opacity: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  transition: all .3s ease-in-out;
+  visibility: hidden;
+  width: 100%;
+  z-index: 31;
+}
+
+.slide--animate > .so-panel {
+  box-shadow: -4px 0 9px 0 rgba($black, .1);
+  right: 0;
+}
+
+.slide--animate .so-overlay {
+  opacity: 1;
+  visibility: visible;
+}
+
+.menu-icon {
+  background: #E5DAC0;
+  border-radius: $base-border-radius;
+  color: #987D3E;
+  cursor: pointer;
+  margin: 6px 6px 0 0;
+  padding: $base-padding;
+
+  &::after,
+  &::before {
+    display: none;
+  }
+}
+
+.so-notification-panel {
+  height: calc(100vh - 60px) !important;
+  top: 60px !important;
+  background: $grey--pale;
+  padding: 10px 30px 30px;
+  overflow-y: auto;
+
+  p {
+    margin-top: 0;
+  }
+}
+
+.so-notification-overlay {
+  top: 60px;
+}
+@include media-over-480 {
+  .so-notification-panel {
+    height: calc(100vh - 80px) !important;
+    top: 80px !important;
+  }
+
+  .so-notification-overlay {
+    top: 80px;
+  }
+}
+.so-panel--wide {
+    right: -100%;
+    width: 100%;
+
+    // .so-panel__footer,
+    // .so-panel__title {
+    //   width: 100%;
+    // }
+
+    @include media-over-767 {
+      right: -60%;
+      width: 60%;
+      .so-panel{
+        width: calc(100% - 10px) !important;
+      }
+    }
+    @include media-over-1049 {
+      right: -50%;
+      width: 50%;
+    }
+
+    @media screen and (min-width:768px) and (-ms-high-contrast:none) {
+    .so-panel{
+        width: calc(60% - 10px) !important;
+      }
+    }
+    @media screen and (min-width:768px) and (-ms-high-contrast:none) {
+    .so-panel{
+        width: calc(50% - 10px) !important;
+      }
+    }
+  }
+

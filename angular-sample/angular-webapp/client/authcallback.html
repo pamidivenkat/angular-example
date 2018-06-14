@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Atlas - The Citation Platform</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link rel="stylesheet" href="/assets/styles.css">
+</head>
+
+<body>
+    <script type="text/javascript">
+        function b64DecodeUnicode(str) {
+            return decodeURIComponent(atob(str).split('').map(function (c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+        }
+
+        function resetAuthorizationData(userIdentity) {
+            userIdentity.nonce = null;
+            userIdentity.state = null;
+            userIdentity.token = null;
+            userIdentity.idToken = null;
+            localStorage.setItem("identity", JSON.stringify(userIdentity));
+            return userIdentity;
+        }
+
+        function redirect(url) {
+            window.location.href = window.location.protocol + '//' + window.location.host + url;
+        }
+
+        function authCallback() {
+            if (typeof (Storage) === "undefined") {
+                console.log('Sorry, your browser does not support Web Storage...');
+                return;
+            }
+
+            if (!window.location.hash) {
+                redirect('/');
+                return;
+            }
+
+            var identity = localStorage.getItem("identity"); //json parse
+            if (!identity) {
+                redirect('/');
+                return;
+            }
+
+            var userIdentity = JSON.parse(identity);
+
+            var hash = window.location.hash.substr(1);
+
+            var result = hash.split('&').reduce(function (result, item) {
+                var parts = item.split('=');
+                result[parts[0]] = parts[1];
+                return result;
+            }, {});
+
+            var token = '';
+            var id_token = '';
+            var authResponseIsValid = false;
+
+            if (!result.error) {
+                if (result.state !== userIdentity.state) {
+                    console.log('AuthorizedCallback incorrect state');
+                } else {
+
+                    token = result.access_token;
+                    id_token = result.id_token;
+
+                    let dataIdToken = JSON.parse(b64DecodeUnicode(id_token.split('.')[1]));
+
+                    // validate nonce
+                    if (dataIdToken.nonce !== userIdentity.nonce) {
+                        console.log('AuthorizedCallback incorrect nonce');
+                    } else {
+                        userIdentity = resetAuthorizationData(userIdentity);
+                        authResponseIsValid = true;
+                    }
+                }
+            }
+
+            if (authResponseIsValid) {
+                userIdentity.token = token;
+                userIdentity.idToken = id_token;
+                localStorage.setItem("identity", JSON.stringify(userIdentity));
+                redirect(userIdentity.url);
+
+            } else {
+                resetAuthorizationData(userIdentity);
+                redirect('/');
+            }
+        }
+
+        authCallback();
+    </script>
+    <div class="backlayer">
+        <div class="logo-container">
+            <div class="loading-dots">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

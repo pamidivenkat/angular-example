@@ -1,0 +1,21 @@
+<div [id]="id" class="timeSelectorDirective">
+  <div class="section hours">
+    <div class="display">
+      <input  #inputHourField [id]="'txtHourInput'" [attr.maxlength]="minLength" [name]="'txtHourInput'" (blur)="onHourInputChange($event)" (keypress)="onKeyPress($event,true)"   [value]="getHour()" [attr.readonly]="readOnly" />
+    </div>
+    <div class="time-controls">
+      <div class="increase" (click)="increaseHour()"> &#9652; </div>
+      <div class="decrease" (click)="decreaseHour()"> &#9662; </div>
+    </div>
+  </div>
+  <div class="section minutes">
+    <div class="display">
+      <input #inputTimeField [id]="'txtTimeInput'" [name]="'txtTimeInput'" [attr.maxlength]="minLength" (blur)="onTimeInputChange($event)" (keypress)="onKeyPress($event,false)"   [value]="getTime()"  [attr.readonly]="readOnly"/>
+    </div>
+    <div class="time-controls">
+      <div class="increase" (click)="increaseMinute()"> &#9652; </div>
+      <div class="decrease" (click)="decreaseMinute()"> &#9662; </div>
+    </div>
+  </div>
+  
+</div>

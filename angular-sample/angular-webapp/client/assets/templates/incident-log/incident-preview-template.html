@@ -1,0 +1,202 @@
+<!doctype html>
+<html class="has-scroll-bars">
+
+<head>
+  <meta charset="utf-8">
+  <title>Citation Atlas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: "Avenir Next W01", sans-serif;
+      color: #333333;
+      font-size: 16px;
+      line-height: 1.42857;
+      padding: 0 30px;
+    }
+
+    .incident-preview {
+      position: relative;
+    }
+
+    .right-button {
+      position: absolute;
+      right: 0px;
+      top: -50px;
+    }
+
+    .information-grid__section h3 {
+      font-weight: 700;
+      margin-top: 30px !important;
+      margin-bottom: 7.5px;
+      font-size: 22px;
+    }
+
+    .information-grid__section:not(:first-of-type) {
+      border-top: 1px solid #f3f3f3;
+      margin-top: 30px;
+    }
+
+    .information-grid__item {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-wrap: wrap;
+      -webkit-flex-wrap: wrap;
+      flex-wrap: wrap;
+      page-break-inside: avoid;
+    }
+
+    .information-grid__item-label {
+      font-weight: 700;
+      text-align: right;
+      padding: 5px 15px 5px 5px;
+      position: relative;
+    }
+
+    .information-grid__item-label:after {
+      content: ":";
+      position: absolute;
+      right: 5px;
+      top: 5px;
+      font-weight: 700;
+    }
+
+    .information-grid__item .information-grid__item-label,
+    .information-grid__item--input .information-grid__item-label {
+      -webkit-align-self: flex-start;
+      -ms-flex-item-align: flex-start;
+      -ms-grid-row-align: flex-start;
+      align-self: flex-start;
+    }
+
+    .information-grid__item-value {
+      padding: 5px 5px 5px 15px;
+    }
+
+    .column-1of3 {
+      width: 34%;
+      text-align: right;
+      padding-top: 4px;
+    }
+
+    .column-2of3 {
+      width: 66%;
+    }
+
+    .person__avatar {
+      border-radius: 0;
+      width: 100px;
+      height: 100px;
+    }
+
+    .svg-sprite {
+      display: none;
+    }
+
+
+    .page-break-before {
+      page-break-before: always;
+    }
+
+    .border-none {
+      border: none !important
+    }
+
+    .download-block {
+      display: block;
+      text-align: left;
+      color: #009494;
+    }
+
+    .witness-grid-block {
+      display: block;
+    }
+
+    .witness-grid-block .row {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    .label,
+    label {
+      display: block;
+      font-weight: bold;
+    }
+
+    fieldset {
+      border: 1px solid #c0c0c0;
+      margin: 0 2px;
+      padding: 0.35em 0.625em 0.75em;
+    }
+
+    legend {
+      box-sizing: border-box;
+      color: inherit;
+      display: table;
+      max-width: 100%;
+      padding: 0;
+      white-space: normal;
+    }
+
+    .witness-grid-block .row fieldset {
+      background: none;
+    }
+
+    .witness-grid-block .row fieldset legend {
+      background: none;
+    }
+
+    .witness-grid {
+      align-items: flex-end;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -ms-justify-content: space-between;
+      -webkit-justify-content: space-between;
+      justify-content: space-between;
+      clear: both;
+    }
+
+    .witness-grid>div {
+      width: 31%;
+    }
+
+    .witness-grid label {
+      margin-top: 0 !important;
+    }
+
+    .border-t-grey {
+      border-top: 1px solid #c0c0c0;
+    }
+
+    .spacer-t-30 {
+      margin-top: 30px;
+      padding-top: 30px;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="svg-sprite">
+    <svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+      <symbol viewBox="0 0 48 48" id="icon-document">
+        <title>document</title>
+        <path d="M39.22,12.23a.74.74,0,0,0,0-.2l0-.07a.74.74,0,0,0-.15-.22L30.74,3.47a.74.74,0,0,0-.22-.15l-.07,0-.19,0H10.9A2.13,2.13,0,0,0,8.77,5.38V42.62a2.13,2.13,0,0,0,2.13,2.13H37.1a2.13,2.13,0,0,0,2.13-2.13V12.28S39.22,12.25,39.22,12.23Zm-2.55-.7H31.59A.63.63,0,0,1,31,10.9V5.81Zm1.06,31.1a.63.63,0,0,1-.63.63H10.9a.63.63,0,0,1-.63-.63V5.38a.63.63,0,0,1,.63-.63H29.46V10.9A2.13,2.13,0,0,0,31.59,13h6.15Z"
+        />
+        <path d="M13.66,13H26.07a.75.75,0,0,0,0-1.5H13.66a.75.75,0,1,0,0,1.5Z" />
+        <path d="M12.91,16.41a.75.75,0,0,0,.75.75H34.34a.75.75,0,0,0,0-1.5H13.66A.75.75,0,0,0,12.91,16.41Z" />
+        <path d="M13.66,21.3h9a.75.75,0,0,0,0-1.5h-9a.75.75,0,1,0,0,1.5Z" />
+        <path d="M13.66,25.44h9a.75.75,0,0,0,0-1.5h-9a.75.75,0,1,0,0,1.5Z" />
+        <path d="M13.66,29.58h9a.75.75,0,0,0,0-1.5h-9a.75.75,0,1,0,0,1.5Z" />
+        <path d="M34.34,32.22H13.66a.75.75,0,0,0,0,1.5H34.34a.75.75,0,0,0,0-1.5Z" />
+        <path d="M34.34,36.35H13.66a.75.75,0,0,0,0,1.5H34.34a.75.75,0,0,0,0-1.5Z" />
+        <path d="M34.34,19.8H26.07a.75.75,0,0,0-.75.75v8.28a.75.75,0,0,0,.75.75h8.28a.75.75,0,0,0,.75-.75V20.55A.75.75,0,0,0,34.34,19.8Zm-.75,8.28H26.82V21.3h6.78Z"
+        />
+      </symbol>
+    </svg>
+  </div>
+  {{bodyContent}}
+</body>
+
+</html>

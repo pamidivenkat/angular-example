@@ -1,0 +1,143 @@
+<!---Contact section content start here -->
+<div [id]="id">
+    <div class="section-title">
+        <h3>{{'EMPLOYEE_CONTACTS.contact_details' | translate:lang}}</h3>
+        <ae-button [type]="'button'" *ngIf="(canUpdate$ | async) && (contactsDataLoaded$ | async)" [id]="getChildId('AeButton', 1)" [name]="getChildName('AeButton', 1)" (aeClick)="openEmpContactsUpdateForm($event)" class="btn" [class]="btnStyle" [title]="'EMPLOYEE_CONTACTS.update' | translate:lang"
+            [text]="'EMPLOYEE_CONTACTS.update' | translate:lang"></ae-button>
+    </div>
+    <ae-slideout [id]="getChildId('AeSlideOut', 1)" [name]="getChildName('AeSlideOut', 1)" [modelState]="getSlideoutState()" (cancel)="closeUpdateForm($event)" [class.slide--animate]="showUpdateEmpContactsForm">
+        <ng-container *ngIf="showUpdateEmpContactsForm">
+            <employee-contacts-update [id]="getChildId('EmployeeContactsUpdate', 1)" [name]="getChildName('EmployeeContactsUpdate', 1)" (aeClose)="closeUpdateForm($event)" (onSave)="saveEmployee($event)" [County]="County$ | async" [Country]="Country$ | async" (onClose)="closeUpdateForm($event)"
+                [toggle]="showUpdateEmpContactsForm">
+            </employee-contacts-update>
+        </ng-container>
+    </ae-slideout>
+
+    <div class="information-grid">
+        <section class="information-grid__section">
+            <!--<h3 translate>Address Details</h3>-->
+            <div class="information-grid__item">
+                <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_CONTACTS.address' | translate:lang}}</div>
+                <div class="information-grid__item-value column-2of3" [class.text-muted]="!(EmployeeContacts$ | async)?.FullAddress" id="empcontacts_fulladdress">{{(EmployeeContacts$ | async)?.FullAddress || noneText}}</div>
+            </div>
+            <div class="information-grid__item">
+                <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_CONTACTS.personal_email_address' | translate:lang}}</div>
+                <div class="information-grid__item-value column-2of3" [class.text-muted]="!(EmployeeContacts$ | async)?.PersonalEmail" id="empcontacts_personalemail">{{(EmployeeContacts$ | async)?.PersonalEmail || noneText}}</div>
+            </div>
+            <div class="information-grid__item">
+                <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_CONTACTS.email_address' | translate:lang}}</div>
+                <div class="information-grid__item-value column-2of3" [class.text-muted]="!(EmployeeContacts$ | async)?.Email" id="empcontacts_email">{{(EmployeeContacts$ | async)?.Email || noneText}} </div>
+            </div>
+            <div class="information-grid__item">
+                <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_CONTACTS.mobile_phone' | translate:lang}}</div>
+                <div class="information-grid__item-value column-2of3" [class.text-muted]="!(EmployeeContacts$ | async)?.MobilePhone" id="empcontacts_mobilephone">{{(EmployeeContacts$ | async)?.MobilePhone || noneText}} </div>
+            </div>
+            <div class="information-grid__item">
+                <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_CONTACTS.home_phone' | translate:lang}}</div>
+                <div class="information-grid__item-value column-2of3" [class.text-muted]="!(EmployeeContacts$ | async)?.HomePhone" id="empcontacts_homephone">{{(EmployeeContacts$ | async)?.HomePhone || noneText}}</div>
+            </div>
+        </section>
+    </div>
+
+    <!--Emergency Contacts-->
+    <div class="section-title">
+        <h3>{{'EMPLOYEE_CONTACTS.emergency_contact_details' | translate:lang}}</h3>
+        <ae-button [type]="'button'" *ngIf="canUpdate$ | async" [id]="getChildId('AeButton', 2)" [name]="getChildName('AeButton', 2)" (aeClick)="openEmpEmergencyContactsUpdateForm($event)" class="btn" [class]="btnStyle" [title]="'EMPLOYEE_CONTACTS.add' | translate:lang"
+            [text]="'EMPLOYEE_CONTACTS.add' | translate:lang"></ae-button>
+    </div>
+    <!-- Emergency Contacts Grid -->
+    <ae-datatable [id]="getChildId('AeDatatable',1)" [name]="getChildName('AeDatatable',1)" [dataSource]="emergencyContacts" [actions]="actions" [totalRecords]="totalRecords" [autoGenerateColumns]="false" [defaultOptions]="dataTableOptions | async" (pageChanged)="onPageChange($event)"
+        (onSort)="onSortChange($event)" [rowSelector]="highLightRow">
+        <ae-column [headerText]="'EMPLOYEE_CONTACTS.name' | translate:lang" [sortKey]="'Name'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>{{'EMPLOYEE_CONTACTS.name' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <span>{{context.Name}}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+        <ae-column [headerText]="'EMPLOYEE_CONTACTS.relation' | translate:lang" [sortKey]="'EmployeeRelationName'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>{{'EMPLOYEE_CONTACTS.relation' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                   <span>{{context.EmployeeRelationName}}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+        <ae-column [headerText]="'EMPLOYEE_CONTACTS.town' | translate:lang" [sortKey]="'Town'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>{{'EMPLOYEE_CONTACTS.town' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <span>{{context.Town}}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+        <ae-column [headerText]="'EMPLOYEE_CONTACTS.telephone' | translate:lang" [sortKey]="'MobilePhone'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>{{'EMPLOYEE_CONTACTS.telephone' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <span>{{context.MobilePhone}}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+        <ae-column [headerText]="'EMPLOYEE_CONTACTS.email' | translate:lang" [sortKey]="'Email'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>{{'EMPLOYEE_CONTACTS.email' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <span>{{context.Email}}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+    </ae-datatable>
+
+    <ae-slideout [id]="getChildId('AeSlideOut', 2)" [name]="getChildName('AeSlideOut', 2)" [modelState]="getEmergencyContactsSlideoutState()" (cancel)="closeEmpEmergencyContactsUpdateForm($event)" [class.slide--animate]="showUpdateEmpEmergencyContactsForm">
+        <ng-container *ngIf="showUpdateEmpEmergencyContactsForm">
+            <employee-emergency-contacts [County]="County$ | async" [Country]="Country$ | async" [EmployeeRelations]="EmployeeRelation$ | async" (onSave)="saveEmpEmergencyContact($event)" (onClose)="closeEmpEmergencyContactsUpdateForm($event)" (aeCloseEC)="closeEmpEmergencyContactsUpdateForm($event)"
+                [toggleEC]="operationMode" [Flag]="false"></employee-emergency-contacts>
+        </ng-container>
+    </ae-slideout>
+    <!--Emergency Contacts end-->
+
+    <div class="information-grid">
+        <section class="information-grid__section">
+            <!-- Emergency Contacts Grid -->
+
+        </section>
+    </div>
+
+    <ae-modal-dialog [visible]="showRemoveDialog" (cancel)="modalClosed($event)" [closable]="true" [id]="'confirmModal'" [name]="'confirmModal'" *ngIf="showRemoveDialog">
+        <div class="modal-dialog-header">
+            <h3>{{ 'EMPLOYEE_CONTACTS.Dialog.Heading_text' | translate:lang }}</h3>
+        </div>
+        <div class="modal-dialog-body">
+            <p>{{'EMPLOYEE_CONTACTS.Dialog.Info' | translate: lang:{contactName: _emergencyContactToBeDeleted.Name} }}</p>
+        </div>
+        <div class="modal-dialog-footer">
+            <ae-button [text]="'EMPLOYEE_CONTACTS.Dialog.Btn_No' | translate:lang" [type]="'button'" [id]="'confirmNo'" [name]="'confirmNo'" (aeClick)="modalClosed('no')"></ae-button>
+            <ae-button [class]="btnStyle" [text]="'EMPLOYEE_CONTACTS.Dialog.Btn_Yes' | translate:lang" [type]="'button'" [id]="'confirmYes'" [name]="'confirmYes'" (aeClick)="modalClosed('yes')"></ae-button>
+        </div>
+    </ae-modal-dialog>
+
+
+</div>
+<!---Contact section content end here -->

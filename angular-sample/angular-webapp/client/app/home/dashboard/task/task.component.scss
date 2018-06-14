@@ -1,0 +1,104 @@
+@import '../../../../assets/scss/variablesMap';
+.icon-grid {
+  @include clearfix;
+  display: flex;
+  flex-wrap: wrap;
+  ae-anchor {
+    display: block;
+    width: 100%;
+    clear: both;
+  }
+  .button {
+    margin-top: 15px;
+  }
+  @media only screen and (min-width: 768px) {
+    .button {
+      margin: 15px 15px 0;
+    }
+  }
+}
+
+.icon-grid__item {
+  background: transparent;
+  cursor: pointer;
+  float: left;
+  padding: $base-padding 12px;
+  text-align: center;
+  transition: background $base-transition;
+  width: 33.333%;
+  position: relative;
+  @media(min-width: 980px) and (max-width:1220px) {
+    width:50%;
+  }
+  @media(max-width:380px) {
+    width: 50%;
+  }
+  &:hover {
+    background: rgba($teal--0, .3);
+  }
+  .icon {
+    color: $teal--0;
+  }
+}
+
+.icon-grid__copy {
+  margin-top: 12px; // word-break: break-all;
+}
+
+.icon-grid__badge {
+  position: absolute;
+  right: 28.57143%;
+  top: 10px;
+}
+
+
+
+.icon-badge-info {
+  height: 40px;
+  width: 40px;
+  background-color: $grey--4;
+  position: relative;
+  margin: 20px auto;
+  display: block;
+  &:before {
+    content: '';
+    background-color: $grey--4;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: -22px;
+    top: -12px;
+    border-radius: 50%;
+  }
+  &:after {
+    content: '';
+    background-color: $grey--4;
+    height: 15px;
+    position: absolute;
+    bottom: -25px;
+    left: -80%;
+    right: -80%;
+  }
+}
+
+.tasks-loader {
+  h2 {
+    width: 80%;
+    margin: 10px auto 20px auto;
+  }
+  .icon-grid__item {
+    position: relative;
+    &:hover {
+      background: none;
+    }
+  }
+  .button-loader {
+    margin: 15px 10px 0;
+    display: block;
+    width: 100%;
+  }
+}
+
+.top15 {
+  margin-top: 15px;
+}

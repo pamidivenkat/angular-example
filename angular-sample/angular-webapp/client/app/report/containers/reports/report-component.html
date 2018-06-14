@@ -1,0 +1,24 @@
+<div id="report">
+  <report-header [id]="getChildId('reportHeader')" [name]="getChildName('reportHeader')" [informationBarItems]="reportsInformationBarItems$ | async"></report-header>
+  <ae-notification id="'traningInfo'" [name]="'traningInfo'" [iconName]="'icon-info'" [textInfo]="'Notification_text' | translate:lang"></ae-notification>
+  <report-list [id]="getChildId('reportList')" [name]="getChildName('reportList')" [categories]="reportCategories$ | async"
+    [actions]="actions" [totalRecords]="totalRecords$" [itemsList]="reportsList$" [dataTableOptions]="dataTableOptions$ | async"
+    [loadingStatus]="loadingStatus$ | async " (onPageSort)="onPageSort($event)" (pageChanged)="onPageChanged($event)" (onReportCategorySelection)="onReportCategorySelection($event)"></report-list>
+  <div>
+    <ae-modal-dialog [visible]="showRemoveDialog" (cancel)="closeReportModal()" [closable]="true" [id]="'confirmModal'" [name]="'confirmModal'"
+      *ngIf="showRemoveDialog">
+      <div class="modal-dialog-header">
+        <h3>{{'REMOVE_REPORT' | translate:lang}}</h3>
+      </div>
+      <div class="modal-dialog-body">
+        <p>{{'REPORT_DIALOG_TEXT' | translate:lang}}</p>
+      </div>
+      <div class="modal-dialog-footer">
+        <ae-button [text]="'REPORT_DELETE_NO' | translate:lang" [type]="'button'" [id]="getChildId('AeButton', 1)" [name]="getChildName('AeButton', 1)"
+          (aeClick)="closeReportModal()"></ae-button>
+        <ae-button [class]="lightClass" [text]="'REPORT_DELETE_YES' | translate:lang" [type]="'button'" [id]="getChildId('AeButton', 2)"
+          [name]="getChildName('AeButton', 2)" (aeClick)="removeReportOnConfirmation()"></ae-button>
+      </div>
+    </ae-modal-dialog>
+  </div>
+</div>

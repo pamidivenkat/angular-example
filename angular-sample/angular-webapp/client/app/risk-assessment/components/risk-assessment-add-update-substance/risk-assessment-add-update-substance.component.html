@@ -1,0 +1,34 @@
+<div [id]="getChildId('div', 1)">
+  <div class="so-panel__title" [id]="getChildId('div', 2)">
+    <h3>{{ headerTitle | translate:lang}}</h3>
+  </div>
+  <div class="so-panel__content">
+    <ae-form [formBuilderData]="raAddUpdateSubstanceFormVM" [id]="getChildId('AeForm', 1)" [name]="getChildName('AeForm', 1)"
+      [isPrimaryTitle]="false" [displayFooter]="false" [submitted]="isFormSubmitted$ | async" (onFormInit)="onFormInit($event)">
+    </ae-form>
+    <div class="information-grid__item--input">
+      <label class="information-grid__item-label column-1of3">{{'SELECT_FILE'| translate:lang }} </label>
+      <div class="information-grid__item-value column-2of3">
+        <ae-file [id]="'fileUpload'" [name]="'fileUpload'" [multiple]="false" (onFilesSelected)="onFilesSelected($event)" [accept]="'*'"></ae-file>
+      </div>
+    </div>
+    <div class="spacer-15">
+      <div *ngIf="showFilePreview">
+        <span>{{attacheFileName}}</span>
+        <ae-icon [id]="'icon'" [name]="'icon'" [color]="'red'" (click)="removeAttachment()" [icon]="'icon-alert-cancel'" [title]="test"></ae-icon>
+      </div>
+    </div>
+  </div>
+  <div class="so-panel__footer" [id]="getChildId('footerDiv', 2)">
+
+    <nav>
+      <ul>
+        <li><label for="soPanel" class="button button--inline-block" (click)="onUpdateFormClosed($event)" [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label></li>
+        <li class="pull--right">
+          <ae-anchor [id]="getChildId('AeAnchor',1)" [name]="getChildName('AeAnchor',1)" [anchorType]="'button'" [class]="'button button--inline-block'"
+            [anchorClass]="lightClass" (aeClick)="onUpdateFormSubmit($event)" [text]="actionText"></ae-anchor>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>

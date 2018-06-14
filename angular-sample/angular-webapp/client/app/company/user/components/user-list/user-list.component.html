@@ -1,0 +1,93 @@
+<!--table start-->
+<div class="table spacer">
+    <!--filter start-->
+    <div class="table__filter-bar">
+        <div class="filter-bar">
+            <div class="filter-bar__label label">Filter by</div>
+            <div class="sg-grid grid--1-1-3">
+                <div>
+                    <ae-input id="'user-name-status-filter'" [name]="'user-name-status-filter'" [placeholder]="'Search'" [value]="''" [type]="ctrlType" [readonly]="'false'" (aeChange)="onUserNameFilterChange($event)"></ae-input>
+                </div>
+
+                <div>
+                    <ae-select [id]="'user-status-filter'" [name]="'user-status-filter'" [placeholder]="''" [options]="userStatusOptions" (aeSelectChange)="onUserStatusFilterChange($event)" [value]="userStatusFilterDefualtVaule"></ae-select><br/>
+                </div>
+                <div>
+                    <ae-select [id]="'email-status-filter'" [name]="'email-status-filter'" [placeholder]="''" [options]="emailStatusOptions" (aeSelectChange)="onEmailStatusFilterChange($event)" [value]="emailStatusFilterDefualtVaule"></ae-select><br/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!--filter end -->
+    <div class="user-list-data">
+        <ae-datatable [id]="'userTable'" [defaultOptions]="dataTableOptions$ | async" [name]="'userTable'" [dataSource]="users$" [actions]="actions" [autoGenerateColumns]="false" [totalRecords]="totalRecords" (pageChanged)="onPageChange($event)" (onSort)="onSort($event)"
+            [loading]="usersLoading$ | async">
+            <ae-column [headerText]="'USER_NAME_EMAIL' | translate:lang" [sortable]="true" [sortKey]="'Email'">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span>{{'USER_NAME_EMAIL' | translate:lang}}</span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+                        <span for="soPanel">{{context.Email? context.Email: context.UserName}}</span>
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+            <ae-column [headerText]="'FULL_NAME' | translate:lang" [sortable]="true" [sortKey]="'FullName'">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span> {{'FULL_NAME' | translate:lang}} </span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+                        <span>{{context.FullName}}</span>
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+
+            <ae-column [headerText]="'ACN' | translate:lang" [sortable]="false">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span>{{'ACN' | translate:lang}} </span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+                        <span>{{context.ACN}}</span>
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+
+            <ae-column [headerText]="'HAS_EMAIL' | translate:lang" [sortable]="true" [sortKey]="'HasEmail'">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span>{{'HAS_EMAIL' | translate:lang}} </span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+                        <span>{{context.HasEmail == true ? 'Yes': 'No'}}</span>
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+
+            <ae-column [headerText]="'IS_ACTIVE' | translate:lang" [sortable]="true" [sortKey]="'IsActive'">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span> {{'IS_ACTIVE' | translate:lang}} </span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+                        <span>{{context.IsActive == true ? 'Yes': 'No'}}</span>
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+
+        </ae-datatable>
+    </div>
+</div>
+<!--table end-->

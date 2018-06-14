@@ -1,0 +1,43 @@
+.tooltipster-sidetip.tooltipster-borderless.tooltipster-borderless-customized .tooltipster-box {
+  background: rgba($grey--2, .9);
+  border: rgba($grey--2, .9);
+  font-size: 1.4rem;
+  font-weight: $normal;
+}
+
+.tooltipster-sidetip.tooltipster-borderless.tooltipster-bottom .tooltipster-arrow-border {
+  border-bottom-color: rgba($grey--2, .9);
+}
+
+.tooltipster-sidetip.tooltipster-borderless.tooltipster-left .tooltipster-arrow-border {
+  border-bottom-color: rgba($grey--2, .9);
+}
+
+.tooltipster-sidetip.tooltipster-borderless.tooltipster-right .tooltipster-arrow-border {
+  border-bottom-color: rgba($grey--2, .9);
+}
+
+.tooltipster-sidetip.tooltipster-borderless.tooltipster-top .tooltipster-arrow-border {
+  border-bottom-color: rgba($grey--2, .9);
+}
+
+.tooltipster-base .tooltipster-arrow {
+  display: none;
+}
+
+.tooltipster-base.tooltipster-sidetip .tooltipster-content {
+  padding: 15px;
+}
+
+.tooltipster-base .tooltipster-box {
+  background: none;
+  border: 0;
+}
+
+.tooltipster-borderless .tooltipster-arrow {
+  display: block;
+}
+
+.js-tooltip-content {
+  display: none;
+}

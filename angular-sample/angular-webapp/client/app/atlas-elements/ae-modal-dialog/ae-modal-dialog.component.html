@@ -1,0 +1,7 @@
+<div [id]=[id] [@dialog] *ngIf="isVisible()" class="dialog" [ngClass]="getSizeClass()" [draggable]="isDraggableModal()">
+  <ae-icon [id]="'close'" [name]="'close'" [size]="iconSmall" [icon]="'icon-cross'" class="button--close" (click)="cancelEvent()"
+    *ngIf="isClosable()"></ae-icon>
+  <ng-content></ng-content>
+</div>
+<div class="overlay">
+</div>

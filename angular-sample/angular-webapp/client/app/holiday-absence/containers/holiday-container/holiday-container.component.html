@@ -1,0 +1,24 @@
+<div [id]="'myholidayListContainer'">
+  <my-holidays-header [id]="'myHolidayListHeader'" [name]="'myHolidayListHeader'" (addMyAbsence)="addHoliday($event)" [type]="headerType"
+    [employeeSettings]="employeeSettings" [employeeConfig]="employeeConfig" [fiscalYears]="fiscalYearData" (fiscalYearChange)="onFiscalYearChange($event)">
+  </my-holidays-header>
+
+  <my-holidays-summary [id]="'myHolidayListHeader'" [name]="'myHolidayListHeader'" [fiscalYearSummary]="fiscalYearSummaryForChart"
+    [employeeSettings]="employeeSettings" [loadingStatus]="loadingStatus">
+  </my-holidays-summary>
+
+  <my-holidays-list [id]="'myHolidayList'" [name]="'myHolidayList'" (updateMyAbsence)="updateHoliday($event)" [employeeSettings]="employeeSettings"
+    [employeeConfig]="employeeConfig" [absenceStatuses]="absenceStatusList" (statusFilterChange)="onStatusChange($event)"></my-holidays-list>
+
+  <div class="holiday-slideout">
+    <ae-slideout [id]="'myHolidayManage'" [name]="'myHolidayManage'" [modelState]="getMyAbsenceSlideoutState()" (cancel)="closeMyAbsenceForm($event)"
+      [class.slide--animate]="hasSlideAnimate()">
+      <div *ngIf="showMyAbsenceForm">
+        <my-absence-manage [id]="getChildId('MyAbsenceManage', 16)" [name]="getChildName('MyAbsenceManage', 16)" [operationMode]="operationMode" [approve]="false"
+          (aeOnClose)="closeMyAbsenceForm($event)" [fiscalYears]="fiscalYearData" [employeeSettings]="employeeSettings" [myAbsence]="employeeAbsence"
+          [absenceStatuses]="absenceStatusList" [employeeConfig]="employeeConfig" [myabsenceVM]="holidayVM" [fiscalYearSummary]="fiscalYearSummary"
+          (summaryChange)="onSummaryChange($event)" (formSubmit)="saveEmployeeHoliday($event)" (pullFiscalYearSummary)="onPullFiscalYearSummary($event)"></my-absence-manage>
+      </div>
+    </ae-slideout>
+  </div>
+</div>

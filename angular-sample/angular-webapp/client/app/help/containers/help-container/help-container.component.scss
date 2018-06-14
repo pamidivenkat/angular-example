@@ -1,0 +1,40 @@
+.article-slideout {
+  @media only screen and (min-width: 980px) {
+    .so-panel {
+      width: 1000px !important;
+      text-align: left;    
+    }
+  }
+}
+
+.list {
+  margin: 15px auto;
+}
+
+.search-result-block {
+  position: relative;
+
+  .button {
+    position: absolute;
+    top: 7px;
+    right: 3px;
+    border: 0;
+    border: 0;
+    padding: 5px;
+    box-shadow: none;
+
+    &:active,
+    &:focus,
+    &:hover {
+      background: none;
+      box-shadow: none;
+    }
+  }
+}
+
+.content-in-slider section.spacer {
+  padding: 0;
+  @media (min-width:768px) {
+    padding: 0 15px;
+  }
+}

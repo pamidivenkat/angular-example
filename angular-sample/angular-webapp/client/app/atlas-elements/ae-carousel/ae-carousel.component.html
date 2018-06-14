@@ -1,0 +1,14 @@
+<div class="carousel slide">
+  <div class="carousel-inner" *ngIf="isIndicatorsVisible()">
+    <ae-template-loader [template]="getTemplate()" [contextItem]="getContext()"></ae-template-loader>
+    <ng-content></ng-content>
+  </div>
+  <ae-anchor *ngIf="isIndicatorsVisible()" [class]="'left carousel-control'" [id]="getChildId('ae-anchor', 1)" [name]="getChildName('ae-anchor', 1)" (aeClick)="previous()"
+    [anchorType]="'button'" [anchorNav]="backward" [disabled]="currentIndex === 0"></ae-anchor>
+  <ae-anchor *ngIf="isIndicatorsVisible()" [class]="'right carousel-control'" [id]="getChildId('ae-anchor', 2)" [name]="getChildName('ae-anchor', 2)" (aeClick)="next()"
+    [anchorType]="'button'" [anchorNav]="forward" [disabled]="currentIndex === totalItems-1"></ae-anchor>
+
+  <ol class="carousel-indicators" *ngIf="isIndicatorsVisible()">
+    <li *ngFor="let item of items | async, let i = index" [class.active]="isCurrentItem(i)" (click)="selectItem(i)"></li>
+  </ol>
+</div>

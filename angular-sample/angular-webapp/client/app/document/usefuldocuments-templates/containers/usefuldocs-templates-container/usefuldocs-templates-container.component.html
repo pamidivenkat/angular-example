@@ -1,0 +1,12 @@
+<usefuldocs-templates-list [id]="getChildId('UsefuldocsTemplates', 1)" [name]="getChildName('UsefuldocsTemplates', 1)" [usefulDocApiRequest]="usefulDocApiRequest"
+    [country]="country$ | async" [categoryList]="docCategoryList$ | async" (docDistribute)="onShowDistribute($event)" [additionalServiceList]="additionalService$ | async">
+</usefuldocs-templates-list>
+
+<ae-slideout [id]="'documentDistributeSelectSlide'" [name]="'documentDistributeSelectSlide'" [modelState]="getDocDistributeSlideoutState()"
+    [class.slide--animate]="showRemoveDocumentDistributeSelectSlideOut">
+    <ng-container *ngIf="showRemoveDocumentDistributeSelectSlideOut">
+        <document-review-distribute [id]="'documentDistribute'" [name]="'documentDistribute'" [documentType]="documentType" [documentDetails]="documentDetails$ | async"
+            (aeCancel)="onAeCancel($event)" (aeDistribute)="onDocumentDistribute($event)">
+        </document-review-distribute>
+    </ng-container>
+</ae-slideout>

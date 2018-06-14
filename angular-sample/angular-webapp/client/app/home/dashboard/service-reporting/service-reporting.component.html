@@ -1,0 +1,65 @@
+<ae-tab [id]="getChildId('AeTab')" [name]="getChildName('AeTab')" [standard]="true" *ngIf="!(loading$ | async)">
+  <ae-tab-item [id]="getChildId('AeTabItem',1)" [name]="getChildName('AeTabItem',1)" [header]="'HR responsibilities'" *ngIf="isHRManagerOrServiceOwner()">
+    <ae-template [type]="'content'">
+      <ng-template>
+        <div class="list-scroll" [attr.data-simplebar-autohide]="false" [attr.data-simplebar]="applyScroll" [style.max-height]="maxHeight"
+          *ngIf="hasELServiceReportItems()">
+          <ul class="list">
+            <li class="list__item" *ngFor="let item of elServiceReportInformation">
+              <span  *ngIf="informationBarItemType.ELHandbookService===item.Code">{{'SERVICE_REPORT.YOUR_ITEM_HAS' | translate: lang:{itemName: item.Data} }}</span>
+              <span  *ngIf="informationBarItemType.ELTrainingService===item.Code">{{'SERVICE_REPORT.YOU_HAVENT_SENT' | translate: lang }}</span>
+              <ae-anchor [id]="getELHandbookService()" [name]="getELHandbookService()" [text]="'CLICK_HERE' | translate: lang" [routerLink]="onHandbookServiceReportClick(item.Id)"
+                *ngIf="informationBarItemType.ELHandbookService===item.Code"></ae-anchor>
+              <ae-anchor [id]="getELTrainingService()" [name]="getELTrainingService()" [text]="'CLICK_HERE' | translate: lang" [routerLink]="onTrainingServiceReportClick(item.Id)"
+               *ngIf="informationBarItemType.ELTrainingService===item.Code"></ae-anchor>
+              <span  *ngIf="informationBarItemType.ELHandbookService===item.Code">{{'SERVICE_REPORT.TO_DISTRIBUTE' | translate: lang}}</span>
+              <span  *ngIf="informationBarItemType.ELTrainingService===item.Code">{{'SERVICE_REPORT.TO_SETUP' | translate: lang}}</span>
+            </li>
+          </ul>
+        </div>
+        <div class="up-to-date" *ngIf="!hasELServiceReportItems()">
+          <div class="up-to-date__text">
+            <p>{{'SERVICE_REPORT.upto_date' | translate:lang}}</p>
+          </div>
+          <div class="up-to-date__icon">
+            <ae-icon [id]="getChildId('AeIcon', 1)" [size]="_iconBig" [name]="getChildName('AeIcon', 1)" [icon]="'icon-thumbs-up'"></ae-icon>
+          </div>
+        </div>
+      </ng-template>
+    </ae-template>
+  </ae-tab-item>
+  <ae-tab-item [id]="getChildId('AeTabItem',2)" [name]="getChildName('AeTabItem',2)" [header]="'H&S responsibilities'" *ngIf="isHSServiceOwnerOrCoordinator()">
+    <ae-template [type]="'content'">
+      <ng-template>
+        <div class="list-scroll" [attr.data-simplebar-autohide]="false" [attr.data-simplebar]="applyScroll" [style.max-height]="maxHeight"
+          *ngIf="hasHSServiceReportItems()">
+          <ul class="list">
+            <li class="list__item" *ngFor="let item of hsServiceReportInformation">
+              <span *ngIf="informationBarItemType.HSHandbookService===item.Code">{{'SERVICE_REPORT.YOUR_ITEM_HAS' | translate: lang:{itemName: item.Data} }}</span>
+              <span *ngIf="informationBarItemType.HSTrainingService===item.Code">{{'SERVICE_REPORT.YOU_HAVENT_SENT' | translate: lang }}</span>
+              <ae-anchor [id]="getHSHandbookService()" [name]="getHSHandbookService()" [text]="'CLICK_HERE' | translate: lang" [routerLink]="onHandbookServiceReportClick(item.Id)"
+                *ngIf="informationBarItemType.HSHandbookService===item.Code"></ae-anchor>
+              <ae-anchor [id]="getHSTrainingService()" [name]="getHSTrainingService()" [text]="'CLICK_HERE' | translate: lang" [routerLink]="onTrainingServiceReportClick(item.Id)"
+               *ngIf="informationBarItemType.HSTrainingService===item.Code"></ae-anchor>
+               <span *ngIf="informationBarItemType.HSHandbookService===item.Code">{{'SERVICE_REPORT.TO_DISTRIBUTE' | translate: lang}}</span>
+               <span *ngIf="informationBarItemType.HSTrainingService===item.Code">{{'SERVICE_REPORT.TO_SETUP' | translate: lang}}</span>
+            </li>
+          </ul>
+        </div>
+        <div class="up-to-date" *ngIf="!hasHSServiceReportItems()">
+          <div class="up-to-date__text">
+            <p>{{'SERVICE_REPORT.upto_date' | translate:lang}}</p>
+          </div>
+          <div class="up-to-date__icon">
+            <ae-icon [id]="getChildId('AeIcon', 1)" [size]="_iconBig" [name]="getChildName('AeIcon', 1)" [icon]="'icon-thumbs-up'"></ae-icon>
+          </div>
+        </div>
+      </ng-template>
+    </ae-template>
+  </ae-tab-item>
+</ae-tab>
+<div class="service-loader" *ngIf="(loading$ | async)">
+  <div class="button-loader-big"></div>
+  <div class="button-loader-big"></div>
+  <p class="info-loader"></p>
+</div>

@@ -1,0 +1,128 @@
+<div [class.vh-fixed-tablecols]="isInlineEdit()" [class.fixed-cols-4]="isInlineEdit()" [class.show-header]="isInlineEdit() && showDataRows"
+  (scroll)="onDataTableScroll($event)">
+  <div #tableBody [id]="getChildId('divBody', 0)" class="table__table" [class.table__responsive]="!isInlineEdit()">
+    <div #tableHeader class="table__headings">
+      <ng-container *ngIf="isAutoGenerateColumns()">
+        <div *ngFor="let column of columns" class="table__heading" [attr.data-sortable]="column.sortable" [attr.data-sortKey]="column.sortKey">>{{column.headerText}}</div>
+        <div *ngIf="isActionable()" class="table__heading action__heading">Actions</div>
+        <div *ngIf="isSelectable()" class="table__heading action__heading">Select</div>
+      </ng-container>
+      <ng-container *ngIf="!isAutoGenerateColumns()">
+        <ng-container *ngFor="let column of columns; let colIndex = index">
+          <div *ngIf="isColumnVisible(colIndex)" class="table__heading js-sortable" [class.mobile-header]="isMobileViewCoumn(colIndex)"
+            [class.table__sortable--active]="isCurrentSortColumn(column)" [class.table__heading--sortable]="isSortable(column)">
+            <div (click)="sortByHeader(column)" [attr.data-sortable]="column.sortable" [attr.data-sortKey]="column.sortKey">
+              <ae-template-loader [template]="getHeaderTemplate(column).template"></ae-template-loader>
+            </div>
+
+            <div class="table__sort" *ngIf="isSortable(column)">
+              <div class="sort">
+                <div class="js-sort-direction sort__asc " data-sort-direction="ascending" (click)="sortAscending(column)" [class.sort__asc--inactive]="isAscendingDisabled(column)"></div>
+                <div class="js-sort-direction sort__desc " data-sort-direction="descending" (click)="sortDescending(column)" [class.sort__desc--inactive]="isDescendingDisabled(column)"></div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <div *ngIf="isActionable()" class="table__heading action__heading">Actions</div>
+        <div *ngIf="isSelectable()" class="table__heading action__heading">Select</div>
+      </ng-container>
+    </div>
+    <ng-template [ngIf]="isAutoGenerateColumns()">
+      <div *ngFor="let row of rows; let i = index" class="table__row">
+        <div *ngFor="let column of columns" class="table__item">
+          <div class="table__item-inner">
+            <ae-template-loader [template]="getCellTemplate(column).template"></ae-template-loader>
+          </div>
+        </div>
+        <div *ngIf="isActionable()" class="table__item">
+          <div class="table__item-inner">
+            <ae-nav-actions [id]="getChildId('AeSplitButton', i)" [name]="getChildName('AeSplitButton', i)" [options]="actions"></ae-nav-actions>
+          </div>
+        </div>
+        <div *ngIf="isSelectable()" class="table__item">
+          <div class="table__item-inner">
+            <ae-checkbox [id]="getChildId('checkbox', row)" [name]="getChildName('checkbox', row)" [checkText]="''" [checked]="checkedRowItem(row)"
+              (onAeChange)="selectedRowItem(row)"></ae-checkbox>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template [ngIf]="!isAutoGenerateColumns() && !isInlineEdit()">
+      <ng-container>
+        <div *ngIf="showDataRows" class="table__row--group">
+          <div *ngFor="let rowItem of defaultItems; let row = index" class="table__row" [class.table__row--selected]="isRowActivated(row)"
+            [class.row--selected]="isRowSelected(row)">
+            <!-- <div class="mobile-row">
+            <ae-anchor [id]="getChildId('AeAnchor', i)" [name]="getChildName('AeAnchor', i)" (aeClick)="showRowDetails(row)" [text]="''"></ae-anchor>
+          </div> -->
+            <div *ngFor="let column of columns; let i = index" class="table__item" [class.mobile-row-cell]="isMobileViewCoumn(i)">
+              <div class="table__item-inner">
+                <div [id]="getChildId('divBody_header', i)" class="device-cell-head">{{column.headerText}}</div>
+                <ae-template-loader [template]="getCellTemplate(column).template" [contextItem]="getDataItemForColumn(rowItem, i)"></ae-template-loader>
+              </div>
+            </div>
+            <div *ngIf="isActionable()" class="table__item table__action">
+              <div class="table__item-inner">
+                <div [id]="getChildId('divBody_actions', row)" class="device-cell-head">Actions</div>
+                <ae-nav-actions [id]="getChildId(getIdOrName('AeSplitButton',row),i)" [name]="getChildId(getIdOrName('AeSplitButton',row), i)"
+                  [options]="getActions(row)" (aeClick)="setCurrentRowBySplitButton(row)"></ae-nav-actions>
+                <span *ngIf="draggableRows" class="icon--dragable">
+                   <span class="dragable"></span>
+                <ae-icon [id]="getChildId(getIdOrName('AeIconDrag',row), i)" [name]="getChildName(getIdOrName('AeIconDrag',row), i)" [icon]="'icon-reorder'" [title]="'Click and drag to reorder'"></ae-icon>
+                </span>
+              </div>
+            </div>
+            <div *ngIf="isSelectable()" class="table__item table__action">
+              <div class="table__item-inner">
+                  <div [id]="getChildId('divBody_checkbox', row)" class="device-cell-head">Select</div>
+                <ae-checkbox [id]="getChildId('checkbox', row)" [name]="getChildName('checkbox', row)" [checkText]="''" [checked]="checkedRowItem(row)"
+                  (onAeChange)="selectedRowItem(row)"></ae-checkbox>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <div *ngIf="!showDataRows && !loading" class="no--data">
+        There is no data to display
+      </div>
+    </ng-template>
+    <ng-template [ngIf]="isInlineEdit()">
+      <ng-container>
+        <div *ngIf="showDataRows" class="table__row--group">
+          <div *ngFor="let rowItem of defaultItems; let row = index " class="table__row" [class.row--selected]="isRowSelected(row)"
+            [class.table__row--active]="isRowActivated(row)">
+            <ng-container *ngFor="let column of columns; let i = index">
+              <div *ngIf="isColumnVisible(i)" class="table__item" [class.mobile-row-cell]="isMobileViewCoumn(i)">
+                <div class="table__item-inner">
+                  <ae-template-loader [template]="getEditTemplate(column).template" [contextItem]="getDataItemForColumn(rowItem, i)"></ae-template-loader>
+                </div>
+              </div>
+            </ng-container>
+            <div *ngIf="isActionable()" class="table__item table__action">
+              <div class="table__item-inner">
+                <ae-nav-actions [id]="getChildId(getIdOrName('AeSplitButton',row), i)" [name]="getChildName(getIdOrName('AeSplitButton',row), i)" [options]="getActions(row)"
+                  (aeClick)="setCurrentRowBySplitButton(row)"></ae-nav-actions>
+              </div>
+            </div>
+            <div *ngIf="isSelectable()" class="table__item table__action">
+              <div class="table__item-inner">
+                <ae-checkbox [id]="getChildId('checkbox', row)" [name]="getChildName('checkbox', row)" [checkText]="''" [checked]="checkedRowItem(row)"
+                  (onAeChange)="selectedRowItem(row)"></ae-checkbox>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <div *ngIf="!showDataRows && !loading" class="no--data">
+        There is no data to display
+      </div>
+    </ng-template>
+    <div class="table-empty"></div>
+  </div>
+  <ae-loader [loaderType]="loaderType" *ngIf="loading"></ae-loader>
+</div>
+<div [id]="getChildId('divFooter', 0)" class="table__footer">
+  <ae-pagination [id]="getChildId('AePagination', 1)" [name]="getChildName('AePagination', 1)" [currentPage]="currentPageNumber"
+    [rows]="defaultNoOfRows" [totalRecords]="totalRecords" [noOfPageLinks]="noOfPageLinks" [currentRows]="numberOfRows">
+  </ae-pagination>
+</div>

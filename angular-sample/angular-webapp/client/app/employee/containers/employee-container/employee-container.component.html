@@ -1,0 +1,82 @@
+<div [id]="'employee'">
+  <app-employeeSummary [id]="'employeeSummary'" [name]="'employeeSummary'">
+
+  </app-employeeSummary>
+
+  <div class="button-bar button-bar--offset spacer--use-margin">
+    <div class="button-bar__item">
+      <span> Last updated on <span class="attention">{{ lastModifiedOn  | localeDate:defaultLocale:'shortDate' || ' ' }}</span></span>
+      <span *ngIf="canViewLastUpdatedBy()"> by <span class="attention">{{ lastModifiedByUserName || ' ' }}</span></span>
+    </div>
+    <div class="button-bar__item" *ngIf="manageAbsences()">
+      <ae-anchor [id]="'manageAbsences'" [name]="'manageAbsences'" [anchorType]="'button'" [class]="'button button--cta'" (aeClick)="manageAbsencesButtonClick($event)"
+        [title]="'Holidays and absence'" [text]="'Holidays and absence'"></ae-anchor>
+    </div>
+  </div>
+
+  <ae-tabstrip [id]="getChildId('AeTabStrip',1)" [name]="getChildName('AeTabStrip',1)" [standardWithIcon]="true">
+    <ae-tabstrip-item [id]="getChildId('AeTabStripItem',1)" [name]="getChildName('AeTabItem',1)" [header]="'Personal'" [headerIcon]="'icon-employee'"
+      [navigateUrl]="getPersonalUrl()" *ngIf="canView('Personal')">
+
+    </ae-tabstrip-item>
+
+    <ae-tabstrip-item [id]="getChildId('AeTabStripItem',1)" [name]="getChildName('AeTabItem',1)" [header]="'Job'" [headerIcon]="'icon-job'"
+      [navigateUrl]="getJobUrl()" *ngIf="canView('Job')">
+
+    </ae-tabstrip-item>
+
+    <ae-tabstrip-item [id]="getChildId('AeTabStripItem',2)" [name]="getChildName('AeTabItem',2)" [header]="'Timeline'" [headerIcon]="'icon-clock'"
+      [navigateUrl]="getTimelineUrl()" *ngIf="canView('Timeline')">
+
+    </ae-tabstrip-item>
+
+
+
+    <ae-tabstrip-item [id]="getChildId('AeTabStripItem',4)" [name]="getChildName('AeTabItem',4)" [header]="'Contacts'" [headerIcon]="'icon-people'"
+      [navigateUrl]="getContactUrl()" *ngIf="canView('Contact')">
+
+    </ae-tabstrip-item>
+
+    <ae-tabstrip-item [id]="getChildId('AeTabStripItem',5)" [name]="getChildName('AeTabItem',5)" [header]="'Career & training'"
+      [headerIcon]="'icon-education'" [navigateUrl]="getCareerAndTrainingUrl()" *ngIf="canView('careertraining')">
+
+    </ae-tabstrip-item>
+
+    <ae-tabstrip-item [id]="getChildId('AeTabStripItem',6)" [name]="getChildName('AeTabItem',6)" [header]="'Calendar'" [headerIcon]="'icon-date'"
+      [navigateUrl]="getCalendarUrl()" *ngIf="canView('Calendar')">
+
+    </ae-tabstrip-item>
+
+    <ae-tabstrip-item [id]="getChildId('AeTabStripItem',7)" [name]="getChildName('AeTabItem',7)" [header]="'Bank'" [headerIcon]="'icon-bank'"
+      [navigateUrl]="getBankUrl()" *ngIf="canView('Bank')">
+
+    </ae-tabstrip-item>
+
+    <ae-tabstrip-item [id]="getChildId('AeTabStripItem',8)" [name]="getChildName('AeTabItem',8)" [header]="'Benefits'" [headerIcon]="'icon-thumbs-up'"
+      [navigateUrl]="getBenefitsUrl()" *ngIf="canView('Benefits')">
+
+    </ae-tabstrip-item>
+
+    <ae-tabstrip-item [id]="getChildId('AeTabStripItem',9)" [name]="getChildName('AeTabItem',9)" [header]="'Vehicle'" [headerIcon]="'icon-car'"
+      [navigateUrl]="getVehicleUrl()" *ngIf="canView('Vehicle')">
+
+    </ae-tabstrip-item>
+
+    <ae-tabstrip-item [id]="getChildId('AeTabStripItem',10)" [name]="getChildName('AeTabItem',10)" [header]="'Administration'"
+      [headerIcon]="'icon-cogs'" [navigateUrl]="getAdministrationUrl()" *ngIf="canView('Administration')">
+
+    </ae-tabstrip-item>
+
+  </ae-tabstrip>
+
+  <!--Route params : {{ _queryParams }}-->
+
+
+  <div id="contentArea" class="employee--tabs">
+    <router-outlet>
+
+    </router-outlet>
+  </div>
+  <div style="clear:both;">
+  </div>
+</div>

@@ -1,0 +1,18 @@
+<div class="banner dashboard" [id]="id">
+  <div *ngIf="getBackgroundImageUrl()" class="banner__background" [style.background-image]="getBackgroundImageUrl()">
+    <div>
+      <h1 class="banner__title">
+        <span [id]="getChildId('greetingText', 1)">{{greetingText | translate:lang}}</span> <span [id]="getChildId('userFirstName', 1)">{{userFirstName}}</span></h1>
+      <div class="banner__info-icons">
+        <div class="banner__info-icon">
+          <div class="icon-with-text icon-with-text--inline-block">
+            <span class="icon-with-text__icon">
+            <ae-icon [id]="getChildId('AeIcon', 1)" [name]="getChildName('AeIcon', 1)"  [icon]="'icon-date'" [size]="getTodayIconSize()"></ae-icon>
+          </span>
+            <span class="icon-with-text__copy" [id]="getChildId('todayText', 1)">{{todayDay | translate:lang}}, {{todayDate}} {{todayMonth | translate:lang}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

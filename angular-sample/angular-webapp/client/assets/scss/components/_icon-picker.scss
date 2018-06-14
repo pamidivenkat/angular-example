@@ -1,0 +1,82 @@
+.icon-picker {
+  @include clearfix;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.icon-picker__grid-item {
+  float: left;
+  @include media-0-480 {
+    width: 50%;
+
+    &:not(:nth-child(2n)) {
+      border-right: 1px solid $grey--pale;
+    }
+
+    &:not(:nth-child(n + 11)) {
+      border-bottom: 1px solid $grey--pale;
+    }
+  }
+  @include media-481-979 {
+    width: 50%;
+
+    &:not(:nth-child(2n)) {
+      border-right: 1px solid $grey--pale;
+    }
+
+    &:not(:nth-child(n + 11)) {
+      border-bottom: 1px solid $grey--pale;
+    }
+  }
+  @include media-over-979 {
+    width: 25%;
+
+    &:not(:nth-child(4n)) {
+      border-right: 1px solid $grey--pale;
+    }
+
+    &:not(:nth-child(-n + 4)) {
+      border-top: 1px solid $grey--pale;
+    }
+  }
+}
+
+.icon-picker__item {
+  padding: 10px 20px 20px;
+  position: relative;
+  @include media-over-767 {
+    padding: 15px 30px 30px;
+  }
+}
+
+.icon-picker__image {
+  margin: 0 auto;
+  max-width: 80px;
+}
+
+.icon-picker__text {
+  display: block;
+  font-size: 1.5rem;
+  margin: 15px 0 0;
+  text-align: center;
+}
+
+.icon-picker__checkbox {
+  display: block;
+  position: absolute;
+  right: 0;
+  top: 20px;
+  @include media-over-1049 {
+    right: 20px;
+  }
+}
+
+.wizard__stage {
+  .icon-picker__grid-item {
+    margin-top: 0;
+  }
+
+  .icon-picker__text {
+    font-size: 80%;
+  }
+}

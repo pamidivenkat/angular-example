@@ -1,0 +1,68 @@
+<div class="content-container">
+    <p><b>{{'INCIDENT_RIDDOR.riddor_header_text_one' | translate:lang}}</b></p>
+    <p>{{'INCIDENT_RIDDOR.riddor_report_heading_text' | translate:lang}}</p>
+    <p>{{'INCIDENT_RIDDOR.riddor_condition_text' | translate:lang}}</p>
+    <div class="riddor-form">
+        <ae-form [formBuilderData]="incidentRIDDORFormVM" [id]="'incidentRIDDORForm'" [name]="'incidentRIDDORForm'" [isPrimaryTitle]="false"
+            [displayFooter]="false" (isFormValid)="onFormValidityChange($event)" (onFormInit)="onFormInit($event)">
+        </ae-form>
+        <ae-loader [loaderType]="loaderType" *ngIf="isDataLoading"></ae-loader>
+    </div>
+
+    <div class="information-grid__item--input" *ngIf="showRIDDORFooter">
+        <div class="column-1of3 hse-address" id="incidentRIDDORForm_label_0">
+            <p>{{'INCIDENT_RIDDOR.riddor_reports' | translate:lang}}</p>
+            <p>{{'INCIDENT_RIDDOR.hs_executive' | translate:lang}}</p>
+            <p>{{'INCIDENT_RIDDOR.hse_address' | translate:lang}}</p>
+            <p>{{'INCIDENT_RIDDOR.hse_road' | translate:lang}}</p>
+            <p>{{'INCIDENT_RIDDOR.hse_town' | translate:lang}}</p>
+            <p>{{'INCIDENT_RIDDOR.hse_county' | translate:lang}}</p>
+            <p>{{'INCIDENT_RIDDOR.hse_pincode' | translate:lang}}</p>
+        </div>
+        <div class="column-2of3 riddor-links">
+            <p>
+                <a class="riddor__link" href="javascript:void(0);" (click)="openRIDDORPreview($event)" [title]="'INCIDENT_RIDDOR.report_on_riddor' | translate:lang">{{'INCIDENT_RIDDOR.report_on_riddor' | translate:lang}}</a></p>
+            <p><a class="riddor__link" href="https://extranet.hse.gov.uk/lfserver/external/F2508IE" target="_blank" [title]="'INCIDENT_RIDDOR.goto_riddor_website' | translate:lang">{{'INCIDENT_RIDDOR.goto_riddor_website' | translate:lang}}</a></p>
+        </div>
+    </div>
+</div>
+
+<!--slideout pop code for view employee here-->
+<div class="riddor-online-form">
+    <ae-slideout [id]="getChildId('AeSlideOut', 3)" [name]="getChildName('AeSlideOut', 3)" [modelState]="getRIDDORSlideoutState()"
+        [class.slide--animate]="showRIDDORPreviewSlideOut">
+        <div *ngIf="showRIDDORPreviewSlideOut">
+            <riddor-online-form [id]="'riddor-online-slideout'" [name]="'riddor-online-slideout'" (cancelled)="onRIDDORSlideoutClosed($event)"
+                [riddorPrintInfo]="riddorPrintInfo"></riddor-online-form>
+        </div>
+    </ae-slideout>
+</div>
+<!-- popup ==> user friendly message-->
+<ae-modal-dialog [visible]="showPopUp()" (cancel)="modalClosed($event)" [closable]="false" [id]="getChildId('Aemodal', 1)"
+    [name]="getChildName('Aemodal', 1)" *ngIf="showPopUp()">
+    <div class="modal-dialog-header">
+        <h3> {{'INCIDENT_RIDDOR.notification' | translate:lang}}</h3>
+    </div>
+    <div class="modal-dialog-body">
+        <p>{{'INCIDENT_RIDDOR.notification_message' | translate:lang}} </p>
+    </div>
+    <div class="modal-dialog-footer">
+        <ae-button [text]="'ok'" [type]="'button'" [id]="getChildId('ConfirmNo', 1)" [name]="getChildName('ConfirmNo', 1)" (aeClick)="OnConfirmation($event)"></ae-button>
+    </div>
+</ae-modal-dialog>
+
+<ae-modal-dialog [visible]="showKeyFieldsPopUp" (cancel)="keyFieldsModalClosed($event)" [closable]="false" [id]="getChildId('Aemodal', 1)"
+    [name]="getChildName('Aemodal', 1)" *ngIf="showKeyFieldsPopUp">
+    <div class="modal-dialog-header">
+        <h3> {{'INCIDENT_KEY_FIELD.NOTIFICATION_HEADER' | translate:lang}}</h3>
+    </div>
+    <div class="modal-dialog-body">
+        <p>{{'INCIDENT_KEY_FIELD.NOTIFICATION_MESSAGE' | translate:lang}} </p>
+    </div>
+    <div class="modal-dialog-footer">
+        <ae-button [text]="'INCIDENT_KEY_FIELD.BUTTON_REMAIN' | translate:lang" [title]="'INCIDENT_KEY_FIELD.BUTTON_REMAIN' | translate:lang"
+            [type]="'button'" [id]="'submitConfirmCancel'" [name]="'submitConfirmCancel'" (aeClick)="keyFieldsModalClosed($event)"></ae-button>
+        <ae-button [class]="lightClass" [text]="'INCIDENT_KEY_FIELD.BUTTON_CONTINUE' | translate:lang" [title]="'INCIDENT_KEY_FIELD.BUTTON_CONTINUE' | translate:lang"
+            [type]="'button'" [id]="'submitConfirm'" [name]="'submitConfirm'" (aeClick)="keyFieldsOnConfirmation($event)"></ae-button>
+    </div>
+</ae-modal-dialog>

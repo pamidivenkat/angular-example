@@ -1,0 +1,66 @@
+<aside class="document__collaboration">
+  <div class="document__area-header">
+    <h3>{{'DOCUMENT_COLLABORATION' | translate:lang}}</h3>
+    <p>{{'DOCUMENT_COLLABORATION_INFO_PART1' | translate:lang}}<b>add </b>{{'DOCUMENT_COLLABORATION_INFO_PART2' | translate:lang}}</p>
+  </div>
+  <div class="document__area-scroller">
+    <div class="document__collaboration--button" *ngIf="currentBlock">
+      <div class="document__comments--item">
+        <div class="comment__form">
+          <form id="add-comment" [formGroup]="addCommentForm" class="form">
+            <textarea formControlName="Message" class="text-area" [id]="getChildId('AeTextarea',1)" rows="4" cols="40" [name]="getChildName('AeTextarea',1)"
+              placeholder="{{'ENTER_COMMENT'|translate:lang}}"></textarea>
+            <ae-button [class]="lightClass" [customClass]="'button--small'" [text]="'ADD_COMMENT'|translate:lang" [title]="'ADD_COMMENT'|translate:lang"
+              [id]="'addCommentForm'" [name]="'addCommentForm'" (aeClick)="addComment($event)"></ae-button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="currentBlock">
+      <ul class="list--unstyled" *ngFor="let comment of currentBlock.ClientComments; let i = index">
+        <li>
+          <div class="document__comments--item author">
+            <div class="comment__meta-data">
+              <div class="author-name">{{comment.Author.FullName}}</div>
+              <div class="date-posted">{{comment.CreatedOn | localeDate:defaultLocale:'shortDate'}} @ {{comment.CreatedOn | localeDate:defaultLocale:'shortTime'}}</div>
+            </div>
+            <div class="comment__actions" [class.disabled]="!isOwnComment(comment)">
+              <ae-anchor [id]="getChildId('AeAnchor',1)" [name]="getChildName('AeAnchor',1)" (click)="removeCurrentComment(currentBlock.ClientComments,comment)"
+                [text]="'Remove'" [class]="'remove'"></ae-anchor>
+            </div>
+            <div class="comment__content" [innerHTML]="comment.Message">
+            </div>
+          </div>
+        </li>
+        <li *ngFor="let replyComment of comment.ReplyComments">
+          <div class="document__comments--item respondent">
+            <div class="comment__meta-data">
+              <div class="author-name">{{replyComment.Author.FullName}}</div>
+              <div class="date-posted">{{replyComment.CreatedOn | localeDate:defaultLocale:'shortDate'}} @ {{replyComment.CreatedOn | localeDate:defaultLocale:'shortTime'}}</div>
+            </div>
+            <div class="comment__actions" [class.disabled]="!isOwnComment(replyComment)">
+              <ae-anchor [id]="getChildId('AeAnchor',1)" [name]="getChildName('AeAnchor',1)" (click)="removeReplyComment(comment.ReplyComments,replyComment)"
+                [text]="'Remove'" [class]="'remove'"></ae-anchor>
+            </div>
+            <div class="comment__content">
+              <p>{{replyComment.Message}}
+              </p>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="document__comments--item">
+            <div class="comment__form">
+              <form id="save-comment" [formGroup]="saveCommentForm" class="form">
+                <textarea formControlName="Message" class="text-area" [id]="getChildId('AeTextarea',2)" [name]="getChildName('AeTextarea',2)" rows="4" cols="40"
+                  placeholder="{{'REPLY_COMMENT'| translate:lang}}"></textarea>
+                <ae-button [class]="lightClass" [text]="'SAVE_COMMENT'|translate:lang" [title]="'SAVE_COMMENT'|translate:lang" [type]="'button'"
+                  [id]="'saveCommentForm'" [customClass]="'button--small'" [name]="'saveCommentForm'" (aeClick)="saveComment(comment)"></ae-button>
+              </form>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</aside>

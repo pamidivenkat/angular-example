@@ -1,0 +1,15 @@
+.document-selector{
+    ae-autocomplete{
+        .ae-input-wrapper {margin-top:0px;}
+    }
+}
+
+.ms-sd-slideout{
+    .so-panel {width: 900px; z-index: 99;
+       
+    }
+    @media only screen and (max-width: 967px){
+        .so-panel {width: 100%;
+        }
+    }
+}

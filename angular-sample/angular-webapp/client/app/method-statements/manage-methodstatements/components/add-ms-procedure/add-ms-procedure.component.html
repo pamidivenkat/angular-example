@@ -1,0 +1,90 @@
+<div class="so-panel__title">
+    <ae-anchor [id]="getChildId('AeAnchor',1)" [name]="getChildId('AeAnchor',1)" [anchorType]="'button'" [class]="'button button--condensed button--inline-block button--cta'"
+        [anchorClass]="defaultButtonStyle" (aeClick)="addNewProcedure($event)" [title]="'MANAGE_METHOD_STM.SEQUENCE_OF_EVENTS.NEW_PROCEDURE' | translate:lang"
+        [text]="'MANAGE_METHOD_STM.SEQUENCE_OF_EVENTS.NEW_PROCEDURE' | translate:lang"></ae-anchor>
+    <h3>{{'MANAGE_METHOD_STM.SEQUENCE_OF_EVENTS.ADD_PROCEDURE' | translate:lang}}</h3>
+</div>
+
+<div [id]="getChildId('div', 2)" class="so-panel__content">
+
+    <div class="table add-ms-procedure">
+
+        <div class="table__filter-bar" *ngIf="!isExampleMS">
+            <div class="filter-bar">
+                <div class="filter-bar__label label">{{'MANAGE_METHOD_STM.SEQUENCE_OF_EVENTS.FILTER_BY' | translate:lang}}</div>
+                <div class="filter-bar__filters">
+                    <div class="filter-bar__filter">
+                        <ae-select [title]="'MANAGE_METHOD_STM.SEQUENCE_OF_EVENTS.FILTER_BY_TYPE' | translate:lang" [value]="filterType" [options]="procedureTypes"
+                            [id]="getChildId('AeSelect',2)" [name]="getChildId('AeSelect',2)" (aeSelectChange)="changeFilterType($event)"></ae-select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <ae-datatable [id]="getChildId('AeDatatable',6)" [name]="getChildId('AeDatatable',6)" [dataSource]="procedureStore$" [autoGenerateColumns]="false"
+            [totalRecords]="totalRecords$" [loading]="procedureLoading$ | async" [defaultOptions]="dataTableOptions$ | async"
+            (pageChanged)="onPageChange($event)" (onSort)="onSort($event)">
+            <ae-column [headerText]="'MANAGE_METHOD_STM.SEQUENCE_OF_EVENTS.PROC_NAME' | translate:lang" [sortKey]="'Name'">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span [title]="'MANAGE_METHOD_STM.SEQUENCE_OF_EVENTS.PROC_NAME' | translate:lang">{{'MANAGE_METHOD_STM.SEQUENCE_OF_EVENTS.PROC_NAME' | translate:lang}}</span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+                        <a href="javascript:void(0)" (click)="showProcQuickInfo(context)">
+                            <ae-icon [title]="'MANAGE_METHOD_STM.SEQUENCE_OF_EVENTS.PROC_QUICK_VIEW' | translate:lang" [id]="getChildId('AeIcon',context.Row)"
+                                [name]="getChildName('AeIcon',context.Row)" [icon]="'icon-info'"></ae-icon>
+                        </a> <span [title]="context.Name">{{context.Name}}</span>
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+            <ae-column [headerText]="'Actions' | translate:lang" [sortable]="false">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span [title]="'Actions' | translate:lang">{{'Actions' | translate:lang}}</span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+                        <ae-checkbox [id]="getChildId('AeCheckBox',context.Row)" [name]="getChildName('AeCheckBox',context.Row)" [checkText]="'MANAGE_METHOD_STM.SEQUENCE_OF_EVENTS.SELECT' | translate:lang"
+                            [checked]="getFieldValue(context.Row,'IsSelected')" [value]="getFieldValue(context.Row,'IsSelected')"
+                            (onAeChange)="onProcSelectionChanged($event,context,'IsSelected')"></ae-checkbox>
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+        </ae-datatable>
+    </div>
+</div>
+
+<div class="so-panel__footer">
+    <nav>
+        <ul>
+            <li><label id="addmsprocedure_button_close" class="button button--inline-block" [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang" (click)="closeAddMSProcSlideOut($event)">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label></li>
+            <li class="pull--right">
+                <ae-anchor [id]="getChildId('ae-anchor', 1)" [name]="getChildName('ae-anchor', 1)" [anchorType]="'button'" [class]="'button button--inline-block'"
+                    [anchorClass]="1" (aeClick)="onAddSelectedMSProcs($event)" [text]="addBtnText | translate:lang:{ count: selectedProcCount}"
+                    [title]="addBtnText | translate:lang:{ count: selectedProcCount}" [disabled]="selectedProcCount < 1"></ae-anchor>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+
+<ae-slideout id="add_new_procedure_panel" name="add_new_procedure_panel" [modelState]="getNewProcedureSlideoutState()"
+    [class.slide--animate]="showNewProcedurePanel" (cancel)="closeNewProcedurePanel($event)">
+    <ng-container *ngIf="showNewProcedurePanel">
+        <add-procedure [id]="getChildId('ProcedureAddUpdate', 8)" [name]="getChildName('ProcedureAddUpdate', 8)" (onProcedureSubmit)="onProcedureAdd($event)"
+            (onProcedureCancel)="closeNewProcedurePanel($event)"></add-procedure>
+    </ng-container>
+</ae-slideout>
+
+<!-- view MS Procedure -->
+<ae-slideout [id]="getChildId('AeSlideOut', 6)" [name]="getChildName('AeSlideOut', 6)" [modelState]="getViewProcSlideoutClass()"
+    (cancel)="closeViewProcSlideout($event)" [class.slide--animate]="viewProcSlideoutStatus">
+    <ng-container *ngIf="viewProcSlideoutStatus">
+        <procedure-quick-view [id]="getChildId('ProcedureQuickView', 4)" [name]="getChildName('ProcedureQuickView', 4)" (onQuickViewCancel)="closeViewProcSlideout($event)"
+            [msProcedure]="procedureForView"></procedure-quick-view>
+    </ng-container>
+</ae-slideout>
+<!-- End of view MS Procedure -->

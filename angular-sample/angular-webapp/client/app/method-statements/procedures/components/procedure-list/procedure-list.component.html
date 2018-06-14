@@ -1,0 +1,84 @@
+<div class="table spacer--x">
+  <div class="filter-bar holiday-filters table__filter-bar">
+    <div class="filter-bar__label label">{{'Filter_by' | translate:lang}}</div>
+    <form [formGroup]="procedureListForm" [id]="'procedureListForm'" [name]="'procedureListForm'">
+      <div class="filter-bar__filters requests">
+        <div class="filter-bar__filter">
+          <ae-select [id]="'ddlProcedureGroup'" [name]="'ddlProcedureGroup'" [placeholder]="'ALL' | translate:lang" [options]="procedureGroups$ | async"
+            formControlName="proceduregroup"></ae-select>
+        </div>
+      </div>
+    </form>
+  </div>
+
+
+  <ae-datatable [id]="'procedureTable'" [name]="'procedureTable'" [dataSource]="procedurStore$" [actions]="actions" [autoGenerateColumns]="false"
+    [totalRecords]="totalRecords$" [defaultOptions]="dataTableOptions$ | async" (pageChanged)="onPageChange($event)" (onSort)="onSort($event)"
+    [loading]="procedureLoading$ | async">
+    <ae-column [headerText]="'PROCEDURE_NAME' | translate:lang" [sortable]="true" [sortKey]="'Name'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'PROCEDURE_NAME' | translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <span>{{context.Name}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'GROUP' | translate:lang" [sortable]="true" [sortKey]="'ProcedureGroupName'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'GROUP' | translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <span>{{context.ProcedureGroupName}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+  </ae-datatable>
+
+</div>
+<ae-slideout [id]="'customProcedureSlideout'" [name]="'customProcedureSlideout'" [modelState]="getProceduresSlideoutState()"
+  [class.slide--animate]="showProcedureViewSlideOut">
+  <ng-container *ngIf="showProcedureViewSlideOut">
+    <procedure-view [id]="'customProcedureView'" [name]="'customProcedureView'" [vm]="loadedSelectedProcedureFullEntity" (onCancel)="onProcedureSlideCancel($event)"></procedure-view>
+  </ng-container>
+</ae-slideout>
+
+
+<ae-slideout [id]="'customProcedureSlideout'" [name]="'customProcedureSlideout'" [modelState]="getProceduresSlideoutState()"
+  [class.slide--animate]="showProcedureCopySlideOut">
+  <ng-container *ngIf="showProcedureCopySlideOut">
+    <procedure-copy [id]="'customProcedureCopy'" [name]="'customProcedureCopy'" [Procedure]="loadedSelectedProcedureFullEntity"
+      (onCancel)="onProcedureSlideCancel($event)" (onCopy)="onProcedureCopy($event)"></procedure-copy>
+  </ng-container>
+</ae-slideout>
+
+<ae-slideout [id]="'customProcedureSlideout'" [name]="'customProcedureSlideout'" [modelState]="getProceduresSlideoutState()"
+  [class.slide--animate]="showProcedureUpdateSlideOut">
+  <ng-container *ngIf="showProcedureUpdateSlideOut">
+    <procedure-add-update [id]="'procedureUpdate'" [name]="'procedureUpdate'" [SelectedProcedure]="loadedSelectedProcedureFullEntity"
+      [action]="'Update'" (onCancel)="onProcedureSlideCancel($event)"></procedure-add-update>
+  </ng-container>
+</ae-slideout>
+
+
+<ae-modal-dialog [visible]="showProcedureDeleteModal" (cancel)="modalClosed($event)" [closable]="true" [id]="'confirmModal'"
+  [name]="'confirmModal'" *ngIf="showProcedureDeleteModal">
+  <div class="modal-dialog-header">
+    <h3>{{ 'PROCEDURE_REMOVE_DIALOG_MSG' | translate:lang }}</h3>
+  </div>
+  <div class="modal-dialog-body">
+    <p>{{'PROCEDURE_REMOVE_DIALOG_MSG_CONFIRM' | translate: lang:{procedureName: selectedProcedure.Name} }}</p>
+  </div>
+  <div class="modal-dialog-footer">
+    <ae-button [class]="darkClass" [text]="'PROCEDURE_Dialog.Btn_No' | translate:lang" [type]="'button'" [id]="'confirmNo'" [name]="'confirmNo'"
+      (aeClick)="modalClosed('no')"></ae-button>
+    <ae-button [class]="lightClass" [text]="'PROCEDURE_Dialog.Btn_Yes' | translate:lang" [type]="'button'" [id]="'confirmYes'" [name]="'confirmYes'"
+      (aeClick)="modalClosed('yes')"></ae-button>
+  </div>
+</ae-modal-dialog>

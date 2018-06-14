@@ -1,0 +1,115 @@
+<div class="so-panel__title">
+  <h3>{{'RISK_ASSESSMENT_VIEW'| translate:lang}}</h3>
+</div>
+<div class="so-panel__content">
+  <div class="information-grid">
+    <section class="information-grid__section">
+      <div class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'NAME' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3">
+          {{RiskAssessmentVm.Name}}
+        </div>
+      </div>
+      <div class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'TYPE' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" *ngIf="isRATypeGeneral(RiskAssessmentVm.RiskAssessmentTypeId)">
+          <ae-icon [title]="getRATypeName(RiskAssessmentVm.RiskAssessmentTypeId)" [id]="getChildId('AeIcon', 1)" [name]="getChildName('AeIcon', 1)" [size]="_iconSize"
+            [icon]="'icon-alert-triangle'"></ae-icon>
+          {{getRATypeName(RiskAssessmentVm.RiskAssessmentTypeId)}}
+        </div>
+        <div class="information-grid__item-value column-2of3" *ngIf="!isRATypeGeneral(RiskAssessmentVm.RiskAssessmentTypeId)">
+          <ae-icon [title]="getRATypeName(RiskAssessmentVm.RiskAssessmentTypeId)" [id]="getChildId('AeIcon', 1)" [name]="getChildName('AeIcon', 1)" [size]="_iconSize"
+            [icon]="'icon-coshh'"></ae-icon>
+          {{getRATypeName(RiskAssessmentVm.RiskAssessmentTypeId)}}
+        </div>
+      </div>
+      <div class="information-grid__item" *ngIf="!RiskAssessmentVm.IsExample">
+        <div class="information-grid__item-label column-1of3">{{'ASSESSOR_NAME' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" *ngIf="RiskAssessmentVm.Assessor">
+          {{RiskAssessmentVm.Assessor.FullName}}
+        </div>
+      </div>
+      <div class="information-grid__item" *ngIf="RiskAssessmentVm.StatusId">
+        <div class="information-grid__item-label column-1of3">Status</div>
+        <div class="information-grid__item-value column-2of3">
+          <ae-stamp *ngIf="hasStatus(3, RiskAssessmentVm.StatusId)" [text]="'OVERDUE'| translate:lang" [class]="'stamp--red'"></ae-stamp>
+          <ae-stamp *ngIf="hasStatus(2, RiskAssessmentVm.StatusId)" [text]="'LIVE'| translate:lang" [class]="'stamp--teal'"></ae-stamp>
+          <ae-stamp *ngIf="hasStatus(1, RiskAssessmentVm.StatusId)" [text]="'PENDING'| translate:lang" [class]="'stamp--yellow'"></ae-stamp>
+          <ae-stamp *ngIf="hasStatus(0, RiskAssessmentVm.StatusId)" [text]="'EXAMPLE'| translate:lang" [class]="'stamp--green'"></ae-stamp>
+          <ae-stamp *ngIf="hasStatus(4, RiskAssessmentVm.StatusId)" [text]="'ARCHIVED_TAB'| translate:lang" [class]="'stamp--grey'"></ae-stamp>
+        </div>
+      </div>
+      <div class="information-grid__item" *ngIf="RiskAssessmentVm.Site">
+        <div class="information-grid__item-label column-1of3">{{'AFFECTED_SITES'| translate:lang }}</div>
+        <div class="information-grid__item-value column-2of3">
+          {{ RiskAssessmentVm.Site?RiskAssessmentVm.Site.Name:''}}
+        </div>
+      </div>
+      <div class="information-grid__item" *ngIf="RiskAssessmentVm.AssessmentDate">
+        <div class="information-grid__item-label column-1of3">{{'ASSESSMENT_DATE' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3">
+          {{RiskAssessmentVm.AssessmentDate | localeDate:defaultLocale:'shortDate'}}
+        </div>
+      </div>
+      <div class="information-grid__item" *ngIf="RiskAssessmentVm.ApprovedUser">
+        <div class="information-grid__item-label column-1of3">{{'APPROVED_BY' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3">
+          {{RiskAssessmentVm.ApprovedUser.FullName}}
+        </div>
+      </div>
+      <div class="information-grid__item" *ngIf="RiskAssessmentVm.ReviewPeriod">
+        <div class="information-grid__item-label column-1of3"> {{'REVIEW_PERIOD' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3">
+          {{getReviewPeriod(RiskAssessmentVm.ReviewPeriod)}}
+        </div>
+      </div>
+      <div class="information-grid__item" *ngIf="RiskAssessmentVm.ReviewDate">
+        <div class="information-grid__item-label column-1of3"> {{'REVIEW_DATE' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3">
+          {{RiskAssessmentVm.ReviewDate | localeDate:defaultLocale:'shortDate'}}
+        </div>
+      </div>
+      <div class="information-grid__item" *ngIf="RiskAssessmentVm.ReferenceNumber">
+        <div class="information-grid__item-label column-1of3"> {{'REFERENCE' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3">
+          {{RiskAssessmentVm.ReferenceNumber}}
+        </div>
+      </div>
+      <div class="information-grid__item" *ngIf="RiskAssessmentVm.RiskAssessmentWorkspaceTypes">
+        <div class="information-grid__item-label column-1of3">{{'WORKSPACES' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3">
+          <ae-stamp *ngFor="let item of RiskAssessmentVm.RiskAssessmentWorkspaceTypes" [text]="item.Name" [class]="'stamp--grey'"></ae-stamp>
+        </div>
+      </div>
+      <div class="information-grid__item" *ngIf="RiskAssessmentVm.IsExample">
+        <div class="information-grid__item-label column-1of3">{{'SECTORS' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3">
+          <ae-stamp *ngFor="let item of RiskAssessmentVm.RiskAssessmentSectors" [text]="item.Name" [class]="'stamp--grey'"></ae-stamp>
+        </div>
+      </div>
+      <div class="information-grid__item" *ngIf="RiskAssessmentVm.Description">
+        <div class="information-grid__item-label column-1of3">{{'DESCRIPTION' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3">
+          {{RiskAssessmentVm.Description}}
+        </div>
+      </div>
+      <div class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'STATUS' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3">
+          {{getStatusName()}}
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+<div class="so-panel__footer">
+  <nav>
+    <ul>
+      <li><label for="soPanel" (click)="onDetailCancel($event)" class="button button--inline-block" [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label></li>
+      <li class="pull--right">
+        <ae-anchor [id]="getChildId('AeAnchor',1)" [name]="getChildName('AeAnchor',1)" [anchorType]="'button'" [class]="'button button--inline-block button--light'"
+          [anchorClass]="lightClass" (aeClick)="onFullView(RiskAssessmentVm)" [text]="'FULL_VIEW_BTN' | translate: lang"></ae-anchor>
+      </li>
+    </ul>
+  </nav>
+</div>

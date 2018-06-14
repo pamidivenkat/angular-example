@@ -1,0 +1,17 @@
+<div class="cal-cell-top">
+  <span class="cal-day-number">{{ day.date | date:'dd'  }}</span>
+</div>
+<div class="cal-events">
+  <div class="event-block" *ngFor="let event of day.events; let i=index ; let last=last">
+    <div *ngIf="i < 3" class="cal-event" [style.backgroundColor]="event.color.primary" [style.color]="white"
+      [ngClass]="event?.cssClass">
+      <span> {{event.eventType}}</span>
+
+    </div>
+    <div *ngIf="last" class="more-items"> 
+      <span *ngIf="day.events.length > 0" class="down"> 
+        <ae-anchor [id]="'moreEvents'" [name]="'moreEvents'" [text]="getMoreEventsCount()" (aeClick)="showEvents($event)">{{getMoreEventsCount()}}</ae-anchor> 
+      </span>
+    </div>
+  </div>
+</div>

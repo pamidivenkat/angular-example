@@ -1,0 +1,39 @@
+.spacer {
+  padding: $base-space / 2;
+
+  @include media-over-767 {
+    padding: $base-space;
+  }
+
+  + .spacer {
+    border-top: 3px solid $grey--pale;
+  }
+}
+
+.spacer--use-margin {
+  margin-bottom: $base-space / 2;
+  margin-top: $base-space / 2;
+  padding: 0 $base-space / 2;
+
+  @include media-over-767 {
+    margin-bottom: $base-space;
+    margin-top: $base-space;
+    padding: 0 $base-space;
+  }
+}
+
+.spacer--x {
+  padding: 0 $base-space / 2;
+
+  @include media-over-767 {
+    padding: 0 $base-space;
+  }
+}
+
+.spacer--y {
+  padding: $base-space 0 / 2;
+
+  @include media-over-767 {
+    padding: $base-space 0;
+  }
+}

@@ -1,0 +1,18 @@
+<div [id]="id" >
+  <div *ngIf="hasItems()"  class="list-scroll" [ngClass]="{'list-simplebar':applyScroll}" [style.max-height]="getMaxHeight()" #ulNode>
+    <ul [id]="getChildId('ul', 1)" class="list">
+      <li class="list__item" [id]="getChildId('ul_li', i)" [class.list__item--left-line]="hasLine" [class.list__item--notification]="item.requireBoarderColor"
+        [class.list__item--circlebefore]="requireCircle" *ngFor="let item of items; let i=index;">
+        <ae-anchor *ngIf="isClickable" [id]="getChildId('ul_li_AeAnchor', i)" [name]="getChildName('ul_li_AeAnchor', i)" [text]="item.Text"
+          (aeClick)="onAeAction(item,$event)" [class]="getCursorClass(item)">
+        </ae-anchor>
+        <div *ngIf="hasLine" class="list__left-line"></div>
+        <span *ngIf="!isClickable" class="cursor-default">{{item.Text}}</span>
+        <ae-anchor *ngIf="item.HasAction" [id]="getChildId('ul_li_ActionAeAnchor', i)" [name]="getChildName('ul_li_AeAnchor', i)"
+          [text]="item.LinkText" (aeClick)="onAeAction(item,$event)">
+          {{item.LinkText}}
+        </ae-anchor>
+      </li>
+    </ul>
+  </div>
+</div>

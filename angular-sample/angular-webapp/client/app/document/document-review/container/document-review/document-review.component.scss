@@ -1,0 +1,22 @@
+document-review-comments,
+.document__structure {
+  width: 30em;
+  min-width: 15em;
+  @media(min-width: 1100px) {
+    min-width: 18em;
+  }
+  @media(min-width:1450px) {
+    min-width: 25em;
+  }
+  .document__collaboration {
+    width: 100%;
+  }
+}
+
+.document__area-header {
+  min-height: 135px;
+}
+
+.document__area-scroller {
+  position: relative;
+}

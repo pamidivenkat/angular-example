@@ -1,0 +1,9 @@
+@import '../../../../../assets/scss/variablesMap';
+.distribute-radio-group{
+    .form__input__error{margin-top: -10px !important;}
+    .distrubution-radio-group{margin-top: -6px;
+     @include media-over-979 {
+        white-space: nowrap;
+      }
+    }
+}

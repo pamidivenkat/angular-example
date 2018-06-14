@@ -1,0 +1,322 @@
+@import '../../../../assets/scss/variablesMap';
+@import '../../../../assets/scss/neat/neat';
+@import '../../../atlas-elements/ae-label/ae-label.component';
+
+.nav {
+  height: calc(100vh - #{$header-height-small});
+  left: -$nav-width;
+  -ms-overflow-style: none;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  position: fixed;
+  //text-transform: capitalize;
+  top: $header-height-small;
+  transition: left $base-transition, width $base-transition;
+  width: $nav-width;
+  z-index: 20;
+  @include media-over-480 {
+    height: calc(100vh - #{$header-height});
+    top: $header-height;
+  }
+  @include media-over-767 {
+    display: flex;
+    flex-direction: column;
+    left: -$nav-width--over-767;
+    width: $nav-width--over-767;
+  }
+}
+
+.nav--open {
+  left: 0;
+}
+
+.nav__level-section {
+  background: $grey--0;
+  margin-top: 0;
+  width: 100%;
+  z-index: 4;
+  clear:both;
+  @include media-over-767 {
+    width: $nav-width--over-767;
+  }
+
+  .nav__item--section {
+    //background: $teal--0;
+    background: rgba($black, .15);
+    // border-top: 1px solid rgba($white, .15);
+    color: $grey--3;
+    cursor: default;
+    font-size: 80%;
+    font-weight: $bold;
+    letter-spacing: 1px;
+    padding: $base-padding 20px;
+    text-transform: uppercase;
+  }
+}
+
+.nav--open-level-two {
+  @include media-over-767 {
+    width: 700px;
+  }
+}
+
+.nav__level-one {
+  background: $grey--0;
+  z-index: 3;
+  @include media-over-767 {
+    width: $nav-width--over-767;
+
+    .nav__level-section {
+      width: $nav-width--over-767;
+    }
+  }
+}
+
+.nav__level-one--top {
+  flex-grow: 1;
+
+  &::after {
+    @include media-over-767 {
+      background: $grey--0;
+      content: '';
+      display: block;
+      height: 100%;
+      left: 0;
+      position: absolute;
+      top: 0;
+      width: $nav-width--over-767;
+      z-index: -1;
+    }
+  }
+}
+
+.nav__level-one--middle {
+  flex-grow: 1;
+
+  .nav__item--primary {
+    position: relative;
+
+  }
+}
+
+.nav__level-three,
+.nav__level-two {
+  max-height: 0;
+  overflow: hidden;
+  -webkit-transition: max-height .4s;
+  -moz-transition: max-height .4s;
+  transition: max-height .4s;
+}
+
+.nav__level-two {
+  @include media-over-767 {
+    background: rgba($grey--0, .9);
+    height: calc(100vh - #{$header-height});
+    left: $nav-width--over-767;
+    opacity: 0;
+    overflow-y: auto;
+    position: fixed;
+    top: $header-height;
+    transition: opacity $base-transition;
+    width: $nav-width--over-767;
+    z-index: -1;
+  }
+
+  .nav__level-section {
+    @include media-0-767 {
+      position: absolute;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      height: 1px;
+      width: 1px;
+      margin: -1px;
+      padding: 0;
+      border: 0;
+    }
+  }
+}
+
+.nav__level-two--active {
+  opacity: 1;
+  z-index: 1;
+  max-height: 1000px;
+  @include media-over-767 {
+    box-shadow: 5px 0 10px 0 rgba($black, .2);
+    max-height: 100%;
+    left: $nav-width--over-767;
+    height: calc(100vh - #{$header-height});
+  }
+}
+
+.nav__level-three {
+  background: rgba($grey--2, .3);
+  -webkit-transition: max-height .4s, background $base-transition, color $base-transition;
+  -moz-transition: max-height .4s, background $base-transition, color $base-transition;
+  transition: max-height .4s, background $base-transition, color $base-transition;
+}
+
+.nav__level-three--active {
+  opacity: 1;
+  max-height: 1000px;
+}
+
+.divider {
+  border-top: 2px solid rgba($grey--1, .5);
+}
+
+.nav__item {
+  background: transparent;
+  clear: both;
+  color: $white;
+  cursor: pointer;
+  display: block;
+  padding: $base-padding 20px;
+  // transition: background $base-transition, color $base-transition;
+  transition: all $base-transition;
+  @include media-over-767 {
+    //border-bottom: 1px solid $grey--2;
+  }
+
+  .icon {
+    color: $grey--3;
+  }
+
+  a {
+    color: $white;
+  }
+
+  &.help__item {
+    cursor: default;
+  }
+}
+
+.nav__item--primary {
+  background: transparent;
+
+  &.js-level-expanded {
+    background: $yellow--0;
+    color: $base-color;
+
+    .icon {
+      color: $grey--0;
+    }
+  }
+}
+
+.nav__item--secondary {
+  background: rgba($grey--0, .9);
+  font-weight: $normal;
+  padding-left: ($base-padding * 2);
+}
+
+.nav__item--tertiary {
+  background: hsla(0, 0%, 55%, .3);
+  font-weight: $normal;
+  padding-left: ($base-padding * 3);
+
+  &::before {
+    color: rgba($grey--2, .3);
+    content: ' ';
+    display: inline-block;
+    vertical-align: middle;
+  }
+}
+
+.nav__item--indicator {
+  &::after {
+    border-style: solid;
+    border-width: 1px 1px 0 0;
+    color: $white;
+    content: '';
+    display: block;
+    float: right;
+    height: 12px;
+    left: 0;
+    margin-right: ($base-margin / 3);
+    position: relative;
+    top: 10px;
+    transform: rotate(135deg);
+    transition: transform $base-transition;
+    width: 12px;
+    @include media-over-767 {
+      transform: rotate(45deg);
+    }
+
+    .js-level-expanded & {
+      color: $base-color;
+      transform: rotate(-45deg);
+      @include media-over-767 {
+        left: 5px;
+        transform: rotate(-135deg);
+      }
+    }
+
+    .nav__level-two & {
+      top: 0;
+      transform: rotate(135deg);
+      transition: transform $base-transition;
+    }
+  }
+}
+
+.nav__person {
+  background: $grey--pale;
+  cursor: pointer;
+  float: left;
+  width: calc(100% - 120px);
+  @include media-over-767 {
+    display: none;
+  }
+
+  .person__dropdown {
+    width: 100%;
+
+    .person__dropdown-inner {
+      padding: $base-padding;
+
+      ul {
+        padding-left: 20px;
+      }
+    }
+  }
+}
+
+.nav__person.profile-col {
+  width: 100%;
+}
+
+.nav__progress {
+  background: $grey--pale;
+  border-left: 1px solid rgba($black, .2);
+  cursor: pointer;
+  float: right;
+  padding: $base-padding;
+  width: 120px;
+  @include media-over-767 {
+    display: none;
+  }
+}
+
+.nav__transition {
+  height: auto;
+  transition: none;
+}
+
+menu-top {
+  flex-grow: 1;
+}
+
+.nav__level-two .menu-has-sublevel {
+  position: relative;
+
+  &.js-level-expanded {
+    background: rgba($yellow--0, .9);
+    color: $black;
+
+    &::after {
+      color: $black;
+      top: 6px !important;
+      transform: rotate(-45deg) !important;
+    }
+  }
+}

@@ -1,0 +1,231 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            font-family: "Avenir Next W01", sans-serif;
+            color: #333333;
+            font-size: 14px;
+            line-height: 1.42857;
+            padding: 30px;
+        }
+
+        @media print {
+            body {padding: 0px;}
+        }
+
+        .grid--1-2 {
+            display: block;
+        }
+
+        .grid--1-2>*:nth-child(2n+1) {
+            clear: left;
+        }
+
+        .grid--1-2>* {
+            float: left;
+            display: block;
+            margin-right: 2%;
+            width: 48%;
+        }
+
+        .information-grid__section h3 {
+            font-weight: 700;
+            margin-top: 30px !important;
+            margin-bottom: 7.5px;
+        }
+
+        .information-grid__section:not(:first-of-type) {
+            border-top: 1px solid #f3f3f3;
+            margin-top: 30px;
+        }
+
+        .information-grid__item {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+        }
+
+        .information-grid__item-value {
+            padding: 5px 15px;
+        }
+
+        .column-1of3 {
+            width: 50%;
+            text-align: left;
+            font-weight: 300;
+            padding: 5px 0 0 3%;
+        }
+
+        .column-2of3 {
+            width: 38%;
+        }
+
+        .table__table-preview {
+            width: 100%;
+            page-break-inside: auto;
+            border-collapse: collapse;
+        }
+
+        .table__table-preview .table__heading {
+            background: #d8d8d8;
+            font-weight: 800;
+            padding: 15px;
+            text-align: left;
+            border-right: none;
+        }
+
+        .table__table-preview .table__item-inner {
+            border-right:  1px solid #fff;
+        }
+
+        .table__heading {
+            background: #d8d8d8;
+            font-weight: 800;
+            padding: 15px;
+            position: relative;
+            text-align: left;
+            display: table-cell;
+            -webkit-print-color-adjust: exact;
+        }
+
+        .table__row {
+            background: #fff;
+            transition: background 0.3s ease-out;
+            display: table-row;
+        }
+
+        .table__item {
+            height: auto;
+            overflow: hidden;
+            transition: height 0.3s ease-out, border-bottom 0.3s ease-out;
+        }
+
+        .table__item-inner {
+            border: 0px;
+            padding: 15px;
+        }
+
+        .datatable {
+            width: 100%;
+        }
+
+        .cpp-position .table__heading {
+            width: 50%;
+        }
+
+        h4 {
+            margin: 15px 0 10px;
+        }
+
+        .information-grid__item-value .information-grid__item {
+            padding-top: 5px;
+        }
+
+        .border-bottom {
+            border-bottom: 1px solid #4a80a9;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form__input {
+            border-bottom: 1px solid #4a80a9;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+
+
+        .form__input.no-border {
+            border-bottom: none;
+            padding-bottom: 0px;
+            margin-bottom: 0px;
+        }
+
+        .no-border .label {
+            padding-left: 3%;
+        }
+
+        .label div {
+            padding-left: 3%;
+        }
+
+        .construction-plan-view .form__input:last-child {
+            border-bottom: none;
+        }
+
+        .form__input .form__input {
+            padding-left: 10px;
+            border-bottom: none;
+        }
+
+        .form__input.information-grid {
+            padding-bottom: 0px;
+        }
+
+        .information-grid__item {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+        }
+
+
+        .datatable {
+            width: 100%;
+        }
+
+        .datatable.cpp-position .table__heading {
+            width: 50%;
+        }
+
+        .datatable a {
+            text-decoration: underline;
+            color: #4a80a9;
+        }
+
+        h4 {
+            margin: 15px 0 10px;
+        }
+
+        .site-logo {
+            width: 140px;
+            height: 90px;
+        }
+
+        label {
+            color: #000;
+            font-weight: 700;
+        }
+
+        label div {
+            color: #646464;
+            font-weight: 300;
+        }
+
+        .left-space {
+            padding-left: 3%;
+        }
+
+        .left-space div {
+            padding-left: 0px;
+        }
+
+        .top-15 {
+            margin-top: 15px !important;
+            clear: both;
+        }
+       
+    </style>
+</head>
+
+<bod>
+    {{bodyContent}}
+    </body>
+
+</html>

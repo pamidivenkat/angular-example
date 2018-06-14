@@ -1,0 +1,9 @@
+<div [id]="id">
+  <div class="widget__title">
+    <h2>{{ 'TRAINING.Key_documents' | translate:lang }}</h2>
+  </div>
+  <p *ngIf="needToShowNokeyDocsMsg()">{{'TRAINING.No_keyDocuments' | translate:lang}}</p>
+    <ae-list [items]="immutableItems" [id]="getChildId('AeList', 1)" [name]="getChildName('AeList', 1)" (aeAction)="onKeyDocumentClick($event)"
+      [isClickable]="true" [requireCircle]="false" [scroll]="true" [maxheight]="'6em'">
+    </ae-list>
+</div>

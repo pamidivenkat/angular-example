@@ -1,0 +1,135 @@
+@import '../../../assets/scss/variablesMap';
+// Carousel
+// --------------------------------------------------
+//Mixins
+@mixin transition($transition...) {
+  -webkit-transition: $transition;
+  -o-transition: $transition;
+  transition: $transition;
+}
+
+@mixin transition-transform($transition...) {
+  -webkit-transition: -webkit-transform $transition;
+  -moz-transition: -moz-transform $transition;
+  -o-transition: -o-transform $transition;
+  transition: transform $transition;
+}
+
+@mixin translate3d($x, $y, $z) {
+  -webkit-transform: translate3d($x, $y, $z);
+  transform: translate3d($x, $y, $z);
+}
+
+@mixin opacity($opacity) {
+  opacity: $opacity; // IE8 filter
+  $opacity-ie: ($opacity * 100);
+  filter: alpha(opacity=$opacity-ie);
+}
+
+// End of variables
+.carousel {
+  position: relative;
+  text-align: center;
+  padding: 0 30px;
+  margin-bottom: 30px;
+}
+
+.carousel-inner {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  min-height: 200px;
+  >.item {
+    display: none;
+    position: relative;
+    @include transition(.6s ease-in-out left); // Account for jankitude on images
+    @media all and (transform-3d),
+    (-webkit-transform-3d) {
+      @include transition-transform(0.6s ease-in-out);
+    }
+  }
+  h2,
+  p {
+    a {
+      color: $teal--0;
+      text-decoration: underline;
+    }
+  }
+}
+
+// Left/right controls for nav
+// ---------------------------
+.carousel-control.button {
+  position: absolute;
+  top: 50%;
+  margin-top: -17px;
+  left: 0;
+  border: none;
+  background: none;
+  padding: 10px;
+  box-shadow: none;
+  &:after,
+  &:before {
+    width: 15px !important;
+    height: 15px !important;
+  }
+  &.right {
+    left: auto;
+    right: 0;
+  } // Hover/focus state
+  &:hover,
+  &:focus {
+    outline: 0;
+    background: none;
+    box-shadow: none;
+  } // Toggles
+}
+
+.carousel-indicators {
+  bottom: -30px;
+  display: block;
+  list-style: none;
+  margin: 0 -30px;
+  padding: 0;
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  li {
+    position: relative;
+    display: inline-block;
+    height: 20px;
+    width: 20px;
+    margin: 0 5px;
+    padding: 0;
+    cursor: pointer;
+    &:before {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      width: 6px;
+      height: 6px;
+      background-color: $grey--3;
+      left: 7px;
+      top: 7px;
+    }
+    &:hover {
+      &:before {
+        background-color: $grey--0;
+      }
+    }
+    &.active {
+      &:hover {
+        &:before {
+          background-color: $teal--0;
+        }
+      }
+      &:before {
+        background-color: $teal--0;
+      }
+    }
+  }
+}
+
+.date {
+  font-style: italic;
+}

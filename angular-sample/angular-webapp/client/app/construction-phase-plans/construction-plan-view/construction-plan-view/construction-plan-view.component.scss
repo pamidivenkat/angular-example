@@ -1,0 +1,396 @@
+@import '../../../../assets/scss/variablesMap';
+
+.construction-plan-view {
+  .border-bottom {
+    border-bottom: 1px solid $unsuitable-blue--cerulean;
+    padding-bottom: 15px;
+  }
+
+  .sg-grid {
+    .form__input {
+      border-bottom: 1px solid $unsuitable-blue--cerulean;
+      padding-bottom: 15px;
+
+      .information-grid__item-label {
+        text-align: left;
+        font-weight: 300;
+      }
+
+      &.no-border {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+
+      .label {
+        padding-left: 15px;
+      }
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      .form__input {
+        padding-left: 10px;
+        padding-bottom: 0;
+        border-bottom: none;
+      }
+    }
+
+    &.information-grid {
+      padding-bottom: 0;
+    }
+  }
+
+  .information-grid__item-label {
+    -webkit-align-self: flex-start;
+    -ms-flex-item-align: flex-start;
+    -ms-grid-row-align: flex-start;
+    align-self: flex-start;
+  }
+
+  .information-grid__item-value {
+    .information-grid__item {
+      padding-top: 5px;
+
+      .information-grid__item-label {
+        text-align: left;
+        padding-left: 0;
+      }
+    }
+  }
+
+  .datatable {
+    width: 100%;
+
+    &.cpp-position {
+      .table__heading {
+        width: 50%;
+      }
+    }
+
+    a {
+      text-decoration: underline;
+      color: $unsuitable-blue--cerulean;
+    }
+  }
+
+  h4 {
+    margin: 15px 0 10px;
+  }
+
+  .site-logo {
+    max-height: 150px; max-width: 100%;
+  }
+
+  .overflow-x {
+    overflow-x: auto;
+    @include media-over-767 {
+      overflow-x: initial;
+    }
+  }
+}
+
+.table__table-preview {
+  width: 100%;
+  page-break-inside: auto;
+  border-collapse: collapse;
+
+  .table__heading {
+    background: #d8d8d8;
+    font-weight: 800;
+    padding: 15px;
+    text-align: left;
+    border-right: 1px solid #d8d8d8;
+  }
+
+  .table__heading:last-child {
+    border-right: 0;
+  }
+
+  .table__item {
+    font-size: 1.4rem;
+    position: relative;
+    border-bottom: 1px solid #d8d8d8;
+    border-left: 1px solid #f3f3f3;
+    border-right: 1px solid #f3f3f3;
+  }
+
+  .table__item:not(:last-child) {
+    border-right: 0;
+  }
+
+  .table__item-inner {
+    border: 1px solid #d8d8d8;
+    border-top-color: #fff;
+    padding: 15px;
+    border: 0;
+  }
+
+  .table__row {
+    background: #fff;
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+
+  .table__row--active {
+    background: #f3f3f3;
+  }
+
+  .table__row:hover {
+    background-color: $white;
+  }
+}
+
+.email-slideout {
+  .so-panel {
+    width: 100%;
+    @include media-over-767 {
+      width: 650px;
+    }
+    z-index: 99;
+
+    .loader {
+      position: absolute;
+      top: 50px;
+      width: 100%;
+      bottom: 0;
+
+      .loader-inner {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100px;
+        height: 44px;
+        margin: auto;
+      }
+    }
+
+    .form__input__error {
+      display: block;
+      width: 100%;
+    }
+
+    .ql-editor p {
+      white-space: initial;
+      margin: 5px 0;
+    }
+  }
+  @media print {
+    body {
+      font-family: "Avenir Next W01", sans-serif;
+      color: #333333;
+      font-size: 14px;
+      line-height: 1.42857;
+      padding: 0;
+    }
+
+    .grid--1-2 {
+      display: block;
+    }
+
+    .grid--1-2 > *:nth-child(2n+1) {
+      clear: left;
+    }
+
+    .grid--1-2 > * {
+      float: left;
+      display: block;
+      margin-right: 2%;
+      width: 48%;
+    }
+
+    .information-grid__section h3 {
+      font-weight: 700;
+      margin-top: 30px !important;
+      margin-bottom: 7.5px !important;
+    }
+
+    .information-grid__section:not(:first-of-type) {
+      border-top: 1px solid #f3f3f3;
+      margin-top: 30px;
+    }
+
+    .information-grid__item {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+    }
+
+    .information-grid__item-value {
+      padding: 5px 15px;
+    }
+
+    .column-1of3 {
+      width: 50%;
+      text-align: left;
+      font-weight: 300;
+      padding: 5px 0 0 3%;
+    }
+
+    .column-2of3 {
+      width: 38%;
+    }
+
+    .table__heading {
+      background: #d8d8d8;
+      font-weight: 800;
+      padding: 15px;
+      position: relative;
+      text-align: left;
+      border-right: 1px solid #d8d8d8;
+      display: table-cell;
+      -webkit-print-color-adjust: exact;
+    }
+
+    .table__row {
+      background: #fff;
+      transition: background .3s ease-out;
+      display: table-row;
+    }
+
+    .table__item {
+      height: auto;
+      overflow: hidden;
+      transition: height .3s ease-out, border-bottom .3s ease-out;
+    }
+
+    .table__item-inner {
+      border: 0;
+      padding: 15px;
+    }
+
+    .datatable {
+      width: 100%;
+    }
+
+    .cpp-position .table__heading {
+      width: 50%;
+    }
+
+    h4 {
+      margin: 15px 0 10px;
+    }
+
+    .information-grid__item-value .information-grid__item {
+      padding-top: 5px;
+    }
+
+    .border-bottom {
+      border-bottom: 1px solid #4a80a9;
+      padding-bottom: 15px;
+      margin-bottom: 15px;
+    }
+
+    .form__input {
+      border-bottom: 1px solid #4a80a9;
+      padding-bottom: 15px;
+      margin-bottom: 15px;
+    }
+
+    .form__input.no-border {
+      border-bottom: none;
+      padding-bottom: 0;
+      margin-bottom: 0;
+    }
+
+    .no-border .label {
+      padding-left: 3%;
+    }
+
+    .label div {
+      padding-left: 3%;
+    }
+
+    .construction-plan-view .form__input:last-child {
+      border-bottom: none;
+    }
+
+    .form__input .form__input {
+      padding-left: 10px;
+      border-bottom: none;
+    }
+
+    .form__input.information-grid {
+      padding-bottom: 0;
+    }
+
+    .information-grid__item {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+    }
+
+    .datatable {
+      width: 100%;
+    }
+
+    .datatable.cpp-position .table__heading {
+      width: 50%;
+    }
+
+    .datatable a {
+      text-decoration: underline;
+      color: #4a80a9;
+    }
+
+    h4 {
+      margin: 15px 0 10px;
+    }
+
+    .site-logo {
+      width: 140px;
+      height: 90px;
+    }
+
+    label {
+      color: #000;
+      font-weight: 700;
+    }
+
+    label div {
+      color: #646464;
+      font-weight: 300;
+    }
+
+    .left-space {
+      padding-left: 3%;
+    }
+
+    .left-space div {
+      padding-left: 0;
+    }
+
+    .top-15 {
+      margin-top: 15px !important;
+      clear: both;
+    }
+
+    tr th:last-child {
+      display: none;
+    }
+
+    tr td:last-child {
+      display: none;
+    }
+
+  }
+
+}
+@media print{
+  .construction-plan-view{
+    padding:15px 0 !important;
+ .column-1of3,
+  .column-2of3 {
+    width: 50%;
+  }
+  .overflow-x{overflow: visible;}
+  }
+.table__table-preview .table__heading{border-bottom:2px solid #d8d8d8; border-right-color:transparent;}
+
+}

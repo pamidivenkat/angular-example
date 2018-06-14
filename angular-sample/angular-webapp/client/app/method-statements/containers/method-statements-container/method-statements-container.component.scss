@@ -1,0 +1,35 @@
+.search-block {
+  position: relative;
+
+  input {
+    padding-right: 30px;
+  }
+
+  .icon {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+  }
+}
+
+.buttons-list {
+  ae-anchor + ae-anchor {
+    margin-top: 5px;
+    display: block;
+  }
+  @media screen and (min-width:1850px) {
+    display: flex;
+
+    ae-anchor {
+      flex-grow: 1;
+
+    }
+
+    ae-anchor + ae-anchor {
+      margin-top: 0;
+      margin-left: 10px;
+    }
+  }
+
+}

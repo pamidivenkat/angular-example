@@ -1,0 +1,164 @@
+<div [id]="getChildId('div', 1)" class="so-panel__title">
+  <h3 *ngIf="isAddForm()">{{'EMPLOYEE_VEHICLE.add_vehicle_details' | translate:lang}}</h3>
+  <h3 *ngIf="isUpdateForm()">{{'EMPLOYEE_VEHICLE.update_vehicle_details' | translate:lang}}</h3>
+</div>
+<div [id]="getChildId('div', 2)" class="so-panel__content">
+  <div class="information-grid" [id]="getChildId('div', 3)">
+    <section class="information-grid__section" [id]="getChildId('section', 4)">
+      <form class="form" [formGroup]="updateVehicleDetailsForm" [id]="getChildId('form', 5)">
+        <section class="information-grid__section" [id]="getChildId('section', 6)">
+          <div class="information-grid__item" [id]="getChildId('div', 7)">
+            <div class="information-grid__item-label column-1of3" [id]="getChildId('div', 8)">{{'EMPLOYEE_VEHICLE.make' | translate:lang}} <span class="error-text">*</span></div>
+            <div class="information-grid__item-value column-2of3 text-muted" [id]="getChildId('div', 9)">
+              <ae-input [id]="getChildId('ae-input', 10)" [name]="getChildName('ae-input', 10)" formControlName="Make" [placeholder]="'EMPLOYEE_VEHICLE.make' | translate:lang"></ae-input>
+            </div>
+            <span *ngIf="fieldHasRequiredError('Make')" class="form__input__error" id="'make_field_error'">{{'EMPLOYEE_VEHICLE.make_required' | translate:lang}}.</span>
+          </div>
+          <div>
+            <div class="information-grid__item" [id]="getChildId('div', 11)">
+              <div class="information-grid__item-label column-1of3" [id]="getChildId('div', 12)">{{'EMPLOYEE_VEHICLE.model' | translate:lang}}</div>
+              <div class="information-grid__item-value column-2of3 text-muted" [id]="getChildId('div', 13)">
+                <ae-input [id]="getChildId('ae-input', 14)" [name]="getChildName('ae-input', 14)" formControlName="Model" [placeholder]="'EMPLOYEE_VEHICLE.model' | translate:lang"></ae-input>
+              </div>
+            </div>
+            <div class="information-grid__item" [id]="getChildId('div', 12)">
+              <div class="information-grid__item-label column-1of3" [id]="getChildId('div', 13)">{{'EMPLOYEE_VEHICLE.colour' | translate:lang}}</div>
+              <div class="information-grid__item-value column-2of3 text-muted" [id]="getChildId('div', 14)">
+                <ae-input [id]="getChildId('ae-input', 15)" [name]="getChildName('ae-input', 15)" formControlName="Color" [placeholder]="'EMPLOYEE_VEHICLE.colour' | translate:lang"></ae-input>
+              </div>
+            </div>
+            <div class="information-grid__item" [id]="getChildId('div', 16)">
+              <div class="information-grid__item-label column-1of3" [id]="getChildId('div', 17)">{{'EMPLOYEE_VEHICLE.details' | translate:lang}}</div>
+              <div class="information-grid__item-value column-2of3 text-muted" [id]="getChildId('div', 18)">
+                <ae-input [id]="getChildId('ae-input', 19)" [name]="getChildName('ae-input', 19)" formControlName="Details" [placeholder]="'EMPLOYEE_VEHICLE.details' | translate:lang"></ae-input>
+              </div>
+            </div>
+            <div class="information-grid__item" [id]="getChildId('div', 20)">
+              <div class="information-grid__item-label column-1of3" [id]="getChildId('div', 21)">{{'EMPLOYEE_VEHICLE.mot_start_date' | translate:lang}}</div>
+              <div class="information-grid__item-value column-2of3 text-muted" [id]="getChildId('div', 22)">
+                <ae-datetime-picker [id]="getChildId('ae-datetime-picker', 23)" [name]="getChildName('ae-datetime-picker', 23)" formControlName="MOTStartDate"
+                  [monthNavigator]="true" [yearNavigator]="true" [showIcon]="true"></ae-datetime-picker>
+              </div>
+              <span *ngIf="fieldHasMOTDateComparisonError()" class="form__input__error">{{'EMPLOYEE_VEHICLE.mot_start_date_error' | translate:lang}}</span>
+              <span *ngIf="fieldHasValidDateError('MOTStartDate')" class="form__input__error" id="'mot_field_error'">{{'EMPLOYEE_VEHICLE.invalid_date' | translate:lang}}.</span>
+            </div>
+            <div class="information-grid__item" [id]="getChildId('div', 24)">
+              <div class="information-grid__item-label column-1of3" [id]="getChildId('div', 25)">{{'EMPLOYEE_VEHICLE.mot_end_date' | translate:lang}}</div>
+              <div class="information-grid__item-value column-2of3 text-muted" [id]="getChildId('div', 26)">
+                <ae-datetime-picker [id]="getChildId('ae-datetime-picker', 27)" [name]="getChildName('ae-datetime-picker', 27)" formControlName="MOTEndDate"
+                  [monthNavigator]="true" [yearNavigator]="true" [showIcon]="true"></ae-datetime-picker>
+              </div>
+              <span *ngIf="fieldHasMOTDateComparisonError()" class="form__input__error">{{'EMPLOYEE_VEHICLE.mot_end_date_error' | translate:lang}}</span>
+              <span *ngIf="fieldHasValidDateError('MOTEndDate')" class="form__input__error" id="'mot_field_error'">{{'EMPLOYEE_VEHICLE.invalid_date' | translate:lang}}.</span>
+            </div>
+            <div class="information-grid__item" [id]="getChildId('div', 28)">
+              <div class="information-grid__item-label column-1of3" [id]="getChildId('div', 29)">{{'EMPLOYEE_VEHICLE.date_issued' | translate:lang}}</div>
+              <div class="information-grid__item-value column-2of3 text-muted" [id]="getChildId('div', 30)">
+                <ae-datetime-picker [id]="getChildId('ae-datetime-picker', 31)" [name]="getChildName('ae-datetime-picker', 31)" formControlName="DateIssued"
+                  [monthNavigator]="true" [yearNavigator]="true" [showIcon]="true"></ae-datetime-picker>
+              </div>
+              <span *ngIf="fieldHasValidDateError('DateIssued')" class="form__input__error" id="'mot_field_error'">{{'EMPLOYEE_VEHICLE.invalid_date' | translate:lang}}.</span>
+            </div>
+            <div class="information-grid__item" [id]="getChildId('div', 32)">
+              <div class="information-grid__item-label column-1of3" [id]="getChildId('div', 33)">{{'EMPLOYEE_VEHICLE.return_date' | translate:lang}}</div>
+              <div class="information-grid__item-value column-2of3 text-muted" [id]="getChildId('div', 34)">
+                <ae-datetime-picker [id]="getChildId('ae-datetime-picker', 35)" [name]="getChildName('ae-datetime-picker', 35)" formControlName="ReturnDate"
+                  [monthNavigator]="true" [yearNavigator]="true" [showIcon]="true"></ae-datetime-picker>
+              </div>
+              <span *ngIf="fieldHasValidDateError('ReturnDate')" class="form__input__error" id="'mot_field_error'">{{'EMPLOYEE_VEHICLE.invalid_date' | translate:lang}}.</span>
+            </div>
+            <div class="information-grid__item" [id]="getChildId('div', 36)">
+              <div class="information-grid__item-label column-1of3" [id]="getChildId('div', 37)">{{'EMPLOYEE_VEHICLE.first_registered' | translate:lang}}</div>
+              <div class="information-grid__item-value column-2of3 text-muted" [id]="getChildId('div', 38)">
+                <ae-datetime-picker [id]="getChildId('ae-datetime-picker', 39)" [name]="getChildName('ae-datetime-picker', 39)" formControlName="FirstRegistered"
+                  [monthNavigator]="true" [yearNavigator]="true" [showIcon]="true"></ae-datetime-picker>
+              </div>
+              <span *ngIf="fieldHasValidDateError('FirstRegistered')" class="form__input__error" id="'mot_field_error'">{{'EMPLOYEE_VEHICLE.invalid_date' | translate:lang}}.</span>
+            </div>
+            <div class="information-grid__item" [id]="getChildId('div', 40)">
+              <div class="information-grid__item-label column-1of3" [id]="getChildId('div', 41)">{{'EMPLOYEE_VEHICLE.registration' | translate:lang}}</div>
+              <div class="information-grid__item-value column-2of3 text-muted" [id]="getChildId('div', 42)">
+                <ae-input [id]="getChildId('ae-input', 43)" [name]="getChildName('ae-input', 43)" formControlName="Registration" [placeholder]="'EMPLOYEE_VEHICLE.registration' | translate:lang"></ae-input>
+              </div>
+            </div>
+            <div class="information-grid__item" [id]="getChildId('div', 44)">
+              <div class="information-grid__item-label column-1of3" [id]="getChildId('div', 45)">{{'EMPLOYEE_VEHICLE.engine_cc' | translate:lang}}</div>
+              <div class="information-grid__item-value column-2of3 text-muted" [id]="getChildId('div', 46)">
+                <ae-select [id]="getChildId('ae-select', 75)" [name]="getChildName('ae-select', 47)" [placeholder]="'Please select'" [options]="engineCCTypes | async"
+                  formControlName="EngineCc"></ae-select>
+              </div>
+            </div>
+            <div class="information-grid__item" [id]="getChildId('div', 48)">
+              <div class="information-grid__item-label column-1of3" [id]="getChildId('div', 49)">{{'EMPLOYEE_VEHICLE.approved_co2' | translate:lang}}</div>
+              <div class="information-grid__item-value column-2of3 text-muted" [id]="getChildId('div', 50)">
+                <ae-input [id]="getChildId('ae-input', 51)" [name]="getChildName('ae-input', 51)" formControlName="ApprovedCO2" [placeholder]="'EMPLOYEE_VEHICLE.approved_co2' | translate:lang"></ae-input>
+              </div>
+            </div>
+            <div class="information-grid__item" [id]="getChildId('div', 52)">
+              <div class="information-grid__item-label column-1of3" [id]="getChildId('div', 73)">{{'EMPLOYEE_VEHICLE.fuel_type' | translate:lang}}</div>
+              <div class="information-grid__item-value column-2of3 text-muted" [id]="getChildId('div', 74)">
+                <ae-select [id]="getChildId('ae-select', 75)" [name]="getChildName('ae-select', 75)" [placeholder]="'Please select'" [options]="fuelTypes | async"
+                  formControlName="FuelType"></ae-select>
+              </div>
+            </div>
+            <div class="information-grid__item" [id]="getChildId('div', 53)">
+              <div class="information-grid__item-label column-1of3" [id]="getChildId('div', 54)">{{'EMPLOYEE_VEHICLE.insurance_start_date' | translate:lang}}</div>
+              <div class="information-grid__item-value column-2of3 text-muted" [id]="getChildId('div', 55)">
+                <ae-datetime-picker [id]="getChildId('ae-datetime-picker', 56)" [name]="getChildName('ae-datetime-picker', 56)" formControlName="InsuranceStartDate"
+                  [monthNavigator]="true" [yearNavigator]="true" [showIcon]="true"></ae-datetime-picker>
+              </div>
+              <span *ngIf="fieldHasInsuranceDateComparisonError()" class="form__input__error">{{'EMPLOYEE_VEHICLE.insurance_start_date_error' | translate:lang}}</span>
+              <span *ngIf="fieldHasValidDateError('InsuranceStartDate')" class="form__input__error" id="'mot_field_error'">{{'EMPLOYEE_VEHICLE.invalid_date' | translate:lang}}.</span>
+            </div>
+            <div class="information-grid__item" [id]="getChildId('div', 57)">
+              <div class="information-grid__item-label column-1of3" [id]="getChildId('div', 58)">{{'EMPLOYEE_VEHICLE.insurance_end_date' | translate:lang}}</div>
+              <div class="information-grid__item-value column-2of3 text-muted" [id]="getChildId('div', 59)">
+                <ae-datetime-picker [id]="getChildId('ae-datetime-picker', 60)" [name]="getChildName('ae-datetime-picker', 60)" formControlName="InsuranceEndDate"
+                  [monthNavigator]="true" [yearNavigator]="true" [showIcon]="true"></ae-datetime-picker>
+              </div>
+              <span *ngIf="fieldHasInsuranceDateComparisonError()" class="form__input__error">{{'EMPLOYEE_VEHICLE.insurance_end_date_error' | translate:lang}}</span>
+              <span *ngIf="fieldHasValidDateError('InsuranceEndDate')" class="form__input__error" id="'mot_field_error'">{{'EMPLOYEE_VEHICLE.invalid_date' | translate:lang}}.</span>
+            </div>
+            <div class="information-grid__item" [id]="getChildId('div', 61)">
+              <div class="information-grid__item-label column-1of3" [id]="getChildId('div', 62)">{{'EMPLOYEE_VEHICLE.insurance_company' | translate:lang}}</div>
+              <div class="information-grid__item-value column-2of3 text-muted" [id]="getChildId('div', 63)">
+                <ae-input [id]="getChildId('ae-input', 64)" [name]="getChildName('ae-input', 64)" formControlName="InsuranceCompany" [placeholder]="'EMPLOYEE_VEHICLE.insurance_company' | translate:lang"></ae-input>
+              </div>
+            </div>
+            <div class="information-grid__item" [id]="getChildId('div', 65)">
+              <div class="information-grid__item-label column-1of3" [id]="getChildId('div', 66)">{{'EMPLOYEE_VEHICLE.policy_number' | translate:lang}}</div>
+              <div class="information-grid__item-value column-2of3 text-muted" [id]="getChildId('div', 67)">
+                <ae-input [id]="getChildId('ae-input', 68)" [name]="getChildName('ae-input', 68)" formControlName="PolicyNumber" [placeholder]="'EMPLOYEE_VEHICLE.policy_number' | translate:lang"></ae-input>
+              </div>
+            </div>
+            <div class="information-grid__item" [id]="getChildId('div', 69)">
+              <div class="information-grid__item-label column-1of3" [id]="getChildId('div', 70)">{{'EMPLOYEE_VEHICLE.insurance_value' | translate:lang}}</div>
+              <div class="information-grid__item-value column-2of3 text-muted" [id]="getChildId('div', 71)">
+                <ae-input [id]="getChildId('ae-input', 72)" [name]="getChildName('ae-input', 72)" formControlName="InsuranceValue" [placeholder]="'EMPLOYEE_VEHICLE.insurance_value' | translate:lang"></ae-input>
+              </div>
+            </div>
+            <div class="information-grid__item" [id]="getChildId('div', 73)">
+              <div class="information-grid__item-label column-1of3" [id]="getChildId('div', 74)">{{'EMPLOYEE_VEHICLE.allowance' | translate:lang}}</div>
+              <div class="information-grid__item-value column-2of3 text-muted" [id]="getChildId('div', 75)">
+                <ae-input [id]="getChildId('ae-input', 76)" [name]="getChildName('ae-input', 76)" formControlName="Allowance" [placeholder]="'EMPLOYEE_VEHICLE.allowance' | translate:lang"></ae-input>
+              </div>
+            </div>
+          </div>
+        </section>
+        <div class="form__error" [id]="getChildId('div', 77)">
+        </div>
+      </form>
+    </section>
+  </div>
+</div>
+<div class="so-panel__footer" [id]="getChildId('div', 78)">
+  <nav>
+    <ul>
+      <li><label for="soPanel" class="button button--inline-block" [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang" (click)="onUpdateFormClosed($event)">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label></li>
+      <li class="pull--right">
+        <ae-anchor [id]="getChildId('ae-anchor', 79)" [name]="getChildName('ae-anchor', 79)" [anchorType]="'button'" [title]="isAddForm() ? ('EMPLOYEE_VEHICLE.add' | translate:lang) : ('EMPLOYEE_VEHICLE.update' | translate:lang)" [class]="'button button--inline-block'"
+          [anchorClass]="lightClass" (aeClick)="onUpdateFormSubmit($event)" [text]="isAddForm() ? ('EMPLOYEE_VEHICLE.add' | translate:lang) : ('EMPLOYEE_VEHICLE.update' | translate:lang)"></ae-anchor>
+      </li>
+    </ul>
+  </nav>
+</div>

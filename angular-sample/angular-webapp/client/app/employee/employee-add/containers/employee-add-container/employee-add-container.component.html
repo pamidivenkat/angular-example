@@ -1,0 +1,5 @@
+<div id="getChildId('div', 1)">
+    <employee-add-banner [id]="getChildId('EmpBanner', 1)" [name]="getChildName('EmpBanner', 1)"></employee-add-banner>
+    <ae-notification [id]="getChildId('AeNotification', 1)" [name]="getChildName('AeNotification', 1)" [iconName]="'icon-info'" [textInfo]="'ADD_EMPLOYEE.add_employee_title_message' | translate:lang"></ae-notification>
+    <employee-add [id]="getChildId('EmpAdd', 1)" [name]="getChildName('EmpAdd', 1)" (aeSubmit)="submitEmployeeDetails($event)"></employee-add>
+</div>

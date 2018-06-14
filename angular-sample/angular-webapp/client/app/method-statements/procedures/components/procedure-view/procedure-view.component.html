@@ -1,0 +1,35 @@
+<div id="slide-out-form-content" class="wrapper-for-slideout-conten">
+  <div class="so-panel__title">
+    <h3 class="grey-strip">{{'PROCEDURE_VIEW' | translate:lang}}</h3>
+  </div>
+  <div class="so-panel__content">
+    <div class="form__input">
+      <label>{{'PROCEDURE_NAME' | translate:lang}}
+        <div [class.text-muted]="!vm?.Name" id="procedure_name">{{vm?.Name || ''}}</div>
+      </label>
+    </div>
+    <div class="form__input">
+      <label>{{'PROCEDURE_GROUP' | translate:lang}}
+        <div [class.text-muted]="!vm?.ProcedureGroup.Name" id="procedure_group_name">{{vm?.ProcedureGroup.Name || ''}}</div>
+      </label>
+    </div>
+    <div class="form__input">
+      <label>{{'DESCRIPTION' | translate:lang}}
+      <div class="" [class.text-muted]="!vm?.Description" id="procedure_description"
+        [innerHTML]="vm?.Description || ''">
+      </div>
+      </label>
+    </div>
+  </div>
+  <div class="so-panel__footer">
+    <nav>
+      <ul>
+        <li>
+         <ae-button [text]="'BUTTONS.SLIDE_CLOSE' | translate:lang" [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang" [type]="'button'" [id]="'submitConfirmCancel'" [name]="'submitConfirmCancel'"
+        (aeClick)="onFormClosed()"></ae-button>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
+

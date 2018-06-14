@@ -1,0 +1,5 @@
+<ae-anchor [id]="getChildId('AeAnchor',1)" [name]="getChildName('AeAnchor',1)" (click)="selectCurrentBlock(block)" [text]="block.Title"
+  [anchorType]="'button'" [scrollIntoView]="getScrollIntoView(block)" [anchorClass]="getCurrentBlockStyle(block)" [class]="'button--small button--inline-block'"
+  [class.button--child]="isChildBlock(block)"></ae-anchor>
+<document-review-structure [id]="'document-structure-child'" [name]="'document-structure-child'" [block]="childBlock" *ngFor="let childBlock of block.Blocks | blockChecked"
+  [documentVersion]="currentDocumentVersion" [previousVersionedDocument]="previousVersionedDocument" (onCurrentBlockSelect)="selectCurrentBlock($event)"></document-review-structure>

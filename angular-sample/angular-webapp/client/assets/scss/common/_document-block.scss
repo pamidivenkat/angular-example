@@ -1,0 +1,30 @@
+.block {
+  border-top: 1px dotted rgba($teal--0, .25);
+  margin: 0;
+  padding: ($base-margin / 2) $base-margin;
+
+  &.active {
+    background: rgba($yellow--0, .25);
+    box-shadow: 0 0 $base-margin rgba($teal--0, .5);
+  }
+
+  h1,
+  h2,
+  h3,
+  p,
+  li {
+    font-family: Avenir Next W01, sans-serif !important;
+  }
+
+  p,
+  li {
+    text-align: justify;
+    font-family: Avenir Next W01, sans-serif !important;
+  }
+
+  ol:last-of-type,
+  p:last-of-type {
+    margin-bottom: 0;
+    padding-bottom: 1.5em;
+  }
+}

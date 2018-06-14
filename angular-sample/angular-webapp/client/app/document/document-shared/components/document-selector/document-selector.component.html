@@ -1,0 +1,148 @@
+<div class="so-panel__title">
+    <h3 class="grey-strip">{{'ADD_DOCUMENTS' | translate:lang}}</h3>
+</div>
+
+<div class="so-panel__content document-selector">
+    <div class="filter-bar holiday-filters">
+        <div class="filter-bar__label label">{{'Filter_by' | translate:lang}}</div>
+
+        <form [formGroup]="documentSelectorForm" [id]="'documentSelectorFrm'" [name]="'documentSelectorFrm'">
+            <div class="filter-bar__filters requests">
+                <div class="filter-bar__filter">
+                    <ae-select [id]="getChildId('CategoryId',1)" [name]="getChildName('CategoryId',1)" [title]="'Document Category'" formControlName="CategoryId"
+                        [placeholder]="'Please Select'" [options]="categoryList"></ae-select>
+                </div>
+                <div class="filter-bar__filter">
+                    <ae-autocomplete formControlName="Site"  [id]="getChildId('Site',1)" [name]="getChildName('Site',1)" [placeholder]="'Select site'" [multiselect]="'false'"
+                        [items]="sites$  | async" [automatch]="false" [dstype]="localDataSourceType" [field]="'Text'" [debounce]="500"
+                        [valuefield]="'Value'"></ae-autocomplete>
+                </div>
+                <div class="filter-bar__filter">
+                    <ae-input  [id]="getChildId('documentName',1)" [name]="getChildName('documentName',1)" formControlName="DocumentName" [placeholder]="'FILTER_BY_DOCUMENT_NAME' | translate:lang"
+                        [title]="'FILTER_BY_DOCUMENT_NAME' | translate:lang"></ae-input>
+                </div>
+            </div>
+            <!--<div class="top-15">
+                {{'ADD_RISKASSESSMENT_SELECTOR_HELPTEXT' | translate:lang}}
+            </div>-->
+        </form>
+
+    </div>
+    <div class="spacer--y">
+        <ae-datatable [id]="'documentsGrid'" [name]="'documentsGrid'" [dataSource]="documents$ " [autoGenerateColumns]="false" [totalRecords]="recordsCount$"
+            [defaultOptions]="dataTableOptions$ | async" (pageChanged)="onPageChange($event)" (onSort)="onSort($event)" [loading]="!(documentsLoaded$  | async)">
+
+
+            <ae-column [headerText]="'DOCUMENT_NAME' | translate:lang" [sortable]="true" [sortKey]="'FileNameAndTitle'">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span>{{'DOCUMENT_NAME' | translate:lang}}</span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+                        {{ context.FileNameAndTitle }}
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+
+            <ae-column [headerText]="'CATEGORY' | translate:lang" [sortable]="true" [sortKey]="'CategoryName'">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span>{{'CATEGORY' | translate:lang}}</span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+                        {{ context.CategoryName }}
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+
+            <ae-column [headerText]="'VERSION' | translate:lang" [sortable]="true" [sortKey]="'Version'">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span>{{'VERSION' | translate:lang}}</span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+                        {{ context.Version }}
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+
+            <ae-column [headerText]="'SITE_NAME' | translate:lang" [sortable]="true" [sortKey]="'SiteName'">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span>{{'SITE_NAME' | translate:lang}}</span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+                        {{ context.SiteName }}
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+
+            <ae-column [headerText]="'EMPLOYEE_NAME' | translate:lang" [sortable]="true" [sortKey]="'EmployeeName'">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span>{{'EMPLOYEE_NAME' | translate:lang}}</span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+                        {{ context.EmployeeName }}
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+
+            <ae-column [headerText]="'UPLOAD_DATE' | translate:lang" [sortable]="true" [sortKey]="'ModifiedOn'">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span>{{'UPLOAD_DATE' | translate:lang}}</span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+                        {{ context.ModifiedOn | localeDate:defaultLocale:'shortDate' }}
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+
+            <ae-column [headerText]="'SELECT_COLUMN_TITLE' | translate:lang" [sortable]="false">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span>{{'SELECT_COLUMN_TITLE' | translate:lang}}</span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+                        <div class="table__item-inner">
+                            <ae-checkbox [id]="getChildId('AeSelectChekbox', context.Id)" [name]="getChildName('AeSelectChekbox', context.Id)" [checkText]="''"
+                                (onAeChange)="onSelectRow($event, context)" [checked]="checkIfSelected(context)" [disabled]="disableChecklist(context)"></ae-checkbox>
+                        </div>
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+
+
+        </ae-datatable>
+
+    </div>
+</div>
+
+<div class="so-panel__footer">
+    <nav>
+        <ul>
+            <li><label for="soPanel" class="button button--inline-block" [id]="getChildId('AeButton',1)" (click)="onDocSelectorFormClosed($event)"
+                    [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label></li>
+            <li class="pull--right">
+                <ae-anchor [id]="getChildId('AeAnchor',1)" [name]="getChildName('AeAnchor',1)" [anchorType]="'button'" [class]="'button button--inline-block'"
+                    [anchorClass]="lightClass" (aeClick)="onDocSelectorFormSubmit($event)" [title]="'BUTTONS.ADD' | translate:lang"
+                    [text]="'BUTTONS.ADD' | translate:lang"></ae-anchor>
+            </li>
+        </ul>
+    </nav>
+</div>

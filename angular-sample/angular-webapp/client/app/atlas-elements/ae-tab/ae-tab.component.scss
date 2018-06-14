@@ -1,0 +1,133 @@
+@import '../../../assets/scss/variablesMap';
+.tabs {
+  position: relative;
+  .up-to-date {
+    padding: 45px;
+  }
+}
+
+.tabs-nav {
+  -webkit-overflow-scrolling: touch;
+  overflow-x: scroll;
+  @include media-over-1239 {
+    overflow: auto;
+  }
+}
+
+.tabs-nav__inner {
+  display: flex;
+  min-width: $min-width;
+}
+
+.tabs-nav__item {
+  align-items: center;
+  background: $white;
+  border-bottom: 2px solid $teal--0;
+  border-right: 1px solid rgba($teal--0, .2);
+  border-top: 1px solid rgba($teal--0, .2);
+  color: $teal--0;
+  cursor: pointer;
+  display: flex;
+  flex-basis: 0;
+  flex-grow: 1;
+  justify-content: center;
+  min-height: 60px;
+  padding: 10px;
+  transition: background $base-transition;
+  white-space: nowrap;
+  min-width: auto;
+  @media all and (-ms-high-contrast:none){
+    display: block;
+    flex: 1 auto;
+  }
+  &.active {
+    background: $teal--0;
+    color: $white;
+    font-weight: $bold;
+    &:hover {
+      background: $teal--0;
+    }
+  }
+  &:hover {
+    background: $teal--4;
+  }
+  span {
+    display: block;
+    flex-shrink: 1;
+    &:not(:first-child) {
+      margin-left: 8px;
+    }
+  }
+  .count {
+    font-size: 80%;
+    margin-left: $base-margin;
+    margin-right: -$base-margin;
+    margin-top: ($base-margin / 5);
+  }
+  &:last-of-type {
+    border-right: 0;
+  }
+}
+
+.tabs__tabs {
+  overflow: hidden;
+  position: relative;
+}
+
+.tabs__tab {
+  opacity: 0;
+  position: absolute;
+  transition: opacity .3s 0s ease-out, z-index 0s .3s;
+  width: 100%;
+  z-index: 1;
+  &.active {
+    opacity: 1;
+    transition: opacity .3s 0s ease-out, z-index 0s 0s;
+    z-index: 2;
+  }
+}
+
+.section-title {
+  @include clearfix;
+  padding: $base-padding ($base-padding * 2);
+  h3 {
+    float: left;
+    margin: ($base-margin / 2) 0 0;
+  }
+  .button {
+    float: right;
+  }
+  .select {
+    float: right;
+    width: auto;
+  }
+  +.spacer--use-margin {
+    margin-top: 0;
+  }
+  +.cards {
+    padding-top: 0;
+  }
+}
+
+// Widget overrides
+.widget,
+.wizard__stage {
+  .tabs-nav__inner {
+    min-width: 100%;
+    overflow: auto;
+  }
+  .tabs-nav__item {
+    border: 1px solid $teal--0;
+    border-radius: $base-border-radius;
+    border-width: 1px;
+    min-width: auto;
+    &:not(:first-child):not(.count) {
+      margin-left: ($base-margin / 3);
+    }
+  }
+}
+@media all and (-ms-high-contrast:none) {
+  .exposure-tabs .tabs-nav .tabs-nav__item .icon-with-text {
+    line-height: 30px; text-align: center;
+  }
+}

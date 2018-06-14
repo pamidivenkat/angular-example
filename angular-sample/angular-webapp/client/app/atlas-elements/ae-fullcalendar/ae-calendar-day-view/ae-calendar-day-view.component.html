@@ -1,0 +1,89 @@
+<div class="calendar-day-view">
+  <table class="table-border">
+    <tr>
+      <td class="col-01"></td>
+      <td class="col-02">
+        <table>
+          <tr>
+            <td *ngFor="let day of days;let i=index" class="day-view" [class.day-today]="day.isToday">
+              <b>{{ day.date | date:'EEE' }}</b><br>
+              <span>{{ day.date| date : 'MM/dd'}}</span>
+            </td>
+          </tr>
+        </table>
+      </td>
+      <td class="col-03"></td>
+    </tr>
+    <tr>
+      <td class="col-01">all-Day</td>
+      <td class="col-02">
+        <table>
+          <tr>
+            <td *ngFor="let dayview of view" class="day-info">
+              <div *ngFor="let alevent of dayview?.allDayEvents ;let i=index ; let last=last">
+                <span *ngIf="alevent.allDay==true && i<2" class="cal-event-allDay" title="{{alevent.title}}" [style.backgroundColor]="alevent.color.secondary"
+                  [style.borderColor]="alevent.color.primary">
+                      {{alevent.title}} 
+                    </span>
+                <span *ngIf="last">
+                     <span *ngIf="dayview?.allDayEvents.length > 0" class="down" style="font-weight:bold"> 
+                        <ae-anchor [id]="'moreEvents'" [name]="'moreEvents'" [text]="getMoreEventsCount(dayview?.allDayEvents)" (aeClick)="showEvents($event)">{{getMoreEventsCount(dayview?.allDayEvents)}}</ae-anchor> 
+                    </span>
+                </span>
+              </div>
+
+            </td>
+          </tr>
+
+        </table>
+      </td>
+      <td class="col-03"></td>
+    </tr>
+
+  </table>
+  <div *ngIf="isOpen">
+    <div *ngFor="let dayview of view">
+      <div *ngFor="let alevent of dayview?.allDayEvents">
+        <span *ngIf="alevent.allDay==true" class="cal-event-allDay" title="{{alevent.title}}" [style.backgroundColor]="alevent.color.secondary"
+          [style.borderColor]="alevent.color.primary">
+                      {{alevent.title}} 
+                    </span>
+      </div>
+    </div>
+  </div>
+ <div *ngIf="isOpenHour">
+      <div *ngFor="let alevent of moreEventsHour">
+        <span *ngIf="!alevent.event.allDay" class="cal-event-allDay" title="{{alevent.event.title}}" [style.backgroundColor]="alevent.event.color.secondary"
+          [style.borderColor]="alevent.event.color.primary" style="width:100%">
+                      {{alevent.event.title}} 
+                    </span>
+      
+    </div>
+  </div>
+  <div class="cal-hour-rows" style="overflow-x: hidden; overflow-y: scroll; height: 602px;">
+    <div style="position: relative;">
+      <div class="cal-events">
+        <div *ngFor="let dayview of view;let i = index" class="event-block">
+          <div title="{{dayEvent.event.title}}" *ngFor="let dayEvent of dayview?.events" class="cal-event" #event [style.marginTop.px]="dayEvent.top"
+            [style.marginLeft]="((i==0)? 5 : (15 * i+1)) + '%'" [style.height.px]="dayEvent.height" [style.width.px]="dayEvent.width - 1"
+            [style.backgroundColor]="dayEvent.event.color.secondary" [style.borderColor]="dayEvent.event.color.primary" [class.cal-starts-within-day]="!dayEvent.startsBeforeDay"
+            [class.cal-ends-within-day]="!dayEvent.endsAfterDay" [ngClass]="dayEvent.event.cssClass" [style.white-space]="dayEvent.height<60 ? 'nowrap' :''" [style.padding-top.px]="dayEvent.height<60 ? '1' :''">
+            {{dayEvent.event.title}}
+            <br>
+             <b><ae-anchor [id]="'moreEventsHours'" [name]="'moreEventsHours'" [text]="getMoreEventsCountForHours(dayview?.events,dayEvent?.event)" (aeClick)="showEventsForHoursMode(dayview?.events)">{{getMoreEventsCount(dayview?.events)}}</ae-anchor> </b>
+            
+          </div>
+        </div>
+      </div>
+      <div class="cal-hour" *ngFor="let hour of hours" [style.minWidth.px]="71">
+        <div *ngFor="let segment of hour.segments" class="cal-hour-segment" [ngClass]="segment.cssClass">
+          <div [hidden]="!segment.isStart" class="cal-time">
+            {{ segment.date | date : 'hh a' |lowercase}}
+          </div>
+          &nbsp;
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

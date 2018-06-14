@@ -1,0 +1,64 @@
+<div [id]="id">
+  <ae-banner [id]="getChildId('AeBanner',1)" [name]="getChildName('AeBanner',1)" [titleText]="bannerTitle" [backgroundImage]="'/assets/images/lp-employees.jpg'"
+    [bannerTheme]="aeBannerTheme">
+    <div class="image-text banner-image-text">
+      <ae2-breadcrumb [id]="getChildId('Ae2Breadcrub',2)" [name]="getChildName('Ae2Breadcrub',2)" [group]="bcGroup"></ae2-breadcrumb>
+    </div>
+  </ae-banner>
+
+  <div class="button-bar button-bar--offset spacer">
+    <div class="button-bar__item">
+      <ae-anchor [id]="getChildId('AeAnchor',3)" [name]="getChildName('AeAnchor',3)" [anchorType]="'button'" [class]="'button'"
+        (aeClick)="onPrevious($event)" [text]="'Previous'"></ae-anchor>
+    </div>
+    <div class="button-bar__item">
+      <ae-anchor [id]="getChildId('AeAnchor',4)" [name]="getChildName('AeAnchor',5)" [anchorType]="'button'" [class]="'button button button--cta'"
+        (aeClick)="onFormSubmit($event)" [text]="'Save'" [disabled]="!hasPermission()"></ae-anchor>
+    </div>
+  </div>
+
+</div>
+<ae-notification [id]="'user-permission-notification-bar'" [name]="'user-permission-notification-bar'" [iconName]="'icon-info'"
+  [textInfo]="'ATLAS_USER_REFERS_MEG' | translate:lang"></ae-notification>
+
+<ae-loader [loaderType]="loaderType" *ngIf="!isFormGroupReady"></ae-loader>
+
+<form *ngIf="isFormGroupReady" id="profile-filter-form" name="profile-filter-form" class="form" [formGroup]="profileFilterForm">
+  <section class="content-section spacer">
+    <label>
+      Select profiles      
+      <ae-autocomplete (aeOnSelect)="onProfileChanged($event)" (aeOnClearSelected)="onClearSelectedProfile($event)" [id]="'permission-profile'" [name]="'permission-profile'" [placeholder]="'Select profiles'" [multiselect]="true" [items]="profileList"
+              [dstype]="dataSouceType" formControlName="userProfileFilter" [field]="'Name'" [valuefield]="'Id'"></ae-autocomplete>
+  </label>
+  </section>
+</form>
+<form *ngIf="isFormGroupReady" id="user-permission-form" name="user-permission-form" class="form" [formGroup]="userUpdatePermissionForm">
+  <section class="cards">
+    <ae-card class="card" *ngFor="let permissionsGroup of _permissionGroups; let i = index ">
+      <div class="card__content">
+        <div class="card__title">{{permissionsGroup.Name}}</div>
+        <div class="card__text">
+          <div class="checklist">
+            <div class="checklist__item" *ngFor="let permissionItem of permissionsGroup.Permissions; let i = index ">
+              <div class="checkbox">
+                <ae-checkbox [formControlName]="permissionItem.Id" [id]="permissionItem.Id" [name]="permissionItem.Id" [checkText]="permissionItem.Name"
+                  [disabled]="isCheckBoxDisabled(permissionItem.Id)" [title]="permissionItem.Description">
+                </ae-checkbox>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ae-card>
+  </section>
+</form>
+<div class="button-bar button-bar--offset spacer">
+  <div class="button-bar__item">
+    <ae-anchor [id]="getChildId('AeAnchor',1)" [name]="getChildName('AeAnchor',1)" [anchorType]="'button'" [class]="'button'"
+      (aeClick)="onPrevious($event)" [text]="'Previous'"></ae-anchor>
+  </div>
+  <div class="button-bar__item">
+    <ae-anchor [id]="getChildId('AeAnchor',2)" [name]="getChildName('AeAnchor',2)" [anchorType]="'button'" [class]="'button button button--cta'"
+      (aeClick)="onFormSubmit($event)" [text]="'Save'" [disabled]="!hasPermission()"></ae-anchor>
+  </div>
+</div>

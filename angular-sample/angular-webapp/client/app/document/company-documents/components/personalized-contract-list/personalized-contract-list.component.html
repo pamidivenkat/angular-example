@@ -1,0 +1,27 @@
+<ae-notification [id]="getChildId('AeNotification', 1)" [name]="getChildName('AeNotification', 1)" [iconName]="'icon-info'" [textInfo]="'CONTRACT_DISTRIBUTE_INFO_TEXT' | translate:lang"></ae-notification>
+<div class="table table__filter-bar">
+  <div class="filter-bar holiday-filters">
+    <div class="filter-bar__label label">{{'Filter_by' | translate:lang}}</div>
+    <form [formGroup]="personalcontractListForm" [id]="getChildId('form', 1)" [name]="getChildName('form', 1)">
+      <div class="filter-bar__filters requests">
+        <div class="filter-bar__filter">
+          <ae-autocomplete formControlName="site" [id]="'ddlSite'" [name]="'ddlSite'" [placeholder]="'HANDBOOK.SITE_PLACEHOLDER' | translate:lang"
+            [multiselect]="'false'" [items]="sites$  | async" [automatch]="false" [dstype]="localDataSourceType" [field]="'Text'"
+            [debounce]="500" [valuefield]="'Value'"></ae-autocomplete>
+        </div>
+        <div class="filter-bar__filter">
+          <ae-autocomplete formControlName="department" [id]="'ddlDepartment'" [name]="'ddlDepartment'" [placeholder]="'HANDBOOK.DEPARTMENT_PLACEHOLDER' | translate:lang"
+            [multiselect]="'false'" [items]="departments$  | async" [automatch]="false" [dstype]="localDataSourceType" [field]="'Text'"
+            [debounce]="500" [valuefield]="'Value'"></ae-autocomplete>
+        </div>
+        <div class="filter-bar__filter">
+          <ae-autocomplete formControlName="employee" [id]="'autoEmployee'" [name]="'autoEmployee'" [placeholder]="'HANDBOOK.EMPLOYEE_PLACEHOLDER' | translate:lang"
+            [multiselect]="'false'" [items]="searchedEmployeesSub | async" [automatch]="false" (aeOnComplete)="searchEmployees($event)"
+            [dstype]="remoteDataSourceType" [field]="'Text'" [debounce]="500" [valuefield]="'Value'"></ae-autocomplete>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<contracts-list [id]="getChildId('PersonalContractsTemplate', 1)" [name]="getChildName('PersonalContractsTemplate', 1)" [contractsFilter]="2"
+  (onGridPaging)="onGridPaging($event)" (onGridSorting)="onGridSorting($event)"> </contracts-list>

@@ -1,0 +1,21 @@
+<icon-management-header  [id]="getChildId('header', 1)" [name]="getChildName('header', 1)"  (onAddIcon)="onAddIconClick($event)"></icon-management-header>
+<ae-tabstrip [id]="'AeTabStrip'" [name]="'AeTabStrip'" [standard]="true">
+  <ae-tabstrip-item [id]="'AeTabStripItem_1'" [name]="'AeTabStripItem_1'" [header]="'ICON_MANAGEMENT.HAZARDS' | translate:lang"
+    [navigateUrl]="getHazardsUrl()">
+  </ae-tabstrip-item>
+
+  <ae-tabstrip-item [id]="'AeTabStripItem_2'" [name]="'AeTabStripItem_2'" [header]="'ICON_MANAGEMENT.CONTROLS' | translate:lang"
+    [navigateUrl]="getControlsUrl()">
+  </ae-tabstrip-item>
+</ae-tabstrip>
+
+<div id="contentArea" class="icon-management--tabs">
+  <router-outlet> </router-outlet>
+</div>
+<ae-slideout [id]="getChildId('AeSlideOut', 1)" [name]="getChildName('AeSlideOut', 1)" [modelState]="getIconUpdateSlideOutState()"
+  [class.slide--animate]="showIconAddUpdateSlideOut()">
+  <ng-container *ngIf="showIconAddUpdateSlideOut()">
+    <icon-add-update [id]="getChildId('AddUpdateIcon', 1)" [name]="getChildName('AddUpdateIcon', 1)" [type]="iconType" [action]="iconAction"
+      (onCancel)="cancelAddUpdateIcon($event)" (onSubmit)="addUpdateIconSubmit($event)"></icon-add-update>
+  </ng-container>
+</ae-slideout>

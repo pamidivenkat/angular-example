@@ -1,0 +1,32 @@
+{
+  "name": "atlasv2",
+  "version": "1.0.0-alpha",
+  "description": "This is Atlas V2 ",
+  "main": "karma.conf.js",
+  "dependencies": {
+    "handlebars": "^4.0.10",
+    "azure-storage": "^2.1.0",
+    "newrelic": "^1.39.1",
+    "vision": "^4.1.1",
+    "hapi": "^16.1.0",
+    "inert": "^4.1.0",
+    "memorystream": "^0.3.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "server": "node server/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://vijayamadhavareddy@bitbucket.org/atlasdevelopers/atlas-v2.git"
+  },
+  "keywords": [
+    "atals",
+    "version",
+    "2.0"
+  ],
+  "homepage": "https://bitbucket.org/atlasdevelopers/atlas-v2#readme",
+  "author": "",
+  "license": "ISC"
+}

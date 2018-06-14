@@ -1,0 +1,8 @@
+<ae-form *ngIf ="showAssignForm()"[formBuilderData]="assignTraineesFormVM" [id]="'assignTraineesForm'" [name]="'assignTraineesForm'" [Title]="getTitle()"
+  [isPrimaryTitle]="true" (onSubmit)="onSubmit($event)" (onCancel)="onCancel($event)" [footerBtnText]="formButtonLabels()"
+  (onFormInit)="onFormInit($event)">
+</ae-form>
+<ae-form *ngIf ="showInvitePublicUserForm()" [formBuilderData]="invitePublicUserFormVM" [id]="'invitePublicUserForm'" [name]="'invitePublicUserForm'" [Title]="'TRAINING_COURSE.INVITE_PUBLIC_USER' | translate:lang"
+  [isPrimaryTitle]="true" (onSubmit)="onInvitePublicUserFormSubmit($event)" (onCancel)="onCancel($event)" [footerBtnText]="buttonLabels()"
+  (onFormInit)="InvitePublicUserFormInit($event)">
+</ae-form>

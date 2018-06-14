@@ -1,0 +1,11 @@
+<ae-slideout [id]="getChildId('AeSlideOut', 1)" [name]="getChildName('AeSlideOut', 1)" [modelState]="getSlideoutState()"
+    [class.slide--animate]="ShowResetPasswordSlideOut">
+    <ng-container *ngIf="ShowResetPasswordSlideOut">
+        <reset-password [id]="'resetPasswordPage'" [name]="'resetPasswordPage'" [userId]="EmployeeAdminDetails.Id" (cancel)="onResetPasswordCancle($event)"
+            (update)="onResetPasswordComplete($event)"></reset-password>
+    </ng-container>
+</ae-slideout>
+<admin-details [id]="'employeeAdminDetails'" [name]="'employeeAdminDetails'" [employeeInformation]="EmployeeInformationDetails"
+    [employeeAdminDetails]="EmployeeAdminDetails" [isLeaver]="IsLeaver" [UserProfiles]="UserProfiles" (resetPassword)="onResetPassword($event)"></admin-details>
+<admin-options [id]="'credientialOptions'" [name]="'credientialOptions'" [employeeInformation]="EmployeeInformationDetails"
+    [employeeAdminDetails]="EmployeeAdminDetails" (optionsModalToSave)="optionsModalToSave($event)">

@@ -1,0 +1,38 @@
+<div class="so-panel__title height-80">
+
+  <h3 class="grey-strip">{{'COPY_WORKING_DAYS_PROFILE' | translate:lang}} ( {{ sourceNonWorkingdaysProfileName }} )</h3>
+</div>
+<div class="so-panel__content top-80">
+    <form class="form" [formGroup]="nonWorkingDayCopyForm">
+      <div class="form__input">
+        <label>{{'NAME' | translate:lang}} <span class="error-text">*</span>
+          <ae-input [id]="getChildId('AeInput',2)" [name]="getChildName('AeInput',2)" [title]="'NAME' | translate:lang" formControlName="Name"
+            [placeholder]="'NAME' | translate:lang" [hasError]="!isFieldValid('Name')"></ae-input>
+        </label>
+        <span *ngIf="fieldHasRequiredError('Name')" class="form__input__error" id="name_rq_error">
+            {{'NAME_IS_REQUIRED' | translate:lang}}.</span>
+        <span *ngIf="isGivenNameAlreadyExists()" class="form__input__error" id="name_exists_error">
+            {{'NAME_ALREADY_EXISTS' | translate:lang}}.</span>
+      </div>
+
+      <div class="form__input">
+        <label>{{'DESCRIPTION' | translate:lang}}
+          <ae-input [id]="getChildId('AeInput',2)" [name]="getChildName('AeInput',2)" [title]="'DESCRIPTION' | translate:lang" formControlName="Description"
+            [placeholder]="'DESCRIPTION' | translate:lang"></ae-input>
+        </label>
+      </div>
+    </form>
+</div>
+<div class="so-panel__footer">
+  <nav>
+    <ul>
+      <li><label for="soPanel" class="button button--inline-block" [id]="getChildId('AeLabel',1)" (click)="slideClose($event)"
+          [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label></li>
+      <li class="pull--right">
+        <ae-anchor [id]="getChildId('AeAnchor',1)" [name]="getChildName('AeAnchor',1)" [anchorType]="'button'" [class]="'button button--inline-block'"
+          [anchorClass]="lightClass" (aeClick)="onAddOrUpdateFormSubmit($event)" [title]="'BUTTONS.COPY' | translate:lang"
+          [text]="'BUTTONS.COPY' | translate:lang"></ae-anchor>
+      </li>
+    </ul>
+  </nav>
+</div>

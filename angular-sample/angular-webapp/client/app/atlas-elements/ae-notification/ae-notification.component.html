@@ -1,0 +1,11 @@
+<div class="notification-bar spacer" [id]="id">
+  <div [id]="getChildId('div',1)" class="icon-with-text">
+    <span [id]="getChildId('spanIcon',1)" class="icon-with-text__icon" *ngIf="isIcon()">
+      <ae-icon [id]="getChildId('AeIcon', 1)" [name]="getChildName('AeIcon', 1)" [icon]="icon" [size]="iconMedium" [isAlert]="isAlert"
+        [svgUrl]="svgUrl"></ae-icon>
+    </span>
+    <span [id]="getChildId('spanNotify',1)" class="icon-with-text__copy" [innerHTML]="text">
+
+    </span>
+  </div>
+</div>

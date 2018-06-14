@@ -1,0 +1,57 @@
+<div id="importResultList">
+    <div class="so-panel__title">
+        <h3> Employee import results </h3>
+    </div>
+
+    <div class="so-panel__content">
+        <div class="information-grid">
+            <ae-datatable [id]="getChildId('AeDataTable')" [name]="getChildName('AeDataTable')" [dataSource]="importResultList$" [autoGenerateColumns]="false" [loading]="loadingStatus$" [defaultOptions]="dataTableOptions$" [totalRecords]="recordsCount$" (pageChanged)="onGridPaging($event)">
+                <ae-column [headerText]="'First name'" [sortable]="false">
+                    <ae-template [type]="'header'">
+                        <ng-template>
+                            <span>First name</span>
+                        </ng-template>
+                    </ae-template>
+                    <ae-template [type]="'cell'" [keys]="keys">
+                        <ng-template let-context="item">
+                            <span>{{ context.FirstName }}</span>
+                        </ng-template>
+                    </ae-template>
+                </ae-column>
+                <ae-column [headerText]="'Email/User name'" [sortable]="false">
+                    <ae-template [type]="'header'">
+                        <ng-template>
+                            <span>Email/User name</span>
+                        </ng-template>
+                    </ae-template>
+                    <ae-template [type]="'cell'" [keys]="keys">
+                        <ng-template let-context="item">
+                            <span>{{ context.EmailorUsername }}</span>
+                        </ng-template>
+                    </ae-template>
+                </ae-column>
+                <ae-column [headerText]="'Result'" [sortable]="false">
+                    <ae-template [type]="'header'">
+                        <ng-template>
+                            <span>Result</span>
+                        </ng-template>
+                    </ae-template>
+                    <ae-template [type]="'cell'" [keys]="keys">
+                        <ng-template let-context="item">
+                            <div [innerHtml]="formatError(context.Errors)"></div>
+                        </ng-template>
+                    </ae-template>
+                </ae-column>
+
+            </ae-datatable>
+        </div>
+    </div>
+    <div class="so-panel__footer">
+        <nav>
+            <ul>
+                <li><label for="soPanel" class="button button--inline-block" (click)="onViewResultsCancel()" [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label></li>
+            </ul>
+        </nav>
+    </div>
+
+</div>

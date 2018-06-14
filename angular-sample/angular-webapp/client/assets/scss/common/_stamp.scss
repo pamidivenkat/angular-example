@@ -1,0 +1,46 @@
+.stamp {
+  background-color: $indicator--grey;
+  background-image: none;
+  border: 0 solid transparent;
+  border-radius: $widget-border-radius;
+  color: rgba($black, .6);
+  display: inline-block;
+  font-size: 90%;
+  font-weight: $bold;
+  line-height: 1;
+  margin: 0 ($base-margin / 5) ($base-margin / 5) 0;
+  padding: ($base-padding / 3);
+  text-transform: none;
+  transition: background $base-transition;
+  vertical-align: baseline;
+}
+
+.stamp--green {
+  background: $indicator--green;
+  color: $white;
+}
+
+.stamp--red {
+  background: $indicator--red;
+  color: $white;
+}
+
+.stamp--purple {
+  background: $indicator--purple;
+  color: $white;
+}
+
+.stamp--yellow {
+  background: $indicator--yellow;
+  color: $white;
+}
+
+.stamp--teal {
+  background: $indicator--teal;
+  color: $white;
+}
+
+.stamp--grey {
+  background: $indicator--grey;
+  color: $white;
+}

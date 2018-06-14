@@ -1,0 +1,17 @@
+<div>
+    <button (click)=nextDataSet()>Next Data Set</button>
+    <ae-datatable [id]="'demo'" [name]="'demo'" [dataSource]="dataSource" [autoGenerateColumns]="false" [actions]="actions" [totalRecords]="totalRecords" [loading]="true">
+        <ae-column [headerText]="'Title'" [sortKey]="'Title'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>Title</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <span>{{context.Title}}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+    </ae-datatable>
+</div>

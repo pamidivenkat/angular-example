@@ -1,0 +1,8 @@
+@import '../../../../assets/scss/variablesMap';
+@import '../../../../assets/scss/neat/neat';
+@import '../../../atlas-elements/ae-icon/ae-icon.component';
+@import '../../../atlas-elements/ae-button/ae-button.component';
+
+.nav__level-one--bottom {
+  padding-bottom: $base-padding * 3;
+}

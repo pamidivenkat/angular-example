@@ -1,0 +1,34 @@
+<div id="reportsListDiv">
+    <div class="section-title">
+        <ae-select [id]="getChildId('AeSelect')" [name]="getChildName('AeSelect')" [placeholder]="'All_Categories' | translate:lang"
+            [options]="categories" [value]="reportCategory" (aeSelectChange)="onReportCategoryChange($event.SelectedValue)"></ae-select>
+    </div>
+    <ae-datatable [id]="getChildId('AeDataTable')" [name]="getChildName('AeDataTable')" [dataSource]="reportsList" [autoGenerateColumns]="false"
+        [actions]="actions" [totalRecords]="totalRecords" [loading]="loadingStatus" [defaultOptions]="dataTableOptions"
+        (pageChanged)="onPageChange($event)" (onSort)="onPageSort($event)">
+        <ae-column [headerText]="'REPORT_NAME' | translate:lang" [sortable]="true" [sortKey]="'Name'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>{{'REPORT_NAME' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <span>{{ context.Name }}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+        <ae-column [headerText]="'CATEGORY' | translate:lang" [sortable]="false">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>{{'CATEGORY' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <span>{{ getCategoryName(context.CategoryId) }}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+    </ae-datatable>
+</div>

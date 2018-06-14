@@ -1,0 +1,13 @@
+<div *ngIf="visibility" [id]="id" [class.popover]="!isToolTip()" [class.popover--top]="!isToolTip()" [class.tooltip]="isToolTip()"
+    [class.tooltip--top]="isToolTip()" [style.visibility]="show" [style.top]="top | aePixel" [style.left]="left | aePixel">
+    <div class="arrow" [style.left]="arrowLeft | aePixel"></div>
+    <ng-container *ngIf="isTemplated()">
+        <ae-template-loader [template]="getPopOverTemplate()" [contextItem]="getPopOverContext()" (onElementCreated)="onPopOverCreated($event)"></ae-template-loader>
+    </ng-container>
+    <ng-content></ng-content>
+</div>
+<ae-template #toolTipTemplate>
+    <ng-template let-context="item">
+        <span>{{context.Text}}</span>
+    </ng-template>
+</ae-template>

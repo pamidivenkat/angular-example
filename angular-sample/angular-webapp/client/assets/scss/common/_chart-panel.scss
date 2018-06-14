@@ -1,0 +1,10 @@
+.chart-panel {
+  @include clearfix;
+}
+
+.chart-panel__item {
+  @include media-over-979 {
+    float: left;
+    width: 50%;
+  }
+}

@@ -1,0 +1,165 @@
+<div id="trainingCoursesHeader">
+  <ae-banner [id]="getChildId('AeBanner')" [name]="getChildName('AeBanner')" [titleText]="'TRAINING_COURSE.BANNER_TITLE' | translate:lang :{selectedCourseData: selectedCourseData?.Title}"
+    [backgroundImage]="'/assets/images/lp-training.jpg'">
+    <ae2-breadcrumb [id]="'breadCrumb'" [name]="'breadCrumb'" [group]="bcGroup" class="bredcrumb-section"></ae2-breadcrumb>
+    <div class="image-text banner-image-text">
+    </div>
+    <div class="icon-list banner-icon-list">
+      <ae-splitbutton [id]="'tariningCourseSplitButton'" [name]="'inviteSplitButton'" [text]="'TRAINING_COURSE.ASSIGN_TRAINEES' | translate: lang"
+        [options]="splitButtonOptions" (aeClick)="onSplitBtnClick($event)">
+      </ae-splitbutton>
+    </div>
+  </ae-banner>
+</div>
+<ae-notification [id]="'training-course-users-info'" [name]="'user-list-info'" [iconName]="'icon-info'" [textInfo]="'TRAINING_COURSE.INVITE_TRAINEES' | translate: lang"></ae-notification>
+<div class="information-grid top-5">
+  <section class="information-grid__section">
+    <div class="information-grid__item">
+      <div class="information-grid__item-label column-1of3">{{'TRAINING_COURSE.TRAINING_COURSE' | translate:lang}}</div>
+      <div class="information-grid__item-value column-2of3" [class.text-muted]="!selectedCourseData?.Title" id="user_lastName">{{selectedCourseData?.Title || ''}}</div>
+    </div>
+    <div class="information-grid__item">
+      <div class="information-grid__item-label column-1of3">{{'TRAINING_COURSE.DESCRIPTION' | translate:lang}}</div>
+      <div class="information-grid__item-value column-2of3" [class.text-muted]="!selectedCourseData?.Description" id="user_lastName">{{selectedCourseData?.Description || ''}}</div>
+    </div>
+    <div class="information-grid__item">
+      <div class="information-grid__item-label column-1of3">{{'TRAINING_COURSE.COURSES' | translate:lang}}</div>
+      <div class="information-grid__item-value column-2of3">
+        <span class="stamp stamp--yellow" *ngFor="let course of selectedCourseData?.TrainingModules">{{course.Title}}</span>
+      </div>
+    </div>
+    <div class="information-grid__item">
+      <div class="information-grid__item-label column-1of3">{{'TRAINING_COURSE.VERSION' | translate:lang}}</div>
+      <div class="information-grid__item-value column-2of3" [class.text-muted]="!selectedCourseData?.Version" id="user_lastName">{{selectedCourseData?.Version || ''}}</div>
+    </div>
+  </section>
+</div>
+<div class="table spacer">
+  <div class="table__filter-bar">
+    <div class="filter-bar">
+      <div class="filter-bar__label label">{{'Filter_by' | translate: lang}}</div>
+      <div class="filter-bar__filters">
+        <div class="filter-bar__filter">
+          <ae-input id="'training-course-filter'" [name]="'training-course-name-filter'" [placeholder]="'TRAINING_COURSE.SEARCH_BY_NAME' | translate:lang"
+            [value]="''" [readonly]="'false'" (aeChange)="onTariningCourseFilterChange($event)"></ae-input>
+        </div>
+        <div class="filter-bar__filter">
+          <ae-select [id]="getChildId('AeSelect',1)" [name]="getChildName('AeSelect',1)" [options]="statusTypes" [value]="selectedStatus"
+            [placeholder]="" [isOptGroup]="false" (aeSelectChange)="onChangeStatus($event)" [title]="'Status' | translate:lang"></ae-select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <ae-datatable [id]="getChildId('AeDataTable')" [name]="getChildName('AeDataTable')" [dataSource]="trainingCourseUserModuleData$ "
+      [autoGenerateColumns]="false" [actions]="actions" [totalRecords]="totalRecords$" [loading]="loadingStatus$ | async" [defaultOptions]="dataTableOptions$ |async"
+      (pageChanged)="onPageChange($event)" (onSort)="onPageSort($event)">
+      <ae-column [headerText]="'TRAINING_COURSE.FULL_NAME' | translate:lang" [sortable]="true" [sortKey]="'FirstName'">
+        <ae-template [type]="'header'">
+          <ng-template>
+            <span>{{'TRAINING_COURSE.FULL_NAME' | translate:lang}}</span>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]="'cell'" [keys]="keys">
+          <ng-template let-context="item">
+            <span>{{context.FirstName+' '+context.LastName}}</span>
+          </ng-template>
+        </ae-template>
+      </ae-column>
+      <ae-column [headerText]="'TRAINING_COURSE.USER_NAME_OR_EMAIL' | translate:lang" [sortable]="true" [sortKey]="'Email'">
+        <ae-template [type]="'header'">
+          <ng-template>
+            <span>{{'TRAINING_COURSE.USER_NAME_OR_EMAIL' | translate:lang}}</span>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]="'cell'" [keys]="keys">
+          <ng-template let-context="item">
+            <span>{{context.Email}}</span>
+          </ng-template>
+        </ae-template>
+      </ae-column>
+      <ae-column [headerText]="'TRAINING_COURSE.COURSES' | translate:lang" [sortable]="true" [sortKey]="'Title'">
+        <ae-template [type]="'header'">
+          <ng-template>
+            <span>{{'TRAINING_COURSE.COURSES' | translate:lang}}</span>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]="'cell'" [keys]="keys">
+          <ng-template let-context="item">
+            <span class="stamp stamp--yellow">{{context.Title}}</span>
+          </ng-template>
+        </ae-template>
+      </ae-column>
+      <ae-column [headerText]="'TRAINING_COURSE.START_DATE' | translate:lang" [sortable]="true" [sortKey]="'StartDate'">
+        <ae-template [type]="'header'">
+          <ng-template>
+            <span>{{'TRAINING_COURSE.START_DATE' | translate:lang}}</span>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]="'cell'" [keys]="keys">
+          <ng-template let-context="item">
+            <span>{{context.StartDate |  localeDate:defaultLocale:'shortDate'}}</span>
+          </ng-template>
+        </ae-template>
+      </ae-column>
+      <ae-column [headerText]="'TRAINING_COURSE.PASS_OR_COMPLETED_DATE' | translate:lang" [sortable]="true" [sortKey]="'PassDate'">
+        <ae-template [type]="'header'">
+          <ng-template>
+            <span>{{'TRAINING_COURSE.PASS_OR_COMPLETED_DATE' | translate:lang}}</span>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]="'cell'" [keys]="keys">
+          <ng-template let-context="item">
+            <span>{{context.PassDate |  localeDate:defaultLocale:'shortDate'}}</span>
+          </ng-template>
+        </ae-template>
+      </ae-column>
+      <ae-column [headerText]="'TRAINING_COURSE.STATUS' | translate:lang" [sortable]="true" [sortKey]="'Status'">
+        <ae-template [type]="'header'">
+          <ng-template>
+            <span>{{'TRAINING_COURSE.STATUS' | translate:lang}}</span>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]="'cell'" [keys]="keys">
+          <ng-template let-context="item">
+            <span>{{getStatusText(context.Status)}}</span>
+          </ng-template>
+        </ae-template>
+      </ae-column>
+      <ae-column [headerText]="'TRAINING_COURSE.HAS_EMAIL' | translate:lang" [sortable]="true" [sortKey]="'Status'">
+        <ae-template [type]="'header'">
+          <ng-template>
+            <span>{{'TRAINING_COURSE.HAS_EMAIL' | translate:lang}}</span>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]="'cell'" [keys]="keys">
+          <ng-template let-context="item">
+            <span>{{getEmailStatus(context.HasEmail)}}</span>
+          </ng-template>
+        </ae-template>
+      </ae-column>
+    </ae-datatable>
+  </div>
+</div>
+<div class="assign-trainees-slideout">
+<ae-slideout [id]="getChildId('AeSlideOut', 1)" [name]="getChildName('AeSlideOut', 1)" [modelState]="getSlideoutState()"
+  [class.slide--animate]="getSlideoutAnimateState()">
+  <assign-trainees *ngIf="showAssignTraineesSlideOut" [id]="getChildId('AssignTrainees', 1)" (cancel)="onCancel($event)" [courseId]="courseId"
+    [courseName]="selectedCourseData.Title" [StandardCourse]="selectedCourseData.IsExample" [action]="action" (submit)="onSubmit($event)"></assign-trainees>
+</ae-slideout>
+</div>
+<ae-modal-dialog *ngIf="removeUserPopup" [visible]="removeUserPopup" (click)="modalClosed($event)" [closable]="true" [id]="'confirmModal'"
+  [name]="'confirmModal'">
+  <div class="modal-dialog-header">
+    <h3>{{'Remove_User_Dialog.Heading_text_remove_user' | translate:lang}}</h3>
+  </div>
+  <div class="modal-dialog-body">
+    <p>{{'Remove_User_Dialog.Remove_Info' | translate:lang:{UserName: SelectedUserName} }}
+    </p>
+  </div>
+  <div class="modal-dialog-footer">
+    <ae-button [text]="'Remove_User_Dialog.BTN_NO' | translate:lang" [type]="'button'" [id]="'confirmNo'" [name]="'confirmNo'" (aeClick)="modalClosed('no')"></ae-button>
+    <ae-button [class]="_lightClass" [text]="'Remove_User_Dialog.BTN_YES' | translate:lang" [type]="'button'" [id]="'confirmYes'" [name]="'Remove'"
+      (aeClick)="onRemove($event)"></ae-button>
+  </div>
+</ae-modal-dialog>

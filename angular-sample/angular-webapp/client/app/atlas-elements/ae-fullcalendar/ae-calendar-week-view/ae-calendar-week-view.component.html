@@ -1,0 +1,101 @@
+<div class="calendar-day-view">
+  <table class="table-border">
+    <tr>
+      <td class="col-01"></td>
+      <td class="col-02">
+        <table cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td *ngFor="let day of days;let i=index" class="week-view" [class.week-today]="day.isToday">
+              <b>{{ day.date | date:'EEE' }}</b><br>
+              <span [class.week-weekend]="day.isWeekend" [class.week-todaycolor]="day.isToday">{{ day.date| date : 'MM/dd'}}</span>
+            </td>
+          </tr>
+        </table>
+      </td>
+      <td class="col-03"></td>
+    </tr>
+    <tr>
+      <td class="col-01">all-Day</td>
+      <td class="col-02">
+        <table cellpadding="0" cellspacing="0" border="0">
+          <tr *ngFor="let dayview of view;let j=index" class="week-info">
+            <td *ngFor="let tdday of days;let k=index" class="week-info">
+              <div>
+                <div *ngFor="let alevent of formatedWeekView ;let i=index ; let last=last">
+                  <div title="{{alevent.title}}" *ngIf="getEvents(alevent,j,k,tdday)" class="cal-event-allDay" 
+                  [style.width]="((alevent.span) ? 100 * alevent.span : 100) + '%'"
+                    [style.backgroundColor]="alevent.color.secondary" [style.borderColor]="alevent.color.primary">
+                      {{alevent.title}} 
+                    </div>
+                    <span *ngIf="last">
+                     <span *ngIf="dayview?.allDayEvents.length > 0 && j==k" class="down" style="font-weight:bold"> 
+                        <ae-anchor [id]="'moreEvents'" [name]="'moreEvents'" [text]="getMoreEventsCount(dayview?.allDayEvents)" (aeClick)="showEvents(dayview?.allDayEvents)">{{getMoreEventsCount(dayview?.allDayEvents)}}</ae-anchor> 
+                    </span>
+                </span>
+                    </div>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </td>
+      <td class="col-03"></td>
+    </tr>
+  </table>
+    <div *ngIf="isOpen">
+      <div *ngFor="let alevent of moreEvents">
+        <span *ngIf="alevent.allDay==true" class="cal-event-allDay" title="{{alevent.title}}" [style.backgroundColor]="alevent.color.secondary"
+          [style.borderColor]="alevent.color.primary" style="width:100%">
+                      {{alevent.title}} 
+                    </span>
+      
+    </div>
+  </div>
+    <div *ngIf="isOpenHour">
+      <div *ngFor="let alevent of moreEventsHour">
+        <span *ngIf="!alevent.allDay" class="cal-event-allDay" title="{{alevent.title}}" [style.backgroundColor]="alevent.color.secondary"
+          [style.borderColor]="alevent.color.primary" style="width:100%">
+                      {{alevent.title}} 
+                    </span>
+      
+    </div>
+  </div>
+  <div class="cal-hour-rows" style="overflow-x: hidden; overflow-y: scroll; height: 602px;">
+    <div style="position: relative;">
+      <div class="cal-events">
+        <div *ngFor="let dayview of view;let i = index" class="event-block">
+  <div title="{{dayEvent.event.title}}" *ngFor="let dayEvent of dayview?.events;let y=index" class="cal-event" #event [style.marginTop.px]="dayEvent.top" [style.marginLeft]="(i>3 ? ((14.3 * i) - 0.1) : ((i==0)? 0 : (14.3 * i))) + '%'"
+            [style.height.px]="dayEvent.height" [style.backgroundColor]="dayEvent.event.color.secondary"
+            [style.borderColor]="dayEvent.event.color.primary" [class.cal-starts-within-day]="!dayEvent.startsBeforeDay" [class.cal-ends-within-day]="!dayEvent.endsAfterDay"
+            [ngClass]="dayEvent.event.cssClass" [style.white-space]="dayEvent.height<60 ? 'nowrap' :''" [style.padding-top.px]="dayEvent.height<60 ? '1' :''">
+            {{dayEvent.event.title}}
+            <br>
+             <b><ae-anchor [id]="'moreEventsHours'" [name]="'moreEventsHours'" [text]="getMoreEventsCountForHours(dayview?.events,dayEvent.event)" (aeClick)="showEventsForHoursMode(dayview?.events,dayEvent.event)">{{getMoreEventsCount(dayview?.events,dayEvent.event)}}</ae-anchor> </b>
+            
+          </div>
+          
+        </div>
+      </div>
+      <div class="cal-hour" *ngFor="let hour of hours" [style.minWidth.px]="71">
+        <div *ngFor="let segment of hour.segments" class="cal-hour-segment" [ngClass]="segment.cssClass">
+          <div [hidden]="!segment.isStart" class="cal-time">
+            {{ segment.date | date : 'hh a' |lowercase}}
+          </div>
+          &nbsp;
+        </div>
+      </div>
+      <div class="table-vertical">
+        <table cellpadding="0" cellspacing="0">
+          <tr>
+            <td>&nbsp; </td>
+            <td>&nbsp; </td>
+            <td>&nbsp; </td>
+            <td>&nbsp; </td>
+            <td>&nbsp; </td>
+            <td>&nbsp; </td>
+            <td>&nbsp; </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

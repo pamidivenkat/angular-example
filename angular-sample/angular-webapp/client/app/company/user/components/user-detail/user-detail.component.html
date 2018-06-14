@@ -1,0 +1,54 @@
+<div id="slide-out-form-content" class="wrapper-for-slideout-conten">
+  <div class="so-panel__title">
+    <h3 class="grey-strip">{{'USER_DETAILS' | translate:lang}}</h3>
+  </div>
+  <div class="so-panel__content">
+    <div class="information-grid">
+      <h3 class="top-0">{{user.FullName}}</h3>
+      <section class="information-grid__section">
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'FIRST_NAME' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3" [class.text-muted]="!user?.FirstName" id="user_firstName">{{user?.FirstName || ''}}</div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'LAST_NAME' | translate:lang}} </div>
+          <div class="information-grid__item-value column-2of3" [class.text-muted]="!user?.LastName" id="user_lastName">{{user?.LastName || ''}}</div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'HAS_EMAIL' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3" [class.text-muted]="!user?.HasEmail" id="user_hasEmail">{{user.HasEmail ==true? 'Yes': 'NO'|| ''}}</div>
+        </div>
+        <div *ngIf="user.Email" class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMAIL' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3" [class.text-muted]="!user?.Email" id="user_email">{{user?.Email || ''}}</div>
+        </div>
+        <div *ngIf="!user.Email" class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'USER_NAME' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3" [class.text-muted]="!user?.UserName" id="useruserName">{{user?.UserName}}</div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'ACN' | translate:lang}} </div>
+          <div class="information-grid__item-value column-2of3" [class.text-muted]="!user?.ACN" id="user_ACN">{{user?.ACN || ''}}</div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'TELEPHONE_NUMBER' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3" [class.text-muted]="!user?.Telephone" id="user_telephone">{{user?.Telephone || ''}}</div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'IS_ACTIVE' | translate:lang}} </div>
+          <div class="information-grid__item-value column-2of3" [class.text-muted]="!user?.Telephone" id="user_isActive">{{user.IsActive ==true? 'Yes': 'NO'|| ''}}</div>
+        </div>
+      </section>
+    </div>
+    <div *ngIf="canViewAuditLog">
+      <audit-log [loggedInUser]="user"></audit-log>
+    </div>
+  </div>
+  <div class="so-panel__footer">
+    <nav>
+      <ul>
+        <li><label for="soPanel" class="button button--inline-block" (click)="onFormClosed($event)" [title]="'BUTTONS.SLIDE_CLOSE' | translate: lang">{{'BUTTONS.SLIDE_CLOSE' | translate: lang}}</label></li>
+      </ul>
+    </nav>
+  </div>
+</div>

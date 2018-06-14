@@ -1,0 +1,97 @@
+<div class="table spacer">
+  <div class="table__filter-bar">
+    <div class="filter-bar">
+      <div class="filter-bar__label label">{{'Filter_by' | translate: lang}}</div>
+      <div class="sg-grid grid--1-1-3">
+        <div>
+          <ae-select [id]="'ddlCategory'" [name]="'ddlCategory'" [placeholder]="'All_categories' | translate: lang" [options]="categoryOptions"
+            (aeSelectChange)="onCategoryChange($event)" [isOptGroup]="true"></ae-select>
+        </div>
+        <div>
+          <ae-select [id]="'ddlViewType'" [name]="'ddlViewType'" [options]="timelineViewTypeOptions"  (aeSelectChange)="onViewTypeChange($event)"></ae-select>
+        </div>
+        <div class="text--right">
+          <ae-splitbutton [id]="'addEventOrDocument'" *ngIf="canManageTimeLine()" [class]="lightClass" [name]="'addEventOrDocument'" [text]="'ADD' | translate: lang"
+            [options]="splitButtonOptions">
+          </ae-splitbutton>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <ae-datatable [id]="getChildId('AeDatatable',1)" [name]="getChildName('AeDatatable',1)" [dataSource]="timelineData$" [totalRecords]="totalRecords$"
+    [defaultOptions]="defaultDataTableOptions$ | async" [autoGenerateColumns]="false" (pageChanged)="onGridPageChange($event)"
+    (onSort)="onSortChange($event)" [loading]="!(timelineDataLoaded$ | async)" [actions]="actions">
+
+    <ae-column [headerText]="'Type'" [sortable]="false">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span [title]="'EMPLOYEE_TIMELINE.TYPE' | translate: lang">{{'EMPLOYEE_TIMELINE.TYPE' | translate: lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <div (click)="onDetailsClick(context)" class="text--right">
+            <ae-icon [title]="'Event'" [id]="getChildId('AeDatatable', 1)" [name]="getChildName('AeDatatable', 1)" [color]="'grey'" [icon]="'icon-timeline-pin'"
+              [size]="iconSize" *ngIf="context.ItemType === 2"></ae-icon>
+            <ae-icon [title]="'Document'" [id]="getChildId('AeDatatable', 1)" [name]="getChildName('AeDatatable', 1)" [color]="'grey'"
+              [icon]="'icon-to-review'" [size]="iconSize" *ngIf="context.HasDocuments || context.ItemType === 1"></ae-icon>
+          </div>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+
+    <ae-column [headerText]="'CategoryName'" [sortKey]="'CategoryName'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span [title]="'EMPLOYEE_TIMELINE.CATEGORY_NAME' | translate: lang">{{'EMPLOYEE_TIMELINE.CATEGORY_NAME' | translate: lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <label class="cursor-pointer" (click)="onDetailsClick(context)">{{context.CategoryName}}</label>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+
+    <ae-column [headerText]="'CreatedOn'" [sortKey]="'CreatedOn'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span [title]="'EMPLOYEE_TIMELINE.CREATED_ON' | translate: lang">{{'EMPLOYEE_TIMELINE.CREATED_ON' | translate: lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          {{context.CreatedOn | date:'dd/MM/yyyy'}}
+        </ng-template>
+      </ae-template>
+    </ae-column>
+
+
+    <ae-column [headerText]="'Title'" [sortKey]="'Title'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span [title]="'EMPLOYEE_TIMELINE.TITLE' | translate: lang">{{'EMPLOYEE_TIMELINE.TITLE' | translate: lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          {{getTitle(context.Title,context.FileName)}}
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'Sensitivity'" [sortKey]="'Sensitivity'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span [title]="'EMPLOYEE_TIMELINE.SENSITIVITY' | translate: lang">{{'EMPLOYEE_TIMELINE.SENSITIVITY' | translate: lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          {{getSensitivityName(context.Sensitivity)}}
+        </ng-template>
+      </ae-template>
+    </ae-column>
+  </ae-datatable>
+</div>

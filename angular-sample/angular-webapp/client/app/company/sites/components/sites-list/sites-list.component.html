@@ -1,0 +1,87 @@
+<div class="table spacer--use-margin">
+    <form [formGroup]="siteListForm" [id]="getChildId('siteListForm', 1)" [name]="getChildName('siteListForm', 1)">
+        <div class="table__filter-bar">
+            <div class="filter-bar__label label">{{'Filter_by'| translate:lang}}</div>
+            <div class="filter-bar">
+                <div class="filter-bar__filters">
+                    <div class="filter-bar__filter">
+                        <ae-select [id]="getChildId('AeSelect', 1)" [name]="getChildName('AeSelect', 1)" [options]="statusTypes" formControlName="_statusType"></ae-select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <ae-datatable [id]="getChildId('DataTable', 1)" [name]="getChildName('DataTable', 1)" [dataSource]="sitesList$" [autoGenerateColumns]="false" [totalRecords]="totalCount$" [actions]="actions" [defaultOptions]="sitesDataTableOptions$ | async" [loading]="sitesLoading$ | async"
+        (pageChanged)="onPageChange($event)" (onSort)="onSort($event)">
+        <ae-column [headerText]="'SITES.SITE'| translate:lang" [sortable]="true" [sortKey]="'Name'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>{{'SITES.SITE'| translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <div>
+                        <span>{{context.Name}}</span>
+                    </div>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+        <ae-column [headerText]="'SITES.CONSULTANTS'| translate:lang" [sortable]="false">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>{{'SITES.CONSULTANTS'| translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <div>
+                        <span>{{ getConsultants(context.Id) }}</span>
+                    </div>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+        <ae-column [headerText]="'SITES.POST_CODE'| translate:lang" [sortable]="true" [sortKey]="'Address.Postcode'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>{{'SITES.POST_CODE'| translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <div>
+                        <span>{{getPostCode(context)}}</span>
+                    </div>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+        <ae-column [headerText]="'SITES.HEAD_OFFICE'| translate:lang" [sortable]="false" [sortKey]="'IsHeadOffice'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>{{'SITES.HEAD_OFFICE'| translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <div>
+                        <span>{{context.IsHeadOffice ? 'Yes' : 'No'}}</span>
+                    </div>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+        <ae-column [headerText]="'SITES.STATUS'| translate:lang" [sortable]="true" [sortKey]="'IsActive'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>{{'SITES.STATUS'| translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <div>
+                        <span>{{context.IsActive ? 'Yes' : 'No'}}</span>
+                    </div>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+    </ae-datatable>
+</div>

@@ -1,0 +1,4 @@
+<ae-form [formBuilderData]="emailFormVM" [id]="'emailForm'" [name]="'emailForm'" (onFormInit)="onFormInit($event)" [Title]="'EMAIL_HEADER' | translate:lang" (onSubmit)="onSubmit($event)" (onCancel)="onCancel($event)" [footerBtnText]="formButtonNames()">
+</ae-form>
+
+<ae-loader [loaderType]="loaderType" *ngIf="ShowLoader"></ae-loader>

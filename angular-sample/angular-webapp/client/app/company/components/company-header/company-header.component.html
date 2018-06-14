@@ -1,0 +1,7 @@
+<ae-informationbar [items]="informationBarItems" [id]="getChildId('AeInformationBar',1)" [name]="getChildName('AeInformationBar',1)" (aeClick)="onInformationBarClick($event)"> 
+</ae-informationbar>
+
+<ae-banner [id]="'banner'" [name]="'banner'" [titleText]="titleText" [backgroundImage]="'/assets/images/lp-employees.jpg'" *ngIf="companyDetails">
+    <ae2-breadcrumb [id]="'breadCrumb'" [name]="'breadCrumb'" [group]="bcGroup" class="bredcrumb-section"></ae2-breadcrumb>
+</ae-banner>
+<ae-notification [id]="'Company'" [name]="'Company'" [iconName]="'icon-info'" [textInfo]="'COMPANY_LANDING_MESSAGE' | translate:lang"></ae-notification>

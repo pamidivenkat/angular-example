@@ -1,0 +1,278 @@
+<div [id]="id">
+  <div class="so-panel__title" *ngIf="isPrimaryTitle">
+    <h3>{{Title}}</h3>
+  </div>
+  <div class="so-panel__content">
+    <h3 *ngIf="!isPrimaryTitle">{{Title}}</h3>
+    <ng-content select="[top-info]"></ng-content>
+    <form [formGroup]="formGroup">
+
+      <ng-template #inputTemplate let-context="item">
+        <ng-template aeElement [context]="getElementDirectiveContext(context)">
+          <div class="information-grid__item--input">
+            <label class="information-grid__item-label column-1of3" [id]="getChildId('label', context.index)" *ngIf="!hideDescription(context)">
+              <ae-icon *ngIf="canShowInfoIcon(context)" [id]="getChildId('AeIcon', context.index)" [name]="getChildName('AeIcon', context.index)"
+                [icon]="'icon-alert-circle-question'" [title]="getInfoText(context)"> </ae-icon>
+              {{context.labelText}} {{(isRequiredField(context) && hasDescription(context)) ? '*': ''}}
+            </label>
+            <div class="information-grid__item-value column-2of3">
+              <ae-input [id]="getChildId('AeInput', context.index)" [name]="getChildName('AeInput', context.index)" [type]="context.inputType"
+                [formControlName]="context.name" [readonly]="getIsDisabled(context)" [placeholder]="getPlaceHolder(context)"
+                [maxlength]="getMaxLength(context)" [minlength]="getMinLength(context)" [showRemainingCharacterCount]="getShowRemainingCharacterCount(context)"></ae-input>
+
+              <span [id]="getChildId('AeInput_ErrorSpan', context.index)" *ngFor="let error of fieldHasErrors(context)" class="error-text">{{error}}</span>
+            </div>
+          </div>
+        </ng-template>
+      </ng-template>
+
+      <ng-template #checkBoxTemplate let-context="item">
+        <ng-template aeElement [context]="getElementDirectiveContext(context)">
+          <div class="information-grid__item--input">
+            <label class="information-grid__item-label column-1of3" [id]="getChildId('label', context.index)" *ngIf="!hideDescription(context)">
+              <ae-icon *ngIf="canShowInfoIcon(context)" [id]="getChildId('AeIcon', context.index)" [name]="getChildName('AeIcon', context.index)"
+                [icon]="'icon-alert-circle-question'" [title]="getInfoText(context)"> </ae-icon>
+              {{context.labelText}} {{(isRequiredField(context) && hasDescription(context)) ? '*': ''}}</label>
+            <div class="information-grid__item-value column-2of3">
+              <ae-checkbox [id]="getChildId('AeCheckBox', context.name)" [name]="getChildName('AeCheckBox', context.name)" [formControlName]="context.name"
+                [checkText]="''"></ae-checkbox>
+            </div>
+          </div>
+        </ng-template>
+      </ng-template>
+
+      <ng-template #radioTemplate let-context="item">
+        <ng-template aeElement [context]="getElementDirectiveContext(context)">
+          <div class="information-grid__item--input">
+            <label class="information-grid__item-label column-1of3" [id]="getChildId('label', context.index)" *ngIf="!hideDescription(context)">
+              <ae-icon *ngIf="canShowInfoIcon(context)" [id]="getChildId('AeIcon', context.index)" [name]="getChildName('AeIcon', context.index)"
+                [icon]="'icon-alert-circle-question'" [title]="getInfoText(context)"> </ae-icon>
+              {{context.labelText}} {{(isRequiredField(context) && hasDescription(context)) ? '*': ''}} </label>
+            <div class="information-grid__item-value column-2of3">
+              <ae-radiobutton [id]="getChildId('AeRadio', context.index)" [name]="getChildName('AeRadio', context.index)" [formControlName]="context.name"></ae-radiobutton>
+            </div>
+          </div>
+        </ng-template>
+      </ng-template>
+
+      <ng-template #dateTemplate let-context="item">
+        <ng-template aeElement [context]="getElementDirectiveContext(context)">
+          <div class="information-grid__item--input">
+            <label class="information-grid__item-label column-1of3" [id]="getChildId('label', context.index)" *ngIf="!hideDescription(context)">
+              <ae-icon *ngIf="canShowInfoIcon(context)" [id]="getChildId('AeIcon', context.index)" [name]="getChildName('AeIcon', context.index)"
+                [icon]="'icon-alert-circle-question'" [title]="getInfoText(context)"> </ae-icon>
+              {{context.labelText}} {{(isRequiredField(context) && hasDescription(context)) ? '*': ''}}</label>
+            <div class="information-grid__item-value column-2of3">
+              <ae-datetime-picker [id]="getChildId('AeDateTimePicker', context.index)" [name]="getChildName('AeDateTimePicker', context.index)"
+                [formControlName]="context.name" [monthNavigator]="true" [yearNavigator]="true" [yearRange]="getYearRange(context)"
+                [showIcon]="true" [minDate]="getMinDate(context)" [maxDate]="getMaxDate(context)" [readonlyInput]="getReadOnlyDate(context) || getIsFieldDisabled(context)"
+                [showTime]="getShowTime(context)" [hourFormat]="getHourFormat(context)" [disabled]="getIsFieldDisabled(context)"
+                (aeSelect)="subscribeDateChange($event,context)" (aeBlur)="subscribeBlurEvent($event,context)"></ae-datetime-picker>
+              <span [id]="getChildId('AeDateTimePicker_ErrorSpan', context.index)" *ngFor="let error of fieldHasErrors(context)" class="error-text">{{error}}</span>
+            </div>
+          </div>
+        </ng-template>
+      </ng-template>
+
+      <ng-template #selectTemplate let-context="item">
+        <ng-template aeElement [context]="getElementDirectiveContext(context)">
+          <div class="information-grid__item--input">
+            <label class="information-grid__item-label column-1of3" [id]="getChildId('label', context.index)" *ngIf="!hideDescription(context)">
+              <ae-icon *ngIf="canShowInfoIcon(context)" [id]="getChildId('AeIcon', context.index)" [name]="getChildName('AeIcon', context.index)"
+                [icon]="'icon-alert-circle-question'" [title]="getInfoText(context)"> </ae-icon>
+              {{context.labelText}} {{(isRequiredField(context) && hasDescription(context)) ? '*': ''}}</label>
+            <div class="information-grid__item-value column-2of3">
+              <ae-select [id]="getChildId('AeSelect',context.index)" [name]="getChildName('AeSelect',context.index)" [isOptGroup]="getIsOptGroup(context)"
+                [placeholder]="getPlaceHolder(context)" [options]="getOptions(context) | async" [formControlName]="context.name"
+                (aeSelectChange)="subscribeSelectChange($event, context)"></ae-select>
+              <span [id]="getChildId('AeSelect_ErrorSpan',context.index)" *ngFor="let error of fieldHasErrors(context)" class="error-text">{{error}}</span>
+            </div>
+          </div>
+        </ng-template>
+      </ng-template>
+
+      <ng-template #switchTemplate let-context="item">
+        <ng-template aeElement [context]="getElementDirectiveContext(context)">
+          <div class="information-grid__item--input ae-form-switch">
+            <ae-icon *ngIf="canShowInfoIcon(context)" [id]="getChildId('AeIcon', context.index)" [name]="getChildName('AeIcon', context.index)"
+              [icon]="'icon-alert-circle-question'" [title]="getInfoText(context)"> </ae-icon>
+            <ae-switch [id]="getChildId('AeSwitch',context.index)" [name]="getChildName('AeSwitch',context.index)" [switchText]="context.labelText"
+              [class]="switchTextLeft" [formControlName]="context.name" (aeChange)="subscribeSwitchChange($event, context)"></ae-switch>
+          </div>
+        </ng-template>
+      </ng-template>
+
+      <ng-template #textAreaTemplate let-context="item">
+        <ng-template aeElement [context]="getElementDirectiveContext(context)">
+          <div class="information-grid__item--input">
+            <label class="information-grid__item-label column-1of3" [id]="getChildId('label', context.index)" *ngIf="!hideDescription(context)">
+              <ae-icon *ngIf="canShowInfoIcon(context)" [id]="getChildId('AeIcon', context.index)" [name]="getChildName('AeIcon', context.index)"
+                [icon]="'icon-alert-circle-question'" [title]="getInfoText(context)"> </ae-icon> {{context.labelText}} {{isRequiredField(context) ? '*': ''}}</label>
+            <div class="information-grid__item-value column-2of3">
+              <ae-textarea [id]="getChildId('AeTextArea',context.index)" [name]="getChildName('AeTextArea', context.index)" [formControlName]="context.name"
+                [rows]="context.rows" [maxlength]="getMaxLength(context)" [showcharleft]="getShowRemainingCharacterCount(context)"
+                [cols]="context.cols" [placeholder]="getPlaceHolder(context)"></ae-textarea>
+              <span [id]="getChildId('AeTextArea_ErrorSpan',context.index)" *ngFor="let error of fieldHasErrors(context)" class="error-text">{{error}}</span>
+            </div>
+          </div>
+        </ng-template>
+      </ng-template>
+
+      <ng-template #richTextEditorTemplate let-context="item">
+        <ng-template aeElement [context]="getElementDirectiveContext(context)">
+          <div class="information-grid__item--input">
+            <label class="information-grid__item-label column-1of3" [id]="getChildId('label', context.index)" *ngIf="!hideDescription(context)">
+              <ae-icon *ngIf="canShowInfoIcon(context)" [id]="getChildId('AeIcon', context.index)" [name]="getChildName('AeIcon', context.index)"
+                [icon]="'icon-alert-circle-question'" [title]="getInfoText(context)"> </ae-icon>
+              {{context.labelText}} {{(isRequiredField(context) && hasDescription(context)) ? '*': ''}}</label>
+            <div class="information-grid__item-value column-2of3">
+              <ae-ckeditor [id]="getChildId('AeRichTextEditor', context.index)" [name]="getChildName('AeRichTextEditor', context.index)"
+                [formControlName]="context.name" (ready)="subscribeOnReady($event, context)"></ae-ckeditor>
+              <span [id]="getChildId('AeRichTextEditor_ErrorSpan', context.index)" *ngFor="let error of fieldHasErrors(context)" class="error-text">{{error}}</span>
+            </div>
+          </div>
+        </ng-template>
+      </ng-template>
+
+      <ng-template #radioGroupTemplate let-context="item">
+        <ng-template aeElement [context]="getElementDirectiveContext(context)">
+          <div class="information-grid__item--input">
+            <label class="information-grid__item-label column-1of3" [id]="getChildId('label', context.index)" *ngIf="!hideDescription(context)">
+              <ae-icon *ngIf="canShowInfoIcon(context)" [id]="getChildId('AeIcon', context.index)" [name]="getChildName('AeIcon', context.index)"
+                [icon]="'icon-alert-circle-question'" [title]="getInfoText(context)"> </ae-icon>
+              {{context.labelText}} {{(isRequiredField(context) && hasDescription(context)) ? '*': ''}}</label>
+            <div class="information-grid__item-value column-2of3">
+              <ae-radio-group [id]="getChildId('AeRadioGroup',context.name)" [name]="getChildName('AeRadioGroup',context.name)" [options]="getOptions(context) | async"
+                [formControlName]="context.name"></ae-radio-group>
+              <span [id]="getChildId('AeRadioGroup_ErrorSpan',context.name)" *ngFor="let error of fieldHasErrors(context)" class="error-text">{{error}}</span>
+            </div>
+          </div>
+        </ng-template>
+      </ng-template>
+
+      <ng-template #autoCompleteTemplate let-context="item">
+        <ng-template aeElement [context]="getElementDirectiveContext(context)">
+          <div class="information-grid__item--input">
+            <label class="information-grid__item-label column-1of3" [id]="getChildId('label', context.index)" *ngIf="!hideDescription(context)">
+              <ae-icon *ngIf="canShowInfoIcon(context)" [id]="getChildId('AeIcon', context.index)" [name]="getChildName('AeIcon', context.index)"
+                [icon]="'icon-alert-circle-question'" [title]="getInfoText(context)"> </ae-icon>
+              {{context.labelText}} {{(isRequiredField(context) && hasDescription(context)) ? '*': ''}}</label>
+            <div class="information-grid__item-value column-2of3">
+              <!--<ae-select [id]="getChildId('AeSelect',1)" [name]="getChildName('AeSelect',1)" [isOptGroup]="false" [placeholder]="_getPlaceHolder(context)" [options]="_getOptions(context) | async" [formControlName]="context.name"></ae-select><br/>-->
+              <ae-autocomplete [id]="getChildId('AeAutoComplete',context.index)" [name]="getChildName('AeAutoComplete',context.name)" [formControlName]="context.name"
+                [placeholder]="getPlaceHolder(context)" [multiselect]="getAutoCompleteProperties(context, 'multiselect')" [items]="getAutoCompleteProperties(context,'items') | async"
+                [dstype]="getAutoCompleteProperties(context,'dstype')" [field]="getAutoCompleteProperties(context,'field')"
+                [valuefield]="getAutoCompleteProperties(context,'valuefield')" [initialtext]="getAutoCompleteProperties(context,'initialtext')"
+                [minimumlength]="getAutoCompleteProperties(context,'minlength')" [maxlength]="getAutoCompleteProperties(context,'maxlength')"
+                (aeOnComplete)="subscribeSearchEvent($event, context)" (aeOnSelect)="subscribeSelectEvent($event, context)"
+                (aeInputChange)="subscribeInputChangeEvent($event, context)" (aeOnUnselect)="subscribeUnSelect($event, context)"
+                (aeOnClearSelected)="subscribeClearSelected($event, context)" [debounce]="getAutoCompleteProperties(context,'debounce')"></ae-autocomplete>
+              <div class="link-color" *ngIf="showHyperLink(context)">
+                <ae-anchor [id]="getChildId('AeAnchor',context.index)" [name]="getChildName('AeAnchor',context.index)" (aeClick)="onAnchorButtonClick(context)"
+                  [text]="getDisplayValue(context)"></ae-anchor>
+              </div>
+
+              <span [id]="getChildId('AeAnchor_ErrorSpan',context.index)" *ngFor="let error of fieldHasErrors(context)" class="error-text">{{error}}</span>
+            </div>
+          </div>
+        </ng-template>
+      </ng-template>
+
+      <ng-template #autoCompleteMultiSelectTemplate let-context="item">
+      </ng-template>
+
+      <ng-template #readOnlyTemplate let-context="item">
+      </ng-template>
+      <ng-template #displayTemplate let-context="item">
+        <ng-template aeElement [context]="getElementDirectiveContext(context)">
+          <div class="information-grid__item--input">
+            <label [id]="getChildId('label', context.index)" class="information-grid__item-label column-1of3" *ngIf="!hideDescription(context)">
+              <ae-icon *ngIf="canShowInfoIcon(context)" [id]="getChildId('AeIcon', context.index)" [name]="getChildName('AeIcon', context.index)"
+                [icon]="'icon-alert-circle-question'" [title]="getInfoText(context)"> </ae-icon>
+              {{context.labelText}}</label>
+            <div class="information-grid__item-value column-2of3">
+              <div [ngClass]="getCustomCss(context)">{{getDisplayValue(context)}}</div>
+            </div>
+          </div>
+        </ng-template>
+      </ng-template>
+      <ng-template #fileUploadTemplate let-context="item">
+        <ng-template aeElement [context]="getElementDirectiveContext(context)">
+          <div class="information-grid__item--input">
+            <label [id]="getChildId('label', context.index)" class="information-grid__item-label column-1of3" *ngIf="!hideDescription(context)">
+              <ae-icon *ngIf="canShowInfoIcon(context)" [id]="getChildId('AeIcon', context.index)" [name]="getChildName('AeIcon', context.index)"
+                [icon]="'icon-alert-circle-question'" [title]="getInfoText(context)"> </ae-icon>
+              {{context.labelText}} {{(isRequiredField(context) && hasDescription(context)) ? '*': ''}}</label>
+            <div class="information-grid__item-value column-2of3">
+              <ae-file [id]="getChildId('AeFile',context.index)" [name]="getChildName('AeFile',context.index)" [title]="getFileUploadProperties(context,'title')"
+                [name]="'fileUpload'" [multiple]="getFileUploadProperties(context,'multiple')" [accept]="getFileUploadProperties(context,'accept')"
+                [formControlName]="context.name" (onFilesSelected)="getSelectedFileInfo($event, context)" [showFileName]="showFileName(context)"></ae-file>
+              <div class="top-5" *ngIf="!isDownloadble(context)">{{context.fileName}}</div>
+              <div class="link-color top-5" *ngIf="isDownloadble(context)">
+                <ae-anchor [id]="getChildId('AeAnchor',context.index)" [name]="getChildName('AeAnchor',context.index)" (aeClick)="downloadFile(context)"
+                  [text]="context.fileName"></ae-anchor>
+              </div>
+              <span [id]="getChildId('AeAnchor_ErrorSpan',context.index)" *ngFor="let error of fieldHasErrors(context)" class="error-text">{{error}}</span>
+            </div>
+          </div>
+        </ng-template>
+      </ng-template>
+      <ng-template #groupcheckBoxTemplate let-context="item">
+        <ng-template aeElement [context]="getElementDirectiveContext(context)">
+          <div class="information-grid__item--input">
+            <div class="information-grid__item-label column-1of3">
+              <label [id]="getChildId('label', context.index)" *ngIf="!hideDescription(context)">
+                <ae-icon *ngIf="canShowInfoIcon(context)" [id]="getChildId('AeIcon', context.index)" [name]="getChildName('AeIcon', context.index)"
+                  [icon]="'icon-alert-circle-question'" [title]="getInfoText(context)"> </ae-icon>
+                {{context.labelText}} {{(isRequiredField(context) && hasDescription(context)) ? '*': ''}}</label>
+            </div>
+            <div class="information-grid__item-value column-2of3">
+
+              <ae-group-checkbox [id]="getChildId('AeGroupCheckbox',context.name)" [name]="getChildName('AeGroupCheckbox',context.name)"
+                [options]="getOptions(context) | async" [formControlName]="context.name"></ae-group-checkbox>
+            </div>
+          </div>
+        </ng-template>
+      </ng-template>
+
+      <div *ngFor="let field of fields; let  i = index">
+        <div *ngIf="!isGroupField(field)">
+          <ae-template-loader [template]="getTemplate(field)" [contextItem]="getContextItem(field,i)"></ae-template-loader>
+          <div class="helper-text" *ngIf="isFieldOptionByChoice(field,i)">This is optional</div>
+        </div>
+        <div *ngIf="isGroupField(field)">
+          <h4 class="information-grid__section--title">{{field.labelText}}</h4>
+          <div *ngFor="let grpField of getGroupedFields(field)" class="label-font-normal">
+            <ae-template-loader [template]="getTemplate(grpField)" [contextItem]="getContextItem(grpField,i)"></ae-template-loader>
+            <div class="helper-text" *ngIf="isFieldOptionByChoice(grpField,i)">This is optional</div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <ng-content></ng-content>
+  </div>
+  <ng-content select="[so-panel-footer]"></ng-content>
+  <div class="so-panel__footer" *ngIf="displayFooter">
+    <nav>
+      <ul>
+        <li>
+          <label [id]="getChildId('Label',1)" for="soPanel" class="button button--inline-block" [title]="getCancelBtnText()" (click)="onCancel($event)">{{getCancelBtnText()}}</label>
+        </li>
+        <li class="pull--right">
+          <ae-anchor [id]="getChildId('AeAnchor',1)" [name]="getChildName('AeAnchor',1)" [anchorType]="'button'" [class]="'button button--inline-block'"
+            [anchorClass]="lightClass" [text]="getSubmitBtnText()" [title]="getSubmitBtnText()" (aeClick)="onSubmit($event)"></ae-anchor>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
+
+<ae-template #popOverTemplate [type]="'popOver'">
+  <ng-template let-context="item">
+    <div class="popover-container ">
+      <div class="rating-scroll">
+        {{context.infoText}} {{getInfoText(context)}}
+      </div>
+    </div>
+  </ng-template>
+</ae-template>

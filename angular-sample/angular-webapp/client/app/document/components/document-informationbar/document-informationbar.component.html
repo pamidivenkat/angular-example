@@ -1,0 +1,9 @@
+<ae-informationbar *ngIf="DocumentsInformationBarLoaded" [items]="DocumentInformationItemsProcessed" [id]="id" [name]="name" (aeClick)="onDocumentInformationItemSelect($event)">
+</ae-informationbar>
+<div class="statistics-bar display-flex" *ngIf="!DocumentsInformationBarLoaded">
+  <div class="infomation-bar-loader"></div>
+  <div class="infomation-bar-loader"></div>
+  <div class="infomation-bar-loader"></div>
+  <div class="infomation-bar-loader"></div>
+  <div class="infomation-bar-loader"></div>
+</div>

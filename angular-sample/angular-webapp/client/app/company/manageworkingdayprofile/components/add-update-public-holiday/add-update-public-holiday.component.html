@@ -1,0 +1,44 @@
+<div class="table__filter-bar add-update-profile">
+  <div class="add-update-profile-notification">
+    <ae-notification [id]="'customnonworkingdaysLandingAddMsg'" [name]="'customnonworkingdaysLandingAddMsg'" [iconName]="'icon-info'" [textInfo]="'ADD_UPDATE-PUBLIC_HOLIDAY_NOTIFICATION' | translate:lang">
+    </ae-notification>
+  </div>
+  <div class="filter-bar" *ngIf="publicHolidayForm">
+    <form [formGroup]="publicHolidayForm" id="publicHolidayForm" name="publicHolidayForm">
+      <div class="filter-bar__filters">
+        <div class="filter-bar__filter">
+          <label class="profile-label">{{'PUBLIC_HOLIDAY_YEAR' | translate:lang}} <span class="alert">*</span></label>
+        </div>
+        <div class="filter-bar__filter">
+          <ae-select [id]="'public-holiday-year'" [name]="'public-holiday-year'" formControlName="Year" [options]="publicHolidayYears"
+             (aeSelectChange)="onYearChange($event)" [hasError]="isFieldInvalid('Year')"></ae-select>
+            <span class="alert" *ngIf="isFieldInvalid('Year')">{{hasError('Year')}}</span>
+        </div>
+        <div class="filter-bar__filter">
+          <label class="profile-label">{{'PUBLIC_HOLIDAY_NAME' | translate:lang}} <span class="alert">*</span></label>
+        </div>
+        <div class="filter-bar__filter">
+          <ae-input [id]="'name'" [name]="'name'" formControlName="Name" [title]="'PUBLIC_HOLIDAY_NAME' | translate: lang"
+          [placeholder]="'PUBLIC_HOLIDAY_NAME' | translate: lang" [hasError]="isFieldInvalid('Name')"></ae-input>
+          <span class="alert" *ngIf="isFieldInvalid('Name')">{{hasError('Name')}}</span>
+        </div>
+        <div class="filter-bar__filter">
+          <label class="profile-label">{{'PUBLIC_HOLIDAY_DATE' | translate:lang}} <span class="alert">*</span></label>
+        </div>
+        <div class="filter-bar__filter">
+          <ae-datetime-picker duplicatePublicHoliday="true" formControlName="HolidayDate" [id]="'holidaydate'" [name]="'holidayddate'" [monthNavigator]="true" [title]="'PUBLIC_HOLIDAY_DATE' | translate: lang"
+            [yearNavigator]="true" [inputDisabled]="true" [minDate]="minDate" yearRange="1910:2030" [showIcon]="true" [maxDate]="maxDate" ></ae-datetime-picker>
+        <span class="alert" *ngIf="isFieldInvalid('HolidayDate')">{{hasError('HolidayDate')}}</span>
+        </div>
+        <div class="filter-bar__filter">
+          <ae-anchor [id]="'add-public-holiday'" [name]="'add-public-holiday'" [anchorType]="'button'" [class]="'button button--inline'"
+            [anchorClass]="lightClass" (aeClick)="addPublicHoliday($event)" [title]="(isAddMode()?'BUTTONS.ADD':'BUTTONS.UPDATE') | translate:lang" [text]="(isAddMode()?'BUTTONS.ADD':'BUTTONS.UPDATE') | translate:lang"></ae-anchor>
+        </div>
+        <div class="filter-bar__filter">
+          <ae-anchor [id]="'add-public-holiday'" [name]="'add-public-holiday'" [anchorType]="'button'" [class]="'button button--inline'"
+            [anchorClass]="defaultClass" (aeClick)="clearForm($event)" [title]="'BUTTONS.CLEAR' | translate:lang" [text]="'BUTTONS.CLEAR' | translate:lang"></ae-anchor>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

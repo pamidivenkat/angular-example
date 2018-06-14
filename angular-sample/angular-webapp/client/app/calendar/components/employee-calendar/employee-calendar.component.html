@@ -1,0 +1,21 @@
+
+<div class="title-block">
+  <h3>{{'MY_CALENDAR' | translate: lang}}</h3>
+  <div class="my-calendar">  
+</div>
+  <form class="form" [formGroup]="empCalendarFilterForm">
+    <div class="employee-showpending">
+      <div class="form__input">
+        <div class="form-events">
+          <div class="switch-block">
+            <ae-switch formControlName="ShowPending" [id]="'testSwitch'" [name]="'testSwitch'" [switchText]="'SHOW_PENDING_HOLIDAYS' | translate: lang"
+              [class]="switchTextRight" (aeChange)="SwichPending($event)"></ae-switch>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div>
+  <ae-fullcalendar [events]="events" [calendarTitle]="calendarTitle"  [loading]="loadStatus | async" (viewDateChange)="dateChanged($event)"></ae-fullcalendar>
+</div>

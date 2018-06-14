@@ -1,0 +1,44 @@
+.employee-grid{
+
+    display:blck;
+    > div{
+        float:left;
+        &:first-child{
+            width:32%;
+            margin-right:2.3%;
+        }
+        &:last-child{
+            width:65.7%;
+        }
+        @media(min-width:1024px){
+                &:first-child{
+            width:25%;
+            margin-right:2.3%;
+        }
+            &:last-child{
+                width:72.7%;
+            }
+        }
+    }
+    @media print{
+        .employee-left-block, .company-org-block .title, .org-panel-nav, .org-chart-nav {
+            display: none;
+        }
+        .company-org-block{border: none;}
+    }
+
+}
+
+.employee-basic-info{
+   .so-panel { width: 100%;
+    @media (min-width:768px){
+        width: 650px;
+    }
+     z-index: 99;
+     
+   }
+   .tabs-nav__inner{
+        min-width: auto;
+    }
+    .information-grid__item{padding-top: 0px;}
+}

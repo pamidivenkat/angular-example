@@ -1,0 +1,72 @@
+<div *ngIf="(isRiskAssessmentRetrived$ | async)">
+<div class="wizard-button-bar top">
+  <ae-button [class]="lightClass" [text]="'BUTTONS.ADD' | translate:lang" [type]="'button'" [id]="'btnAdd'" [name]="'btnAdd'"
+    (aeClick)="attachSubstance()"></ae-button>
+</div>
+<div class="bottom-30">
+  <ae-notification [id]="getChildId('AeNotification', 1)" [name]="getChildName('AeNotification', 1)" [iconName]="'icon-info'"
+    [textInfo]="'RA_HELP_TEXT.SUBSTANCE' | translate:lang">
+  </ae-notification>
+</div>
+<ae-datatable [id]="'substanceTable'" [defaultOptions]="dataTableOptions | async" [name]="'substanceTable'" [dataSource]="currentRiskAssessmentSubstances"
+  (onSort)="onSort($event)" (pageChanged)="onPageChange($event)" [autoGenerateColumns]="false" [totalRecords]="totalRecords"
+  [actions]="actions">
+  <ae-column [headerText]="'SUBSTANCE' | translate: lang" [sortable]="true" [sortKey]="'Substance'">
+    <ae-template [type]="'header'">
+      <ng-template>
+        <span>{{'SUBSTANCE_TAB.SUBSTANCE' | translate: lang}}</span>
+      </ng-template>
+    </ae-template>
+    <ae-template [type]="'cell'" [keys]="keys">
+      <ng-template let-context="item">
+        <span>{{context.Substance}}</span>
+      </ng-template>
+    </ae-template>
+  </ae-column>
+  <ae-column [headerText]="'SUBSTANCE_TAB.REFERENCE_NUMBER' | translate: lang" [sortable]="false">
+    <ae-template [type]="'header'">
+      <ng-template>
+        <span> {{'SUBSTANCE_TAB.REFERENCE_NUMBER' | translate: lang}} </span>
+      </ng-template>
+    </ae-template>
+    <ae-template [type]="'cell'" [keys]="keys">
+      <ng-template let-context="item">
+        <span>{{context.ReferenceNumber}}</span>
+      </ng-template>
+    </ae-template>
+  </ae-column>
+
+</ae-datatable>
+
+</div>
+<ae-loader [loaderType]="loaderBars" *ngIf="!(isRiskAssessmentRetrived$ | async)"></ae-loader>
+
+
+<ae-slideout [id]="getChildId('AeSlideOut', 1)" [name]="getChildName('AeSlideOut', 1)" [modelState]="getSlideoutState()"
+  [class.slide--animate]="getSlideoutAnimateState()">
+  <div *ngIf="showAddSlideOut()">
+    <risk-assessment-attach-substance *ngIf="isSubstanceAttach" [id]="getChildId('attach-substance',1)" [name]="getChildName('attach-substance',1)"
+      (slideOutClose)="closedAddSlideOut($event)" (attachSubstanceSubmit)="attachSubstanceRA($event)" [isExample]="'true'"></risk-assessment-attach-substance>
+    <risk-assessment-add-update-substance [selectedSubstance]="selectedSubstance" [action]="'Update'" *ngIf="isUpdateSubstance"
+      [id]="getChildId('add-update-substance',1)" [name]="getChildName('add-update-substance',1)" (slideOutClose)="closedAddSlideOut($event)"
+      (addUpdateSubstanceSubmit)="updateSubstanceRA($event)"></risk-assessment-add-update-substance>
+  </div>
+</ae-slideout>
+
+<ae-modal-dialog [visible]="getSubstanceRARemoveConfirmPopup()" (click)="modalClosed()" [closable]="true" [id]="'confirmModal'"
+  [name]="'confirmModal'" *ngIf="getSubstanceRARemoveConfirmPopup()">
+  <div class="modal-dialog-header">
+    <h3>{{'SUBSTANCE_TAB.DIALOG.HEADER_TEXT' | translate:lang}}</h3>
+  </div>
+  <div class="modal-dialog-body">
+    <p>{{'SUBSTANCE_TAB.DIALOG.INFO' | translate: lang}}</p>
+
+  </div>
+  <div class="modal-dialog-footer">
+    <ae-button [text]="'SUBSTANCE_TAB.DIALOG.BTN_NO' | translate:lang" [type]="'button'" [id]="'confirmNo'" [name]="'confirmNo'"
+      (aeClick)="modalClosed()"></ae-button>
+    <ae-button [class]="lightClass" [text]="'SUBSTANCE_TAB.DIALOG.BTN_YES' | translate:lang" [type]="'button'" [id]="'confirmYes'"
+      [name]="'confirmYes'" (aeClick)="removeSubstanceRA($event)"></ae-button>
+
+  </div>
+</ae-modal-dialog>

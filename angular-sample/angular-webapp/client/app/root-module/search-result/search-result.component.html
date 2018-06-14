@@ -1,0 +1,81 @@
+<ae-banner [id]="'banner'" [name]="'banner'" [titleText]="'Search results'" [backgroundImage]="'/assets/images/lp-teams.jpg'">
+    <ae2-breadcrumb [id]="'breadCrumb'" [name]="'breadCrumb'" [group]="bcGroup" class="bredcrumb-section"></ae2-breadcrumb>
+</ae-banner>
+<div class="text-with-search spacer--use-margin">
+    <div class="text-with-search__copy" [innerHTML]="'SEARCH_RES.RESULTS.RESPONSE_MSG' | translate:lang:{searchTerm:searchTerm$ | async, totalCount:totalCount$ | async}">
+
+    </div>
+
+    <div class="text-with-search__search ">
+        <form [formGroup]="searchFormGroup" [id]="'searchForm'" [name]="'searchForm'">
+            <div class="search-result-block">
+                <ae-input id="getChildId('AeInput', 1)" [name]="getChildName('AeInput', 1)" formControlName="searchText" [placeholder]="'Search atlas...'" [value]="searchTerm$ | async" [readonly]="'false'" (aeKeydown)="submitWhenEnter($event)"></ae-input>
+                <ae-button [type]="'button'" [id]="'searchBtn'" [name]="'searchBtn'" [btnIcon]="'icon-search'" [iconSize]="" class="btn" (aeClick)="submitOnSearch($event)"></ae-button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="search-result__filter-bar spacer--use-margin">
+    <div class="sg-grid grid--1-2">
+        <div>
+            <div class="filter-bar">
+                <div class="filter-bar__label label">{{'Filter_by' | translate:lang}}</div>
+                <div class="filter-bar__filters">
+                    <div class="filter-bar__filter">
+                        <ae-select [id]="'SearchFor'" #searchFor [name]="'SearchFor'" [placeholder]="'ALL' | translate:lang" [value]="searchForValue$ | async" [options]="searchForOptions$ | async" (aeSelectChange)="filterByEntity($event)"></ae-select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="filter-bar">
+                <div class="filter-bar__label label">{{'Sort_by' | translate:lang}}</div>
+                <div class="filter-bar__filters">
+                    <div class="filter-bar__filter">
+                        <ae-select [id]="'sortByOrder'" [name]="'sortByOrder'" [placeholder]="''" [value]="sortValue" [options]="sortByOptions$ | async" (aeSelectChange)="soryByChange($event)"></ae-select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="search-results-list spacer">
+
+    <ae-datatable [id]="'searchResultsGrid'" [name]="'searchResultsGrid'" [dataSource]="searchResults$" [autoGenerateColumns]="false" [totalRecords]="totalCount$" [defaultOptions]="searchResultDataTableOpts$ | async" [loading]="!(loading$ | async)" (pageChanged)="onPageChange($event)">
+        <ae-column [headerText]="'Name'" [sortable]="false">
+            <ae-template [type]="'header'">
+                <ng-template>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+
+
+                    <div class="search-result" [id]="getChildId('searchItem', 1)">
+                        <div class="search-result__icon">
+                            <ae-icon [id]="getChildId('aeIcon', 1)" [name]="getChildName('aeIcon', 1)" [icon]="getEntityIcon(context)" [size]="iconSmall" [color]="'white'" [title]="getEntityIconTitle(context)"></ae-icon>
+                        </div>
+                        <div class="search-result__meta">
+                            <div class="search-result__title">
+                                <h4>
+                                    <ae-anchor [id]="'searchTitle'" [name]="'searchTitle'" [text]="context.Title" (aeClick)="onSearchItemClick($event,context)">
+
+                                    </ae-anchor>
+
+                                </h4>
+                            </div>
+                            <div class="search-result__description">
+                                <p>
+                                    {{context.Description}}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </ng-template>
+            </ae-template>
+        </ae-column>
+    </ae-datatable>
+
+</div>

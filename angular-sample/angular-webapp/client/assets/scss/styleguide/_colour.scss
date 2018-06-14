@@ -1,0 +1,23 @@
+.sg-colours {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.sg-colour {
+  border: 1px solid $grey--0;
+  float: left;
+  margin: 10px;
+  padding: 5px;
+  width: 100px;
+
+  &__bg {
+    border: 1px solid $grey--0;
+    height: 40px;
+    width: 100%;
+  }
+
+  &__name,
+  &__hex {
+    text-align: center;
+  }
+}

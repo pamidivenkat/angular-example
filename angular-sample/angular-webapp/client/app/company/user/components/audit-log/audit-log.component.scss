@@ -1,0 +1,16 @@
+.accordion__list .accordion-open {
+  .accordion__contents {
+    max-height: 1000px;
+    overflow-y: auto;
+  }
+  .accordion__header .accordion__indicator>svg {
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
+  }
+  .accordion__header {
+    background: #009494;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    color: #fff;
+  }
+}

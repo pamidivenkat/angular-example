@@ -1,0 +1,95 @@
+<div class="so-panel__title">
+    <h3 class="grey-strip" *ngIf="!isSharedDoc()">{{'DOC_DISTRIBUTION.DISTRIBUTE_DOCUMENT' | translate:lang}} </h3>
+    <h3 class="grey-strip" *ngIf="isSharedDoc()">{{'DOC_DISTRIBUTION.DISTRIBUTE_SHARED_DOCUMENT' | translate:lang}} </h3>
+</div>
+
+<div class="so-panel__content">
+
+    <div class="filter-bar__filters">
+        <section *ngIf="!isSharedDoc()">
+
+            <div class="form__input">
+                <label>{{'DocumentDetails.FileName' | translate:lang}}
+          <div [class.text-muted]="!documentDetails?.FileName" id="FileName">{{(documentDetails)?.FileName}}</div>
+        </label>
+            </div>
+            <div class="form__input">
+                <label>{{'DocumentDetails.Category' | translate:lang}}
+          <div [class.text-muted]="categoryName" id="Category">{{categoryName || ' '}}</div>
+        </label>
+            </div>
+        </section>
+
+        <section *ngIf="isSharedDoc()">
+            <div class="form__input">
+                <label>{{'DocumentDetails.Title' | translate:lang}}
+          <div [class.text-muted]="!documentDetails?.Title" id="Title">{{(documentDetails)?.Title || ' '}}</div>
+        </label>
+            </div>
+            <div class="form__input">
+                <label>{{'DocumentDetails.Category' | translate:lang}}
+          <div [class.text-muted]="categoryName" id="Category">{{categoryName || ' '}}</div>
+        </label>
+            </div>
+        </section>
+
+    </div>
+    <form [formGroup]="documentDistributeForm" [id]="'documentDistributeForm'" [name]="'documentDistributeForm'">
+        <div>
+            <label class="distribute-radio-group">{{'DOC_DISTRIBUTION.DOCUMENT_ACTONS' | translate:lang}}
+        <div class="distrubution-radio-group">
+        <ae-radio-group [id]="getChildId('AeRadioGroup',1)" [name]="getChildName('AeRadioGroup',1)" [options]="actionOptions" formControlName="Action">
+
+        </ae-radio-group>
+        </div>
+        <span *ngIf="fieldHasRequiredError('Action')" class="form__input__error">{{'DOC_DISTRIBUTION.ACTION_REQUIRED' | translate:lang}}.
+         </span>
+      </label>
+            <div class="form__input">
+                <p>{{'DOC_DISTRIBUTION.DISTRIBUTE_SLIDE_MSG_ONE' | translate:lang}}</p>
+                <p>{{'DOC_DISTRIBUTION.DISTRIBUTE_SLIDE_MSG_TWO' | translate:lang}}</p>
+                <p>{{'DOC_DISTRIBUTION.DISTRIBUTE_SLIDE_MSG_THREE' | translate:lang}}</p>
+            </div>
+            <div class="form__input">
+                <label>{{'DOC_DISTRIBUTION.DISTRIBUTE_TO' | translate:lang}}
+          <ae-select [id]="'ddlDistributeTo'" [name]="'ddlDistributeTo'" [placeholder]="'PLEASE_SELECT' | translate:lang" [options]="regardingObjectTypes"
+            formControlName="RegardingObjectTypeCode" (aeSelectChange)="setRegardingObjects($event)"></ae-select>
+        </label>
+                <span *ngIf="fieldHasRequiredError('RegardingObjectTypeCode')" class="form__input__error">{{'DOC_DISTRIBUTION.DISTRIBUTE_TO_REQUIRED' | translate:lang}}.</span>
+            </div>
+            <div class="form__input">
+                <label>
+          <b *ngIf="isSiteSelected()"> {{'SITE' | translate:lang}} </b>
+          <b *ngIf="isEmployeeGroupSelected()"> {{'EMPLOYEE_GROUP' | translate:lang}} </b>
+          <b *ngIf="isDepartmentSelected()"> {{'DEPARTMENT' | translate:lang}} </b>
+          <b *ngIf="isEmployeeSelected()"> {{'EMPLOYEE_LABEL' | translate:lang}} </b>
+
+        <div *ngIf="documentDistributeForm.controls['RegardingObjectTypeCode'].value && documentDistributeForm.controls['RegardingObjectTypeCode'].value != 1">
+          <ae-autocomplete *ngIf="canRegardingObjectsBeShown()" formControlName="RegardingObjects"
+            [id]="getChildId('employeeSelected',1)" [name]="getChildName('employeeSelected',1)" [placeholder]="'PLEASE_SELECT' | translate:lang"
+            [multiselect]="'true'" [items]="regardingObjects$ | async" [automatch]="false" [dstype]="localDataSourceType" [value]="SelectedValues"
+            [field]="'Text'" [debounce]="500" [valuefield]="'Value'"></ae-autocomplete>
+
+          <ae-autocomplete *ngIf="!canRegardingObjectsBeShown()" formControlName="Employee"
+            [id]="getChildId('employeeSelected',1)" [name]="getChildName('employeeSelected',1)" [placeholder]="'PLEASE_SELECT' | translate:lang"
+            [multiselect]="'true'" [items]="searchEmployees$ | async" [automatch]="false" (aeOnComplete)="searchEmployees($event)"
+            [dstype]="remoteDataSourceType" [field]="'Text'" [debounce]="500" [valuefield]="'Value'"></ae-autocomplete>
+          <span *ngIf="anyDistributedToError()" class="form__input__error">
+            {{getDistributedToSelectErrorMsg()}}.</span>
+        </div>
+        </label>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="so-panel__footer">
+    <nav>
+        <ul>
+            <li><label for="soPanel" class="button button--inline-block" [id]="getChildId('AeButton',1)" (click)="slideClose($event)" [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label></li>
+            <li class="pull--right">
+                <ae-anchor [id]="getChildId('AeAnchor',1)" [name]="getChildName('AeAnchor',1)" [anchorType]="'button'" [class]="'button button--inline-block'" [anchorClass]="lightClass" (aeClick)="onAddOrUpdateFormSubmit($event)" [title]="'BUTTONS.DISTRIBUTE' | translate:lang"
+                    [text]="'BUTTONS.DISTRIBUTE' | translate:lang"></ae-anchor>
+            </li>
+        </ul>
+    </nav>
+</div>

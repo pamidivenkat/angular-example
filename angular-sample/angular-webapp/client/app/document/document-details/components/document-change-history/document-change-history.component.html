@@ -1,0 +1,84 @@
+<div id="documentChangeHistory" class="spacer">
+
+    <div class="table__filter-bar">
+        <div class="filter-bar holiday-filters">
+            <div class="filter-bar__label label">{{'Filter_by' | translate:lang}}</div>
+            <form [formGroup]="documentChangeHistoryForm" [id]="getChildId('form', 1)" [name]="getChildName('form', 1)">
+                <div class="filter-bar__filters requests">
+                    <div class="filter-bar__filter">
+                        <ae-select [id]="getChildId('ae-select', 1)" formControlName="year" [name]="getChildName('ae-select', 1)" (aeSelectChange)="onYearDropdownChange($event)"
+                            [options]="changePeriodYears"></ae-select>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <ae-datatable [id]="getChildId('AeDatatable',1)" [name]="getChildName('AeDatatable',1)" [dataSource]="changeHistoryList$"
+        [totalRecords]="recordsCount$" [autoGenerateColumns]="false" [defaultOptions]="dataTableOptions$ | async" (pageChanged)="onGridPageChange($event)"
+        (onSort)="onGridSort($event)" [loading]="!(changeHistoryListLoaded$ | async)" [actions]="actions">
+
+        <ae-column [headerText]="'DocumentDetails.Version' | translate:lang" [sortable]="true" [sortKey]="'Version'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span [title]="'DocumentDetails.Version' | translate:lang">{{'DocumentDetails.Version' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <span for="soPanel">{{context.Version}}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+        <ae-column [headerText]="'DocumentDetails.ChangedOn' | translate:lang" [sortable]="true" [sortKey]="'CreatedOn'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span [title]="'DocumentDetails.ChangedOn' | translate:lang">{{'DocumentDetails.ChangedOn' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <span for="soPanel">{{context.CreatedOn | localeDate:defaultLocale:'short'}}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+        <ae-column [headerText]="'DocumentDetails.ChangedBy' | translate:lang" [sortable]="true" [sortKey]="'ChangedBy'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span [title]="'DocumentDetails.ChangedBy' | translate:lang">{{'DocumentDetails.ChangedBy' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <span for="soPanel">{{context.ChangedBy}}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+        <ae-column [headerText]="'DocumentDetails.Comment' | translate:lang" [sortable]="true" [sortKey]="'Comment'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span [title]="'DocumentDetails.Comment' | translate:lang">{{'DocumentDetails.Comment' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+
+                    <span for="soPanel">{{context.Comment}}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+        <ae-column [headerText]="'DocumentDetails.LastChange' | translate:lang" [sortable]="true" [sortKey]="'LastChange'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span [title]="'DocumentDetails.LastChange' | translate:lang">{{'DocumentDetails.LastChange' | translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+
+                    <span for="soPanel">{{getEntityTemplate(context.LastChange) | translate:lang }}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+    </ae-datatable>
+</div>

@@ -1,0 +1,17 @@
+.document-container__title {
+  background: $grey--0;
+  padding: $base-padding;
+
+  h3 {
+    color: $white;
+    margin: 0;
+  }
+}
+
+.document-container__content {
+  background: $white;
+
+  + .button-bar {
+    margin-top: ($base-margin * 2);
+  }
+}

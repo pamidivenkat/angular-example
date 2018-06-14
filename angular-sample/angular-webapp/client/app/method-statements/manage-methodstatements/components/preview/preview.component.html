@@ -1,0 +1,392 @@
+<div>
+    <div id="incidentBanner" *ngIf="bannerCanBeShown">
+        <ae2-breadcrumb [id]="'methodStatementBreadCrumb'" [name]="'methodStatementBreadCrumb'" [group]="bcGroup"></ae2-breadcrumb>
+        <ae-banner [id]="'methodStatementBanner'" [name]="'methodStatementBanner'" [titleText]="getMethodStatementBannerTitle()" [backgroundImage]="'/assets/images/lp-method-statements.jpg'">
+            <div class="image-text banner-image-text">
+            </div>
+            <div class="icon-list banner-icon-list">
+            </div>
+        </ae-banner>
+    </div>
+
+    <div *ngIf="!ShowLoader">
+        <div class="button-bar button-bar--scroll" [class.spacer]="bannerCanBeShown" [class.spacer--y]="!bannerCanBeShown">
+            <div class="button-bar__item" *ngIf="checkMSType">
+                <ae-button [id]="getChildId('AeButton',1)" [name]="getChildName('AeButton',1)" [customClass]="'button button--cta'" (aeClick)="updateNav()" [title]="'MANAGE_METHOD_STM.PREVIEW.UPDATE'| translate:lang" [text]="'MANAGE_METHOD_STM.PREVIEW.UPDATE'| translate:lang"></ae-button>
+            </div>
+            <div class="button-bar__item">
+                <ae-button *ngIf="enableApproveButton" [id]="getChildId('AeButton',2)" [name]="getChildName('AeButton',2)" [customClass]="'button button--cta'" (aeClick)="setApproved()" [title]="'MANAGE_METHOD_STM.PREVIEW.APPROVE'| translate:lang" [text]="'MANAGE_METHOD_STM.PREVIEW.APPROVE'| translate:lang"></ae-button>
+            </div>
+            <div class="button-bar__item" *ngIf="copyMSAcess">
+                <ae-button [id]="getChildId('AeButton',3)" [name]="getChildName('AeButton',3)" [customClass]="'button button--cta'" (aeClick)="copyMS()" [title]="'MANAGE_METHOD_STM.PREVIEW.COPY'| translate:lang" [text]="'MANAGE_METHOD_STM.PREVIEW.COPY'| translate:lang"></ae-button>
+            </div>
+            <div class="button-bar__item">
+                <ae-button [id]="getChildId('AeButton',4)" [name]="getChildName('AeButton',4)" [customClass]="'button button--cta'" (aeClick)="onExport($event)" [title]="'MANAGE_METHOD_STM.PREVIEW.EXPORT'| translate:lang" [text]="'MANAGE_METHOD_STM.PREVIEW.EXPORT'| translate:lang"></ae-button>
+            </div>
+            <div class="button-bar__item">
+                <ae-button [id]="getChildId('AeButton',5)" [name]="getChildName('AeButton',5)" [customClass]="'button button--cta'" [title]="'MANAGE_METHOD_STM.PREVIEW.PRINT' | translate:lang" [text]="'MANAGE_METHOD_STM.PREVIEW.PRINT' | translate:lang" (aeClick)="onPrint($event)"></ae-button>
+            </div>
+            <div class="button-bar__item">
+                <ae-button [type]="'button'" [id]="getChildId('AeButton',6)" [name]="getChildName('AeButton',6)" [customClass]="'button button--cta'" [title]="'MANAGE_METHOD_STM.PREVIEW.EMAIL' | translate:lang" [text]="'MANAGE_METHOD_STM.PREVIEW.EMAIL' | translate:lang"
+                    (aeClick)="OnEmail($event)"></ae-button>
+            </div>
+            <div class="button-bar__item" *ngIf="cqcPruchased$ | async">
+                <ae-button [type]="'button'" [id]="getChildId('AeButton',6)" [name]="getChildName('AeButton',6)" [text]="'DocumentDetails.EXPORT_TO_CQC_PRO'| translate:lang" [title]="'DocumentDetails.EXPORT_TO_CQC_PRO'| translate:lang" (aeClick)="onExportToCQC($event)"
+                    [customClass]="'button button--cta'"></ae-button>
+            </div>
+        </div>
+
+        <div class="ms-preview preview-page-scroll">
+            <div class="information-grid construction-plan-view ">
+
+                <div class="information-grid__item personal-info">
+                    <div class="information-grid__item-label column-1of3">
+                        <div>
+                            <img class="ms-preview-logo" src="{{SiteOrCompanyLogo}}" alt="'SiteLogo'" />
+                        </div>
+                    </div>
+                    <div class="information-grid__item-label column-1of3">
+                        <label class="address_block">{{companyFullName}}
+              <div id="company-address" *ngIf="hasHeadOfficeSite">
+                <div *ngIf="headOfficeAddress.AddressLine1">{{headOfficeAddress.AddressLine1}}</div>
+                <div *ngIf="headOfficeAddress.AddressLine2">{{headOfficeAddress.AddressLine2}}</div>
+                <div *ngIf="headOfficeAddress.AddressLine3">{{headOfficeAddress.AddressLine3}}</div>
+                <div *ngIf="headOfficeAddress.Town">{{headOfficeAddress.Town}}</div>
+                <div *ngIf="headOfficeSitePostcode">{{headOfficeSitePostcode}}</div> 
+              </div>
+            </label>
+                    </div>
+                    <div class="information-grid__item-label column-1of3 tlephone-block">
+                        <div> {{'MANAGE_METHOD_STM.PREVIEW.TELEPHONE' | translate:lang}} {{Company ? Company.MainContactNo : ''}}</div>
+                        <ae-anchor [id]="getChildId('aeanchor', 1)" [name]="getChildName('aeanchor', 1)" [text]="companySiteUrl"></ae-anchor>
+
+                    </div>
+                </div>
+
+                <h1 class="text-center">{{MethodStatementDetails.Name}}</h1>
+
+                <div class="form__input" id="site-address">
+                    <label>
+            {{'MANAGE_METHOD_STM.PREVIEW.SITE_ADDRESS'| translate:lang}}
+            <span *ngIf="!ShowOtherSiteAddress">{{MethodStatementDetails.Site.AddressLine}}</span>
+            <span *ngIf="ShowOtherSiteAddress">{{MethodStatementDetails.NewLocationOfWork}}</span>
+          </label>
+                </div>
+                <div class="sg-grid grid--1-2 bottom-15">
+                    <div>
+                        <div class="form__input">
+                            <label id="project-reference">
+                {{'MANAGE_METHOD_STM.PREVIEW.PROJECT_REFERENCE'| translate:lang}}
+                <span>{{MethodStatementDetails.ProjectReference}}</span>
+              </label>
+                        </div>
+                        <div class="form__input">
+                            <label id="client-reference">
+                {{'MANAGE_METHOD_STM.PREVIEW.CLIENT_REFERENCE'| translate:lang}}
+                <span>{{MethodStatementDetails.ClientReference}}</span>
+              </label>
+                        </div>
+                        <div class="form__input">
+                            <label id="client-name">
+                {{'MANAGE_METHOD_STM.PREVIEW.CLIENT_NAME'| translate:lang}}
+                <span>{{MethodStatementDetails.ClientName}}</span>
+              </label>
+                        </div>
+                        <div class="form__input">
+                            <label id="client-telephone">
+                {{'MANAGE_METHOD_STM.PREVIEW.CLIENT_TELEPHONE'| translate:lang}}
+                <span>{{MethodStatementDetails.ClientTelephoneNumber}}</span>
+              </label>
+                        </div>
+                        <div class="form__input">
+                            <label id="client-location">
+                {{'MANAGE_METHOD_STM.PREVIEW.CLIENT_LOCATION'| translate:lang}}
+                <span *ngIf="!ShowOtherSiteAddress">{{MethodStatementDetails.Site.SiteNameAndPostcode}}</span>
+                <span *ngIf="ShowOtherSiteAddress">{{MethodStatementDetails.NewLocationOfWork}}</span>
+              </label>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form__input">
+                            <label id="document-created">
+                {{'MANAGE_METHOD_STM.PREVIEW.DOCUMENT_CREATED'| translate:lang}}
+                <span>{{MethodStatementDetails.CreatedOn | localeDate:defaultLocale:'dd/MM/yyyy'}}</span>
+              </label>
+                        </div>
+                        <div class="form__input">
+                            <label id="document-createdBy">
+                {{'MANAGE_METHOD_STM.PREVIEW.DOCUMENT_CREATEDBY'| translate:lang}}
+                <span>{{AuthorName}}</span>
+              </label>
+                        </div>
+                        <div class="form__input">
+                            <label id="document-apprOn">
+                {{'MANAGE_METHOD_STM.PREVIEW.DOCUMENT_APPR'| translate:lang}}
+                <span>{{MethodStatementDetails.ApprovedDate| localeDate:defaultLocale:'dd/MM/yyyy'}}</span>
+              </label>
+                        </div>
+                        <div class="form__input">
+                            <label id="document-apprBy">
+                {{'MANAGE_METHOD_STM.PREVIEW.DOCUMENT_APPRBY'| translate:lang}}
+                <span>{{ApprovedByName}}</span>
+              </label>
+                        </div>
+                        <div class="form__input">
+                            <label id="client-addr">
+                {{'MANAGE_METHOD_STM.PREVIEW.CLIENT_ADDR'| translate:lang}}
+                <span>{{MethodStatementDetails.ClientAddress}}</span>
+              </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sg-grid grid--1-2 bottom-15">
+                    <div>
+                        <div class="form__input">
+                            <label id="start-date">
+                {{'MANAGE_METHOD_STM.PREVIEW.START_DATE'| translate:lang}}
+                <span>{{MethodStatementDetails.StartDate | localeDate:defaultLocale:'dd/MM/yyyy'}}</span>
+              </label>
+                        </div>
+                        <div class="form__input">
+                            <label id="end-date">
+                {{'MANAGE_METHOD_STM.PREVIEW.END_DATE'| translate:lang}}
+                <span>{{MethodStatementDetails.EndDate | localeDate:defaultLocale:'dd/MM/yyyy'}}</span>
+              </label>
+                        </div>
+                    </div>
+                    <div>
+                        &nbsp;
+                    </div>
+                </div>
+
+                <div class="sg-grid grid--1-2 bottom-15">
+                    <div>
+                        <div class="form__input">
+                            <label id="principal-contractor">
+                {{'MANAGE_METHOD_STM.PREVIEW.PRINCIPAL_CONTRACTOR'| translate:lang}}
+                <span>{{MethodStatementDetails.PrincipalContractor}}</span>
+              </label>
+                        </div>
+                        <div class="form__input">
+                            <label id="principal-designer">
+                {{'MANAGE_METHOD_STM.PREVIEW.PRINCIPAL_DESIGNER'| translate:lang}}
+                <span>{{MethodStatementDetails.PrincipalDesigner}}</span>
+              </label>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form__input">
+                            <label id="site-supervisor">
+                {{'MANAGE_METHOD_STM.PREVIEW.SITE_SUPERVISOR'| translate:lang}}
+                <span>{{MethodStatementDetails.SiteSupervisor}}</span>
+              </label>
+                        </div>
+                        <div class="form__input">
+                            <label id="site-supervisor-phone">
+                {{'MANAGE_METHOD_STM.PREVIEW.SITE_SUPERVISOR_PHONE'| translate:lang}}
+                <span>{{MethodStatementDetails.SiteSupervisorTelephone}}</span>
+              </label>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="bottom-30">
+                    <h2>{{'MANAGE_METHOD_STM.PREVIEW.DESCRIPTION_WORK'| translate:lang}}</h2>
+                    <div class="information-grid__item" id="ms-description">
+                        {{MethodStatementDetails.Description}}
+                    </div>
+                </div>
+
+                <div class="bottom-30">
+                    <h2>{{'MANAGE_METHOD_STM.PREVIEW.SEQUENCE_EVENTS'| translate:lang}}</h2>
+                    <div class="sequence-of-events">
+                        <div *ngFor="let event of MSSOE, let i = index" class="full-screen">
+                            <h5>2.{{i+1}} {{event.Name}}</h5>
+
+                            <div [class.text-muted]="event.Description" id="event_Description" [innerHTML]="event.Description"></div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bottom-30">
+                    <h2 id="plant-equipment">{{'MANAGE_METHOD_STM.PREVIEW.PLANT_EQUIPMENT'| translate:lang}}</h2>
+                    <div class="information-grid__item">
+                        <table cellpadding="0" cellspacing="0" class="table__table-preview" id="tbl-plant-equipment">
+                            <thead>
+                                <tr>
+                                    <th class="table__heading" id="plant-equip-item">
+                                        {{'MANAGE_METHOD_STM.PREVIEW.ITEM'| translate:lang}}
+                                    </th>
+                                    <th class="table__heading" id="plant-equip-usedfor">
+                                        {{'MANAGE_METHOD_STM.PREVIEW.USED_FOR'| translate:lang}}
+                                    </th>
+                                    <th class="table__heading" id="plant-equip-special-requirement">
+                                        {{'MANAGE_METHOD_STM.PREVIEW.SPECIAL_REQUIREMENT'| translate:lang}}
+                                    </th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="table__row" *ngFor="let equipment of MethodStatementDetails?.PlantEquipments">
+                                    <td class="table__item">
+                                        <div class="table__item-inner">
+                                            {{equipment.Name}}
+                                        </div>
+                                    </td>
+                                    <td class="table__item">
+                                        <div class="table__item-inner">
+                                            {{equipment.UsedFor}}
+                                        </div>
+                                    </td>
+                                    <td class="table__item">
+                                        <div class="table__item-inner">
+                                            {{equipment.SpecialRequirements}}
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+                <div class="bottom-30">
+                    <h2 id="safety-precautions">{{'MANAGE_METHOD_STM.PREVIEW.SAFETY_PRECAUTIONS'| translate:lang}}</h2>
+                    <div>
+                        <h5 id="ppe-header">{{'MANAGE_METHOD_STM.PREVIEW.PPE'| translate:lang}}</h5>
+                        <div>
+                            <div>
+                                <div *ngFor="let item of MSPPE, let i = index" class="safety-precautions">
+                                    <div>
+                                        <app-ae-image-avatar [id]="getChildId('AeImageAvatar', 2)" [name]="getChildName('AeImageAvatar', 2)" [imgSrc]="getPPELogoUrl(item)" [size]="getImageSize" [alt]="'PPELogo'"></app-ae-image-avatar>
+                                    </div>
+                                    <div class="" [class.text-muted]="item.PPECategoryName">
+                                        {{item.PPECategoryName}} </div>
+                                </div>
+                            </div>
+                            <h5 id="safety-responsibilities">{{'MANAGE_METHOD_STM.PREVIEW.SAFETY_RESP'| translate:lang}}</h5>
+                            <div>
+                                <table cellpadding="0" cellspacing="0" class="table__table-preview" id="tbl-safety-responsibilities">
+                                    <thead>
+                                        <tr>
+                                            <th class="table__heading" id="safResp-name">
+                                                {{'MANAGE_METHOD_STM.PREVIEW.NAME'| translate:lang}}
+                                            </th>
+                                            <th class="table__heading" id="safResp-subitemtext">
+                                                {{'MANAGE_METHOD_STM.PREVIEW.RESPONSIBILITY'| translate:lang}}
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="table__row" *ngFor="let responsibility of MSSafetyResponsibilities">
+                                            <td class="table__item">
+                                                <div class="table__item-inner">{{responsibility.CombinedName}}</div>
+                                            </td>
+                                            <td class="table__item">
+                                                <div class="table__item-inner">{{responsibility.SubItemText}}</div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <h5 id="safety-procedures">{{'MANAGE_METHOD_STM.PREVIEW.SAFETY_PROC'| translate:lang}}</h5>
+                            <div *ngFor="let sp of MSSafetyProcs, let i = index" class="editer-data">
+                                <h6>4.3.{{(i+1)}} {{sp.Name}}</h6>
+                                <div>
+                                    <div id="safety-proc-desc" class="" [class.text-muted]="sp.Description" [innerHTML]="sp.Description">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bottom-30">
+                    <h2 id="ms-futher-info">{{'MANAGE_METHOD_STM.PREVIEW.FURTHER_INFO'| translate:lang}}</h2>
+                    <div class="information-grid__item">
+                        <div>
+                            <h5 id="ms-riskAssess-header">{{'MANAGE_METHOD_STM.PREVIEW.RISK_ASSESSMENTS'| translate:lang}}</h5>
+                            <div>
+                                <div *ngFor="let item of MSRiskAssessments, let i = index">
+                                    <p id="{{'ms-risk-assess-' + i}}">{{item.ReferenceNumber}} {{item.Name}}</p>
+                                </div>
+                            </div>
+                            <h5 id="ms-facilAffec-header">{{'MANAGE_METHOD_STM.PREVIEW.FACILITIES_AFFECTED'| translate:lang}}</h5>
+                            <div>
+                                <p id="ms-facilities-affec">{{MethodStatementDetails.FacilitiesEffectedByWork}}</p>
+                            </div>
+                            <h5 id="ms-adverseEffec-header">{{'MANAGE_METHOD_STM.PREVIEW.ADVERSE_EFECTS'| translate:lang}}</h5>
+                            <div>
+                                <p id="ms-adverse-effects">{{MethodStatementDetails.ForeseeAdverseEffects}}</p>
+                            </div>
+                            <h5 id="ms-monitorSys-header">{{'MANAGE_METHOD_STM.PREVIEW.MONITORING_SYSTEMS'| translate:lang}}</h5>
+                            <div>
+                                <p id="ms-monitor-sys">{{MethodStatementDetails.MonitoringSystems}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bottom-15 preview-supporting-docs">
+                    <h2 id="support-doc-header">{{'MANAGE_METHOD_STM.PREVIEW.SUPPORTING_DOCUMENTATION'| translate:lang}}</h2>
+                    <div id="ms-suppor-docs">
+                        <div *ngFor="let document of MSSDDocuments" class="safety-precautions">
+                            <a [id]="document.Id" [name]="document.Id" [title]="document.FileName" [class]="'download-block'" href="{{getFileDownloadUrl(document.PictureUrl)}}" target="_blank">
+                                <ae-icon [id]="'iconone'" [name]="'doucment'" [size]="_iconMedium" [icon]="'icon-document'"></ae-icon>
+                                <div class="preivew-text-link">{{document.FileName}}</div>
+                            </a>
+                            <div>
+                                {{ document.Author ? document.Author.FullName + '.' : '' }} {{document.CreatedOn ? (document.CreatedOn | localeDate:defaultLocale:'dd/MM/yyyy') : ''}} {{document.Size ? '-' + document.Size + ' kb' : ''}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<ae-loader [loaderType]="loaderType" *ngIf="ShowLoader"></ae-loader>
+
+<ae-modal-dialog [visible]="showExportOrPrintOptionsModal" (cancel)="modalClosed($event)" [closable]="true" [id]="'confirmModal'" [name]="'confirmModal'" *ngIf="showExportOrPrintOptionsModal">
+    <div class="modal-dialog-header">
+        <h3>{{ ModalHeader }}</h3>
+    </div>
+    <div class="modal-dialog-body">
+        <p>{{modalInfo | translate:lang}}</p>
+        <ae-select [id]="'ddlAttachments'" [name]="'ddlAttachments'" [placeholder]="" [options]="attachmentsOptions" [value]="'false'" (aeSelectChange)="onAttachmentsOptionsChange($event)"></ae-select>
+
+    </div>
+    <div class="modal-dialog-footer">
+        <ae-button [class]="darkClass" [text]="'MANAGE_METHOD_STM.PREVIEW.Dialog.Btn_No' | translate:lang" [type]="'button'" [id]="'confirmNo'" [name]="'confirmNo'" (aeClick)="modalClosed('no')"></ae-button>
+        <ae-button [class]="lightClass" [text]="'MANAGE_METHOD_STM.PREVIEW.Dialog.Btn_Yes' | translate:lang" [type]="'button'" [id]="'confirmYes'" [name]="'confirmYes'" (aeClick)="modalClosed('yes')"></ae-button>
+    </div>
+</ae-modal-dialog>
+
+<div class="email-slideout">
+
+  <ae-slideout [id]="'emailSlideout'" [name]="'emailSlideout'" [modelState]="emailSlideoutState" [class.slide--animate]="ShowEmailSlideOut">
+    <div *ngIf="ShowEmailSlideOut">
+      <email [id]="'emailView'" [name]="'emailView'" [emailModel]="EmailModel" (onCancel)="OnEmailslideCancel($event)"></email>
+    </div>
+  </ae-slideout>
+</div>
+<div class="copy-slideout">
+  <ae-slideout [id]="'msCopySlideout'" [name]="'msCopySlideout'" [modelState]="getMSCopySlideoutState()" [class.slide--animate]="showMSCopySlideOut">
+    <ng-container *ngIf="showMSCopySlideOut">
+      <ms-copy [id]="'msCopy'" [name]="'msCopy'" [methodStatement]="MethodStatementDetails" (copyMs)="onCopied($event)" (cancel)="closeMSSlideOut($event)">
+      </ms-copy>
+    </ng-container>
+  </ae-slideout>
+</div>
+<!-- cqc slideout  -->
+<ae-slideout [id]="'documentExportToCQCSlide'" [name]="'documentExportToCQCSlide'" [modelState]="getDocumentExportToCQCSlideoutState()" [class.slide--animate]="showDocumentExportToCQCProSlideOut">
+    <ng-container *ngIf="showDocumentExportToCQCProSlideOut">
+        <document-export-to-cqc [id]="'documentExportToCQC'" [name]="'documentExportToCQC'" [documentDetails]="documentDetails" (onCQCCancel)="onCQCCancel($event)" (onCQCSubmit)="onCQCSubmit($event)">
+        </document-export-to-cqc>
+    </ng-container>
+</ae-slideout>
+<!-- cqc slideout end  -->

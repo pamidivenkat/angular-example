@@ -1,0 +1,49 @@
+<div class="information-grid" *ngIf="companyDetails">
+  <div class="information-grid__logo">
+
+    <ae-file [id]="'sign-fileUpload'" [name]="'sign-fileUpload'" [multiple]="false" (onFilesSelected)="onFilesSelected($event)"
+      [accept]="'image/*'" [icon]="'icon-pencil'" [title]="''"></ae-file>
+
+    <img [src]="imgPreviewSrcUrl" alt="Company logo">
+  </div>
+  <section class="information-grid__section">
+    <div class="information-grid__item">
+      <div class="information-grid__item-label column-1of3">{{'COMPANY_DETAILS.COMPANY_NAME' | translate:lang}}</div>
+      <div class="information-grid__item-value column-2of3">{{companyName}}
+      </div>
+    </div>
+
+    <div class="information-grid__item">
+      <div class="information-grid__item-label column-1of3">{{'COMPANY_DETAILS.TRADING_AS_NAME' | translate:lang }}</div>
+      <div class="information-grid__item-value column-2of3">{{companyTradingName}}
+      </div>
+    </div>
+    <div class="information-grid__item">
+      <div class="information-grid__item-label column-1of3">{{'COMPANY_DETAILS.CUSTOMER_SINCE' | translate:lang }}</div>
+      <div class="information-grid__item-value column-2of3">{{ companyCustomerSince | localeDate:defaultLocale:'shortDate'}}</div>
+    </div>
+
+    <div class="information-grid__item">
+      <div class="information-grid__item-label column-1of3">{{'COMPANY_DETAILS.SECTOR' | translate:lang}}</div>
+      <div class="information-grid__item-value column-2of3">{{ companySector }}
+      </div>
+    </div>
+    <div class="information-grid__item">
+      <div class="information-grid__item-label column-1of3">{{'COMPANY_DETAILS.CONTACT_NO' | translate:lang}}</div>
+      <div class="information-grid__item-value column-2of3">{{ companyMainContactNo }}
+      </div>
+    </div>
+
+    <div class="information-grid__item">
+      <div class="information-grid__item-label column-1of3">{{'COMPANY_DETAILS.HEAD_OFFICE_ADDRESS' | translate:lang }}</div>
+      <div class="information-grid__item-value column-2of3">{{ companyAddress}}
+      </div>
+    </div>
+
+    <div class="information-grid__item">
+      <div class="information-grid__item-label column-1of3">{{'COMPANY_DETAILS.WEBSITE' | translate : lang }}</div>
+      <div class="information-grid__item-value column-2of3">{{ companyWebsite }}
+      </div>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,27 @@
+<div class="spacer--y">
+  <ae-tabstrip [id]="getChildId('AeTabStrip',1)" [name]="getChildName('AeTabStrip',1)" [standardWithIcon]="true" [isTabButton]="true">
+    <ae-tabstrip-item [id]="getChildId('AeTabStripItem',1)" [name]="getChildName('AeTabItem',1)" [header]="'HANDBOOK.HANDBOOK' | translate:lang"
+     [title]="'HANDBOOK.HANDBOOKS_TITLE' | translate:lang"
+      [navigateUrl]="getHandBookUrl()" [hasCount]="true" [count]="handbookDocsListTotalCount">
+
+    </ae-tabstrip-item>
+    <ae-tabstrip-item [id]="getChildId('AeTabStripItem',2)" [name]="getChildName('AeTabStripItem',2)" [header]="'HANDBOOK.CONTRACT_TRMPLATE' | translate:lang"
+      [title]="'HANDBOOK.CONTRACTS_TEMPLATES_TITLE' | translate:lang"
+      [navigateUrl]="getContractTemplateUrl()" [hasCount]="true" [count]="contractDocsListTotalCount">
+
+    </ae-tabstrip-item>
+    <ae-tabstrip-item [id]="getChildId('AeTabStripItem',3)" [name]="getChildName('AeTabStripItem',3)" [header]="'HANDBOOK.PERSONALISED_CONTRACTS' | translate:lang"
+      [title]="'HANDBOOK.PERSONALISED_CONTRACTS_TITLE' | translate:lang"
+      [navigateUrl]="getPersonalisedContractUrl()" [hasCount]="true" [count]="personalContractTotalCount">
+
+    </ae-tabstrip-item>
+
+  </ae-tabstrip>
+
+  <div id="distributecontentArea" class="tab-content">
+    <router-outlet>
+
+    </router-outlet>
+  </div>
+</div>
+

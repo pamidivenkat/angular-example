@@ -1,0 +1,9 @@
+<div [id]="id" class="timeSelectorDirective">
+  <div class="section hours">
+    <div class="display">{{getValue()}}</div>
+    <div class="time-controls">
+      <div class="increase" (click)="increaseValue()"> &#9652; </div>
+      <div class="decrease" (click)="decreaseValue()"> &#9662; </div>
+    </div>
+  </div>
+</div>

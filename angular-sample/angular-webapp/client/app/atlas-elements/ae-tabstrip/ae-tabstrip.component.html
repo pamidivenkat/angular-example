@@ -1,0 +1,37 @@
+<div class="js-tabs-container tabs" [id]="id" [class.inner-tabs]="hasTabButton()">
+  <ng-container *ngIf="isStandardHeader()">
+    <div class="tabs-nav">
+      <div class="js-tabs-nav tabs-nav__inner">
+        <a  class="js-tab-title tabs-nav__item" aePopover [popOverVm]="getPopOverVm(tab)" [popOverAction]="'hover'" [routerLinkActive]="['active']"
+          [routerLink]="[tab.NavigateUrl]" queryParamsHandling="merge" *ngFor="let tab of tabs; let i = index" [id]="getChildId('anchor',getIndex(tab,tabs))">
+          <ae-icon [id]="getChildId('AeIcon',1)" [name]="getChildName('AeIcon',1)" [size]="iconOneSize" [icon]="tab.headerIcon" *ngIf="tab.headerIcon"></ae-icon>
+          <div class="tabs-no-count" [class.tabs-with-count]="hasCount(tab)">
+            <span [id]="getChildId('spanHeader',getIndex(tab,tabs))">{{tab.header}}</span>
+            <span [id]="getChildId('spanCount',getIndex(tab,tabs))" class="button-count count" *ngIf="hasCount(tab)">{{tab.Count}}</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="!isStandardHeader()">
+    <div class="tabs-nav">
+      <div class="js-tabs-nav tabs-nav__inner">
+        <a  class="js-tab-title tabs-nav__item" aePopover [popOverVm]="getPopOverVm(tab)" [popOverAction]="'hover'" [routerLinkActive]="['active']"
+          [routerLink]="[tab.NavigateUrl]" queryParamsHandling="merge" *ngFor="let tab of tabs; let i = index" [id]="getChildId('anchor',getIndex(tab,tabs))">
+          <div class="icon--medium" [id]="getChildId('divTemplate',index)">
+            <ae-template-loader [template]="getTabItemHeaderTemplate(tab)"></ae-template-loader>
+          </div>
+        </a>
+      </div>
+    </div>
+  </ng-container>
+</div>
+ 
+<ae-template #popOverTemplate [type]="'popOver'">
+  <ng-template let-context="item">
+    <div class="popover-container">
+      {{ context.Title }}
+    </div>
+  </ng-template>
+</ae-template>
+ 

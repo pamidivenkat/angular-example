@@ -1,0 +1,66 @@
+@import '../../../../../assets/scss/variablesMap';
+.psw-strength-section {
+  .text {
+    font-size: 12px;
+    float: right
+  }
+  .psw-strength {
+    background: $grey--4;
+    height: 5px;
+    margin-top: 5px;
+  }
+  .bar {
+    display: block;
+    height: 5px
+  }
+  .low,
+  .weak {
+    .bar {
+      width: 15%;
+      background-color: $red--0;
+    }
+    .text {
+      color: $red--0;
+    }
+  }
+  .weak {
+    .bar {
+      width: 30%;
+    }
+  }
+  .medium {
+    .bar {
+      width: 45%;
+      background-color: $yellow--0;
+    }
+    .text {
+      color: $yellow--0;
+    }
+  }
+  .good {
+    .bar {
+      width: 70%;
+      background-color: $indicator--green;
+    }
+    .text {
+      color: $indicator--green;
+    }
+  }
+  .strong {
+    .bar {
+      width: 100%;
+      background-color: $teal--0;
+    }
+    .text {
+      color: $teal--0;
+    }
+  }
+}
+.change-password {
+  display: block;
+  ul.list {
+    border-left: $base-border solid $grey--pale;
+    margin: 0;
+    padding: $base-padding ($base-padding+5) $base-padding 40px;
+  }
+}

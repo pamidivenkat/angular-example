@@ -1,0 +1,13 @@
+@import '../../../../../assets/scss/variablesMap';
+.usefuldocs-template{
+    .table__heading{
+        white-space: nowrap;
+    }
+    .table__headings{
+        :first-child{
+            @include media-over-767 {
+                width: 45%;
+            }
+        }
+    }
+}

@@ -1,0 +1,103 @@
+<div class="supporing-evidence-add">
+    <ae-anchor [id]="getChildId('DocumentAnchor',1)" [name]="getChildName('DocumentAnchor',1)" [anchorType]="'button'" [class]="'button'"
+        [anchorClass]="lightClass" (aeClick)="onAddDocument($event)" [title]="'BUTTONS.ADD' | translate:lang" [text]="'BUTTONS.ADD' | translate:lang">
+    </ae-anchor>
+</div>
+<div>
+    <ae-datatable [id]="getChildId('documents', 1)" [name]="getChildName('documents', 1)" [dataSource]="documentsList$" [autoGenerateColumns]="false"
+        [loading]="!(hasCPPAdditionalInfoLoaded$ | async)" [totalRecords]="totalCount$" [actions]="actions" [defaultOptions]="documentsDataTableOptions | async"
+        (pageChanged)="onGridPageChange($event)" (onSort)="onSort($event)">
+
+        <ae-column [headerText]="'DOCUMENT_NAME'| translate:lang" [sortable]="false">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>{{'DOCUMENT_NAME'| translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <div>
+                        <span>{{context.FileName}}</span>
+                    </div>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+
+        <ae-column [headerText]="'TITLE'| translate:lang" [sortable]="false">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>{{'TITLE'| translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <div>
+                        <span>{{context.Title ? context.Title : ''}}</span>
+                    </div>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+
+        <ae-column [headerText]="'DESCRIPTION'| translate:lang" [sortable]="false">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>{{'DESCRIPTION'| translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <div>
+                        <span>{{context.Description ? context.Description : ''}}</span>
+                    </div>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+
+        <ae-column [headerText]="'DATE'| translate:lang" [sortable]="false">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>{{'DATE'| translate:lang}}</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <div>
+                        <span>{{ context.ModifiedOn | localeDate:defaultLocale:'shortDate' }}</span>
+                    </div>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+
+
+    </ae-datatable>
+</div>
+
+<div [hidden]="!showDocumentUpload">
+    <ae-slideout [id]="'documentUploadSlide'" [name]="'documentUploadSlide'" [modelState]="getDocUploadSlideoutState()" [class.slide--animate]="showDocUploadSelectorSlide">
+        <ng-container *ngIf="showDocUploadSelectorSlide">
+            <document-upload [id]="'riskAssessmentSelector'" [name]="'riskAssessmentSelector'" (onDocumentUploaded)="onDocumentUploadDone($event)"
+                (onDocumentUploadStart)="onDocumentUploadStarted($event)" (onCancel)="onDocumentUploadClose($event)" [usage]="userDocument"
+                [isAttachable]="isAttachable" [regardingObjectId]="regardingObjectId" [regardingObjectTypeCode]="regardingObjectTypeCode"
+                [documentCategory]="documentCategory" [accept]="accept">
+            </document-upload>
+        </ng-container>
+    </ae-slideout>
+</div>
+
+<div *ngIf="showDeleteConfirmDialog">
+    <ae-modal-dialog [visible]="showDeleteConfirmDialog" (cancel)="deleteConfirmModalClosed('no')" [closable]="true" [id]="getChildId('AeModel', 1)"
+        [name]="getChildName('AeModel', 1)">
+        <div class="modal-dialog-header">
+            <h3>{{ 'CPP_ADD.REMOVE_SUPPORTING_DOC' | translate:lang }}</h3>
+        </div>
+        <div class="modal-dialog-body">
+            <p>{{'CPP_ADD.REMOVE_SUPPORTING_DOC_DIALOG' | translate: lang:{documentName: selectedDocument.FileName} }}</p>
+        </div>
+        <div class="modal-dialog-footer">
+            <ae-button [text]="'CPP_ADD.REMOVE_ATTACHMENT_CONFIRM_NO_BTN' | translate:lang" [type]="'button'" [id]="'deleteConfirmNo'"
+                [name]="'deleteConfirmNo'" (aeClick)="deleteConfirmModalClosed('no')"></ae-button>
+            <ae-button [class]="lightClass" [text]="'CPP_ADD.REMOVE_ATTACHMENT_CONFIRM_YES_BTN' | translate:lang" [type]="'button'" [id]="'deleteConfirmYes'"
+                [name]="'deleteConfirmYes'" (aeClick)="deleteConfirmModalClosed('yes')"></ae-button>
+        </div>
+    </ae-modal-dialog>
+</div>

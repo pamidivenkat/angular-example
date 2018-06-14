@@ -1,0 +1,200 @@
+<div class="table spacer" [id]="'risk-assessment-list'">
+  <div class="bottom-30">
+    <ae-notification [id]="getChildId('AeNotification')" [name]="getChildName('AeNotification')" [iconName]="'icon-info'" [textInfo]="getHelpText() | translate:lang">
+    </ae-notification>
+  </div>
+  <ae-datatable [id]="getChildId('DataTable', 1)" [name]="getChildName('DataTable', 1)" [dataSource]="list" [autoGenerateColumns]="false"
+    [totalRecords]="totalCount" [actions]="actions" [defaultOptions]="dataTableOptions | async" [loading]="loading| async"
+    (pageChanged)="onPageChange($event)" (onSort)="onSort($event)">
+
+    <ae-column [headerText]="'TYPE' | translate: lang" [sortable]="false">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'TYPE' | translate: lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <div class="icons" *ngIf="context.RiskAssessmentType">
+            <ae-icon [title]="context.RiskAssessmentType.Name" [id]="getChildId('AeIcon', 1)" [name]="getChildName('AeIcon', 1)"
+              [size]="iconSize" [icon]="getAssessmentIcon(context.RiskAssessmentType.Id)"></ae-icon>
+          </div>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+
+    <ae-column [headerText]="'REFERENCE_NUMBER'| translate:lang" [sortable]="true" [sortKey]="'ReferenceNumber'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'REFERENCE_NUMBER'| translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <div>
+            <span>{{context.ReferenceNumber}}</span>
+          </div>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+
+    <ae-column [headerText]="'ASSESSMENT_NAME'| translate:lang" [sortable]="true" [sortKey]="'Name'" [isMobileView]="true">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'ASSESSMENT_NAME'| translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <div>
+            <label for="soPanel" class="so-panel__activator" (click)="onRADetails(context)">{{context.Name}}</label>
+          </div>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+
+    <ae-column *ngIf="isOverDueTabActive" [headerText]="'DUE_DATE'| translate:lang" [sortable]="true" [sortKey]="'ReviewDate'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'DUE_DATE'| translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <div>
+            <span>{{ context.ReviewDate | localeDate:defaultLocale:'shortDate'}}</span>
+          </div>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+
+    <ae-column *ngIf="!isArchivedTabActive && !isOverDueTabActive && !isExampleTabActive" [headerText]="'ASSESSMENT_DATE'| translate:lang"
+      [sortable]="true" [sortKey]="'AssessmentDate'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'ASSESSMENT_DATE'| translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <div>
+            <span>{{ context.AssessmentDate | localeDate:defaultLocale:'shortDate'}}</span>
+          </div>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+
+    <ae-column *ngIf="isArchivedTabActive" [headerText]="'ARCHIVED_DATE'| translate:lang" [sortable]="true" [sortKey]="'ModifiedOn'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'ARCHIVED_DATE'| translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <div>
+            <span>{{ context.ModifiedOn | localeDate:defaultLocale:'shortDate'}}</span>
+          </div>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+
+    <ae-column [headerText]="'WORKSPACE'| translate:lang" [sortable]="false">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'WORKSPACE'| translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <div>
+            <ae-stamp *ngFor="let item of context.RiskAssessmentWorkspaceTypes" [text]="item.Name" [class]="'stamp--grey'"></ae-stamp>
+          </div>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+
+    <ae-column [headerText]="'SITE'| translate:lang" [sortable]="false" *ngIf="!isExampleTabActive && !isArchivedTabActive">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'SITE'| translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <div>
+            <span>{{ context.Site ? context.Site.Name : context.SiteLocation}}</span>
+          </div>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+
+    <ae-column *ngIf="!isExampleTabActive" [headerText]="'ASSESSOR_NAME'| translate:lang" [sortable]="false">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'ASSESSOR_NAME'| translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <div>
+            <span>{{ getAssesssorName(context) }}</span>
+          </div>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+
+
+    <ae-column *ngIf="isExampleTabActive" [headerText]="'SECTORS'| translate:lang" [sortable]="false">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'SECTORS'| translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <div>
+            <ae-stamp *ngFor="let item of context.RiskAssessmentSectors" [text]="item.Name" [class]="'stamp--grey'"></ae-stamp>
+          </div>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+  </ae-datatable>
+</div>
+
+<ae-legend [options]="legendOptions" [headText]="'LEGEND_HEAD_TEXT' | translate:lang"></ae-legend>
+
+<ae-modal-dialog [visible]="showConfirmDialog" (cancel)="modalClosed($event)" [closable]="true" [id]="getChildId('Aemodal', 1)"
+  [name]="getChildName('Aemodal', 1)" *ngIf="showConfirmDialog">
+  <div class="modal-dialog-header">
+    <h3> {{dialogHeading}}</h3>
+  </div>
+  <div class="modal-dialog-body">
+    <p> {{dialogInfo}}</p>
+  </div>
+  <div class="modal-dialog-footer">
+    <ae-button [text]="_btnNoText" [type]="'button'" [id]="getChildId('ConfirmNo', 1)" [name]="getChildName('ConfirmNo', 1)"
+      (aeClick)="modalClosed($event)"></ae-button>
+    <ae-button [class]="lightClass" [text]="btnYesText" [type]="'button'" [id]="getChildId('ConfirmYes', 1)" [name]="getChildName('ConfirmYes', 1)"
+      (aeClick)="doAction($event)"></ae-button>
+  </div>
+</ae-modal-dialog>
+
+<ae-slideout [id]="getChildId('AeSlideOut', 1)" [name]="getChildName('AeSlideOut', 1)" [modelState]="getSlideoutState()"
+  [class.slide--animate]="isDetails || showReviewSlideout">
+   <ng-container *ngIf="isDetails || showReviewSlideout">
+  <risk-assessment-detail *ngIf="isDetails" [RiskAssessmentVm]="detailData" (onCancel)="onDetailCancel($event)"></risk-assessment-detail>
+  <risk-assessment-review *ngIf="showReviewSlideout" [RiskAssessmentVm]="selectedRiskAssessment" (cancel)="onDetailCancel($event)"
+    (reviewSubmit)="onReviewSubmit($event)"></risk-assessment-review>
+   </ng-container>
+</ae-slideout>
+
+<!-- Copy risk assessment slideout  -->
+  <ae-slideout [id]="getChildId('AeSlideOut', 1)" [name]="getChildName('AeSlideOut', 1)" [modelState]="getCopySlideoutState()"
+    (cancel)="closeCopySlideOut()" [class.slide--animate]="copyRASlideOut">
+    <ng-container *ngIf="copyRASlideOut">
+      <risk-assessment-copy [id]="getChildId('RACopy', 1)" [name]="getChildName('RACopy', 1)" [currentRiskAssessment]="selectedRiskAssessment"
+        (slideOutClose)="closeCopySlideOut()" (copyRiskAssessment)="copyRiskAssessmentSubmit($event)"></risk-assessment-copy>
+    </ng-container>
+  </ae-slideout>
+<!-- Copy risk assessment slideout end -->

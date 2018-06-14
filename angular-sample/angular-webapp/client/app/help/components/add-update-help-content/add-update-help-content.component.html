@@ -1,0 +1,10 @@
+
+  <div [id]="getChildId('div', 1)">
+  <div class="so-panel__title" [id]="getChildId('div', 2)">
+    <h3 *ngIf="isAddForm()">{{'HELP_CONTENTS.ADD_HELP_CONTENT' | translate:lang}}</h3>
+    <h3 *ngIf="isUpdateForm()">{{'HELP_CONTENTS.UPDATE_HELP_CONTENT' | translate:lang}}</h3>
+  </div>
+  <ae-form [formBuilderData]="helpContentsFormVM" [id]="getChildId('AeForm', 1)" [name]="getChildName('AeForm', 1)"
+    [isPrimaryTitle]="false" (onSubmit)="onUpdateFormSubmit($event)" (onCancel)="onUpdateFormClosed($event)" (onFormInit)="onFormInit($event)">
+  </ae-form>
+</div>

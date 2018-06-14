@@ -1,0 +1,120 @@
+<div class="so-panel__title">
+  <h3 class="grey-strip" *ngIf="isUpdateMode()">{{'EMPLOYEE_QUALIFICATION_HISTORY.update_qualification_history_details' | translate:lang}}</h3>
+  <h3 class="grey-strip" *ngIf="!isUpdateMode()">{{'EMPLOYEE_QUALIFICATION_HISTORY.add_qualification_history_details' | translate:lang}}</h3>
+</div>
+<div class="so-panel__content">
+  <div class="information-grid">
+    <form class="form" [formGroup]="empQualificationHistoryAddUpdateForm">
+      <section class="information-grid__section">
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_QUALIFICATION_HISTORY.course' | translate:lang}} <span class="error-text">*</span></div>
+          <div class="information-grid__item-value column-2of3 text-muted">
+            <ae-input [id]="'Course'" [name]="'Course'" [title]="'EMPLOYEE_QUALIFICATION_HISTORY.course_tooltip' | translate:lang" formControlName="Course"
+              [placeholder]="'EMPLOYEE_QUALIFICATION_HISTORY.course' | translate:lang"></ae-input>
+            <span *ngIf="fieldHasRequiredError('Course') || fieldHasOnlySpaceCharacters('Course')" class="error-text">{{'EMPLOYEE_QUALIFICATION_HISTORY.course_required' | translate:lang}}.</span>
+            <span *ngIf="fieldHasInvalidName('Course')" class="form__input__error">{{'EMPLOYEE_EDUCATION_HISTORY.only_alpha_msg' | translate:lang}}.</span>
+          </div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_QUALIFICATION_HISTORY.course_code' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3 text-muted">
+            <ae-input [id]="'CourseCode'" [name]="'CourseCode'" [title]="'EMPLOYEE_QUALIFICATION_HISTORY.course_code_tooltip' | translate:lang"
+              formControlName="CourseCode" [placeholder]="'EMPLOYEE_QUALIFICATION_HISTORY.course_code' | translate:lang"></ae-input>
+          </div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_QUALIFICATION_HISTORY.qualification' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3 text-muted">
+            <ae-input [id]="'Qualification'" [name]="'Qualification'" [title]="'EMPLOYEE_QUALIFICATION_HISTORY.qualification_tooltip' | translate:lang"
+              formControlName="Qualification" [placeholder]="'EMPLOYEE_QUALIFICATION_HISTORY.qualification' | translate:lang"></ae-input>
+          </div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_QUALIFICATION_HISTORY.date_started' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3 text-muted">
+            <ae-datetime-picker [id]="getChildId('AeDatetimePicker',1)" [name]="getChildName('AeDatetimePicker',1)" [monthNavigator]="true"
+              [title]="'EMPLOYEE_QUALIFICATION_HISTORY.date_started_tooltip' | translate:lang" [yearNavigator]="true" yearRange="1910:2030"
+              [showIcon]="true" formControlName="DateStarted">
+            </ae-datetime-picker>
+          </div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_QUALIFICATION_HISTORY.date_completed' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3 text-muted">
+            <ae-datetime-picker [id]="getChildId('AeDatetimePicker',2)" [name]="getChildName('AeDatetimePicker',2)" [monthNavigator]="true"
+              [title]="'EMPLOYEE_QUALIFICATION_HISTORY.date_completed_tooltip' | translate:lang" [yearNavigator]="true" yearRange="1910:2030"
+              [showIcon]="true" formControlName="DateCompleted">
+            </ae-datetime-picker>
+            <span *ngIf="formHasError('dateCompletedValidator')" class="error-text">{{'EMPLOYEE_QUALIFICATION_HISTORY.completion_date_greater_than_start_date_Validation' | translate:lang}}</span>
+          </div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_QUALIFICATION_HISTORY.expiry_date' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3 text-muted">
+            <ae-datetime-picker [id]="getChildId('AeDatetimePicker',3)" [name]="getChildName('AeDatetimePicker',3)" [monthNavigator]="true"
+              [title]="'EMPLOYEE_QUALIFICATION_HISTORY.expiry_date_tooltip' | translate:lang" [yearNavigator]="true" yearRange="1910:2030"
+              [showIcon]="true" formControlName="ExpiryDate">
+            </ae-datetime-picker>
+            <span *ngIf="formHasExpiryError('expiryDateValidator')" class="error-text">{{'EMPLOYEE_QUALIFICATION_HISTORY.expiry_date_greater_than_completed_Validation' | translate:lang}}</span>
+
+          </div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_QUALIFICATION_HISTORY.trainer_name' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3 text-muted">
+            <ae-input [id]="'TrainerName'" [name]="'TrainerName'" [title]="'EMPLOYEE_QUALIFICATION_HISTORY.trainer_name_tooltip' | translate:lang"
+              formControlName="TrainerName" [placeholder]="'EMPLOYEE_QUALIFICATION_HISTORY.trainer_name' | translate:lang"></ae-input>
+          </div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_QUALIFICATION_HISTORY.location' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3 text-muted">
+            <ae-input [id]="'Location'" [name]="'Location'" [title]="'EMPLOYEE_QUALIFICATION_HISTORY.location_tooltip' | translate:lang"
+              formControlName="Location" [placeholder]="'EMPLOYEE_QUALIFICATION_HISTORY.location' | translate:lang"></ae-input>
+          </div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_QUALIFICATION_HISTORY.course_grade' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3 text-muted">
+            <ae-input [id]="'CourseGrade'" [name]="'CourseGrade'" [title]="'EMPLOYEE_QUALIFICATION_HISTORY.course_grade_tooltip' | translate:lang"
+              formControlName="CourseGrade" [placeholder]="'EMPLOYEE_QUALIFICATION_HISTORY.course_grade' | translate:lang"></ae-input>
+          </div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_QUALIFICATION_HISTORY.provider' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3 text-muted">
+            <ae-input [id]="'Provider'" [name]="'Provider'" [title]="'EMPLOYEE_QUALIFICATION_HISTORY.provider_tooltip' | translate:lang"
+              formControlName="Provider" [placeholder]="'EMPLOYEE_QUALIFICATION_HISTORY.provider' | translate:lang"></ae-input>
+          </div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_QUALIFICATION_HISTORY.course_description' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3 text-muted">
+            <ae-textarea formControlName="CourseDescription" [showcharleft]="true" [showOnFocus]="false" [placeholder]="'EMPLOYEE_QUALIFICATION_HISTORY.course_description' | translate:lang"
+              [maxlength]="5000" [id]="getChildId('AeTextarea',1)" [name]="getChildName('AeTextarea',1)" [title]="'EMPLOYEE_QUALIFICATION_HISTORY.course_description_tooltip' | translate:lang"></ae-textarea>
+          </div>
+        </div>
+      </section>
+      <div class="form__error">
+      </div>
+
+    </form>
+  </div>
+</div>
+<div class="so-panel__footer">
+  <nav>
+    <ul>
+      <li><label for="soPanel" class="button button--inline-block" [id]="getChildId('AeButton',1)" (click)="onAddUpdateFormClosed($event)"
+          [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label></li>
+      <li class="pull--right" *ngIf="!isUpdateMode()">
+        <ae-anchor [id]="getChildId('AeAnchor',1)" [name]="getChildName('AeAnchor',1)" [anchorType]="'button'" [class]="'button button--inline-block'"
+          [anchorClass]="lightClass" (aeClick)="onAddUpdateFormSubmit($event)" [title]="'BUTTONS.ADD' | translate:lang" [text]="'BUTTONS.ADD' | translate:lang"></ae-anchor>
+      </li>
+      <li class="pull--right" *ngIf="isUpdateMode()">
+        <ae-anchor [id]="getChildId('AeAnchor',1)" [name]="getChildName('AeAnchor',1)" [anchorType]="'button'" [class]="'button button--inline-block'"
+          [anchorClass]="lightClass" (aeClick)="onAddUpdateFormSubmit($event)" [title]="'BUTTONS.UPDATE' | translate:lang"
+          [text]="'BUTTONS.UPDATE' | translate:lang"></ae-anchor>
+      </li>
+    </ul>
+  </nav>
+</div>

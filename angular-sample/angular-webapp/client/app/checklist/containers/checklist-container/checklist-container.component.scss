@@ -1,0 +1,22 @@
+.checklist-container {
+  .button-bar {
+    -webkit-justify-content: flex-start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    text-align: inherit;
+
+    &.banner-buttons {
+      > div {
+        display: block;
+        width: 100%;
+
+        &.button-bar__item {
+          width: auto;
+          display: inline-block;
+          flex-grow: 1;
+        }
+      }
+
+    }
+  }
+}

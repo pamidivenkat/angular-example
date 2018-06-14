@@ -1,0 +1,10 @@
+<div class="snackbar">
+  <div class="snackbar__content">
+    <div class="indicator-block snackbar__type" [class.info]="checkSnackbarType('Info')" [class.error]="checkSnackbarType('Error')" [class.success]="checkSnackbarType('Success')">
+    {{snackbarMessageType()}} </div>
+    <div class="snackbar__message" [innerHTML]="snackbarModel.Message"></div>
+  </div>
+  <div class="snackbar__close">
+    <ae-anchor [id]="'snackbarClose'" [name]="'snackbarClose'" [text]="'Close'" (aeClick)="close()"></ae-anchor>
+  </div>
+</div>

@@ -1,0 +1,35 @@
+@import '../../../assets/scss/variablesMap';
+.list {
+  padding: 0;
+}
+
+.sort-item {
+  cursor: pointer;
+  padding: 10px 5px;
+  background: $grey--pale;
+  position: relative;
+  .remove-btn {
+    display: none;
+  }
+  &:hover {
+    background: $grey--4;
+    .remove-btn {
+      border-radius: 9px;
+      border: 1px solid $red--1;
+      background: $white;
+      width: 18px;
+      height: 18px;
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      padding-left: 3px;
+      line-height: 17px;
+      position: absolute;
+      right: -2px;
+      top: -2px;
+    }
+  }
+  &.separator {
+    margin-bottom: 3px;
+  }
+}

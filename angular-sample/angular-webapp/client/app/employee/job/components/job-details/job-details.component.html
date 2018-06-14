@@ -1,0 +1,99 @@
+<div [id]="id">
+  <div class="section-title">
+    <h3>{{'EMPLOYEE_JOB_DETAILS.job_details' | translate:lang}}</h3>
+    <ae-button [type]="'button'" *ngIf="canUpdate$ | async" [id]="getChildId('AeButton', 1)" [name]="getChildName('AeButton', 1)"
+      (aeClick)="openEmpJobDetailsUpdateForm($event)" class="btn" [class]="btnStyle" [title]="'BUTTONS.UPDATE' | translate:lang"
+      [text]="'BUTTONS.UPDATE' | translate:lang"></ae-button>
+  </div>
+
+  <div class="information-grid">
+    <section class="information-grid__section">
+      <div class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_JOB_DETAILS.job_title' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" [class.text-muted]="!(EmployeeJobDetails$ | async)?.JobTitleName" id="jobdetails_job_title">{{(EmployeeJobDetails$ | async)?.JobTitleName || noneText}}</div>
+      </div>
+      <div class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_JOB_DETAILS.department_or_team' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" [class.text-muted]="!(EmployeeJobDetails$ | async)?.DepartmentName"
+          id="jobdetails_department_or_team">{{(EmployeeJobDetails$ | async)?.DepartmentName || noneText}}</div>
+      </div>
+      <div class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_JOB_DETAILS.location' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" [class.text-muted]="!(EmployeeJobDetails$ | async)?.SiteNameAndPostcode"
+          id="jobdetails_location">{{(EmployeeJobDetails$ | async)?.SiteNameAndPostcode || noneText}} </div>
+      </div>
+      <div class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_JOB_DETAILS.start_date' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" [class.text-muted]="!(EmployeeJobDetails$ | async)?.StartDate" id="jobdetails_start_date">{{((EmployeeJobDetails$ | async)?.StartDate) | localeDate:defaultLocale:'shortDate' || noneText}} <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span>{{ calculateYearsAndMonthsFromToday((EmployeeJobDetails$ | async)?.StartDate)}}</span></div>
+      </div>
+      <div class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_JOB_DETAILS.home_based' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" [class.text-muted]="!(EmployeeJobDetails$ | async)?.HomeBased" id="jobdetails_home_based">{{((EmployeeJobDetails$ | async)?.HomeBased == true ? yesText : noText) || noText}}</div>
+      </div>
+      <div class="information-grid__item">
+        <div class="information-grid__item-label column-1of3" [title]="'EMPLOYEE_JOB_DETAILS.working_days_profile' | translate:lang">{{'EMPLOYEE_JOB_DETAILS.working_days_profile' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" [class.text-muted]="!(EmployeeJobDetails$ | async)?.HolidayWorkingProfileName"
+          id="jobdetails_working_days_profile">{{(EmployeeJobDetails$ | async)?.HolidayWorkingProfileName || noneText}}</div>
+      </div>
+      <div class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_JOB_DETAILS.employee_number' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" [class.text-muted]="!(EmployeeJobDetails$ | async)?.EmployeeNumber"
+          id="jobdetails_employee_number">{{(EmployeeJobDetails$ | async)?.EmployeeNumber || noneText}}</div>
+      </div>
+      <div class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_JOB_DETAILS.employment_type' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" [class.text-muted]="!(EmployeeJobDetails$ | async)?.EmpTypeName" id="jobdetails_employment_type">{{((EmployeeJobDetails$ | async)?.EmpTypeName != 'Other' ? (EmployeeJobDetails$ | async)?.EmpTypeName : (EmployeeJobDetails$
+          | async)?.OtherEmployeeType) || noneText}} </div>
+      </div>
+      <div class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_JOB_DETAILS.employment' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" [class.text-muted]="!(EmployeeJobDetails$ | async)?.HoursAWeek" id="jobdetails_employment">{{(EmployeeJobDetails$ | async)?.HoursAWeek}} hours per week over {{(EmployeeJobDetails$ | async)?.Days || (EmployeeSettings$
+          | async)?.DaysPerWeek}} days</div>
+      </div>
+      <div class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_JOB_DETAILS.holiday_unit' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" [class.text-muted]="!(EmployeeJobDetails$ | async)?.HolidayUnitType"
+          id="jobdetails_holiday_unit">{{ (EmployeeJobDetails$ | async)?.HolidayUnitType!=null ? ( (EmployeeJobDetails$ | async)?.HolidayUnitType == 1 ? 'Days' : 'Hours' || noneText) : ( (EmployeeSettings$ | async)?.HolidayUnitType == 1 ? 'Days' : 'Hours' || noneText) }}</div>
+      </div>
+      <div class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_JOB_DETAILS.holiday_entitlement' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" [class.text-muted]="!(EmployeeJobDetails$ | async)?.HolidayEntitlement"
+          id="jobdetails_holiday_entitlement">{{holidayEntitlement}}
+        </div>
+      </div>
+      <div class="information-grid__item">
+        <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_JOB_DETAILS.probation_period_in_month' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" [class.text-muted]="!(EmployeeJobDetails$ | async)?.ProbationaryPeriod"
+          id="jobdetails_probation_period_in_month">{{(EmployeeJobDetails$ | async)?.ProbationaryPeriod || 0}}</div>
+      </div>
+      <div class="information-grid__item" *ngIf="(EmployeeSettings$ | async)?.AllowCarryForwardHolidays">
+        <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_JOB_DETAILS.carry_forwarded_units' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" [class.text-muted]="!(EmployeeJobDetails$ | async)?.CarryForwardedUnits"
+          id="jobdetails_carry_forwarded_units">{{(EmployeeJobDetails$ | async)?.CarryForwardedUnits || 0}}</div>
+      </div>
+      <div class="information-grid__item" *ngIf="(EmployeeSettings$ | async)?.AllowCarryForwardHolidays">
+        <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_JOB_DETAILS.expired_carry_forwarded_units' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" [class.text-muted]="!(EmployeeJobDetails$ | async)?.ExpiredCarryForwardedUnits"
+          id="jobdetails_expired_carry_forwarded_units">{{(EmployeeJobDetails$ | async)?.ExpiredCarryForwardedUnits || 0}} </div>
+      </div>
+      <div class="information-grid__item" *ngIf="(EmployeeSettings$ | async)?.AllowCarryForwardHolidays">
+        <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_JOB_DETAILS.carry_forwarded_unit_type' | translate:lang}}</div>
+        <div class="information-grid__item-value column-2of3" [class.text-muted]="!(EmployeeJobDetails$ | async)?.CarryForwardedUnitType"
+          id="jobdetails_carry_forwarded_unit_type">{{getUnitTypeText() || noneText}}</div>
+      </div>
+    </section>
+  </div>
+
+  <div [class.parent-element]="canExpandSlideout">
+    <ae-slideout [id]="getChildId('AeSlideOut', 1)" [name]="getChildName('AeSlideOut', 1)" [modelState]="getSlideoutState()"
+      (cancel)="closeUpdateForm($event)" [class.slide--animate]="showEmpJobDetailsUpdateForm">
+      <ng-container *ngIf="showEmpJobDetailsUpdateForm">
+        <job-details-update [id]="getChildId('JobDetailsUpdate', 1)" [name]="getChildName('JobDetailsUpdate', 1)" (aeClose)="closeUpdateForm($event)"
+          [Sites]="Sites$ | async" [Departments]="Departments$ | async" [EmploymentTypes]="EmploymentTypes$ | async" [EmployeeJobDetails]="EmployeeJobDetails$ | async"
+          [JobTitles]="JobTitles$ | async" [EmployeeSettings]="EmployeeSettings$ | async" (aeSubmit)="submitJobDetails($event)"
+          (expandParentContainer)="expandSlideout($event)" (collapseParentContainer)="collapseSlideout($event)">
+        </job-details-update>
+      </ng-container>
+    </ae-slideout>
+  </div>
+</div>

@@ -1,0 +1,19 @@
+@import '../ae-button/ae-button.component';
+
+.separator {
+    margin-top: 0px !important;
+  }
+@media all and (-ms-high-contrast:none) {
+  .table__row{
+    .grid-action {
+      width: 120px;
+      height: 30px;
+      .button {
+        width: 120px;
+        height: 30px;
+        display: inline-block;
+        padding: 5px 10px;
+      }
+    }
+  }
+}

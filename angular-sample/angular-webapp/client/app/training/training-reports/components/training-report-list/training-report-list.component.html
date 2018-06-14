@@ -1,0 +1,141 @@
+<div [id]="id" class="table spacer">
+  <form [formGroup]="trainingReportListForm" [id]="getChildId('trainingReportListForm', 1)" [name]="getChildName('trainingReportListForm', 1)">
+    <div class="table__filter-bar">
+      <div class="filter-bar">
+        <div class="filter-bar__label label">{{'Filter_by' | translate: lang}}</div>
+        <div class="sg-grid grid--1-1-3">
+          <div>
+            <ae-input [id]="getChildId('AeInput', 1)" [name]="getChildName('AeInput', 1)" [placeholder]="'TRAINING_REPORT.COURSE'| translate:lang"
+              formControlName="_course"></ae-input>
+          </div>
+          <div>
+            <ae-input [id]="getChildId('AeInput', 1)" [name]="getChildName('AeInput', 1)" [placeholder]="'TRAINING_REPORT.FULL_NAME'| translate:lang"
+              formControlName="_fullName"></ae-input>
+          </div>
+          <div>
+            <ae-datetime-picker [id]="getChildId('_startdate',1)" [name]="getChildName('_startdate',1)" [monthNavigator]="true" [yearNavigator]="true"
+              yearRange="1910:2099" [showIcon]="true" [placeholder]="'Start_date_placeholder' | translate:lang" formControlName="_startDate">
+            </ae-datetime-picker>
+          </div>
+          <div>
+            <ae-datetime-picker [id]="getChildId('_enddate',1)" [name]="getChildName('_enddate',1)" [monthNavigator]="true" [yearNavigator]="true"
+              yearRange="1910:2099" [showIcon]="true" [placeholder]="'End_date_placeholder' | translate:lang" formControlName="_endDate">
+            </ae-datetime-picker>
+          </div>
+          <div>
+            <ae-autocomplete [id]="getChildId('AeSelect', 1)" [name]="getChildName('AeSelect', 1)" [placeholder]="'ALL' | translate:lang"
+              [multiselect]="'true'" [items]="trainingStatus" [dstype]="localDataSouceType" [field]="'Text'" [valuefield]="'Value'"
+              formControlName="_progressType"></ae-autocomplete>
+
+          </div>
+          <div>
+            <ae-select [id]="getChildId('AeSelect', 1)" [name]="getChildName('AeSelect', 1)" [options]="statusTypes" formControlName="_statusType"></ae-select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <ae-datatable [id]="getChildId('AeDataTable')" [name]="getChildName('AeDataTable')" [dataSource]="reportsList$" [autoGenerateColumns]="false"
+    [totalRecords]="totalRecords$" [loading]="loadingStatus$ |async" [defaultOptions]="dataTableOptions$ | async" (pageChanged)="onPageChange($event)"
+    (onSort)="onPageSort($event)">
+    <ae-column [headerText]="'TRAINING_REPORT.COURSE' | translate: lang" [sortable]="true" [sortKey]="'CourseTitle'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'TRAINING_REPORT.COURSE' | translate: lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <span>{{context.CourseTitle}}</span><br>
+
+          <span *ngIf="context.ModuleTitle" class="text-sub">&raquo; {{context.ModuleTitle}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'TRAINING_REPORT.VERSION' | translate: lang" [sortable]="true" [sortKey]="'CourseVersion'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'TRAINING_REPORT.VERSION' | translate: lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <span>{{context.CourseVersion}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'TRAINING_REPORT.FULL_NAME' | translate: lang" [sortable]="true" [sortKey]="'FirstName'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'TRAINING_REPORT.FULL_NAME' | translate: lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <span>{{context.FirstName}}&nbsp;{{context.LastName}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'TRAINING_REPORT.ASSIGNED_DATE' | translate: lang" [sortable]="true" [sortKey]="'StartDate'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'TRAINING_REPORT.ASSIGNED_DATE' | translate: lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <span>{{context.StartDate | localeDate:defaultLocale:'shortDate'}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'TRAINING_REPORT.COMPLETED_DATE' | translate: lang" [sortable]="true" [sortKey]="'PassDate'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'TRAINING_REPORT.COMPLETED_DATE' | translate: lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <span>{{context.PassDate | localeDate:defaultLocale:'shortDate'}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'TRAINING_REPORT.EXPIRY_DATE' | translate: lang" [sortable]="true" [sortKey]="'ExpiryDate'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'TRAINING_REPORT.EXPIRY_DATE' | translate: lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <span>{{context.ExpiryDate |  localeDate:defaultLocale:'shortDate'}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'TRAINING_REPORT.STATUS' | translate: lang" [sortable]="true" [sortKey]="'Status'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'TRAINING_REPORT.STATUS' | translate: lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <span>{{getStatusText(context.Status)}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'ACTIONS' | translate: lang" [sortable]="false">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'ACTIONS' | translate: lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <ae-button [customClass]="'button--condensed button--cta'" [btnIcon]="'icon-alert-download'" [title]="'Download certificate'"
+            [type]="'button'" [id]="'btnDownload'" [name]="'btnDownload'" (aeClick)="onDownloadClick(context)" *ngIf="showDownloadCertificate(context.CertificateCount)"></ae-button>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+  </ae-datatable>
+</div>

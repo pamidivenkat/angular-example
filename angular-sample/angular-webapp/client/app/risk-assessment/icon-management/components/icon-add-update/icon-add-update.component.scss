@@ -1,0 +1,38 @@
+@import '../../../../../assets/scss/variablesMap';
+.buttons-icon {
+  margin-top: 20px;
+  padding-left: 10px;
+  ae-button {
+    display: block;
+    margin-top: 15px;
+  }
+}
+
+.img-height {
+  max-height: 100%;
+  width:auto;
+  max-width:100%;
+  text-align:center;
+  img{max-width:100%; margin:auto; max-height: 144px; width: auto;}
+}
+
+.icon-add-update-slideout{
+  ae-loader {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba($white, .3);
+    height: 100%;
+  }
+  .sg-grid{
+    padding-left: 15px;
+    .card{
+      border: 3px solid #009494;
+      height: 150px;
+      overflow: hidden;
+      .card__content{margin: 50px auto;}
+    }
+  }
+}

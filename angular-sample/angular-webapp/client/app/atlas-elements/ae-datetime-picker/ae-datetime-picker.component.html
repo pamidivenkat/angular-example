@@ -1,0 +1,69 @@
+<div [id]="id" class="ui-calendar" [class.ui-calendar-w-btn]="isShowIcon()" [class.input-state-disable]="isInputDisabled()">
+    <ng-template [ngIf]="isNotInline()">
+        <div [id]="getChildId('div', 2)" class="input-group">
+            <ae-input #inputfield [id]="getChildId('ae-input', 3)" [name]="getChildName('ae-input', 3)" [type]="inputType" [value]="inputFieldValue" [readonly]="isReadonly()" (aeFocus)="onButtonClick($event, inputfield)" (aeKeyDown)="onInputKeydown($event)" (aeChange)="onInput($event)"
+                [placeholder]="placeholder" (aeBlur)="onInputBlur($event)"></ae-input>
+            <ae-button *ngIf="isShowIcon()" [id]="getChildId('ae-button', 4)" [class]="'ui-datepicker-trigger'" [class.ui-state-disabled]="isDisabled()" [disabled]="isDisabled()" [id]="'calendarBtn'" [name]="'calendarBtn'" (aeClick)="onButtonClick($event,inputfield)"
+                [btnIcon]="'icon-date'"></ae-button>
+        </div>
+    </ng-template>
+
+    <div #datepicker [id]="getChildId('div', 5)" class="ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" [class.ui-datepicker-inline]="isInline()" [class.ui-shadow]="isNotInline()" [class.ui-state-disabled]="isDisabled()" [class.ui-datepicker-timeonly]="isTimeOnly()"
+        [ngStyle]="{'display': setDatesStyle()}" (click)="onDatePickerClick($event)" [@overlayState]="datesOverlayState()">
+        <div [id]="getChildId('div', 6)" class="ui-datepicker-header ui-widget-header ui-helper-clearfix ui-corner-all" *ngIf="isShowOverlay()">
+            <ae-anchor [anchorNav]="backward" [id]="getChildId('ae-anchor', 7)" [name]="getChildName('ae-anchor', 7)" (aeClick)="prevMonth($event)"></ae-anchor>
+            <ae-anchor [anchorNav]="forward" [id]="getChildId('ae-anchor', 8)" [name]="getChildName('ae-anchor', 8)" (aeClick)="nextMonth($event)"></ae-anchor>
+            <div [id]="getChildId('div', 8)" class="ui-datepicker-title">
+                <span [id]="getChildId('span', 9)" class="ui-datepicker-month" *ngIf="isNotMonthNavigator()">{{currentMonthText}}</span>
+                <ae-select [id]="getChildId('ae-select', 10)" [name]="getChildName('ae-select', 10)" [placeholder]="''" *ngIf="isMonthNavigator()" (aeSelectChange)="onMonthDropdownChange($event)" [options]="monthOptions" [value]="currentMonth"></ae-select>
+                <ae-select [id]="getChildId('ae-select', 11)" [name]="getChildName('ae-select', 11)" [placeholder]="''" *ngIf="isYearNavigator()" (aeSelectChange)="onYearDropdownChange($event)" [options]="yearOptions" [value]="currentYear"></ae-select>
+                <span [id]="getChildId('span', 12)" class="ui-datepicker-year" *ngIf="isNotYearNavigator()">{{currentYear}}</span>
+            </div>
+        </div>
+        <table [id]="getChildId('table', 13)" class="ui-datepicker-calendar" *ngIf="isShowOverlay()">
+            <thead>
+                <tr>
+                    <th scope="col" *ngFor="let weekDay of weekDays; let i = index">
+                        <span [id]="getChildId('span', i)">{{weekDay}}</span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let week of dates">
+                    <td *ngFor="let date of week; let i = index" [class.ui-datepicker-other-month]="isOtherMonth(date)" [class.ui-state-disabled]="isOtherMonth(date)" [class.ui-datepicker-current-day]="isSelected(date)" [class.ui-datepicker-today]="isTodayDate(date)">
+                        <a [id]="getChildId('a', i)" [name]="getChildName('a', i)" class="ui-state-default" href="javascript:void(0)" *ngIf="isNotOtherMonthDate(date)" [class.ui-state-active]="isSelected(date)" [class.ui-state-highlight]="isTodayDate(date)" [class.ui-state-disabled]="isDateNotSelectable(date)"
+                            (click)="onDateSelect($event,date)">{{date.day}}</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div [id]="getChildId('div', 14)" class="ui-timepicker ui-widget-header ui-corner-all" *ngIf="isShowTime() || isTimeOnly()">
+            <div [id]="getChildId('div', 15)" class="ui-hour-picker">
+                <ae-anchor [id]="getChildId('ae-anchor', 16)" [name]="getChildName('ae-anchor', 16)" (aeClick)="incrementHour($event)"></ae-anchor>
+                <span [id]="getChildId('span', 17)" [ngStyle]="{'display': setTimeStyle(currentHour)}">0</span><span>{{currentHour}}</span>
+                <ae-anchor [id]="getChildId('ae-anchor', 18)" [name]="getChildName('ae-anchor', 18)" (aeClick)="decrementHour($event)"></ae-anchor>
+            </div>
+            <div [id]="getChildId('div', 19)" class="ui-separator">
+                <span [id]="getChildId('span', 20)">:</span>
+            </div>
+            <div [id]="getChildId('div', 21)" class="ui-minute-picker">
+                <ae-anchor [id]="getChildId('ae-anchor', 22)" [name]="getChildName('ae-anchor', 22)" (aeClick)="incrementMinute($event)"></ae-anchor>
+                <span [id]="getChildId('span', 23)" [ngStyle]="{'display': setTimeStyle(currentMinute)}">0</span><span>{{currentMinute}}</span>
+                <ae-anchor [id]="getChildId('ae-anchor', 24)" [name]="getChildName('ae-anchor', 24)" (aeClick)="decrementMinute($event)"></ae-anchor>
+            </div>
+            <div [id]="getChildId('div', 25)" class="ui-separator" *ngIf="isShowSeconds()">
+                <span [id]="getChildId('span', 26)">:</span>
+            </div>
+            <div [id]="getChildId('div', 27)" class="ui-second-picker" *ngIf="isShowSeconds()">
+                <ae-anchor [id]="getChildId('ae-anchor', 28)" [name]="getChildName('ae-anchor', 28)" (aeClick)="incrementSecond($event)"></ae-anchor>
+                <span [id]="getChildId('span', 29)" [ngStyle]="{'display': setTimeStyle(currentSecond)}">0</span><span>{{currentSecond}}</span>
+                <ae-anchor [id]="getChildId('ae-anchor', 30)" [name]="getChildName('ae-anchor', 30)" (aeClick)="decrementSecond($event)"></ae-anchor>
+            </div>
+            <div [id]="getChildId('div', 31)" class="ui-ampm-picker" *ngIf="is12hourClock()">
+                <ae-anchor [id]="getChildId('ae-anchor', 32)" [name]="getChildName('ae-anchor', 32)" (aeClick)="toggleAMPM($event)"></ae-anchor>
+                <span [id]="getChildId('span', 33)">{{ setMeridian() }}</span>
+                <ae-anchor [id]="getChildId('ae-anchor', 34)" [name]="getChildName('ae-anchor', 34)" (aeClick)="toggleAMPM($event)"></ae-anchor>
+            </div>
+        </div>
+    </div>
+</div>

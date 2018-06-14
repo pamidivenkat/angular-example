@@ -1,0 +1,48 @@
+@import '../../../../../assets/scss/variablesMap';
+.checkbox-list-group{
+    position:relative;
+.button-group-list{
+    overflow: hidden;
+    background: $white;
+    display: inline-block;
+    border-radius: 4px;
+    border: solid 1px $grey--pale;
+    ae-checkbox{
+        float: left;
+        margin: 0 10px;
+    }
+    .icon-sec{
+        float: left;
+    border-left: solid 1px $grey--pale;
+    padding: 9px;
+    cursor:pointer;
+    }
+}
+
+.dropdown-list{
+position: absolute;
+    right: 0;
+    z-index: 1000;
+    display: none;
+    min-width: 160px;
+    padding: 5px 10px;
+    margin: 2px 0 0;
+    list-style: none;
+    font-size: 14px;
+    text-align: left;
+    background-color: $white;
+    border: 1px solid $grey--pale;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: 0;
+    -webkit-box-shadow: 0 6px 12px rgba($black,.175);
+    box-shadow: 0 6px 12px rgba($black,.175);
+    background-clip: padding-box;
+    white-space:nowrap;
+    label{padding:5px}
+   
+}
+ &.open .dropdown-list{
+        display:block;
+    }
+}
+.hide-pagination .table__footer{display:none;}

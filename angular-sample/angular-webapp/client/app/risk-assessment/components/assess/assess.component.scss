@@ -1,0 +1,195 @@
+@import '../../../../assets/scss/variablesMap';
+
+.rating-row {
+  overflow: hidden;
+  @include media-over-1049 {
+    > div {
+      width: 50%;
+      float: left;
+    }
+  }
+}
+
+.overall-rating-grid {
+  overflow: hidden;
+  padding: 15px 0;
+
+  > div {
+    margin-bottom: 25px;
+    @include media-over-979 {
+      margin-bottom: 0;
+      float: left;
+      width: 30%;
+      padding: 0 15px;
+
+      &:nth-child(2) {
+        width: 40%;
+      }
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+}
+
+.border-top-grey:not(:first-child) {
+  border-top: solid 1px $grey--4;
+}
+
+.rating-line {
+  text-align: center;
+  overflow: hidden;
+
+  > div {
+    width: 33.33%;
+    float: left;
+    position: relative;
+    height: 100px;
+    padding: 0 5px;
+    white-space: nowrap;
+
+    &:after,
+    &:before {
+      content: '';
+      position: absolute;
+    }
+
+    &:before {
+      border-bottom: solid 2px $black;
+    }
+
+    &:after {
+      border-left: solid 2px $black;
+    }
+  }
+
+  .line-l {
+    &:after,
+    &:before {
+      bottom: 0;
+      left: 50%;
+    }
+
+    &:before {
+      width: 50%;
+    }
+
+    &:after {
+      height: 50px;
+    }
+  }
+
+  .line-m {
+    &:before {
+      width: 100%;
+      bottom: 0;
+      left: 0;
+    }
+
+    &:after {
+      height: 40px;
+      bottom: 0;
+      left: 50%;
+    }
+  }
+
+  .line-r {
+    &:after,
+    &:before {
+      bottom: 0;
+      right: 50%;
+    }
+
+    &:before {
+      width: 50%;
+    }
+
+    &:after {
+      height: 50px;
+    }
+  }
+}
+
+.rating-line.flip-v {
+  margin-top: 20px;
+  clear: both;
+
+  > div {
+    padding-top: 60px;
+  }
+
+  .line-l {
+    &:after,
+    &:before {
+      bottom: auto;
+      top: 0;
+    }
+  }
+
+  .line-m {
+    &:after,
+    &:before {
+      bottom: auto;
+      top: 0;
+    }
+  }
+
+  .line-r {
+    &:after,
+    &:before {
+      bottom: auto;
+      top: 0;
+    }
+  }
+}
+
+.popover {
+  max-width: 800px;
+}
+
+.popover-head {
+  margin: -10px -10px 0;
+  background-color: $teal--3;
+  border-radius: 10px 10px 0 0;
+  padding: 15px;
+
+  h3 {
+    margin: 0;
+  }
+}
+
+.rating-scroll {
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 10px;
+  margin-right: -10px;
+}
+
+.container-hazard img {
+  margin-bottom: 5px;
+  max-height: 128px;
+  max-width: 128px;
+}
+
+.rating-popup {
+  .column-1of3,
+  .column-2of3 {
+    width: 100%;
+    text-align: center;
+    padding-top:15px;
+    img{margin:auto;}
+  }
+  @include media-over-767 {
+    .column-2of3 {
+      width: 66.66666667%;
+      padding-top:0;
+    }
+
+    .column-1of3 {
+      padding-top:0;
+      width: 33.33333333%;
+    }
+  }
+}

@@ -1,0 +1,19 @@
+<div class="cal-month-view">
+  <div class="cal-cell-row cal-header">
+    <div class="cal-cell" *ngFor="let header of columnHeaders">
+      {{ header }}
+    </div>
+  </div>
+  <div class="cal-days">
+    <div *ngFor="let rowIndex of view.rowOffsets">
+      <div class="cal-cell-row">
+        <ae-calendar-month-cell-view *ngFor="let day of view.days | slice : rowIndex : rowIndex + 7" [day]="day" [dayClick]="dayClick">
+        </ae-calendar-month-cell-view>
+      </div>
+    
+        <ae-calendar-month-events-view [dayClick]="dayClick" [isOpen]="openRowIndex === rowIndex">
+        </ae-calendar-month-events-view>
+  
+    </div>
+  </div>
+</div>

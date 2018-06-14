@@ -1,0 +1,113 @@
+// Stylesheet: Mixins & Constants Stylesheet
+@mixin media-over-480 {
+   @media only screen and (min-width: 481px){
+    @content;
+  }
+}
+@mixin media-over-767 {
+   @media (min-width: 768px){
+    @content;
+  }
+}
+@mixin media-over-979 {
+   @media only screen and (min-width: 980px){
+    @content;
+  }
+}
+@mixin media-over-1049 {
+   @media only screen and (min-width: 1050px){
+    @content;
+  }
+}
+@mixin media-over-1239 {
+   @media only screen and (min-width: 1240px){
+    @content;
+  }
+}
+@mixin media-0-480 {
+   @media only screen and (max-width: 480px){
+    @content;
+  }
+}
+@mixin media-0-767 {
+   @media only screen and (max-width: 767px){
+    @content;
+  }
+}
+@mixin media-481-767 {
+   @media only screen and (min-width: 481px) and (max-width: 767px){
+    @content;
+  }
+}
+@mixin media-481-979 {
+   @media only screen and (min-width: 481px) and (max-width: 979px){
+    @content;
+  }
+}
+@mixin media-768-979 {
+   @media only screen and (min-width: 768px) and (max-width: 979px){
+    @content;
+  }
+}
+@mixin media-980-1049 {
+   @media only screen and (min-width: 980px) and (max-width: 1049px){
+    @content;
+  }
+}
+@mixin media-1050-1239 {
+   @media only screen and (min-width: 1050px) and (max-width: 1239px){
+    @content;
+  }
+}
+@mixin media-height-over-559 {
+   @media screen and (min-height: 560px){
+    @content;
+  }
+}
+@mixin media-height-over-767 {
+   @media screen and (min-height: 768px){
+    @content;
+  }
+}
+@mixin media-height-over-979 {
+   @media screen and (min-height: 980px){
+    @content;
+  }
+}
+@mixin clearfix {
+  &::after {
+    clear: both;
+    content: '';
+    display: table;
+  }
+}
+@mixin dimensions($width, $height: $width) {
+  height: $height;
+  width: $width;
+}
+
+// https://css-tricks.com/video-screencasts/132-quick-useful-case-sass-math-mixins/
+@mixin rows($num-per-row, $margin) {
+  width: ((100% - (($num-per-row - 1) * $margin)) / $num-per-row);
+
+  &:nth-child(n) {
+    margin-bottom: $margin;
+    margin-right: $margin;
+  }
+
+  &:nth-child(#{$num-per-row}n) {
+    margin-right: 0;
+  }
+}
+
+// https://codepen.io/maddesigns/pen/jbiDn
+@mixin vh() {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}

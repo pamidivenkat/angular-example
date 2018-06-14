@@ -1,0 +1,538 @@
+<div class="padding-lg">
+
+    <h1>
+        {{title}}
+    </h1>
+    <span>{{ 'HELLO' | translate:lang }} test</span>
+    <br/>
+    <form [formGroup]="sampleForm">
+        <h4>Snackbar</h4>
+        <div>
+            <ae-snackbar></ae-snackbar>
+        </div>
+        <h4>Text box</h4>
+        <div class="sg-grid grid--1-1-3">
+            <div>
+                <ae-input id="tesr" [id]="'txtSimpleInput'" [name]="'txtSimpleInput'" formControlName="sampleInput" [type]="ctrlType" [readonly]="'false'"
+                    (aeFocus)="onFocus($event)" (aeBlur)="onBlur($event)" (aeChange)="changeInput($event)" [delay]="'1000'"></ae-input>
+            </div>
+            <div> {{sampleForm.get('sampleInput').value}}</div>
+            <div>
+                <ae-checkbox formControlName="sampleValidation" [id]="'Checktest'" [name]="'Checktest'" [checkText]="'Is Valid'"></ae-checkbox>
+            </div>
+        </div>
+        <div class="sg-grid grid--1-1-3">
+            <div>
+                <h4>Select box</h4>
+                <label>
+     <ae-select [id]="'select-test'" [name]="'select-test'"  [options]="ddlOptions" formControlName="sampleSelect"></ae-select></label>{{sampleForm.get('sampleSelect').value}}</div>
+            <div>
+                <h4>Text Area</h4>
+                <ae-textarea [id]="'txtArea'" [name]="'txtArea'" formControlName="sampleTextarea" [resize]="resizeStyle" [showcharleft]="'true'"
+                    [maxlength]="'100'"></ae-textarea>
+            </div>
+        </div>
+        <!--(aeChange)="onChange($event)"-->
+        <div class="sg-grid grid--1-1-3">
+            <div>
+                <h4>Button</h4>
+                <ae-button [class]="lightClass" [text]="'Atlas Button'" [type]="'submit'" [id]="'testBtn'" [name]="'testBtn'" (aeClick)="onBtnClick($event)"></ae-button>
+            </div>
+            <div>
+                <h4>Button with icon(Left)</h4>
+                <ae-button [class]="darkClass" [text]="'Icon Test'" [type]="'submit'" [id]="'testBtnn'" [name]="'testBtnn'" (aeClick)="onBtnClick($event)"
+                    [btnIcon]="'icon-settings'" [iconColor]="'red'" [iconPosition]="btnLeft"></ae-button>
+            </div>
+            <div>
+                <h4>Button with icon(Right)</h4>
+                <ae-button [class]="lightClass" [text]="'Icon Test'" [type]="'submit'" [id]="'testBtnnn'" [name]="'testBtnnn'" (aeClick)="onBtnClick($event)"
+                    [btnIcon]="'icon-settings'" [iconColor]="'green'" [iconPosition]="btnRight"></ae-button>
+            </div>
+        </div>
+        <div class="sg-grid grid--1-1-3">
+            <h4>Time Selector</h4>
+            <ae-time-selector [min]="'09:30'" [max]="'18:30'" [value]="'10:00'"></ae-time-selector>
+        </div>
+        <div class="sg-grid grid--1-1-3">
+            <div>
+                <h4>Anchor Hyperlink</h4>
+                <ae-anchor [id]="'testAncLnk'" [name]="'testAncLnk'" [text]="'Atlas Anchor Link'" (aeClick)="onAncClick($event)">Atlas Anchor Link</ae-anchor>
+            </div>
+            <div>
+                <h4>Anchor Button</h4>
+                <ae-anchor [id]="'testAncBtn'" [name]="'testAncBtn'" [text]="'Atlas Anchor Button'" (aeClick)="onAncClick($event)" [anchorType]="'button'"
+                    [anchorClass]="lightClass">Atlas Anchor Button</ae-anchor>
+            </div>
+            <div>
+                <h4>Anchor Previous</h4>
+                <ae-anchor [id]="'previous'" [name]="'previous'" [text]="'Previous'" (aeClick)="onPrevious($event)" [anchorNav]="backward"
+                    [anchorType]="'button'"> Previous </ae-anchor>
+            </div>
+            <div>
+                <h4>Anchor Next</h4>
+                <ae-anchor [id]="'next'" [name]="'next'" [text]="'Next'" (aeClick)="onNext($event)" [anchorNav]="forward" [anchorType]="'button'">
+                    Next</ae-anchor>
+            </div>
+            <div>
+                <h4>Split Button</h4>
+                <ae-splitbutton [id]="'testSplit'" [name]="'testSplit'" [text]="'Atlas Split'" [options]="splitButtonOptions" (aeClick)="_onSplitBtnClick($event)"></ae-splitbutton>
+            </div>
+        </div>
+        <h4>Nav actions</h4>
+        <div class="sg-grid grid--1-1-3">
+            <div>
+                <b>Menu Left</b><br/>
+                <ae-nav-actions [id]="'navAction'" [name]="'navAction'" [options]="navActionsOptions" (aeClick)="_onNavActionClick($event)" [class]="navActionListLeft"></ae-nav-actions>
+            </div>
+            <div>
+                <b>Menu Right</b><br/>
+                <ae-nav-actions [id]="'navAction'" [name]="'navAction'" [options]="navActionsOptions" (aeClick)="_onNavActionClick($event)"></ae-nav-actions>
+            </div>
+        </div>
+        <div class="sg-grid grid--1-1-3">
+            <div>
+                <h4>Switch -- Text right</h4>
+                <ae-switch formControlName="sampleSwitch" [id]="'testSwitch'" [name]="'testSwitch'" [switchText]="'Label Text'" [class]="switchTextRight"></ae-switch>
+            </div>
+            <div>
+                <h4>Switch -- Text left</h4>
+                <ae-switch formControlName="sampleSwitch" [id]="'testSwitch'" [name]="'testSwitch'" [switchText]="'Label Text'" [class]="switchTextLeft"></ae-switch>
+            </div>
+        </div>
+
+        <h4>Checkbox</h4>
+        <div class="sg-grid grid--1-1-3">
+            <div>
+                <ae-checkbox formControlName="sampleCheckbox" [id]="'iconCheck1'" [name]="'iconCheck'" [checkText]="'Checkbox'"></ae-checkbox>
+            </div>
+            <div>
+                <ae-checkbox formControlName="sampleCheckbox" [id]="'iconCheck2'" [name]="'iconCheck2'" [size]="iconSmall" [color]="'red'"
+                    [iconVisible]="true" [textVisible]="false" [icon]="'icon-bell'" [checkText]="'Icon with checkbox'"></ae-checkbox>
+            </div>
+            <div>
+                <ae-checkbox formControlName="sampleCheckbox" [id]="'iconCheck3'" [name]="'iconCheck3'" [checkText]="'Icon with checkbox'"
+                    [iconVisible]="true" [size]="iconMedium" [color]="'blue'" [icon]="'icon-settings'"></ae-checkbox>
+            </div>
+        </div>
+
+        <div class="sg-grid grid--1-1-3">
+            <div>
+                <h4>Radio Button</h4>
+                <ae-radiobutton [id]="'radio-test'" [name]="'radio-test'" [text]="'H&S'" [value]="'0'"></ae-radiobutton>
+            </div>
+            <div>
+                <h4>Group radio button</h4>
+                <ae-radio-group [id]="'radio-test-group'" [name]="'radio-test-group'" [options]="radioOptions" formControlName="sampleRadioButtonGroup"
+                    (aeChange)="_changeRadioOptions($event)"></ae-radio-group>
+            </div>
+        </div>
+
+    </form>
+
+    <div class="sg-grid grid--1-1-3">
+        <div>
+            <h4>Icon</h4>
+            <ae-icon [id]="'iconone'" [name]="'iconone'" [size]="iconOneSize" [color]="'red'" [icon]="'icon-bell'" [notify]="'notify'"></ae-icon>
+        </div>
+        <div>
+            <h4>Text with out Icon</h4>
+            <ae-label [id]="'sampleLable'" [name]="'sl'" [text]="'Atlas Label Text Goes Here'" [style]="aelStyle" [orientation]="imgOrientation"
+                [icon]=""></ae-label>
+        </div>
+        <div>
+            <h4>Text with Icon</h4>
+            <ae-label [id]="'sampleLablewithIcon'" [name]="'sl'" [text]="'Atlas Label Text Goes Here'" [style]="aelStyle" [orientation]="imgOrientation"
+                [icon]="'icon-bell'"></ae-label>
+        </div>
+        <div>
+            <h4>Statistic</h4>
+            <ae-statistic [id]="'Statistic'" [numbercolor]="'#3d3d3d'" [iconColor]="'#3d3d3d'" [numberval]="'25'" [nametext]="'Statistic'"
+                [icon]="'icon-palm'" [size]="iconMedium"></ae-statistic>
+        </div>
+    </div>
+
+
+    <br>
+    <div class="sg-grid grid--1-1-3">
+        <div>
+            <h4>Loader</h4>
+            <b>Bars</b>
+            <ae-loader [loaderType]="_loaderType"></ae-loader>
+            <b>Spinner</b>
+            <ae-loader></ae-loader>
+        </div>
+        <div>
+            <h4>List</h4>
+            <ae-list [id]="'list'" [name]="'list'" [items]="liItems" (aeAction)="listAction($event)" [hasline]="'true'"></ae-list>
+        </div>
+
+        <div>
+            <h4>Clickable List</h4>
+            <ae-list [id]="'list'" [name]="'list'" [items]="liItems" (aeAction)="listAction($event)" [isClickable]="true" [requireCircle]="false"></ae-list>
+        </div>
+
+        <div>
+            <h4>Slider</h4>
+            <ae-slider [id]="'atlas-slider'" [value]="sliderValue" [thumbLabel]="true" (aeChange)="onSliderChange($event)">></ae-slider>
+            <span *ngIf="sliderValue > 0">{{sliderValue}}</span>
+        </div>
+    </div>
+
+    <h4>Video</h4>
+    <ae-video [id]="'videonow'" [name]="'videonow'" [src]="'http://www.youtube.com/embed/L9szn1QQfas'" [alt]="'this is atlas video component'"
+        [thumbnailSrc]="'https://unsplash.it/640/360'" [videoStyle]="videoSyle" [linkText]="linkText"></ae-video>
+
+    <h4>Autocomplete - Computed - Single</h4>
+    <ae-autocomplete [id]="'aecs'" [name]="'aecs'" [value]="aecsSel" [placeholder]="'Select Item'" [multiselect]="'false'" [initialtext]="'chaithu'"
+        [items]="aecsItems" [field]="'name'" [valuefield]="'id'" (aeOnSelect)="onAecsSelect($event)" (aeOnComplete)="filterAecs($event)"></ae-autocomplete>
+
+    <br/>
+    <h4>Autocomplete - Computed - Multiselect</h4>
+    <ae-autocomplete [id]="'aecm'" [name]="'aecm'" [value]="aecmSel" [placeholder]="'Select Item'" [multiselect]="'true'" [items]="aecmItems"
+        [field]="'name'" [valuefield]="'id'" (aeOnComplete)="filterAecm($event)"></ae-autocomplete>
+    <br/>
+    <h4>Autocomplete - Fixed - Single</h4>
+    <ae-autocomplete [id]="'aefs'" [name]="'aefs'" [value]="aefsSel" [placeholder]="'Select Item'" [multiselect]="'false'" [items]="aefsItems"
+        [dstype]="aefsType" [field]="'name'" [valuefield]="'id'"></ae-autocomplete>
+    <br/>
+    <h4>Autocomplete - Fixed - Multiselect</h4>
+    <ae-autocomplete [id]="'aefm'" [name]="'aefm'" [value]="aefmSel" [placeholder]="'Select Item'" [multiselect]="'true'" [items]="aefmItems"
+        [dstype]="aefsType" [field]="'name'" [valuefield]="'id'"></ae-autocomplete>
+    <br/>
+
+    <h4>Pop Over:</h4>
+    <ae-anchor [id]="'next'" [name]="'next'" [text]="'Next'" (mouseenter)="_setVisibility(true)" (aeClick)="onNext($event)" [anchorNav]="forward"
+        [anchorType]="'button'">Next</ae-anchor>
+    <ae-popover [visibleChange]="_visibility" [id]="'showPopverId'" [name]="'showPopverId'">
+        <h1>Atlas V2 Pop Over Component</h1>
+        <a href="http://citation.co.uk" target="_blank">Click here</a>
+    </ae-popover>
+    <h4>Pagination:</h4>
+    <div class="table__footer">
+        <!--<ae-pagination [id]="'pageItem'" [name]="'pageItem'" rows="10" totalRecords="120" pageLinkCount="10"> </ae-pagination>-->
+    </div>
+    <h4>Banner </h4>
+    <ae-banner [id]="'banner'" [name]="'banner'" [titleText]="'Welcome to Atlas 2.0 Dashboard'" [backgroundImage]="'/assets/images/banner-image.jpg'"
+        [bannerTheme]="aeBannerTheme">
+    </ae-banner>
+
+    <h4>Banner (with icon text)</h4>
+    <ae-banner [id]="'banner'" [name]="'banner'" [titleText]="'Welcome to Atlas 2.0 Dashboard'" [backgroundImage]="'/assets/images/banner-image.jpg'"
+        [bannerTheme]="aeBannerTheme">
+        <div class="image-text banner-image-text">
+            Have a nice day!
+        </div>
+        <div class="icon-list banner-icon-list">
+            <div *ngFor="let icon of bannerIconOptions">
+                <div>
+                    <ae-label [id]="'label'" [name]="'label'" [text]="icon.Text" [icon]="icon.Name"></ae-label>
+                </div>
+            </div>
+        </div>
+    </ae-banner>
+
+    <h4>Card</h4>
+    <ae-card>
+        <ae-banner [id]="'banner'" [name]="'banner'" [titleText]="'Welcome to Atlas 2.0 Dashboard'" [backgroundImage]="'/assets/images/banner-image.jpg'"
+            [bannerTheme]="aeBannerTheme">
+        </ae-banner>
+    </ae-card>
+    <h4>Indicator & Legend</h4>
+    <ae-indicator [class]="'indicator--yellow'" [text]="'Next'"></ae-indicator>
+    <ae-indicator [class]="'indicator--yellow'" [text]="'Next'" [shape]="_squareIndicator"></ae-indicator>
+    <ae-legend [id]="'legend1'" [options]="legendOptions" [headText]="'Type'"></ae-legend>
+    <ae-legend [id]="'legend2'" [options]="legendOptions" [headText]="'Vertical & Square'" [shape]="_squareIndicator" [legendType]="_legendVertical"></ae-legend>
+    <ae-legend [id]="'legend3'" [options]="iconLegendOptions" [headText]="'Icon Legend'"></ae-legend>
+
+    <h4>Badge</h4>
+    <ae-badge [class]="'badge--yellow'" [text]="'22'"></ae-badge>
+    <ae-badge [class]="'badge--red'" [isShadow]="true" [text]="'22'"></ae-badge>
+    <ae-badge [class]="'badge--grey'" [size]="badgeMedium" [text]="'22'"></ae-badge>
+    <ae-badge [class]="'badge--teal'" [size]="badgeLarge" [text]="'22'"></ae-badge>
+
+    <h4>Tabstrip (standard header):</h4>
+    <ae-tab [id]="'mytab'" [name]="'mytabname'" [standard]="true">
+        <ae-tab-item [id]="'item1'" [name]="'item1name'" [header]="'Hello - SH'">
+            <ae-template [type]="'content'">
+                <ng-template>
+                    <p>World</p>
+                </ng-template>
+            </ae-template>
+        </ae-tab-item>
+        <ae-tab-item [id]="'item2'" [name]="'item2name'" [header]="'Hello! - SH'">
+            <ae-template [type]="'content'">
+                <ng-template>
+                    <p>World!</p>
+                </ng-template>
+            </ae-template>
+        </ae-tab-item>
+    </ae-tab>
+    <div style="clear:both;">
+    </div>
+
+    <h4>Tabstrip (standard header):</h4>
+    <ae-tab [id]="'mytab'" [name]="'mytabname'" [standard]="true">
+        <ae-tab-item [id]="'item1'" [name]="'item1name'" [header]="'Hello - SH'">
+            <ae-template [type]="'content'">
+                <ng-template>
+                    <p>World</p>
+                </ng-template>
+            </ae-template>
+        </ae-tab-item>
+        <ae-tab-item [id]="'item2'" [name]="'item2name'" [header]="'Hello! - SH'">
+            <ae-template [type]="'content'">
+                <ng-template>
+                    <p>World!</p>
+                </ng-template>
+            </ae-template>
+        </ae-tab-item>
+    </ae-tab>
+    <div style="clear:both;">
+    </div>
+
+    <h4>Tabstrip (standard header with icon):</h4>
+    <ae-tab [id]="'mytab1'" [name]="'mytab1name'" [standardWithIcon]="true">
+        <ae-tab-item [id]="'item11'" [name]="'item11name'" [header]="'Hi - SHWI'" [headerIcon]="'icon-palm'">
+            <ae-template [type]="'content'">
+                <ng-template>
+                    <p>Atlas World</p>
+                </ng-template>
+            </ae-template>
+        </ae-tab-item>
+        <ae-tab-item [id]="'item22'" [name]="'item22name'" [header]="'Hello - SHWI'" [headerIcon]="'icon-bell'">
+            <ae-template [type]="'content'">
+                <ng-template>
+                    <p>World</p>
+                </ng-template>
+            </ae-template>
+        </ae-tab-item>
+        <ae-tab-item [id]="'item33'" [name]="'item33name'" [header]="'Hello! - SHWI'" [headerIcon]="'icon-bank'">
+            <ae-template [type]="'content'">
+                <ng-template>
+                    <p>World!</p>
+                </ng-template>
+            </ae-template>
+        </ae-tab-item>
+    </ae-tab>
+    <div style="clear:both;">
+    </div>
+
+    <h4>Tabstrip (templated header):</h4>
+    <ae-tab [id]="'mytab2'" [name]="'mytab2name'">
+        <ae-tab-item [id]="'item111'" [name]="'item111name'">
+            <ae-template [type]="'header'">
+                <ng-template><span>Hello - TH</span></ng-template>
+            </ae-template>
+            <ae-template [type]="'content'">
+                <ng-template>
+                    <p>World</p>
+                </ng-template>
+            </ae-template>
+        </ae-tab-item>
+        <ae-tab-item [id]="'item222'" [name]="'item222name'">
+            <ae-template [type]="'header'">
+                <ng-template><span>Hello! - TH</span></ng-template>
+            </ae-template>
+            <ae-template [type]="'content'">
+                <ng-template>
+                    <p>World!</p>
+                </ng-template>
+            </ae-template>
+        </ae-tab-item>
+    </ae-tab>
+
+
+    <div style="clear:both;">
+    </div>
+
+    <div>
+        <ae-virtual-list [noOfVisibleItems]="_defaultNumber" [itemsStream]="_listStream">
+            <ae-template [keys]="_cProps" [type]="'list'">
+                <ng-template let-item="item">
+                    <span>{{item.name}}</span>
+                </ng-template>
+            </ae-template>
+        </ae-virtual-list>
+        <button (click)="_changeData()" value="Change">Change</button>
+        <button (click)="_sendData()" value="Send">Send</button>
+    </div>
+
+    <h4>Message Component</h4>
+    <ae-message [id]="'message'" [name]="'message'" [text]="'Atlas Label Text Goes Here1'" [icon]="'icon-bell'" [messageType]="messagetType"></ae-message>
+    <ae-message [id]="'message2'" [name]="'message2'" [text]="'Atlas Label Text Goes Here2'" [icon]="'icon-bell'" [messageType]="messagetType2"></ae-message>
+    <ae-message [id]="'message3'" [name]="'message3'" [text]="'Atlas Label Text Goes Here3'" [icon]="'icon-bell'" [messageType]="messagetType3"></ae-message>
+
+    <h4>Date & Time Picker</h4>
+    <div class="sg-grid grid--1-1-3">
+        <div>
+            <h4>Basic Datetime picker</h4>
+            <!--<ae-datetime-picker [id]="'dpId'" [name]="'dpId'" [dateValue]="_currenrtDate" (aeSelect)="_onDateChange()"></ae-datetime-picker>-->
+            <ae-datetime-picker [placeholder]="'select DOB'"></ae-datetime-picker>
+            <!--<ae-virtual-list [noOfVisibleItems]="_defaultNumber" [itemsStream]="_listStream">
+            <ae-template [keys]="_cProps" [type]="'list'">
+                <ng-template let-item="item">
+                    <span>{{item.name}}</span>
+                </ng-template>
+            </ae-template>
+        </ae-virtual-list>-->
+            <button (click)="_changeData()" value="Change">Change</button>
+            <button (click)="_sendData()" value="Send">Send</button>
+        </div>
+        <div>
+            <h4>With Icon</h4>
+            <ae-datetime-picker [showIcon]="true"></ae-datetime-picker>
+        </div>
+        <div>
+            <h4>With Navigators</h4>
+            <ae-datetime-picker [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030" [showIcon]="true" (aeSelect)="_onDateSelect($event)"
+                (aeBlur)="_isValidDate($event)"></ae-datetime-picker>
+            <span class="" *ngIf="isDateValid != true">Invalid date</span>
+        </div>
+        <div>
+            <h4>With Time</h4>
+            <ae-datetime-picker [showTime]="true" (aeSelect)="_onDateSelect($event)" (aeBlur)="_isValidDate($event)"></ae-datetime-picker>
+            <span class="" *ngIf="isDateValid != true">Invalid date</span>
+        </div>
+        <div>
+            <h4>Time Only</h4>
+            <ae-datetime-picker [timeOnly]="true" [hourFormat]="'12'" [showSeconds]="true"></ae-datetime-picker>
+        </div>
+    </div>
+
+    <h4>Information Bar:</h4>
+    <ae-informationbar [items]="informationBarItems" [id]="'informationBar'" [name]="'informationbar'" (aeClick)="informationItemSelected($event)">
+    </ae-informationbar>
+    <input type="button" value="Change Information" (click)="_modifyInformation()" />
+    <input type="button" value="Add another Information" (click)="_addMoreInformation()" />
+    <input type="button" value="Delete Information" (click)="_deleteInformation()" />
+
+    <div class="sg-grid grid--1-1-3">
+        <div>
+            <h4>Sort List </h4>
+            <ae-sort-list [id]="'list'" [name]="'list'" [items]="liItems" (action)="listAction($event)" [hasline]="'true'" (onAeItemRemove)="_onSortListItemRemoved($event)"
+                (onAeAction)="_onSortListitemLinkClicked($event)" (onAeItemsReOrdered)="_onSortListItemsReOrdered($event)">
+            </ae-sort-list>
+        </div>
+        <div>
+            <h4>Image preview </h4>
+            <div style="position:relative; height: 220px; width: 220px; background: #fec352;">
+                <app-ae-image-avatar [imgSrc]="_imgPreviewSrcUrl" [alt]="'Employee profile'" [size]="_imageAvatarSize" [isBorderCircle]="true"
+                    [edit]="true" [editIconSize]="_imgPreviewEditIconSize"></app-ae-image-avatar>
+            </div>
+        </div>
+
+    </div>
+    <div>
+        <br/>
+        <br/>
+        <div style="clear:both;">
+            <ae-file [id]="'testFileUpload'" [name]="'testFileUpload'" [multiple]="true"
+                [accept]="'image/*'"></ae-file>
+        </div>
+        <ul>
+            <li *ngFor="let fileResult of _filesToUpload">
+                <div *ngIf="fileResult.duplicate">
+                    file Name :: {{fileResult.file.name}} <br/>
+                    <span>This is duplicate file</span>
+                    <div style="border: 1px solid">
+                        <span>
+         <h2> Overwrite already uploaded file?</h2>
+          <p> A file with the same file name, size and last updated date already exists. Do you want to replace it?
+            FileName: fileResult.file.name</p>
+        </span>
+
+                        <ae-button [type]="'button'" [id]="'testslider'" [name]="'testslider'" (aeClick)="showSlider = !showSlider" class="btn" [text]="showSlider ? 'Close slider': 'Open slider'"></ae-button>
+                        <div>
+                            <ae-slideout [modelState]="showSlider ? 'expanded' : 'collapsed'" (cancel)="_sliderClosed($event)" [id]="'testslider'" [name]="'testslider'">
+                                <h2>Slide out</h2>
+                                <ae-banner [id]="'banner'" [name]="'banner'" [titleText]="'Welcome to Atlas 2.0 Dashboard'" [bannerTheme]="bannerIconOptions"></ae-banner>
+                            </ae-slideout>
+                        </div>
+                        <br/>
+                        <ae-button [class]="lightClass" [text]="'Yes'" [type]="button" [id]="'yesbtn'" [name]="'yesbtn'" (aeClick)="uploadRightAway(fileResult)"></ae-button>
+                        <ae-button [text]="'No'" [type]="button" [id]="'nobtn'" [name]="'nobtn'" (aeClick)="skipUpload(fileResult)"></ae-button>
+                    </div>
+                </div>
+                <div *ngIf="!fileResult.duplicate">
+                    file Name :: {{fileResult.file.name}} <br/>
+                    <div style="background-color:#f3f3f3">
+                        <div [style.width]="fileResult.completionStatus +'%'" class="progress-bar">
+                            <span>{{fileResult.completionStatus}}% ... </span>
+                        </div>
+                    </div>
+                    <br/>
+                </div>
+            </li>
+        </ul>
+
+        <ae-button [type]="'button'" [id]="'testModalDialog'" [name]="'testModalDialog'" (aeClick)="showDialog = !showDialog" class="btn"
+            [text]="showDialog ? 'Close dialog': 'Open dialog'"></ae-button>
+        <div *ngIf="showDialog">
+            <ae-modal-dialog [visible]="showDialog" (cancel)="_modalClosed($event)" [closable]="true" [id]="'test'" [name]="'test'">
+                <div class="modal-dialog-header">
+                    <h3>Terms and conditions</h3>
+                </div>
+                <div class="modal-dialog-body">
+                    <p> In consideration for the rights granted to you under these Terms, you grant us the right (a) to allow
+                        the Spotify Service to use the processor, bandwidth and storage hardware on your Device in order
+                        to facilitate the operation of the Service, (b) to provide advertising and other information to you,
+                        if you subscribe to the Free Service, and (c) to allow our business partners to do the same. You
+                        grant Spotify a non-exclusive, transferable, sub-licensable, royalty-free, perpetual, worldwide licence
+                        to use, reproduce, make available to the public, publish, translate and distribute any User Content
+                        that you post on or otherwise provide through the Spotify Service. These Terms are not intended to
+                        grant rights to anyone except you and Spotify, and in no event shall these Terms create any third
+                        party beneficiary rights. Any failure by Spotify to enforce these Terms or any provision thereof
+                        shall not waive Spotify’s right to do so.</p>
+                </div>
+                <div class="modal-dialog-footer">
+                    <ae-button [text]="'No, keep info'" [type]="'button'" [id]="'testCnfrmNo'" [name]="'testCnfrNo'" (aeClick)="_modalClosed($event)"></ae-button>
+                    <ae-button [class]="lightClass" [text]="'Yes, remove info'" [type]="'button'" [id]="'testCnfrmYes'" [name]="'testCnfrmYes'"
+                        (aeClick)="_modalClosed($event)"></ae-button>
+                </div>
+            </ae-modal-dialog>
+        </div>
+    </div>
+    <h4>Calendar </h4>
+    <ae-fullcalendar [events]="events"></ae-fullcalendar>
+    <h4>Data table </h4>
+    <!--<ae-datatable-demo></ae-datatable-demo>-->
+    <br />
+    <br />
+  <!--  <ae-virtual-list-demo></ae-virtual-list-demo> -->
+    <h4>Heading loader</h4>
+    <b>h2 -- <small>h-loader h2-loader</small></b>
+    <h2 class="h-loader h2-loader"></h2>
+    <b>h3 -- <small>h-loader h3-loader</small></b>
+    <h3 class="h-loader h3-loader"></h3>
+    <b>h4 -- <small>h-loader h4-loader</small></b>
+    <h4 class="h-loader h4-loader"></h4>
+    <h4>Info loader -- <small>info-loader</small></h4>
+    <div class="info-loader"></div>
+    <h4>list loader -- <small>list-loader</small></h4>
+    <ul class="list-loader">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+    <h4>Form loader</h4>
+    <!-- loader block -->
+    <div class="loader-form">
+        <h3 class="h-loader h3-loader"></h3>
+        <div class="so-panel__content">
+            <div class="loader--select"></div>
+            <div class="loader--date-input"></div>
+            <div class="loader--date-input"></div>
+            <div class="loader--input"></div>
+            <div class="loader--select"></div>
+            <div class="loader--input"></div>
+            <div class="loader--input"></div>
+            <div class="loader--checkbox"></div>
+            <div class="loader--radio"></div>
+            <div class="loader--textarea"></div>
+        </div>
+        <div class="button-loader"></div>
+        <div class="button-loader dark pull--right"></div>
+    </div>
+    <!-- loader block end -->
+</div>

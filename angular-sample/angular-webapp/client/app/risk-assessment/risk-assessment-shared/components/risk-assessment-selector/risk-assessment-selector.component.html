@@ -1,0 +1,103 @@
+<div class="so-panel__title">
+    <h3 class="grey-strip">{{'ADD_RISKASSESSMENTS' | translate:lang}}</h3>
+</div>
+
+<div class="so-panel__content risk-assessment-selector">
+    <div class="filter-bar holiday-filters">
+        <div class="filter-bar__label label">{{'Filter_by' | translate:lang}}</div>
+
+        <form [formGroup]="riskAssessmentSelectorForm" [id]="'_riskAssessmentSelectorFrm'" [name]="'_riskAssessmentSelectorFrm'">
+            <div class="filter-bar__filters requests">
+                <div class="filter-bar__filter">
+                    <ae-input [id]="'Name'" [name]="'name'" formControlName="Name" [placeholder]="'FILTER_BY_NAME_OR_REFERENCENUMBER' | translate:lang"
+                        [title]="'FILTER_BY_NAME_OR_REFERENCENUMBER' | translate:lang"></ae-input>
+
+                </div>
+                <div class="filter-bar__filter" *ngIf="!methodStatementExample">
+                    <ae-autocomplete formControlName="Site" [id]="'ddlSite'" [name]="'ddlSite'" [placeholder]="'Select site'" [multiselect]="'false'" [items]="sites$  | async" [automatch]="false" [dstype]="localDataSourceType" [field]="'Text'" [debounce]="500" [valuefield]="'Value'"></ae-autocomplete>
+                </div>
+
+            </div>
+            <div class="top-15">
+                {{'ADD_RISKASSESSMENT_SELECTOR_HELPTEXT' | translate:lang}}
+            </div>
+        </form>
+
+    </div>
+    <div class="spacer--y">
+        <ae-datatable [id]="'riskAssessmentsGrid'" [name]="'riskAssessmentsGrid'" [dataSource]="liveRiskAssessments$ " [autoGenerateColumns]="false" [totalRecords]="recordsCount$" [defaultOptions]="dataTableOptions$ | async" (pageChanged)="onPageChange($event)"
+            (onSort)="onSort($event)" [loading]="!(liveRALoading$  | async)">
+
+
+            <ae-column [headerText]="'NAME' | translate:lang" [sortable]="true" [sortKey]="'Name'">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span>{{'NAME' | translate:lang}}</span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+                        {{ context.Name }}
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+
+            <ae-column [headerText]="'REFERENCE_NUMBER' | translate:lang" [sortable]="true" [sortKey]="'ReferenceNumber'">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span>{{'REFERENCE_NUMBER' | translate:lang}}</span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+                        {{ context.ReferenceNumber }}
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+
+            <ae-column [headerText]="'SITE' | translate:lang" [sortable]="true" [sortKey]="'SiteName'" *ngIf="!methodStatementExample">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span>{{'SITE' | translate:lang}}</span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+                        {{ context.SiteName }}
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+
+            <ae-column [headerText]="'SELECT_COLUMN_TITLE' | translate:lang" [sortable]="false">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span>{{'SELECT_COLUMN_TITLE' | translate:lang}}</span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+                        <div class="table__item-inner">
+                            <ae-checkbox [id]="getChildId('AeSelectChekbox', context.Id)" [name]="getChildName('AeSelectChekbox', context.Id)" [checkText]="''"
+                                (onAeChange)="onSelectRow($event, context)" [checked]="checkIfSelected(context)"></ae-checkbox>
+                        </div>
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+
+
+        </ae-datatable>
+
+    </div>
+</div>
+
+<div class="so-panel__footer">
+    <nav>
+        <ul>
+            <li><label for="soPanel" class="button button--inline-block" [id]="getChildId('AeButton',1)" (click)="onRASelectorFormClosed($event)" [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label></li>
+            <li class="pull--right">
+                <ae-anchor [id]="getChildId('AeAnchor',1)" [name]="getChildName('AeAnchor',1)" [anchorType]="'button'" [class]="'button button--inline-block'" [anchorClass]="lightClass" (aeClick)="onRASelectorFormSubmit($event)" [title]="'BUTTONS.ADD' | translate:lang"
+                    [text]="'BUTTONS.ADD' | translate:lang"></ae-anchor>
+            </li>
+        </ul>
+    </nav>
+</div>

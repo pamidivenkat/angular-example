@@ -1,0 +1,42 @@
+<div>
+  <ae-banner [id]="'deligationsBanner'" [name]="'deligationsBanner'" [titleText]="'DELEGATION.Delegation' | translate:lang"
+    [backgroundImage]="'/assets/images/lp-employees.jpg'">
+    <div class="image-text banner-image-text">
+      <ae2-breadcrumb [id]="getChildId('Ae2Breadcrub',2)" [name]="getChildName('Ae2Breadcrub',2)" [group]="bcGroup"></ae2-breadcrumb>
+    </div>
+    <div class="icon-list banner-icon-list">
+      <ae-button [text]="'DELEGATION.Add_delegated_user' | translate:lang" [type]="'button'" [id]="'btnAdd'" [name]="'btnAdd'"
+        (aeClick)="addNewDelegation()"></ae-button>
+    </div>
+
+  </ae-banner>
+  <ae-notification [id]="'delegation-info'" [name]="'delegation-info'" [iconName]="'icon-info'" [textInfo]="'DELEGATION.INFO_TEXT'| translate:lang"></ae-notification>
+  <delegation-list [id]="getChildId('delegationList', 1)" [name]="getChildName('delegationList', 1)" (aeDelegationSelected)="onDeligationitemUpdate($event)"
+    (aeDelegationDelete)="onDeligationitemDelete($event)"> </delegation-list>
+</div>
+
+
+<ae-slideout [id]="getChildId('AeSlideOut', 1)" [name]="getChildName('AeSlideOut', 1)" [modelState]="getSlideoutState()"
+  [class.slide--animate]="showAddOrUpdateSlideOut()">
+  <ng-container *ngIf="showAddOrUpdateSlideOut()">
+    <delegation-add-update [id]="getChildId('delegationaddupdate', 1)" [action]="isAdd ? 'Add' : 'Update'" [name]="getChildName('delegationaddupdate', 1)"
+      [data]="selectedDelegation" (onCancel)="onDelegationAddOrUpdateCancel($event)"></delegation-add-update>
+  </ng-container>
+</ae-slideout>
+
+
+<ae-modal-dialog [visible]="showRemoveDialog" (cancel)="modalClosed($event)" [closable]="true" [id]="'confirmModal'" [name]="'confirmModal'"
+  *ngIf="showRemoveDialog">
+  <div class="modal-dialog-header">
+    <h3>{{'DELEGATION.RemoveHeaderText' | translate:lang}}</h3>
+  </div>
+  <div class="modal-dialog-body">
+    <p>{{'DELEGATION.RemoveConfirmation' | translate:lang}}</p>
+  </div>
+  <div class="modal-dialog-footer">
+    <ae-button [text]="'DELEGATION.CancelDelegation' | translate:lang" [type]="'button'" [id]="'confirmNo'" [name]="'confirmNo'"
+      (aeClick)="modalClosed('no')"></ae-button>
+    <ae-button [class]="lightClass" [text]="'DELEGATION.OkDelegation' | translate:lang" [type]="'button'" [id]="'confirmYes'"
+      [name]="'confirmYes'" (aeClick)="modalClosed('yes')"></ae-button>
+  </div>
+</ae-modal-dialog>

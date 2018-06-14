@@ -1,0 +1,43 @@
+<div class="person" [id]="id" (click)="_onClick($event)">
+  <app-ae-image-avatar [id]="getChildId('AeImageAvatar', 1)" [name]="getChildName('AeImageAvatar', 1)" [imgSrc]="getProfileImageUrl()"
+    [alt]="'Employee profile'" [size]="getImageSize()"></app-ae-image-avatar>
+  <div class="person__details">
+    <div class="person__name">
+      <span [id]="getChildId('userFullName', 1)">{{userFullName$ | async}}</span>
+    </div>
+    <div class="person__company">
+      <span [id]="getChildId('companyName', 1)">{{getCompanyName()}}</span>
+    </div>
+  </div>
+  <div class="person__dropdown" [ngClass]="getStyle()">
+    <div class="person__dropdown-inner">
+      <company-structure [id]="getChildId('companyStructure',1)" [name]="getChildName('companyStructure', 1)" *ngIf="isGroupServiceOwner()"></company-structure>
+      <a *ngIf="hasEmployeeAccount()" class="person__dropdown-link" id="lnk_empDetails" (click)="gotoEmpProfile($event)">{{'PROFILE_MENU.Employee_Details' | translate:lang}}</a>
+      <a class="person__dropdown-link" [href]="accessOSV()" id="lnk_accessosv" *ngIf="isHSConsultant()">Access OSV</a>
+      <a class="person__dropdown-link" [href]="resetOSVPIN()" id="lnk_resetosvpin" *ngIf="isHSConsultant()">Reset OSV PIN</a>
+      <a class="person__dropdown-link" (click)="changeUserPassword()" id="lnk_changePassword">{{'PROFILE_MENU.Change_Password' | translate:lang}}</a>
+      <a class="person__dropdown-link" (click)="logout()" id="lnk_logout">{{'PROFILE_MENU.Logout' | translate:lang}}</a>
+    </div>
+  </div>
+</div>
+
+<ae-slideout [id]="getChildId('AeSlideOut', 1)" [name]="getChildName('AeSlideOut', 1)" [modelState]="getSlideoutState()"
+  [class.slide--animate]="showChangePasswordSlider()">
+  <div *ngIf="showChangePasswordSlider()">
+    <change-password [id]="getChildId('UserPasswordUpdate', 1)" (cancel)="onChangePasswordCancel($event)" (update)="onResetPasswordSuccess($event)"></change-password>
+  </div>
+</ae-slideout>
+
+<ae-modal-dialog [visible]="resetPasswordSuccessPopup" (click)="modalClosed($event)" [closable]="true" [id]="'confirmModal'"
+  [name]="'confirmModal'" *ngIf="resetPasswordSuccessPopup">
+  <div class="modal-dialog-header">
+    <h3>{{'CHANGEPASSWORD.Dialog.Heading_text' | translate:lang}}</h3>
+  </div>
+  <div class="modal-dialog-body">
+    <p>{{'CHANGEPASSWORD.Dialog.Info_text' | translate:lang}}</p>
+  </div>
+  <div class="modal-dialog-footer">
+    <ae-button [text]="'CHANGEPASSWORD.Dialog.Btn_No' | translate:lang" [type]="'button'" [id]="'confirmNo'" [name]="'confirmNo'" (aeClick)="modalClosed('no')"></ae-button>
+    <ae-button [id]="'confirmOk'" [name]="'confirmOk'" [class]="lightClass" (aeClick)="onRelogin($event)" [text]="'CHANGEPASSWORD.Dialog.Btn_Yes' | translate:lang"></ae-button>
+  </div>
+</ae-modal-dialog>

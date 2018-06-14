@@ -1,0 +1,168 @@
+<div class="so-panel__title">
+  <h3>{{'ADD_TASK_FORM.UPDATE_TASK' | translate:lang}}</h3>
+</div>
+
+<div class="so-panel__content">
+  <div class="information-grid">
+    <ae-message [id]="'message'" [name]="'message'" [text]="message | translate:lang" [icon]="'icon-bell'" (aeClose)="hideMessage()"
+      [messageType]="messagetType" *ngIf="showMessage()"></ae-message>
+    <section class="information-grid__section">
+      <form class="form" [formGroup]="updateTaskForm">
+        <section class="information-grid__section">
+          <div class="information-grid__item">
+            <div class="information-grid__item-label column-1of3">
+              <span>{{'ADD_TASK_FORM.TASK_CATEGORY' | translate:lang}}
+                <span class="error-text">*</span>
+              </span>
+            </div>
+            <div class="information-grid__item-value column-2of3 text-muted">
+              <ae-select [id]="'TaskCategoryId'" [name]="'TaskCategoryId'" formControlName="TaskCategoryId" (aeSelectChange)="onCategoryChange($event)"
+                [options]="categoryList" [disabled]="true"></ae-select>
+            </div>
+          </div>
+          <div class="information-grid__item">
+            <div class="information-grid__item-label column-1of3" *ngIf="!siteVisitCategory">
+              <span id="taskTitle">{{'ADD_TASK_FORM.TITLE' | translate:lang}}
+                <span class="error-text">*</span>
+              </span>
+            </div>
+            <div class="information-grid__item-label column-1of3" *ngIf="siteVisitCategory">
+              <span id="taskObservation">{{'ADD_TASK_FORM.OBSERVATION' | translate:lang}}
+                <span class="error-text">*</span>
+              </span>
+            </div>
+            <div class="information-grid__item-value column-2of3 text-muted">
+              <ae-input [id]="'Title'" [name]="'Title'" formControlName="Title" [placeholder]="(!siteVisitCategory)? 'Title': 'Observation'"></ae-input>
+            </div>
+            <span *ngIf="fieldHasRequiredError('Title')" class="form__input__error">{{(!siteVisitCategory)? 'Title': 'Observation'}} is required</span>
+          </div>
+
+          <div class="information-grid__item">
+            <div class="information-grid__item-label column-1of3" *ngIf="!siteVisitCategory">
+              <span id="taskDescription">{{'ADD_TASK_FORM.DESCRIPTION' | translate:lang}}</span>
+            </div>
+            <div class="information-grid__item-label column-1of3" *ngIf="siteVisitCategory">
+              <span id="taskRecommendation">{{'ADD_TASK_FORM.RECOMMENDATION' | translate:lang}}</span>
+            </div>
+            <div class="information-grid__item-value column-2of3 text-muted">
+              <ae-textarea [id]="'Description'" [name]="'Description'" formControlName="Description" [showcharleft]="'true'"></ae-textarea>
+            </div>
+          </div>
+          <div class="information-grid__item" *ngIf="siteVisitCategory">
+            <div class="information-grid__item-label column-1of3">
+              <span>{{'ADD_TASK_FORM.CORRECTIVE_ACTION_TAKEN' | translate:lang}}</span>
+            </div>
+            <div class="information-grid__item-value column-2of3 text-muted">
+              <ae-textarea [id]="'CorrectAction'" [name]="'CorrectAction'" formControlName="CorrectActionTaken" [showcharleft]="'true'"
+                [placeholder]="'ADD_TASK_FORM.CORRECTIVE_ACTION_TAKEN' | translate:lang" [maxlength]="2000"></ae-textarea>
+            </div>
+            <span *ngIf="fieldHasMaxLengthError('CorrectActionTaken')" class="form__input__error">
+              {{'VALIDATION_ERRORS.CORRECTIVE_ACTION_ERROR' | translate:lang}}
+            </span>
+          </div>
+
+
+          <div class="information-grid__item" *ngIf="siteVisitCategory">
+            <div class="information-grid__item-label column-1of3">
+              <span>{{'ADD_TASK_FORM.COST_RECTIFICATION' | translate:lang}}</span>
+            </div>
+            <div class="information-grid__item-value column-2of3 text-muted">
+              <ae-input [id]="'CostOfRectification'" [name]="'CostOfRectification'" formControlName="CostOfRectification" [placeholder]="'ADD_TASK_FORM.COST_RECTIFICATION' | translate:lang"
+                [type]="ctrlType"></ae-input>
+            </div>
+          </div>
+
+          <div class="information-grid__item" *ngIf="siteVisitCategory">
+            <div class="information-grid__item-label column-1of3">
+              <span>{{'ADD_TASK_FORM.PERCENTAGE_COMPLETED' | translate:lang}}</span>
+            </div>
+            <div class="information-grid__item-value column-2of3 text-muted">
+              <ae-input [id]="'PercentageCompleted'" [name]="'PercentageCompleted'" formControlName="PercentageCompleted" [type]="ctrlType"
+                [step]="5" [min]="0" [max]="100"></ae-input>
+            </div>
+            <span *ngIf="(fieldHasMinError('PercentageCompleted') || fieldHasMaxError('PercentageCompleted')) && siteVisitCategory" class="form__input__error">
+              {{'VALIDATION_ERRORS.PERCENTAGE_COMPLETED_MESSAGE' | translate:lang}}
+            </span>
+            <span *ngIf="isNotComplete()&& siteVisitCategory" class="form__input__error">
+              {{'VALIDATION_ERRORS.SITEVISIT_TASK_MESSAGE' | translate:lang}}
+            </span>
+          </div>
+          <div class="information-grid__item">
+            <div class="information-grid__item-label column-1of3">
+              <span>{{'TRAINING_REPORT.STATUS' | translate:lang}} *</span>
+            </div>
+            <div class="information-grid__item-value column-2of3 text-muted">
+              <ae-select [id]="'Status'" [name]="'Status'" formControlName="Status" [options]="taskStatus"></ae-select>
+            </div>
+            <span *ngIf="isComplete()&& siteVisitCategory" class="form__input__error">
+              {{'VALIDATION_ERRORS.SITEVISIT_STATUS_MESSAGE' | translate:lang}}
+            </span>
+          </div>
+
+          <div class="information-grid__item">
+            <div class="information-grid__item-label column-1of3">
+              <span>{{'ADD_TASK_FORM.PRIORITY' | translate:lang}} *</span>
+            </div>
+            <div class="information-grid__item-value column-2of3 text-muted">
+              <ae-select [id]="'Priority'" [name]="'Priority'" formControlName="Priority" [options]="taskPriorities"></ae-select>
+            </div>
+          </div>
+          <div class="information-grid__item">
+            <div class="information-grid__item-label column-1of3">
+              <span>{{'ADD_TASK_FORM.DEDLINE_DATE' | translate:lang}}</span>
+            </div>
+            <div class="information-grid__item-value column-2of3">
+              <ae-datetime-picker [id]="'DueDate'" [name]="'DueDate'" formControlName="DueDate" [monthNavigator]="true" [yearNavigator]="true"
+                yearRange="2000:2030" [showIcon]="true" [minDate]="minDate"></ae-datetime-picker>
+              </div>
+          </div>
+          <div class="information-grid__item">
+            <div class="information-grid__item-label column-1of3">
+              <span>{{'ADD_TASK_FORM.ASSIGNED_TO' | translate:lang}}</span>
+            </div>
+            <div class="information-grid__item-value column-2of3">
+              <ae-autocomplete [id]="'taskAssignedUsers'" formControlName="AssignedUsers" [name]="'taskAssignedUsers'" [placeholder]="'ADD_TASK_FORM.ASSIGNED_TO' | translate:lang"
+                [multiselect]="true" [items]="assignUsersOptions$ | async" [dstype]="dataSouceType" [field]="'FullName'" [valuefield]="'Id'"
+                (aeOnSelect)="onAssignUserChanged($event)" (aeOnClearSelected)="onClearselected($event)"></ae-autocomplete>
+            </div>
+          </div>
+
+          <div class="information-grid__item">
+
+            <div class="information-grid__item-value">
+              <ae-anchor [id]="'_assignToMe'" [name]="'_assignToMe'" [disabled]="isAssignToMeBtnDisabled" [anchorType]="'button'" [class]="'button button--cta button--inline-block space-right-15'"
+                (aeClick)="onClickAssignToME($event)" [text]="'Assign To Me'"></ae-anchor>
+              <ae-checkbox [id]="'AssignToAllChkBox'" *ngIf="canAssignToAllBeShown()" [name]="'AssignToAllChkBox'" [value]="assignToAll"
+                (change)="onChangeAllCheckbox($event)" formControlName="AssignToAll" [checkText]="'Assign to all users'" class="inline-block"></ae-checkbox>
+            </div>
+
+          </div>
+
+          <div class="information-grid__item" *ngIf="isTaskAssigned()">
+            <div class="information-grid__item-value">
+
+              <ae-checkbox [id]="'SendNotificationChkBox'" [name]="'SendNotificationChkBox'" [value]="sendEmailNotification" (change)="onChangeSendEmailNotification($event)"
+                formControlName="SendNotification" [checkText]="'Send e-mail notification to the user(s)?'"></ae-checkbox>
+            </div>
+          </div>
+        </section>
+        <div class="form__error">
+        </div>
+      </form>
+    </section>
+  </div>
+
+</div>
+<div class="so-panel__footer">
+  <nav>
+    <ul>
+      <li>
+        <label for="soPanel" [id]="getChildId('label',1)" class="button button--inline-block" (click)="onTaskCancel()" [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label>
+      </li>
+      <li class="pull--right">
+        <ae-anchor [id]="getChildId('AeAnchor',1)" [name]="getChildName('AeAnchor',1)" [anchorType]="'button'" [class]="'button button--inline-block'"
+          [anchorClass]="lightClass" (aeClick)="onUpdateFormSubmit($event)" [text]="'BUTTONS.UPDATE' | translate:lang"></ae-anchor>
+      </li>
+    </ul>
+  </nav>
+</div>

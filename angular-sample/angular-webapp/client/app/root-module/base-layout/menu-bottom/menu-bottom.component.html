@@ -1,0 +1,65 @@
+<div class="nav__level-section">
+  <div class="nav__item--section">Help &amp; support</div>
+</div>
+<div class="nav__level-one nav__level-one--bottom">
+  <!--<ae-anchor *ngIf="isClickable" [id]="getChildId('AeAnchor', i)" [name]="getChildName('AeAnchor', i)" 
+      [text]="item.Text" (aeClick)="onAeAction(item,$event)">
+       </ae-anchor> -->
+  <a [id]="getChildId('anchor', 0)" [name]="getChildName('anchor', 0)" class="nav__item">
+    <div class="icon-with-text ">
+      <span class="icon-with-text__icon">
+            <div class="icon icon--small">
+              <svg>
+                <use [attr.xlink:href]="getAbsoluteUrl('icon-phone')"></use>
+              </svg>
+            </div>
+          </span>
+      <span class="icon-with-text__copy ">0345 844 4848</span>
+    </div>
+  </a>
+  <ng-container *ngIf="AdviceCardNumber">
+    <a [id]="getChildId('anchor', 1)" [name]="getChildName('anchor', 1)" class="nav__item" *ngFor="let consultant of ConsultantsInfo">
+      <div class="icon-with-text ">
+        <span class="icon-with-text__icon">
+            <div class="icon icon--small">
+              <svg>
+                <use [attr.xlink:href]="getAbsoluteUrl('icon-employee')"></use>
+              </svg>
+            </div>
+          </span>
+        <span class="icon-with-text__copy">
+             <span>
+               {{consultantServiceType(consultant.PrimaryPermission)}}
+               </span> - {{consultant.FullName}}
+        </span>
+      </div>
+    </a>
+
+    <a [id]="getChildId('anchor', 2)" [name]="getChildName('anchor', 2)" class="nav__item">
+      <div class="icon-with-text ">
+        <span class="icon-with-text__icon">
+            <div class="icon icon--small">
+              <svg>
+                <use [attr.xlink:href]="getAbsoluteUrl('icon-card')"></use>
+              </svg>
+            </div>
+          </span>
+        <span class="icon-with-text__copy ">
+              {{AdviceCardNumber}}
+            </span>
+      </div>
+    </a>
+  </ng-container>
+  <a [id]="getChildId('anchor', 3)" [name]="getChildName('anchor', 3)" class="nav__item" (click)="helpNavigationClick()">
+    <div class="icon-with-text ">
+      <span class="icon-with-text__icon">
+            <div class="icon icon--small">
+              <svg>
+                <use [attr.xlink:href]="getAbsoluteUrl('icon-bulb')"></use>
+              </svg>
+            </div>
+          </span>
+      <span class="icon-with-text__copy ">Help & information</span>
+    </div>
+  </a>
+</div>

@@ -1,0 +1,69 @@
+<div class="tasks-loader" *ngIf="!dataLoaded">
+  <h2 class="h-loader h2-loader"></h2>
+  <div class="icon-grid">
+    <div class="icon-grid__item">
+      <span class="icon-badge-info"></span>
+    </div>
+    <div class="icon-grid__item">
+      <span class="icon-badge-info"></span>
+    </div>
+    <div class="icon-grid__item">
+      <span class="icon-badge-info"></span>
+    </div>
+    <div class="icon-grid__item">
+      <span class="icon-badge-info"></span>
+    </div>
+    <div class="icon-grid__item">
+      <span class="icon-badge-info"></span>
+    </div>
+    <div class="icon-grid__item">
+      <span class="icon-badge-info"></span>
+    </div>
+    <div class="icon-grid__item">
+      <span class="icon-badge-info"></span>
+    </div>
+    <div class="icon-grid__item">
+      <span class="icon-badge-info"></span>
+    </div>
+    <div class="icon-grid__item">
+      <span class="icon-badge-info"></span>
+    </div>
+    <div class="button-loader light">Button text</div>
+  </div>
+</div>
+
+<div *ngIf="dataLoaded" [id]="id">
+  <div [id]="getChildId('div', 50)" class="widget__title">
+    <h2>{{'TASKS.Tasks' | translate:lang}} {{'TASKS.Due_this_week' | translate:lang}}</h2>
+  </div>
+  <div>
+    <div [id]="getChildId('div', 51)" class="icon-grid">
+      <div [id]="getChildId('div', 52)" class="icon-grid__item" *ngFor="let task of tasksList; let i=index" [routerLink]="['/task/category/', task.category | lowercase]">
+        <div [id]="getChildId('div', 53)" class="icon icon--medium">
+          <ae-icon [id]="getChildId('ae-icon', i)" [name]="getChildName('ae-icon', i)" [size]="iconSize" [icon]="getIcon(task.category)"></ae-icon>
+        </div>
+        <div [id]="getChildId('div', 5)" class="icon-grid__copy">
+          <span [id]="getChildId('span', 6)">{{ task.category }}</span>
+        </div>
+        <div [id]="getChildId('div', 56)" class="icon-grid__badge">
+
+          <ae-badge [class]="'badge--yellow'" [isShadow]="true" [text]="indicatorText(task.count)"></ae-badge>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="top15" *ngIf="canAddTask()">
+  <ae-anchor [id]="getChildId('ae-anchor', 58)" [name]="getChildName('ae-anchor', 58)" [text]="'TASKS.Add_task' | translate:lang"
+    (aeClick)="addTask()" [anchorType]="'button'" [anchorClass]="lightClass"></ae-anchor>
+  </div>
+</div>
+
+
+
+<ae-slideout [id]="getChildId('AeSlideOut', 1)" [name]="getChildName('AeSlideOut', 1)" [modelState]="getSlideoutState()"
+  [class.slide--animate]="getSlideoutAnimateState()">
+  <div *ngIf="getSlideoutAnimateState()">
+    <task-add (onCancel)="onTaskCancel($event)" (OnAddComplete)="onAddTaskComplete($event)"></task-add>
+  </div>
+</ae-slideout>

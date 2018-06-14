@@ -1,0 +1,39 @@
+<div class="header__progress js-progress-sidebar-trigger" [id]="id" (click)="onClick()" *ngIf="canShowOnBoaring()">
+  <div class="icon-with-text icon-with-text--progress">
+    <span class="icon-with-text__icon">
+        <ae-icon [id]="'personal-document-card'" [size]="iconSize" [name]="'personal-document-card'" [icon]="'icon-pie'" ></ae-icon>
+      </span>
+    <span class="icon-with-text__copy ">
+        {{percentCompleted}}%
+      </span>
+  </div>
+</div>
+
+<ae-slideout [id]="getChildId('AeSlideOut',1)" [name]="getChildName('AeSlideOut',1)" [modelState]="getSlideoutState()" [class.slide--animate]="showSlider()"
+  [notification]="'true'" (cancel)="updateSlideoutStatus()">
+  <div class="js-profile-sidebar progess-slideout">
+    <h2>Progress indicator</h2>
+    <div class="progress">
+      <span class="progress__label" id="progress__id">Onboarding: <b>{{percentCompleted}}%</b></span>
+      <progress max="100" value="{{percentCompleted}}" class="progress__main" aria-labelledby="progress__id">
+        <div class="progress__bar" role="presentation">
+          <span class="progress__value">&nbsp;</span>
+        </div>
+      </progress>
+    </div>
+    <div class="">
+      <ng-template ngFor let-item [ngForOf]="steps" let-i="index">
+        <div class="checklist__item">
+          <div class="checkbox" [class.inactive]="!item.Status">
+            <ae-checkbox [checkText]="item.Title" [id]="getChildId('AeCheckbox', i)" [name]="getChildName('AeCheckbox', i)" [disabled]="true"
+              [checked]="item.Status"></ae-checkbox>
+          </div>
+        </div>
+      </ng-template>
+      <div>
+        <ae-anchor [id]="'isWizard'" [name]="'isWizard'" [anchorType]="'button'" [class]="'button--cta'" [text]="'BUTTONS.RETURNTOWIZARD' | translate:lang"
+          (aeClick)="goToWizard()"></ae-anchor>
+      </div>
+    </div>
+  </div>
+</ae-slideout>

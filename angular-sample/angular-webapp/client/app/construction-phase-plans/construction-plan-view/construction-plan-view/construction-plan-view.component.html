@@ -1,0 +1,362 @@
+<div id="constructionPhasePlansHeader">
+  <ae-banner [id]="getChildId('AeBanner')" [name]="getChildName('AeBanner')" [titleText]="ConstructionPhasePlan.Name" [backgroundImage]="'/assets/images/lp-construction-phase-plans.jpg'">
+    <ae2-breadcrumb [id]="'breadCrumb'" [name]="'breadCrumb'" class="bredcrumb-section" [group]="bcGroup"></ae2-breadcrumb>
+    <div class="image-text banner-image-text">
+    </div>
+  </ae-banner>
+  <ae-notification [id]="'cppNotif'" [name]="'cppNotif'" [iconName]="'icon-info'" [textInfo]="'CPP_PREVIEW.LANDING_PAGE_MSG' | translate:lang"></ae-notification>
+
+  <div class="section-title">
+    <div class="button-bar">
+      <div class="button-bar__item" *ngIf="EnableApproveButton">
+        <ae-button [id]="getChildId('AeButton',1)" [name]="getChildName('AeButton',1)" [customClass]="'button button--cta'" (aeClick)="SetApproved()"
+          [title]="'CPP_PREVIEW.APPROVE'| translate:lang" [text]="'CPP_PREVIEW.APPROVE'| translate:lang"></ae-button>
+      </div>
+      <div class="button-bar__item">
+        <ae-button [id]="getChildId('AeButton',2)" [name]="getChildName('AeButton',2)" [customClass]="'button button--cta'" (aeClick)="OnExport()"
+          [title]="'CPP_PREVIEW.EXPORT'| translate:lang" [text]="'CPP_PREVIEW.EXPORT'| translate:lang"></ae-button>
+      </div>
+      <div class="button-bar__item">
+        <ae-button [type]="'button'" [id]="getChildId('AeButton',3)" [name]="getChildName('AeButton',3)" [customClass]="'button button--cta'"
+          [title]="'CPP_PREVIEW.PRINT' | translate:lang" [text]="'CPP_PREVIEW.PRINT' | translate:lang" (aeClick)="OnPrint()"></ae-button>
+      </div>
+      <div class="button-bar__item">
+        <ae-button [type]="'button'" [id]="getChildId('AeButton',4)" [name]="getChildName('AeButton',4)" [customClass]="'button button--cta'"
+          [title]="'CPP_PREVIEW.EMAIL' | translate:lang" [text]="'CPP_PREVIEW.EMAIL' | translate:lang" (aeClick)="OnEmail()"></ae-button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="construction-plan-preview">
+  <div class="information-grid construction-plan-view">
+    <div class="border-bottom">
+      <div> <img class="site-logo" src="{{getLogoUrl()}}" alt="Logo" /></div>
+    </div>
+    <div class="sg-grid grid--1-2">
+      <div>
+        <div class="form__input">
+          <label>
+                        {{'CPP_PREVIEW.CP_PLAN_NAME' | translate:lang}}:
+                        <div>{{ConstructionPhasePlan.Name}}</div>
+                    </label>
+        </div>
+        <div class="form__input">
+          <label>
+                        {{'CPP_PREVIEW.REFERENCE_NUMBER' | translate:lang}}:
+                        <div>{{ConstructionPhasePlan.ReferenceNumber}}</div>
+                    </label>
+        </div>
+        <div class="form__input">
+          <label>
+                        {{'CPP_PREVIEW.CPPINTENT' | translate:lang}}:
+                        <div>{{ConstructionPhasePlan.Intent}}</div>
+                    </label>
+        </div>
+        <div class="form__input">
+          <label>
+                        {{'CPP_PREVIEW.CPPPET' | translate:lang}}:
+                        <div>{{ConstructionPhasePlan.PET}}</div>
+                    </label>
+        </div>
+        <div class="form__input">
+          <label>
+                        {{'CPP_PREVIEW.SELECTED_RISKASSESSMENTS' | translate:lang}}:
+                        <div>
+                            <div *ngFor="let item of ConstructionPhasePlan.ConstructionPhasePlanRA, let i = index">
+                                {{i + 1}}. {{item.ReferenceNumber ? (item.ReferenceNumber + " - " + item.Name) : item.Name}}</div>
+                        </div>
+                    </label>
+        </div>
+        <div class="form__input no-border">
+          <label>{{'CPP_PREVIEW.CPP_SAFETY' | translate:lang}}:
+                        <div>
+                            <div class="information-grid__item">
+                                <div class="information-grid__item-label column-1of3">{{'CPP_PREVIEW.MSER_USER' | translate:lang}}</div>
+                                <div class="information-grid__item-value column-2of3">: {{getEmergencyRespUser()}}</div>
+                            </div>
+                            <div class="information-grid__item">
+                                <div class="information-grid__item-label column-1of3">{{'CPP_PREVIEW.MSFR_USER' | translate:lang}}</div>
+                                <div class="information-grid__item-value column-2of3">: {{getFireRespUser()}}</div>
+                            </div>
+                            <div class="information-grid__item">
+                                <div class="information-grid__item-label column-1of3">{{'CPP_PREVIEW.MSFA_USER' | translate:lang}}</div>
+                                <div class="information-grid__item-value column-2of3">: {{getFireAidRespUser()}}</div>
+                            </div>
+                            <div class="information-grid__item">
+                                <div class="information-grid__item-label column-1of3">{{'CPP_PREVIEW.MSACC_USER' | translate:lang}}</div>
+                                <div class="information-grid__item-value column-2of3">: {{getAccidentAidRespUser()}}</div>
+                            </div>
+                            <div class="information-grid__item">
+                                <div class="information-grid__item-label column-1of3">{{'CPP_PREVIEW.MSIS_ASBESTOS' | translate:lang}}</div>
+                                <div class="information-grid__item-value column-2of3">: {{ConstructionPhasePlan.CPPSafetyPrecautions?.IsAsbestos ? 'Yes' : 'No'}}</div>
+                            </div>
+
+                        </div>
+                    </label>
+        </div>
+        <div class="form__input no-border">
+          <label class="label">{{'CPP_PREVIEW.PPE' | translate:lang}}:
+                        <div>{{ConstructionPhasePlan.CPPSafetyPrecautions?.PPE}}</div>
+                    </label>
+        </div>
+        <div class="form__input no-border">
+          <label class="label">{{'CPP_PREVIEW.WEL_FACILITIES' | translate:lang}}:
+                        <div>{{ConstructionPhasePlan.CPPSafetyPrecautions?.WelfareFacilities}}</div>
+                    </label>
+        </div>
+        <div class="form__input no-border">
+          <label class="label">{{'CPP_PREVIEW.SITE_SECURITY' | translate:lang}}:
+                        <div>{{ConstructionPhasePlan.CPPSafetyPrecautions?.SiteSecurity}}</div>
+                    </label>
+        </div>
+        <div class="form__input left-space">
+          <label class="label">{{'CPP_PREVIEW.COMMUNICATION' | translate:lang}}:
+                        <div>{{ConstructionPhasePlan.CPPSafetyPrecautions?.Communication}}</div>
+                    </label>
+        </div>
+        <div class="form__input">
+          <label>{{'CPP_PREVIEW.SEQUENCE_EVENTS' | translate:lang}}:
+                        <div>
+                            <div *ngFor="let item of ConstructionPhasePlan.CPPEvents, let i = index">
+                                <div>
+                                    <div class="form__input">
+                                        <label>
+                                            {{i + 1}}. {{'CPP_PREVIEW.STEP_DETAILS' | translate:lang}}:
+                                            <div>{{item.StepDetail}}</div>
+                                        </label>
+        </div>
+        <div class="form__input">
+          <label>
+                                            {{'CPP_PREVIEW.DATE' | translate:lang}}:
+                                            <span>{{item.Date | localeDate:defaultLocale:'dd/MM/yyyy'}}</span>
+                                        </label>
+        </div>
+      </div>
+    </div>
+  </div>
+  </label>
+</div>
+</div>
+
+<div>
+  <div class="form__input">
+    <label>
+                        {{'CPP_PREVIEW.OWNER' | translate:lang}}:
+                        <div>{{ConstructionPhasePlan.Owner?.FullName}}</div>
+                    </label>
+  </div>
+  <div class="form__input">
+    <label>
+                        {{'CPP_PREVIEW.START_DATE' | translate:lang}}:
+                        <div>{{ConstructionPhasePlan.StartDate | localeDate:defaultLocale:'dd/MM/yyyy'}}</div>
+                    </label>
+  </div>
+  <div class="form__input" *ngIf="!ConstructionPhasePlan.IsExample">
+    <label>
+                        {{'CPP_PREVIEW.END_DATE' | translate:lang}}:
+                        <div>{{ConstructionPhasePlan.EndDate | localeDate:defaultLocale:'dd/MM/yyyy'}}</div>
+                    </label>
+  </div>
+  <div class="form__input" *ngIf="NeedToHideReviewDate">
+    <label>
+                        {{'CPP_PREVIEW.REVIEW_DATE' | translate:lang}}:
+                        <div>{{ConstructionPhasePlan.ReviewDate | localeDate:defaultLocale:'dd/MM/yyyy'}}</div>
+                    </label>
+  </div>
+  <div class="form__input">
+    <label>
+                        {{'CPP_PREVIEW.STAFF_MEMB' | translate:lang}}:
+                        <div>{{ConstructionPhasePlan.WhoIsImpacted}}</div>
+                    </label>
+  </div>
+  <div class="form__input">
+    <label>
+                        {{'CPP_PREVIEW.LOCA_OF_WORK' | translate:lang}}:
+                        <div>
+                            <div *ngFor="let item of ConstructionPhasePlan.CPPSites">
+                                <div>{{item.SiteNameAndPostcode ? item.SiteNameAndPostcode:item.Name}}</div>
+                            </div>
+                            <div>{{ConstructionPhasePlan.OtherLocation}}</div>
+                        </div>
+                    </label>
+  </div>
+  <div class="form__input">
+    <label>
+                        {{'CPP_PREVIEW.LOCATION_SERVICES' | translate:lang}}:
+                        <div>{{ConstructionPhasePlan.LPS}}</div>
+                    </label>
+                </div>
+                <div class="form__input">
+                    <label *ngIf="!IsConstruction">{{'CPP_PREVIEW.MONITORING_SYSTEMS' | translate:lang}}:</label>
+                    <label *ngIf="IsConstruction">{{'CPP_PREVIEW.MONITORING_SUPERVISORY_SYSTEMS' | translate:lang}}:</label>
+                    <div>{{ConstructionPhasePlan.MonitoringSystems}}</div>
+                </div>
+                <div class="form__input">
+                    <label>
+                        {{'CPP_PREVIEW.FURTHER_INF_OBS' | translate:lang}}:
+                        <div>{{ConstructionPhasePlan.Information}}</div>
+                    </label>
+  </div>
+  <div class="form__input">
+    <label>
+                        {{'CPP_PREVIEW.DOMESTIC_COMMERCIAL' | translate:lang}}:
+                        <div>{{ConstructionPhasePlan.IsDomestic ? "Domestic" : "Commercial"}}</div>
+                    </label>
+  </div>
+  <div class="form__input">
+    <label>
+                        {{'CPP_PREVIEW.STATUS' | translate:lang}}:
+                        <div>{{ConstructionPhasePlan.StatusDesc}}</div>
+                    </label>
+  </div>
+  <div class="form__input">
+    <label>
+                        {{'CPP_PREVIEW.ADDITIONAL_INFORMATION' | translate:lang}}:
+                        <div>
+                            <div class="form__input">
+                                <label>
+                                    {{'CPP_PREVIEW.NUMBER_OF_CONTRAC' | translate:lang}}:
+                                    <span>{{ConstructionPhasePlan.CPPAdditionalInfo?.NumberOfContractors}}</span>
+                                </label>
+  </div>
+  <div class="form__input">
+    <label>
+                                    {{'CPP_PREVIEW.PRINCIPAL_DESIGNER' | translate:lang}}:
+                                    <div>{{ConstructionPhasePlan.CPPAdditionalInfo?.PrincipalDesigner}}</div>
+                                </label>
+  </div>
+  <div class="form__input">
+    <label>
+                                    {{'CPP_PREVIEW.PRINCIPAL_CONTRACTOR' | translate:lang}}:
+                                    <div>{{ConstructionPhasePlan.CPPAdditionalInfo?.PrincipalContractor}}</div>
+                                </label>
+  </div>
+  <div class="form__input">
+    <label>
+                                    {{'CPP_PREVIEW.OTHER_SPECIFY' | translate:lang}}:
+                                    <div>{{ConstructionPhasePlan.CPPAdditionalInfo?.Others}}</div>
+                                </label>
+  </div>
+  <div class="form__input" *ngIf="ConstructionPhasePlan.IsDomestic">
+    <label>
+                                    {{'CPP_PREVIEW.CLIENT' | translate:lang}}:
+                                    <div >{{ConstructionPhasePlan.CPPAdditionalInfo?.Client}}</div>
+                                </label>
+  </div>
+</div>
+</label>
+</div>
+</div>
+</div>
+</div>
+
+<div class="spacer--x construction-plan-view top-15">
+
+
+
+
+  <section class="information-grid__section">
+    <h3>{{'CPP_PREVIEW.CONTRACTORS' | translate:lang}}</h3>
+    <table class="table__table-preview cpp-position">
+      <thead>
+        <tr>
+          <th class="table__heading" width="50%">
+            {{'CPP_PREVIEW.CONTRACTOR_NAME'| translate:lang}}
+          </th>
+          <th class="table__heading">
+            {{'CPP_PREVIEW.POSITION'| translate:lang}}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of ConstructionPhasePlan.CPPAdditionalInfo?.Contractors" class="table__row">
+          <td class="table__item">
+            <div class="table__item-inner">
+              {{item.Name}}
+            </div>
+          </td>
+          <td class="table__item">
+            <div class="table__item-inner">
+              {{item.Position}}
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="attached-files">
+    <h3>{{'CPP_PREVIEW.ATTACHED_FILES'| translate:lang}}</h3>
+    <div class="overflow-x">
+      <table class="table__table-preview">
+        <thead>
+          <tr>
+            <th class="table__heading">
+              {{'CPP_PREVIEW.FILE_NAME'| translate:lang}}
+            </th>
+            <th class="table__heading">
+              {{'CPP_PREVIEW.LABEL'| translate:lang}}
+            </th>
+            <th class="table__heading">
+              {{'CPP_PREVIEW.FILE_TYPE'| translate:lang}}
+            </th>
+            <th class="table__heading">
+              {{'CPP_PREVIEW.FILE_SIZE'| translate:lang}}
+            </th>
+            <th class="table__heading">
+              {{'CPP_PREVIEW.DOWNLOAD'| translate:lang}}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of ConstructionPhasePlan.CPPAdditionalInfo?.Documents" class="table__row">
+            <td class="table__item">
+              <div class="table__item-inner">
+                {{item.FileName}}
+              </div>
+            </td>
+            <td class="table__item">
+              <div class="table__item-inner">
+                {{item.Title}}
+              </div>
+            </td>
+            <td class="table__item">
+              <div class="table__item-inner">
+                {{item.IconClass}}
+              </div>
+            </td>
+            <td class="table__item">
+              <div class="table__item-inner">
+                {{item.Size}}
+              </div>
+            </td>
+            <td class="table__item">
+              <div class="table__item-inner">
+                <ae-anchor [id]="item.Id" [name]="item.Id" [anchorClass]="'download-block'" [text]="'CPP_PREVIEW.DOWNLOAD' | translate:lang"
+                  [href]="getFileDownloadUrl(item.Id)" [target]="_blank" (aeClick)="downLoadFile($event,item.Id)">
+                </ae-anchor>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+</div>
+<div class="button-bar spacer">
+  <div class="icon-list banner-icon-list">
+    <ae-button [class]="lightClass" [title]="'CPP_PREVIEW.PREVIOUS' | translate:lang" [text]="'CPP_PREVIEW.PREVIOUS' | translate:lang"
+      [type]="'button'" [id]="'previousBtn'" [name]="'previousBtn'" (aeClick)="OnPreviousClick()"></ae-button>
+  </div>
+</div>
+<div class="email-slideout">
+  <ae-slideout [id]="'emailSlideout'" [name]="'emailSlideout'" [modelState]="GetEmailSlideoutState" [class.slide--animate]="ShowEmailSlideOut">
+    <ng-container *ngIf="ShowEmailSlideOut">
+        <div>
+            <email [id]="'emailView'" [name]="'emailView'" [emailModel]="EmailModel" (onCancel)="OnCancel($event)"></email>
+        </div>
+    </ng-container>
+  </ae-slideout>
+</div>

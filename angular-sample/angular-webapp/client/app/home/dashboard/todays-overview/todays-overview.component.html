@@ -1,0 +1,67 @@
+<div [id]="id" *ngIf="!isLoading">
+  <div class="widget__title">
+    <h2>{{'TODAYSOVERVIEW.Todays' | translate:lang}} {{'TODAYSOVERVIEW.Overview' | translate:lang}}</h2>
+  </div>
+  <div class="list-scroll" [attr.data-simplebar]="hasScroll()" [style.max-height]="getMaxHeight()" *ngIf="hasOverviewItems()" [attr.data-simplebar-autohide]="false">
+    <ul class="list">
+      <li class="list__item" *ngFor="let item of overviewList">
+        <ng-container [ngSwitch]="item?.Code">
+          <ng-template [ngSwitchCase]="statisticCodeRef.Joiners">
+            <strong>{{getName(item.Data)}}</strong> {{'TODAYSOVERVIEW.Is_joining' | translate:lang}} <strong>{{getDepartmentOrCompany(item.Data)}}</strong> {{"TODAYSOVERVIEW.This_week_say_hi"
+            | translate:lang}}!
+          </ng-template>
+          <ng-template [ngSwitchCase]="statisticCodeRef.Documents">
+            <span *ngIf="item.Count==1">{{'TODAYSOVERVIEW.New_document_to_review' | translate:lang}} - <ae-anchor [id]="getChildOfDocuments()" [name]="getChildOfDocuments()"  [text]="item.Data"
+              [class]="linkStyle" (aeClick)="onDocumentClick(item)"></ae-anchor></span>
+            <span *ngIf="item.Count>1">{{'TODAYSOVERVIEW.You_have_count_new' | translate:lang:{ docCount: item.Count} }} <ae-anchor [id]="getChildOfDocuments()" [name]="getChildOfDocuments()"  [text]="getDocsText()" 
+              [class]="linkStyle" (aeClick)="onDocumentClick(item)"></ae-anchor></span>
+          </ng-template>
+          <ng-template [ngSwitchCase]="statisticCodeRef.TasksdueToday">
+            <span>{{item.Count}} <ae-anchor [id]="getChildOfTasksDue()" [name]="getChildOfTasksDue()" [text]="getTasksText(item.Count)" [class]="linkStyle" (aeClick)="onDueTaskClick(item)"></ae-anchor></span>
+          </ng-template>
+          <ng-template [ngSwitchCase]="statisticCodeRef.OutOfOffice">
+            {{'TODAYSOVERVIEW.OOF_tomorrow' | translate:lang}}!
+          </ng-template>
+          <ng-template [ngSwitchCase]="statisticCodeRef.TeamOutOfOffice">
+            <ae-anchor [id]="getChildOfTeamOutOffice()" [name]="getChildOfTeamOutOffice()" [text]="getName(item.Data)" [class]="linkStyle" (aeClick)="onEmployeeRequestsClick(item.Id,item.Data)"></ae-anchor>
+            {{'TODAYSOVERVIEW.TeamOOF' | translate:lang:{ startDate: getStartDate(item.Data), endDate: getEndDate(item.Data)} }}
+          </ng-template>
+          <ng-template [ngSwitchCase]="statisticCodeRef.TeamBirthdays">
+            <span class="weekTeamBirthdays" innerHTML="{{ item.Data }}"></span>
+          </ng-template>
+          <ng-template [ngSwitchCase]="statisticCodeRef.TeamWorkAnniversary">
+            <ae-anchor [id]="getChildWorkAnniversary()" [name]="getChildWorkAnniversary()" [text]="item.Data" [class]="linkStyle" (aeClick)="onEmployeeClick(item.Id)"></ae-anchor>
+          </ng-template>
+          <ng-template [ngSwitchCase]="statisticCodeRef.AccidentsPreviousWeek">
+            <span class="accidentsWeek" innerHTML="{{ item.Data }}"></span>
+          </ng-template>
+          <ng-template [ngSwitchCase]="statisticCodeRef.ChecklistDueThisWeek">
+            <ae-anchor [id]="getChildChecklistDueThisWeek()" [name]="getChildChecklistDueThisWeek()" [text]="item.Data" [class]="linkStyle"
+              (aeClick)="linkToChecklists()"></ae-anchor>
+          </ng-template>
+          <ng-template [ngSwitchCase]="statisticCodeRef.RiskAssessmentsDueThisWeek">
+            <ae-anchor [id]="getChildRADueThisWeek()" [name]="getChildRADueThisWeek()" [text]="item.Data" [class]="linkStyle" (aeClick)="linkToRiskAssessments()"></ae-anchor>
+          </ng-template>
+        </ng-container>
+      </li>
+    </ul>
+  </div>
+  <!--<h5 *ngIf="!hasOverviewItems()" class="text-center"><em>{{'TODAYSOVERVIEW.Looks_up_to_date' | translate:lang}}</em></h5>-->
+  <div class="up-to-date" *ngIf="!hasOverviewItems()">
+    <div class="up-to-date__text">
+      <p>{{'SERVICE_REPORT.upto_date' | translate:lang}}</p>
+    </div>
+    <div class="up-to-date__icon">
+      <ae-icon [id]="getChildId('AeIcon', 1)" [size]="_iconBig" [name]="getChildName('AeIcon', 1)" [icon]="'icon-thumbs-up'"></ae-icon>
+    </div>
+  </div>
+</div>
+<!--Loading div -->
+<div class="informationbar-overview" *ngIf="isLoading">
+  <h2 class="h-loader h2-loader"></h2>
+  <ul class="list-loader">
+    <li></li>
+    <li></li>
+    <li></li>
+  </ul>
+</div>

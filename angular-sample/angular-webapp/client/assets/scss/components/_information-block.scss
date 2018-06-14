@@ -1,0 +1,34 @@
+.information-block {
+  display: flex;
+  flex-direction: column;
+  font-size: 1.5rem;
+
+  @include media-over-767 {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+
+.information-block__item {
+  padding: 20px;
+
+  @include media-over-767 {
+    width: 33.33%;
+
+    &:not(:nth-child(3n)) {
+      border-right: 1px solid $grey--pale;
+    }
+  }
+}
+
+.information-block__key,
+.information-block__value {
+  flex-shrink: 1;
+  float: left;
+  width: 48%;
+}
+
+.information-block__key {
+  font-weight: $bold;
+  margin-right: 2%;
+}

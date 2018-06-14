@@ -1,0 +1,11 @@
+<div class="content-container safety-procedures">
+  <div class="title-block">
+    <h3>{{'MANAGE_METHOD_STM.SAFETY_PRECAUTIONS.SAFETY_PROCEDURES' | translate:lang}}</h3>
+    <ae-button [type]="'button'" [id]="getChildId('AeButton', 1)" [name]="getChildName('AeButton', 1)" (aeClick)="triggerMSProcAdd($event)"
+      class="btn" [class]="1" [title]="'MANAGE_METHOD_STM.SEQUENCE_OF_EVENTS.ADD_PROCEDURE' | translate:lang" [text]="'MANAGE_METHOD_STM.SEQUENCE_OF_EVENTS.ADD_PROCEDURE' | translate:lang"></ae-button>
+  </div>
+  <p>{{'MANAGE_METHOD_STM.SEQUENCE_OF_EVENTS.SAFETY_PROC_HELPTEXT' | translate:lang }}</p>
+
+  <ms-procedure-container [id]="getChildId('MSProcedureContainer', 1)" [methodStatement]="methodStatement" [triggerAdd]="triggerStatus"
+    [procedureCode]="procedureCode" (resetTiggerStatus)="onResetTiggerStatus($event)"></ms-procedure-container>
+</div>

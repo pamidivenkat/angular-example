@@ -1,0 +1,28 @@
+.holiday-settings {
+  ae-numeric-stepper {
+    float: left;
+    .display {
+      width: 40px !important;
+    }
+  }
+  .duration-value {
+    margin: 5px;
+    display: inline-block;
+  }
+  .information-grid__item-label {
+    .icon {
+      display: inline-flex;
+    }
+  }
+  .toggle-switch {
+    float: left;
+  }
+  .switch-input {
+    padding: 10px 0;
+    max-width: 90px;
+  }
+}
+
+.notification-space0 ae-notification .spacer {
+  padding: 0;
+}

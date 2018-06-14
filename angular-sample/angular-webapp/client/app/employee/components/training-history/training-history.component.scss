@@ -1,0 +1,8 @@
+@import '../../../../assets/scss/variablesMap';
+.pull-right{float: right;}
+@include media-over-767 {
+  .training-table .table__row .table__item:last-child {
+    overflow: visible;
+  }
+}
+.flies-list a{color: $teal--0;}

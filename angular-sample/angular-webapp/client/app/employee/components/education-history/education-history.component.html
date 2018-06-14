@@ -1,0 +1,79 @@
+<div [id]="id">
+
+    <div class="section-title">
+        <h3>{{'EMPLOYEE_EDUCATION_HISTORY.education_history_details' | translate:lang}}</h3>
+        <ae-button [type]="'button'" [id]="getChildId('AeButton', 1)" *ngIf="canUpdate$ | async" [name]="getChildName('AeButton', 1)" (aeClick)="openEmpEducationHistoryAddUpdateForm($event)" class="btn" [class]="btnStyle" [title]="'BUTTONS.ADD' | translate:lang"
+            [text]="'BUTTONS.ADD' | translate:lang"></ae-button>
+    </div>
+    <section class="information-grid__section education-history">
+        <ae-datatable [id]="getChildId('AeDatatable',1)" [name]="getChildName('AeDatatable',1)" [dataSource]="educationHistoryList" [actions]="actions" [totalRecords]="totalRecords" [autoGenerateColumns]="false" [defaultOptions]="dataTableOptions | async"
+            (pageChanged)="onGridPageChange($event)" (onSort)="onSortChange($event)" [loading]="!(educationHistoryListLoaded$ | async)">
+            <ae-column [headerText]="'EMPLOYEE_EDUCATION_HISTORY.institution' | translate:lang" [sortKey]="'Institution'">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span>{{'EMPLOYEE_EDUCATION_HISTORY.institution' | translate:lang}}</span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+                        <span [title]="context.Institution">{{context.Institution}}</span>
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+            <ae-column [headerText]="'EMPLOYEE_EDUCATION_HISTORY.qualification' | translate:lang" [sortKey]="'Qualification'">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span>{{'EMPLOYEE_EDUCATION_HISTORY.qualification' | translate:lang}}</span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+                        <span [title]="context.Qualification">{{context.Qualification}}</span>
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+            <ae-column [headerText]="'EMPLOYEE_EDUCATION_HISTORY.start_date' | translate:lang" [sortKey]="'StartDate'">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span>{{'EMPLOYEE_EDUCATION_HISTORY.start_date' | translate:lang}}</span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+                        <span [title]="context.StartDate | localeDate:defaultLocale:'shortDate'">{{context.StartDate | localeDate:defaultLocale:'shortDate'}}</span>
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+            <ae-column [headerText]="'EMPLOYEE_EDUCATION_HISTORY.completion_date' | translate:lang" [sortKey]="'EndDate'">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span>{{'EMPLOYEE_EDUCATION_HISTORY.completion_date' | translate:lang}}</span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+                        <span [title]="context.EndDate | localeDate:defaultLocale:'shortDate'">{{context.EndDate | localeDate:defaultLocale:'shortDate'}}</span>
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+        </ae-datatable>
+    </section>
+    <ae-slideout [id]="getChildId('AeSlideOut', 1)" [name]="getChildName('AeSlideOut', 1)" [modelState]="getEducationHistorySlideoutState()" (cancel)="closeEmpEducationHistoryAddUpdateForm($event)" [class.slide--animate]="showEmpEducationHistoryAddUpdateForm">
+        <ng-container *ngIf="showEmpEducationHistoryAddUpdateForm">
+            <education-history-add-update (aeCloseEH)="closeEmpEducationHistoryAddUpdateForm($event)" [toggleEH]="operationMode"></education-history-add-update>
+        </ng-container>
+    </ae-slideout>
+    <ae-modal-dialog [visible]="showRemoveDialog" (cancel)="modalClosed($event)" [closable]="true" [id]="'confirmModal'" [name]="'confirmModal'" *ngIf="showRemoveDialog">
+        <div class="modal-dialog-header">
+            <h3>{{ 'EMPLOYEE_EDUCATION_HISTORY.Dialog.Heading_text' | translate:lang }}</h3>
+        </div>
+        <div class="modal-dialog-body">
+            <p>{{'EMPLOYEE_EDUCATION_HISTORY.Dialog.Info' | translate: lang:{historyName: _educationDetailsToBeDeleted.Institution} }}</p>
+        </div>
+        <div class="modal-dialog-footer">
+            <ae-button [text]="'EMPLOYEE_EDUCATION_HISTORY.Dialog.Btn_No' | translate:lang" [type]="'button'" [id]="'confirmNo'" [name]="'confirmNo'" (aeClick)="modalClosed('no')"></ae-button>
+            <ae-button [class]="btnStyle" [text]="'EMPLOYEE_EDUCATION_HISTORY.Dialog.Btn_Yes' | translate:lang" [type]="'button'" [id]="'confirmYes'" [name]="'confirmYes'" (aeClick)="modalClosed('yes')"></ae-button>
+        </div>
+    </ae-modal-dialog>
+
+</div>

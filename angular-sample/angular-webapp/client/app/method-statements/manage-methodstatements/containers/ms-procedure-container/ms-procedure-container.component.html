@@ -1,0 +1,76 @@
+<div>
+  <ae-datatable [id]="getChildId('AeDatatable', 1)" [name]="getChildName('AeDatatable', 1)" [dataSource]="msProcedureGridData"
+    [actions]="actions" (pageChanged)="onPageChange($event)" 
+    [defaultOptions]="dataTableOptions" [totalRecords]="totalRecords" [draggableRows]="dragRows"
+    (onDropComplete)="dropCompleted($event)">
+    <ae-column [headerText]="'MANAGE_METHOD_STM.SEQUENCE_OF_EVENTS.PROC_NAME'| translate:lang" [sortable]="false">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span [title]="'MANAGE_METHOD_STM.SEQUENCE_OF_EVENTS.PROC_NAME'| translate:lang">{{'MANAGE_METHOD_STM.SEQUENCE_OF_EVENTS.PROC_NAME'| translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <span [title]="context.Name">{{context.Name}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+  </ae-datatable>
+</div>
+
+<!-- Add MS Procedure -->
+<ae-slideout id="add_msprocedure_slideout" name="add_msprocedure_slideout" [modelState]="getAddMSProcSlideoutClass()"
+  (cancel)="closeAddMSProcSlideout($event)" [class.slide--animate]="addMSProcSlideoutStatus" [sliderBig]="true">
+  <ng-container *ngIf="addMSProcSlideoutStatus">
+    <add-ms-procedure [id]="getChildId('AddMSProcedure', 3)" [name]="getChildName('AddMSProcedure', 3)" (closeAddMSProcPanel)="closeAddMSProcSlideout($event)"
+    (addSelectedProcedures)="onMSProcedureAdd($event)" [methodStatement]="methodStatement" [procedureGroupId]="procedureGroupId"></add-ms-procedure>
+  </ng-container>
+</ae-slideout>
+<!-- End of Add MS Procedure -->
+
+
+
+<!-- Update MS Procedure -->
+<ae-slideout [id]="getChildId('AeSlideOut', 3)" [name]="getChildName('AeSlideOut', 3)" [modelState]="getEditMSProcSlideoutClass()"
+  (cancel)="closeEditMSProcSlideout($event)" [class.slide--animate]="editMSProcSlideoutStatus" [sliderBig]="true">
+  <ng-container *ngIf="editMSProcSlideoutStatus">
+    <update-ms-procedure [id]="getChildId('AddMSProcedure', 3)" [name]="getChildName('AddMSProcedure', 3)" (onProcedureUpdateCancel)="closeEditMSProcSlideout($event)"
+    (onProcedureUpdateSubmit)="onMSProcedureUpdate($event)" [msProcedure]="currentProcedure"></update-ms-procedure>
+  </ng-container>
+</ae-slideout>
+<!-- End of Update MS Procedure -->
+
+
+<!-- view MS Procedure -->
+<ae-slideout [id]="getChildId('AeSlideOut', 5)" [name]="getChildName('AeSlideOut', 5)" [modelState]="getViewMSProcSlideoutClass()"
+  (cancel)="closeViewMSProcSlideout($event)" [class.slide--animate]="viewMSProcSlideoutStatus">
+  <ng-container *ngIf="viewMSProcSlideoutStatus">
+    <procedure-quick-view [id]="getChildId('ProcedureQuickView', 3)" [name]="getChildName('ProcedureQuickView', 3)"
+    (onQuickViewCancel)="closeViewMSProcSlideout($event)" [msProcedure]="currentProcedure"></procedure-quick-view>
+  </ng-container>
+</ae-slideout>
+<!-- End of view MS Procedure -->
+
+<!-- MS procedure delete confirmation model -->
+<ae-modal-dialog [visible]="showMSProcDeleteConfirmation" (cancel)="onDeleteConfirmationClosed('No')" [closable]="true" [id]="getChildId('AeModalDialog', 1)"
+  [name]="getChildId('AeModalDialog', 1)" *ngIf="showMSProcDeleteConfirmation">
+  <div class="modal-dialog-header">
+    <h3>{{ 'MANAGE_METHOD_STM.SEQUENCE_OF_EVENTS.REMOVE_DIALOG.TITLE' | translate:lang:{group:procedureGroupName} }}</h3>
+  </div>
+  <div class="modal-dialog-body">
+    <p>{{'MANAGE_METHOD_STM.SEQUENCE_OF_EVENTS.REMOVE_DIALOG.BODY_TEXT'| translate:lang:{name:procedureToRemoveName} }}</p>
+  </div>
+  <div class="modal-dialog-footer">
+    <ae-button [class]="defaultButtonStyle" [text]="'MANAGE_METHOD_STM.SEQUENCE_OF_EVENTS.REMOVE_DIALOG.NO_BTN_TEXT' | translate:lang" 
+    [title]="'MANAGE_METHOD_STM.SEQUENCE_OF_EVENTS.REMOVE_DIALOG.NO_BTN_TEXT' | translate:lang" 
+    [type]="'button'" [id]="getChildId('AeButton', 7)"
+  [name]="getChildId('AeButton', 7)"
+      (aeClick)="onDeleteConfirmationClosed('No')"></ae-button>
+    <ae-button [class]="lightButtonStyle" [text]="'MANAGE_METHOD_STM.SEQUENCE_OF_EVENTS.REMOVE_DIALOG.YES_BTN_TEXT' | translate:lang" 
+    [title]="'MANAGE_METHOD_STM.SEQUENCE_OF_EVENTS.REMOVE_DIALOG.YES_BTN_TEXT' | translate:lang"
+    [type]="'button'" [id]="getChildId('AeButton', 8)"
+  [name]="getChildId('AeButton', 8)"
+      (aeClick)="onDeleteConfirmationClosed('Yes')"></ae-button>
+  </div>
+</ae-modal-dialog>
+<!-- End of MS procedure delete confirmation model -->

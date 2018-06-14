@@ -1,0 +1,11 @@
+<div class="checkbox" [id]="id">
+    <span class="checkbox__icon" *ngIf="iconVisible">
+    	 <ae-icon [id]="aeiconId" [name]="aeiconName" [size]="iconSize" [color]="color" [icon]="iconName"></ae-icon>
+    </span>
+    <span class="checkbox__img " *ngIf="imgVisible">
+         <img [src]="imgSrc"  /> 
+    </span>
+    <input type="checkbox" [checked]="checked" [id]="checkBoxId" [name]="checkBoxName" [value]="value" (change)="onChange($event)" [disabled]="disabled">
+    <label [for]="checkBoxId" [title]="title" class="checkbox__copy"><b *ngIf="textVisible">{{checkboxText}}</b>
+        </label>
+</div>

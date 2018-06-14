@@ -1,0 +1,56 @@
+.document-content-review {
+   font-family: Avenir Next W01, sans-serif !important;
+   font-size: 12pt !important;
+
+  .block.active {
+    padding-bottom: 30px;
+    +.button-bar {
+      margin-top: -40px;
+      padding-bottom: 15px;
+    }
+  }
+  ae-rte+.button-bar {
+    padding: 15px;
+  }
+   
+  h1, h2, h3, h4, h5, h6, h1 span, h2 span, h3 span, h4 span, h5 span, h6 span {
+      font-family: Avenir Next W01, sans-serif !important;
+      word-break: break-all;
+  }
+  h1, h1 span,  > p h1 span, p h1 span {
+          font-size: 20pt !important;
+      }
+  h2, h2 span, > p h2 span, p h2 span {
+          font-size: 18pt !important;
+      }
+  h3, h3 span, > p h3 span, p h3 span {
+  font-size: 16pt !important;
+  }
+  h4, h4 span, > p h4 span, p h4 span {
+          font-size: 14pt !important;
+  }
+  h5, h5 span, > p h5 span, p h5 span {
+          font-size: 12pt !important;
+  }
+  h6, h6 span, > p h6 span, p h6 span {
+          font-size: 10pt !important;
+      }
+  ul span {
+      font-family: Avenir Next W01, sans-serif !important;
+      font-size: 12pt !important;
+  }
+  span {
+      font-family: Avenir Next W01, sans-serif;
+      font-size: 12pt;
+  }
+  > p, > p span, p span, p, td > span {
+      font-family: Avenir Next W01, sans-serif !important;
+      font-size: 12pt !important;
+      /*line-height: 1.6 !important;*/
+      max-width:100%;
+  }
+  u span {
+      display: inline !important;
+  }
+
+}

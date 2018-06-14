@@ -1,0 +1,12 @@
+@import '../ae-button/ae-button.component';
+a {
+  text-decoration: none;
+}
+
+a.nav-link {
+  text-decoration: underline;
+  color: $teal--0;
+}
+.link-color a{
+  color: $teal--0;
+}

@@ -1,0 +1,152 @@
+<div class="information-grid" *ngIf="workingDayProfileForm">
+    <div class="button-bar">
+        <div class="button-bar__item">
+            <ae-anchor [id]="'back-nav-top'" [name]="'back-nav-top'" [anchorType]="'button'" [class]="'button button--inline'" [anchorClass]="0" (aeClick)="onPreviousClick($event)" [title]="'BUTTONS.PREVIOUS' | translate:lang" [text]="'BUTTONS.PREVIOUS' | translate:lang"></ae-anchor>
+        </div>
+        <div class="button-bar__item">
+            <ae-anchor [id]="'add-public-holiday-top'" [disabled]="saveOperationStarted" [name]="'add-public-holiday'" [anchorType]="'button'" [class]="'button button--inline'" [anchorClass]="1" (aeClick)="saveWorkingProfile($event)" [text]="operationMode == '1' ? ('BUTTONS.ADD' | translate:lang) : ('BUTTONS.UPDATE' | translate:lang)"
+          [title]="action == 'Add' ? ('BUTTONS.ADD' | translate:lang) : ('BUTTONS.UPDATE' | translate:lang)"></ae-anchor>
+        </div>
+    </div>
+    <section class="information-grid__section">
+        <form [formGroup]="workingDayProfileForm" id="working-profile-form">
+            <h5 class="information-grid__section--helper">{{'PROFILE_NAME_DESCRIPTION_HELP_TEXT' | translate:lang}}</h5>
+            <div class="information-grid__item--input">
+                <div class="information-grid__item-label column-1of3">{{'PROFILE_NAME' | translate:lang}} <span class="alert">*</span></div>
+                <div class="information-grid__item-value column-2of3">
+                    <ae-input duplicateProfileName="true" [id]="'Name'" [name]="'Name'" [placeholder]="'PROFILE_NAME' | translate:lang" formControlName="Name"></ae-input>
+                    <span *ngIf="isFieldInvalid('Name')" class="alert">{{hasError('Name')}}</span>
+                </div>
+            </div>
+            <div class="information-grid__item">
+                <div class="information-grid__item-label column-1of3 align--vertical">{{'PROFILE_DESCRIPTION' | translate:lang}}</div>
+                <div class="information-grid__item-value column-2of3">
+                    <ae-textarea [name]="'Description'" [id]="'Description'" formControlName="Description" [showcharleft]="false" [placeholder]="'PROFILE_DESCRIPTION' | translate:lang">
+                    </ae-textarea>
+                </div>
+            </div>
+            <div class="information-grid__item--input">
+                <div class="information-grid__item-label column-1of3">{{'PROFILE_COUNTRY' | translate:lang}} <span class="alert">*</span></div>
+                <div class="information-grid__item-value column-2of3">
+                    <ae-select [name]="'CountryId'" [id]="'CountryId'" formControlName="CountryId" [options]="countriesOptions"></ae-select>
+                    <span *ngIf="isFieldInvalid('CountryId')" class="alert">{{hasError('CountryId')}}</span>
+                </div>
+            </div>
+            <div class="information-grid__item--input" *ngIf="canShowExampleField()">
+                <div class="information-grid__item-label column-1of3"></div>
+                <div class="information-grid__item-value column-2of3">
+                    <ae-checkbox formControlName="IsExample" [id]="'IsExample'" [name]="'IsExample'" [checkText]="'IS_PROFILE_PREDEFINED' | translate:lang"></ae-checkbox>
+                </div>
+            </div>
+            <h5 class="information-grid__section--helper">{{'WORKING_DAYS_IN_PROFILE_TEXT' | translate:lang}}</h5>
+            <div class="information-grid__item">
+                <div class="information-grid__item-label column-1of3"></div>
+                <div class="information-grid__item-value column-2of3"></div>
+            </div>
+
+            <div class="table" *ngIf="hasWorkingDays()" formArrayName="WorkingProfileList">
+                <div class="table__table">
+                    <div class="table__headings">
+                        <div class="table__heading" *ngFor="let item of workingDayProfileList; let i=index">
+                            <div class="switch-block" [formGroupName]="i">
+                                <ae-switch formControlName="IsWorkingDay" [checked]="item.IsWorkingDay" [id]="'IsWorkingDay'+i" [name]="'IsWorkingDay'" [switchText]="item.DayName" [class]="switchTextLeft"></ae-switch>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table__row">
+                        <div class="table__item" *ngFor="let item of workingDayProfileList; let i=index">
+                            <div class="table__item-inner" [formGroupName]="i">
+                                <div *ngIf="item.IsWorkingDay" class="pushtop-10">
+                                    <div class="overflow-hidden">
+                                        <div class="label-hours"><strong>From</strong></div>
+                                        <ae-time-selector [min]="'0:01'" [max]="'23:59'"   [inputReadOnly]="'false'" [defaultValue]="'0:01'"  [minLength]="'2'" formControlName="StartTimeHours"></ae-time-selector>
+                                    </div>
+                                    <div class="overflow-hidden">
+                                        <div class="label-hours"><strong>To</strong></div>
+                                        <ae-time-selector [min]="'0:01'" [max]="'23:59'"  [inputReadOnly]="'false'" [defaultValue]="'23:59'"  [minLength]="'2'" formControlName="EndTimeHours"></ae-time-selector>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="fieldHasValidWorkingDaysCountError('WorkingProfileList')" class="alert">Please select at least one working day.</div>
+            </div>
+        </form>
+        <add-update-public-holiday [operationMode]="publicHolidayOperationMode" [publicHolidayVM]="publicHolidayVM" (saveCompleted)="savePublicHoliday($event)" (clearSelected)="clearPublicHoliday($event)" (yearChanged)="onYearChange($event)"></add-update-public-holiday>
+        <div class="table">
+            <ae-datatable [id]="'public-holiday-list'" [name]="'public-holiday-list'" [dataSource]="publicHolidayData$" [autoGenerateColumns]="false" [totalRecords]="totalRecords$" [defaultOptions]="dataTableOptionSubject | async" (pageChanged)="onPageChange($event)"
+                (onSort)="onSort($event)" [actions]="actions">
+                <ae-column [headerText]="'PUBLIC_HOLIDAY_DATE'| translate:lang" [sortKey]="'HolidayDate'">
+                    <ae-template [type]="'header'">
+                        <ng-template>
+                            <span [title]="'PUBLIC_HOLIDAY_DATE'| translate:lang">{{'PUBLIC_HOLIDAY_DATE'| translate:lang}}</span>
+                        </ng-template>
+                    </ae-template>
+                    <ae-template [type]="'cell'" [keys]="keys">
+                        <ng-template let-context="item">
+                            <span>{{ getHolidayDateConverted(context.HolidayDate) |  localeDate:defaultLocale:'shortDate'}}</span>
+                        </ng-template>
+                    </ae-template>
+                </ae-column>
+                <ae-column [headerText]="'DAY_OF_WEEK'| translate:lang" [sortKey]="'DayOfTheWeek'">
+                    <ae-template [type]="'header'">
+                        <ng-template>
+                            <span [title]="'DAY_OF_WEEK'| translate:lang">{{'DAY_OF_WEEK'| translate:lang}}</span>
+                        </ng-template>
+                    </ae-template>
+                    <ae-template [type]="'cell'" [keys]="keys">
+                        <ng-template let-context="item">
+                            <span>{{context.DayOfTheWeek}}</span>
+                        </ng-template>
+                    </ae-template>
+                </ae-column>
+                <ae-column [headerText]="'PUBLIC_HOLIDAY_NAME'| translate:lang" [sortKey]="'Name'">
+                    <ae-template [type]="'header'">
+                        <ng-template>
+                            <span [title]="'PUBLIC_HOLIDAY_NAME'| translate:lang">{{'PUBLIC_HOLIDAY_NAME'| translate:lang}}</span>
+                        </ng-template>
+                    </ae-template>
+                    <ae-template [type]="'cell'" [keys]="keys">
+                        <ng-template let-context="item">
+                            <span>{{context.Name}}</span>
+                        </ng-template>
+                    </ae-template>
+                </ae-column>
+            </ae-datatable>
+        </div>
+
+        <div class="information-grid__item--input" [formGroup]="workingDayProfileForm" *ngIf="canShowNotes()">
+            <div class="information-grid__item-label column-1of3">{{'PROFILE_NOTES' | translate:lang}}</div>
+            <div class="information-grid__item-value column-2of3">
+                <label>
+          <ae-textarea [name]="'Notes'" [id]="'Notes'" formControlName="Notes" [showcharleft]="false" [placeholder]="'PROFILE_NOTES' | translate:lang">
+          </ae-textarea>
+          </label>
+            </div>
+        </div>
+    </section>
+    <div class="button-bar spacer--y">
+        <div class="button-bar__item">
+            <ae-anchor [id]="'add-public-holiday'" [name]="'add-public-holiday'" [anchorType]="'button'" [class]="'button button--inline'" [anchorClass]="0" (aeClick)="onPreviousClick($event)" [title]="'BUTTONS.PREVIOUS' | translate:lang" [text]="'BUTTONS.PREVIOUS' | translate:lang"></ae-anchor>
+        </div>
+        <div class="button-bar__item">
+            <ae-anchor [id]="'add-public-holiday'" [disabled]="saveOperationStarted" [name]="'add-public-holiday'" [anchorType]="'button'" [class]="'button button--inline'" [anchorClass]="1" (aeClick)="saveWorkingProfile($event)" [text]="operationMode == '1' ? ('BUTTONS.ADD' | translate:lang) : ('BUTTONS.UPDATE' | translate:lang)"
+          [title]="action == 'Add' ? ('BUTTONS.ADD' | translate:lang) : ('BUTTONS.UPDATE' | translate:lang)"></ae-anchor>
+        </div>
+    </div>
+</div>
+
+<ae-modal-dialog [visible]="showRemoveConfirmationDialog" (cancel)="modalClosed($event)" [closable]="true" [id]="'confirmModal'" [name]="'confirmModal'" *ngIf="showRemoveConfirmationDialog">
+    <div class="modal-dialog-header">
+        <h3>{{'DIALOG.REMOVE_PUBLIC_HOLIDAY' | translate:lang}}</h3>
+    </div>
+    <div class="modal-dialog-body">
+        <p>{{ 'DIALOG.INFO_PUBLIC_HOLIDAY' | translate:lang:{title: getRemoveHolidayText()} }}
+        </p>
+    </div>
+    <div class="modal-dialog-footer">
+        <ae-button [text]="'DIALOG.CONFIRM_NO_PUBLIC_HOLIDAY' | translate:lang" [type]="'button'" [id]="'confirmNo'" [name]="'confirmNo'" (aeClick)="modalClosed('no')" [title]="'DIALOG.CONFIRM_NO_PUBLIC_HOLIDAY' | translate:lang"></ae-button>
+        <ae-button [class]="lightClass" [text]="'DIALOG.CONFIRM_YES_PUBLIC_HOLIDAY' | translate:lang" [type]="'button'" [id]="'confirmYes'" [name]="'confirmYes'" (aeClick)="modalClosed('yes')" [title]="'DIALOG.CONFIRM_YES_PUBLIC_HOLIDAY' | translate:lang"></ae-button>
+    </div>
+</ae-modal-dialog>

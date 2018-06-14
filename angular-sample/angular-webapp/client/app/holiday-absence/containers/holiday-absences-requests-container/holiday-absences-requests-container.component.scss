@@ -1,0 +1,41 @@
+.calendar-slideout {
+  .so-panel {
+    text-align: left;
+    width: 100%;
+    @media only screen and (min-width: 980px) {
+      width:1000px !important;
+    }
+  }
+}
+
+.roster-slideout {
+  .so-panel {
+    width: 100%;
+    @media only screen and (min-width: 767px) {
+      width: 750px;
+    }
+
+    .filter-bar__filters {
+      position: relative;
+      margin-bottom: 30px;
+      #previous,
+      #next {
+        padding: 0PX;
+        margin-top: 22px;
+        height: 30px;
+        width: 30px;
+        border-radius: 50%;
+        line-height: 30px;
+      }
+      .slick-next {
+        top: 28px
+      }
+      .date-value {
+        line-height: 35px;
+      }
+    }
+    .table__item-inner {
+      padding: 8px;
+    }
+  }
+}

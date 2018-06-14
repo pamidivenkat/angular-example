@@ -1,0 +1,41 @@
+<div class="wizard">
+  <div class="wizard__steps">
+    <nav>
+      <ul>
+        <li class="wizard__step" *ngFor="let step of wizSteps; let i = index" [id]="getChildId('AeWizStep', 1)" [title]="step.title"
+          (click)="goToStep(step)" [ngClass]="{'active': (i === activeStepIndex), 'enabled': !step.isDisabled, 'disabled': step.isDisabled, 'completed': isCompleted}">
+          <label class="wizard__step--item">
+                        <span class="number">{{i+1}}</span>
+                        <span class="title">{{step.title}}</span>
+                        <span class="description">{{step.description}}</span>
+                    </label>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  <div class="wizard__stages" id="stage-view">
+    <div class="section__title no-print">
+      <h3><span>{{activeStepIndex + 1}}</span>{{activeStep().title}}</h3>
+    </div>
+    <ae-template-loader [templateItemStream]="templateItemStream"></ae-template-loader>
+    <div class="button-bar spacer--y" *ngIf="!hideFooter">
+      <div class="button-bar__item">
+        Changes are automatically saved when you navigate between sections
+      </div>
+      <div class="button-bar__item" *ngIf="!hasPrevStep()">
+        <ae-button [id]="getChildId('AeButton', 0)" [name]="getChildName('AeButton', 0)" [text]="'Previous'" (aeClick)="gotoLandingPage()"></ae-button>
+      </div>
+      <div class="button-bar__item" *ngIf="hasPrevStep()">
+        <ae-button [id]="getChildId('AeButton', 1)" [name]="getChildName('AeButton', 1)" [text]="'Previous'" (aeClick)="previous()"></ae-button>
+      </div>
+      <div class="button-bar__item" *ngIf="hasNextStep()">
+        <ae-button [id]="getChildId('AeButton', 2)" [name]="getChildName('AeButton', 2)" [customClass]="'button--cta'" [text]="'Next'"
+          (aeClick)="next()"  (aeMouseDown)="mouseDownWizget($event)" [disabled]="!isCurrentStepValid"></ae-button>
+      </div>
+      <div class="button-bar__item" *ngIf="!hasNextStep() && showComplete">
+        <ae-button [id]="getChildId('AeButton', 3)" [name]="getChildName('AeButton', 3)" [text]="completeButtonText" (aeClick)="complete()"
+          [class]="lightClass" [disabled]="!isCurrentStepValid"></ae-button>
+      </div>
+    </div>
+  </div>
+</div>

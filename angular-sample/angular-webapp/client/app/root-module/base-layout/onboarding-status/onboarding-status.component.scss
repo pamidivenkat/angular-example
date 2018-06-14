@@ -1,0 +1,8 @@
+.progess-slideout{
+    .inactive{
+        label{
+            color: #8b8b8b;
+            &:before{border:2px solid #8b8b8b !important;}
+        }
+    }
+}

@@ -1,0 +1,35 @@
+<div class="icon-add-update-slideout" id="add-update-icon">
+  <ae-form [formBuilderData]="iconFormVM" [id]="'icon-form'" [name]="'icon-form'" [Title]="getTitle()" (onSubmit)="onFormSubmit($event)"
+    (onCancel)="onFormCancel($event)" (onFormInit)="onFormInit($event)" [footerBtnText]="getFooterButtonText()">
+    <ae-template [type]="'uploadicontemplate'">
+      <ng-template let-context="item">
+        <div class="sg-grid grid--1-2" id="add-update-icon-upload">
+          <div id="add-update-icon-preview">
+            <b> {{'ICON_MANAGEMENT.PREVIEW' | translate: lang}} *</b>
+            <ae-card>
+              <div class="card top-5">
+                <div class="card__image img-height">
+                  <div class="card__content spacer-15" *ngIf="!showPreview">
+                    <span class="card__title">Please upload icon</span>
+                  </div>
+                  <img [id]="imgPreview" [name]="imgPreview" [src]="PreviewUrl()" *ngIf="showPreview" />
+                </div>
+              </div>
+            </ae-card>
+          </div>
+          <div>
+            <div class="buttons-icon">
+              <ae-file [id]="'fileUpload'" [name]="'fileUpload'" [multiple]="false" (onFilesSelected)="onFilesSelected($event)" [accept]="'image/*'"
+              [title]="'ICON_MANAGEMENT.USER_IMAGE'| translate: lang" [showFileName]="false" [showIcon]="false" [clearSelectedFile]="clearSelectedFile"></ae-file>
+              <ae-button [text]="'ICON_MANAGEMENT.CLEAR'| translate: lang" [type]="'button'" [id]="getChildId('AeButton', 1)" [name]="getChildName('AeButton', 1)"
+                (aeClick)="clearImage()" [customClass]="'button-block'"></ae-button>
+            </div>
+          </div>
+        </div>
+        <span *ngIf="fieldHasRequiredError('PictureId')" class="form__input__error top-5" id="icon-form_AeFile_ErrorSpan_1">{{'VALIDATION_ERRORS.ICON_REQUIRED' | translate: lang}}</span>
+      </ng-template>
+    </ae-template>
+
+  </ae-form>
+  <ae-loader [loaderType]="loaderType" *ngIf="showloader"></ae-loader>
+</div>

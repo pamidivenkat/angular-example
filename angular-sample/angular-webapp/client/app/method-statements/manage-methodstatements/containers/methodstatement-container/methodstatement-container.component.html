@@ -1,0 +1,63 @@
+<div id="incidentContainer">
+    <div id="incidentBanner">
+        <ae2-breadcrumb [id]="'methodStatementBreadCrumb'" [name]="'methodStatementBreadCrumb'" [group]="bcGroup"></ae2-breadcrumb>
+        <ae-banner [id]="'methodStatementBanner'" [name]="'methodStatementBanner'" [titleText]="getMethodStatementBannerTitle()" [backgroundImage]="'/assets/images/lp-method-statements.jpg'">
+            <div class="image-text banner-image-text">
+            </div>
+            <div class="icon-list banner-icon-list">
+            </div>
+        </ae-banner>
+    </div>
+
+    <ae-notification [id]="'incidentNotification'" [name]="'incidentNotification'" [iconName]="'icon-info'" [textInfo]="'METHOD_STATEMENTS_MANAGE.METHODSTATEMENT_UPDATE_PAGE_MSG' | translate:lang">
+    </ae-notification>
+
+    <div id="incidentWizard" class="incident-wizard" *ngIf="wizardCanBeShown | async">
+        <div class="spacer">
+            <ae-wizard [steps]="methodStatementsWizardSteps$" [previousURL]="'/method-statement'" id="methodStatementWizard" name="methodStatementWizard" [showComplete]="showComplete">
+                <ae-template [type]="'generalStep'">
+                    <ng-template let-context="item">
+                        <general [id]="'methodStatementGeneral'" [context]="context" [isExample]="_isExample" [name]="'methodStatementGeneral'" (onAeSubmit)="onGeneralStepSave($event)"></general>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'sequenceOfEventsStep'">
+                    <ng-template let-context="item">
+                        <sequenceofevents [id]="'methodStatementSequenceOfEvent'" [name]="'methodStatementSequenceOfEvent'" [methodStatement]="getMethodStatementObject()"></sequenceofevents>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'plantAndEquipmentStep'">
+                    <ng-template let-context="item">
+                        <plant-equipment [id]="'methodStatementPlantAndEquipment'" [name]="'methodStatementPlantAndEquipment'" [methodStatement]="getMethodStatementObject()" (onPlantAndEquipmentSave)="onPlantAndEquipmentSave($event)" [context]="context"> </plant-equipment>
+                    </ng-template>
+                </ae-template>
+
+                <ae-template [type]="'safetyPrecautionsStep'">
+                    <ng-template let-context="item">
+                        <safety-precautions [id]="'methodStatementsafetyPrecautions'" [name]="'methodStatementsafetyPrecautions'" [wizStepContext]="context">
+                        </safety-precautions>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'furtherInformationStep'">
+                    <ng-template let-context="item">
+                        <further-information [id]="'methodStatementfurtherInformation'" [name]="'methodStatementfurtherInformation'" [methodStatement]="getMethodStatementObject()" (onFurtherInformationSave)="onFurtherInformationSave($event)" (selectRA)="onFurtherInformationSave($event)"
+                            [otherracontext]="context"> </further-information>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'supportingDocumentationStep'">
+                    <ng-template let-context="item">
+                        <supporting-documentation [id]="'methodStatementSupportingDocumentation'" [name]="'methodStatementSupportingDocumentation'">
+                        </supporting-documentation>
+                    </ng-template>
+                </ae-template>
+
+                <ae-template [type]="'preiviewStep'">
+                    <ng-template let-context="item">
+                        <preview [id]="'methodStatementPreview'" [name]="'methodStatementPreview'"> </preview>
+                    </ng-template>
+                </ae-template>
+
+            </ae-wizard>
+        </div>
+    </div>
+    <ae-loader [loaderType]="loaderBars" *ngIf="!(wizardCanBeShown | async)"></ae-loader>
+</div>

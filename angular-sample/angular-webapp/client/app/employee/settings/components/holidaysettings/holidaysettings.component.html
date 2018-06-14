@@ -1,0 +1,227 @@
+<div [id]="holidaySettings" class="holiday-settings" *ngIf="holidaySettingsData">
+  <ae-notification [id]="getChildId('AeNotification',1)" [name]="getChildName('AeNotification',1)" [iconName]="'icon-info'"
+    [textInfo]="'SETTINGS.Some_default_settings' | translate:lang"></ae-notification>
+  <div class="information-grid">
+    <form id="holidaySettings" name="holidaySettings" class="form" [formGroup]="holidaySettingsForm">
+      <section class="information-grid__section">
+        
+        <div class="information-grid__item--input">
+          <div class="information-grid__item-label column-1of3">
+            <ae-icon [id]="'icon'" [name]="'icon'" [icon]="'icon-alert-circle-question'" [title]="'SETTINGS.icon_default_holiday_unit' | translate:lang"></ae-icon>
+            {{'SETTINGS.default_holiday_unit' | translate:lang}} <span class="error-text">*</span></div>
+          <div class="information-grid__item-value column-2of3 text-muted">
+            <ae-select [id]="getChildId('HolidayUnit',1)" [name]="getChildName('HolidayUnit',1)" [title]="'SETTINGS.default_holiday_unit' | translate:lang"
+              formControlName="HolidayUnitType" [placeholder]="'Please Select'" [options]="holidayUnitTypeSelectList"></ae-select>
+            <span *ngIf="this._holidaySettingsForm.get('HolidayUnitType').hasError('required')" class="error-text">{{'SETTINGS.required_error_msg' | translate:lang:{fieldName: 'default holiday unit'} }}</span>
+          </div>
+        </div>
+        <div class="information-grid__item--input">
+          <div class="information-grid__item-label column-1of3">
+            <ae-icon [id]="'icon'" [name]="'icon'" [icon]="'icon-alert-circle-question'" [title]="'SETTINGS.icon_holiday_entitlement' | translate:lang"></ae-icon>
+            {{'SETTINGS.holiday_entitlement' | translate:lang}} <span class="error-text">*</span></div>
+          <div class="information-grid__item-value column-2of3 text-muted">
+            <ae-input [type]="numberType" [step]="0.05" [min]="1" [id]="getChildId('Entitlement',1)" [name]="getChildName('Entitlement',1)"
+              [title]="'SETTINGS.holiday_entitlement' | translate:lang" formControlName="HolidayEntitlement" [placeholder]="'SETTINGS.holiday_entitlement_placeholder' | translate:lang"></ae-input>
+            <span *ngIf="this._holidaySettingsForm.get('HolidayEntitlement').hasError('required')" class="error-text">{{'SETTINGS.required_error_msg' | translate:lang:{fieldName: 'holiday entitlement'} }}</span>
+            <span *ngIf="this._holidaySettingsForm.get('HolidayEntitlement').hasError('min') || this._holidaySettingsForm.get('HolidayEntitlement').hasError('max')"
+              class="error-text">{{'SETTINGS.holiday_entitlement_error_msg' | translate:lang}}</span>
+          </div>
+        </div>
+        <div class="information-grid__item--input">
+          <div class="information-grid__item-label column-1of3">
+            <ae-icon [id]="'icon'" [name]="'icon'" [icon]="'icon-alert-circle-question'" [title]="'SETTINGS.icon_resubmit_limit' | translate:lang"></ae-icon>
+            {{'SETTINGS.resubmit_limit' | translate:lang}} <span class="error-text">*</span></div>
+          <div class="information-grid__item-value column-2of3 text-muted">
+            <ae-input [type]="numberType" [min]="0" [id]="getChildId('ResubmitLimit',1)" [name]="getChildName('ResubmitLimit',1)" [title]="'SETTINGS.resubmit_limit' | translate:lang"
+              formControlName="NoOfTimesResubmit" [placeholder]="'SETTINGS.resubmit_limit_placeholder' | translate:lang"></ae-input>
+            <span *ngIf="this._holidaySettingsForm.get('NoOfTimesResubmit').hasError('required')" class="error-text">{{'SETTINGS.required_error_msg' | translate:lang:{fieldName: 're-submit limit'} }}</span>
+            <span *ngIf="this._holidaySettingsForm.get('NoOfTimesResubmit').hasError('min') || this._holidaySettingsForm.get('NoOfTimesResubmit').hasError('max')"
+              class="error-text">{{'SETTINGS.resubmit_limit_length_error_msg' | translate:lang}}</span>
+          </div>
+        </div>
+        <div class="information-grid__item--input">
+          <div class="information-grid__item-label column-1of3">
+            <ae-icon [id]="'icon'" [name]="'icon'" [icon]="'icon-alert-circle-question'" [title]="'SETTINGS.icon_escalation_limit' | translate:lang"></ae-icon>
+            {{'SETTINGS.escalation_limit' | translate:lang}} <span class="error-text">*</span></div>
+          <div class="information-grid__item-value column-2of3 text-muted">
+            <ae-input [type]="numberType" [min]="0" [id]="getChildId('EscalationLimit',1)" [name]="getChildName('EscalationLimit',1)"
+              [title]="'SETTINGS.escalation_limit' | translate:lang" formControlName="NoOfTimesEscalate" [placeholder]="'SETTINGS.escalation_limit_placeholder' | translate:lang"></ae-input>
+            <span *ngIf="this._holidaySettingsForm.get('NoOfTimesEscalate').hasError('required')" class="error-text">{{'SETTINGS.required_error_msg' | translate:lang:{fieldName: 'escalation limit'} }}</span>
+            <span *ngIf="this._holidaySettingsForm.get('NoOfTimesEscalate').hasError('min') || this._holidaySettingsForm.get('NoOfTimesEscalate').hasError('max')"
+              class="error-text">{{'SETTINGS.resubmit_limit_length_error_msg' | translate:lang}}</span>
+          </div>
+        </div>
+        <div class="information-grid__item--input">
+          <div class="information-grid__item-label column-1of3">
+            <ae-icon [id]="'icon'" [name]="'icon'" [icon]="'icon-alert-circle-question'" [title]="'SETTINGS.icon_days_per_week' | translate:lang"></ae-icon>
+            {{'SETTINGS.days_per_week' | translate:lang}} <span class="error-text">*</span></div>
+          <div class="information-grid__item-value column-2of3 text-muted">
+            <ae-input [type]="numberType" [step]="0.05" [min]="1" [id]="getChildId('DaysPerWeek',1)" [name]="getChildName('DaysPerWeek',1)"
+              [placeholder]="'SETTINGS.days_per_week_placeholder' | translate:lang" [title]="'SETTINGS.days_per_week' | translate:lang"
+              formControlName="DaysPerWeek"></ae-input>
+            <span *ngIf="this._holidaySettingsForm.get('DaysPerWeek').hasError('required')" class="error-text">{{'SETTINGS.required_error_msg' | translate:lang:{fieldName: 'days per week'} }}</span>
+            <span *ngIf="this._holidaySettingsForm.get('DaysPerWeek').hasError('min')" class="error-text">{{'SETTINGS.days_per_week_min_error_msg' | translate:lang}}</span>
+            <span *ngIf="this._holidaySettingsForm.get('DaysPerWeek').hasError('max')" class="error-text">{{'SETTINGS.days_per_week_max_error_msg' | translate:lang}}</span>
+          </div>
+
+        </div>
+        <div class="information-grid__item--input">
+          <div class="information-grid__item-label column-1of3">
+            <ae-icon [id]="'icon'" [name]="'icon'" [icon]="'icon-alert-circle-question'" [title]="'SETTINGS.icon_exclude_lunch_duration' | translate:lang"></ae-icon>
+            {{'SETTINGS.exclude_lunch_duration' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3">
+            <ae-numeric-stepper (aeChange)="changeHour($event)" formControlName="LunchDuration" [min]="0" [max]="2" [step]="0.25"></ae-numeric-stepper>
+            <span class="duration-value">{{_lunchDuration}}mins</span>
+          </div>
+        </div>
+        <div class="information-grid__item--input">
+          <div class="information-grid__item-label column-1of3">
+            <ae-icon [id]="'icon'" [name]="'icon'" [icon]="'icon-alert-circle-question'" [title]="'SETTINGS.icon_can_add_absence' | translate:lang"></ae-icon>
+            {{'SETTINGS.employee_can_add_absence' | translate:lang}} </div>
+          <div class="information-grid__item-value column-2of3">
+            <ae-switch formControlName="CanEmployeeAddAbsences" [id]="getChildId('CanAddAbsence',1)" [name]="getChildName('CanAddAbsence',1)"
+              [switchText]="'  '" [class]="switchTextLeft" [checked]="this._holidaySettingsData.CanEmployeeAddAbsences" [title]="'SETTINGS.employee_can_add_absence' | translate:lang"></ae-switch>
+          </div>
+        </div>
+        <div class="information-grid__item--input">
+          <div class="information-grid__item-label column-1of3">
+            <ae-icon [id]="'icon'" [name]="'icon'" [icon]="'icon-alert-circle-question'" [title]="'SETTINGS.icon_can_view_absence' | translate:lang"></ae-icon>
+            {{'SETTINGS.employee_can_view_absence' | translate:lang}} </div>
+          <div class="information-grid__item-value column-2of3">
+            <ae-switch formControlName="CanEmployeeViewAbsenceHistory" [id]="getChildId('CanViewAbsences',1)" [name]="getChildName('CanViewAbsences',1)"
+              [switchText]="' '" [class]="switchTextLeft" [checked]="this._holidaySettingsData.CanEmployeeViewAbsenceHistory"
+              [title]="'SETTINGS.employee_can_view_absence' | translate:lang"></ae-switch>
+          </div>
+        </div>
+        <div class="information-grid__item--input">
+          <div class="information-grid__item-label column-1of3">
+            <ae-icon [id]="'icon'" [name]="'icon'" [icon]="'icon-alert-circle-question'" [title]="'SETTINGS.icon_can_Add_holiday' | translate:lang"></ae-icon>
+            {{'SETTINGS.employee_can_Add_holiday' | translate:lang}} </div>
+          <div class="information-grid__item-value column-2of3">
+            <ae-switch formControlName="CanEmployeeAddHolidays" [id]="getChildId('CanAddHoliday',1)" [name]="getChildName('CanAddHoliday',1)"
+              [switchText]="' '" [class]="switchTextLeft" [checked]="this._holidaySettingsData.CanEmployeeAddHolidays" [title]="'SETTINGS.employee_can_Add_holiday' | translate:lang"></ae-switch>
+          </div>
+        </div>
+        <div class="information-grid__item--input">
+          <div class="information-grid__item-label column-1of3">
+            <ae-icon [id]="'icon'" [name]="'icon'" [icon]="'icon-alert-circle-question'" [title]="'SETTINGS.icon_can_request_excess_holiday' | translate:lang"></ae-icon>
+            {{'SETTINGS.employee_can_request_excess_holiday' | translate:lang}} </div>
+          <div class="information-grid__item-value column-2of3">
+            <ae-switch formControlName="IsExcessHolidayAllowed" [id]="getChildId('CanRequestExcess',1)" [name]="getChildName('CanRequestExcess',1)"
+              [switchText]="' '" [class]="switchTextLeft" [checked]="this._holidaySettingsData.IsExcessHolidayAllowed" [title]="'SETTINGS.employee_can_request_excess_holiday' | translate:lang"></ae-switch>
+          </div>
+        </div>
+        <div class="information-grid__item--input">
+          <div class="information-grid__item-label column-1of3">{{'SETTINGS.holiday_year' | translate:lang}} <span class="error-text">*</span></div>
+          <div class="information-grid__item-value column-2of3 text-muted">
+            <ae-select [id]="getChildId('HolidayYear',1)" [name]="getChildName('HolidayYear',1)" [title]="'SETTINGS.holiday_year' | translate:lang" (aeSelectChange)="onYearChanged($event)"
+              formControlName="FiscalStartDate" [placeholder]="'Please Select'" [options]="fiscalDataSelectList" ></ae-select>
+              <span *ngIf="this._holidaySettingsForm.get('FiscalStartDate').hasError('required')" class="error-text">{{'SETTINGS.required_error_msg' | translate:lang:{fieldName: 'holiday year'} }}</span>
+          </div>
+        </div>
+        <div class="information-grid__item--input">
+          <div class="information-grid__item-label column-1of3">{{'SETTINGS.to_the_end_of' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3 text-muted">
+            <ae-select [id]="getChildId('ToTheEnd',1)" [name]="getChildName('ToTheEnd',1)" [title]="'SETTINGS.to_the_end_of' | translate:lang"
+              formControlName="FiscalEndDate" [placeholder]="'Please Select'" [options]="fiscalDataSelectList"></ae-select>
+          </div>
+        </div>
+        <div class="information-grid__item--input" *ngIf="this._holidaySettingsData.AllowCarryForwardHolidays">
+          <div class="information-grid__item-label column-1of3">
+          </div>
+          <div class="information-grid__item-value column-2of3 notification-space0">
+            <ae-notification [id]="getChildId('AeNotification',2)" [name]="getChildName('AeNotification',2)" [iconName]="'icon-info'"
+              [textInfo]="'SETTINGS.note_allow_carried_forward' | translate:lang"></ae-notification>
+          </div>
+        </div>
+        <div class="information-grid__item--input">
+          <div class="information-grid__item-label column-1of3">
+            <ae-icon [id]="'icon'" [name]="'icon'" [icon]="'icon-alert-circle-question'" [title]="'SETTINGS.icon_carried_forward' | translate:lang"></ae-icon>
+            {{'SETTINGS.carried_forward' | translate:lang}} </div>
+          <div class="information-grid__item-value column-2of3">
+            <ae-switch (aeChange)="onChangeCarryForwardHolidays($event)" formControlName="AllowCarryForwardHolidays" [id]="getChildId('CarriedForward',1)"
+              [name]="getChildName('CarriedForward',1)" [switchText]="' '" [class]="switchTextLeft" [checked]="this._holidaySettingsData.AllowCarryForwardHolidays"
+              [title]="'SETTINGS.carried_forward' | translate:lang"></ae-switch>
+          </div>
+        </div>
+
+        <div *ngIf="this._holidaySettingsData.AllowCarryForwardHolidays" class="information-grid__item--input">
+          <div class="information-grid__item-label column-1of3">
+            <ae-icon [id]="'icon'" [name]="'icon'" [icon]="'icon-alert-circle-question'" [title]="'SETTINGS.icon_maximum_days' | translate:lang"></ae-icon>
+            {{'SETTINGS.maximum_days' | translate:lang}} </div>
+          <div class="information-grid__item-value column-2of3">
+            <div class="information-grid__item--input">
+              <div class="information-grid__item-label column-1of3 switch-input">
+                <ae-switch (aeChange)="onChangeCarryForwardDays($event)" formControlName="AllowMaxCarryForwardDays" [id]="getChildId('MaximumDays',1)"
+                  [name]="getChildName('MaximumDays',1)" [switchText]="' '" [class]="switchTextLeft" [checked]="this._holidaySettingsData.AllowMaxCarryForwardDays"
+                  [title]="'SETTINGS.maximum_days' | translate:lang"></ae-switch>
+              </div>
+              <div class="information-grid__item-value column-2of3">
+                <ae-input *ngIf="this._holidaySettingsData.AllowMaxCarryForwardDays" [type]="numberType" [step]="0.05" [min]="0" [id]="getChildId('MaximumDaysNumber',1)"
+                  [name]="getChildName('MaximumDaysNumber',1)" [placeholder]="'SETTINGS.maximum_days_placeholder' | translate:lang" [title]="'SETTINGS.maximum_days' | translate:lang"
+                  formControlName="MaxCarryForwardDays"></ae-input>
+                <span *ngIf="this._formStatus && checkLengthMaxCarryForwardDays()" class="error-text">{{'SETTINGS.maximum_days_error_msg' | translate:lang}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="this._holidaySettingsData.AllowCarryForwardHolidays" class="information-grid__item--input">
+          <div class="information-grid__item-label column-1of3">
+            <ae-icon [id]="'icon'" [name]="'icon'" [icon]="'icon-alert-circle-question'" [title]="'SETTINGS.icon_maximum_hours' | translate:lang"></ae-icon>
+            {{'SETTINGS.maximum_hours' | translate:lang}} </div>
+          <div class="information-grid__item-value column-2of3">
+            <div class="information-grid__item--input">
+              <div class="information-grid__item-label column-1of3 switch-input">
+                <ae-switch (aeChange)="onChangeCarryForwardHours($event)" formControlName="AllowMaxCarryForwardHours" [id]="getChildId('MaximumHours',1)"
+                  [name]="getChildName('MaximumHours',1)" [switchText]="' '" [class]="switchTextLeft" [checked]="this._holidaySettingsData.AllowMaxCarryForwardHours"
+                  [title]="'SETTINGS.maximum_hours' | translate:lang"></ae-switch>
+              </div>
+              <div class="information-grid__item-value column-2of3">
+                <ae-input *ngIf="this._holidaySettingsData.AllowMaxCarryForwardHours" [type]="numberType" [step]="0.05" [min]="0" [id]="getChildId('MaximumHoursNumber',1)"
+                  [name]="getChildName('MaximumHoursNumber',1)" [placeholder]="'SETTINGS.maximum_hours_placeholder' | translate:lang" [title]="'SETTINGS.maximum_hours' | translate:lang"
+                  formControlName="MaxCarryForwardHours"></ae-input>
+                <span *ngIf="this._formStatus && checkLengthMaxCarryForwardHours()" class="error-text">{{'SETTINGS.maximum_hours_error_msg' | translate:lang}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="this._holidaySettingsData.AllowCarryForwardHolidays" class="information-grid__item--input">
+          <div class="information-grid__item-label column-1of3">
+            <ae-icon [id]="'icon'" [name]="'icon'" [icon]="'icon-alert-circle-question'" [title]="'SETTINGS.icon_expiration_days' | translate:lang"></ae-icon>
+            {{'SETTINGS.expiration_days' | translate:lang}} </div>
+          <div class="information-grid__item-value column-2of3">
+            <div class="information-grid__item--input">
+              <div class="information-grid__item-label column-1of3 switch-input">
+                <ae-switch (aeChange)="onChangeCarryForwardExpDays($event)" formControlName="AllowCarryForwardExpDays" [id]="getChildId('ExpirationDays',1)"
+                  [name]="getChildName('ExpirationDays',1)" [switchText]="' '" [class]="switchTextLeft" [checked]="this._holidaySettingsData.AllowCarryForwardExpDays"
+                  [title]="'SETTINGS.carried_forward' | translate:lang"></ae-switch>
+              </div>
+              <div class="information-grid__item-value column-2of3">
+                <ae-input *ngIf="this._holidaySettingsData.AllowCarryForwardExpDays" [type]="numberType" [min]="0" [id]="getChildId('ExpirationDaysNumber',1)"
+                  [name]="getChildName('ExpirationDaysNumber',1)" [placeholder]="'SETTINGS.expiration_days_placeholder' | translate:lang"
+                  [title]="'SETTINGS.expiration_days' | translate:lang" formControlName="CarryForwardExpDays"></ae-input>
+                <span *ngIf="this._formStatus && checkLengthMaxCarryForwardExpDays() && !checkCriteria()"  class="error-text"> {{'SETTINGS.expiration_days_error_msg' | translate:lang}}</span>
+                <span *ngIf="this._formStatus && checkCriteria()" class="error-text"> Please enter either maximum no of days or maximum no of hours</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </form>
+    <hr class="hr-grey" />
+    <div class="button-bar">
+      <div class="button-bar__item">
+        <ae-anchor [id]="getChildId('AeAnchor',2)" [name]="getChildName('AeAnchor',2)" [anchorType]="'button'" [class]="'button button--cta'"
+          (aeClick)="gotoBack($event)" [title]="'BUTTONS.PREVIOUS' | translate:lang"
+          [text]="'BUTTONS.PREVIOUS' | translate:lang"></ae-anchor>
+      </div>
+      <div class="button-bar__item">
+        <ae-anchor [id]="getChildId('AeAnchor',1)" [name]="getChildName('AeAnchor',1)" [anchorType]="'button'" [class]="'button button--inline-block'"
+          [anchorClass]="lightClass" (aeClick)="onHolidaySettingsFormSubmit($event)" [title]="'BUTTONS.SAVE' | translate:lang"
+          [text]="'BUTTONS.SAVE' | translate:lang"></ae-anchor>
+      </div>
+    </div>
+  </div>
+
+</div>

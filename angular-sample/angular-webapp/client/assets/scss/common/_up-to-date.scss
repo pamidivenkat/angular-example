@@ -1,0 +1,17 @@
+.up-to-date {
+  padding: $base-padding;
+  text-align: center;
+}
+
+.up-to-date__icon {
+  color: $grey--4;
+
+  .icon--big {
+    svg {
+      @include media-over-979 {
+        height: 100px;
+        width: 100px;
+      }
+    }
+  }
+}

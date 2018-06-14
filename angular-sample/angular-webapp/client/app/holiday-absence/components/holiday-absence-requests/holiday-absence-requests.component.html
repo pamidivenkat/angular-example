@@ -1,0 +1,243 @@
+<div class="table spacer">
+  <div class="filter-bar holiday-filters" *ngIf="holidayRequestsForm">
+    <div class="filter-bar__label label">{{'Filter_by' | translate:lang}}</div>
+
+    <form [formGroup]="holidayRequestsForm" [id]="'holidayRequestForm'" [name]="'holidayRequestForm'">
+      <div class="filter-bar__filters requests">
+
+        <div class="filter-bar__filter">
+          <ae-autocomplete formControlName="employee" [id]="getChildId('employeeSelected',1)" [name]="getChildName('employeeSelected',1)"
+            [placeholder]="'Filter_By_employee' | translate:lang" [multiselect]="'false'" [items]="employees$ | async" [automatch]="false"
+            (aeOnComplete)="searchEmployees($event)" [dstype]="remoteDataSourceType" [field]="'Text'" [debounce]="500" [valuefield]="'Value'"
+            (aeOnSelect)="onSelectEmployee($event)" (aeOnUnselect)="aeOnUnselectEmployee($event)" (aeOnClearSelected)="aeOnClearEmployee($event)"
+            [initialtext]="initialEmployeeText | async" (aeInputChange)="onEmployeeSearchChange($event)"></ae-autocomplete>
+        </div>
+        <div class="filter-bar__filter">
+          <ae-datetime-picker [id]="getChildId('startdate',1)" [name]="getChildName('startdate',1)" [monthNavigator]="true" [yearNavigator]="true"
+            yearRange="1910:2099" [showIcon]="true" [placeholder]="'Start_date_placeholder' | translate:lang" formControlName="startDate">
+          </ae-datetime-picker>
+          <span *ngIf="formHasEndDateOrphanedError()" class="error-text">
+             {{'ABSENCES.START_DATE_REQUIRE' | translate:lang}}
+             </span>
+        </div>
+        <div class="filter-bar__filter">
+          <ae-datetime-picker [id]="getChildId('enddate',1)" [name]="getChildName('enddate',1)" [monthNavigator]="true" [yearNavigator]="true"
+            yearRange="1910:2099" [showIcon]="true" [placeholder]="'End_date_placeholder' | translate:lang" formControlName="endDate">
+          </ae-datetime-picker>
+          <span *ngIf="formHasEndDateError()" class="error-text">
+             {{'ABSENCES.START_DATE_END_DATE_MAX' | translate:lang}}
+             </span>
+        </div>
+        <div class="filter-bar__filter">
+          <ae-select [id]="'ddlAbsenceStatus'" [name]="'ddlAbsenceStatus'" [placeholder]="'ALL_STATUSES' | translate:lang" [options]="absenceStatusItems"
+            formControlName="absenceStatus"></ae-select>
+        </div>
+        <div class="filter-bar__filter">
+          <ae-select [id]="'ddlAbsenceTypeId'" [name]="'ddlAbsenceTypeId'" [placeholder]="'ALL' | translate:lang" [options]="types"
+            formControlName="type"></ae-select>
+        </div>
+        <div class="filter-bar__filter" *ngIf="canAbsenceTypesBeShown()">
+          <ae-autocomplete [id]="'ddlAbsenceTypeId'" [name]="'ddlAbsenceTypeId'" [value]="selectedAbsenceTypes" [placeholder]="'ABSENCES.Select_absenceTypes' | translate:lang"
+            [multiselect]="'true'" [items]="AbsenceTypes" [dstype]="localDataSouceType" [field]="'TypeName'" [valuefield]="'Id'"
+            formControlName="absenceType"></ae-autocomplete>
+        </div>
+        <div class="filter-bar__filter">
+          <ae-button [text]="'BUTTONS.CLEAR'| translate:lang" [type]="'button'" [id]="'clearFilters'" [name]="'clearFilters'" (aeClick)="clearFilters($event)">
+          </ae-button>
+        </div>
+      </div>
+    </form>
+
+  </div>
+
+  <div *ngIf="canEmployeeSummaryShown()" class="employee-summary">
+    <div id="'emplyeeSummaryTitle'" class="notification-bar spacer">
+      <h4>{{ selectedEmployee[0]?.Text +'\'s'}} {{ 'HOLIDAYS.ENTITLEMENT_SUMMARY' | translate:lang }}</h4>
+      <div id="'summary'" class="grid--1-2">
+        <div id="'holidayYearList'">
+          <ae-select [id]="getChildId('AeSelect',5)" [name]="getChildName('AeSelect',5)" [options]="fiscalYears" (aeSelectChange)="onFiscalYearChange($event)"
+            [value]="_selectedFiscalYear"></ae-select>
+          <holiday-entitlement-summary [id]="getChildId('entitlementSummary', 1)" [name]="getChildName('entitlementSummary', 1)" [fiscalYearSummary]="fiscalYearSummary"
+            [selectedEmployee]="selectedEmployee[0]?.Text"></holiday-entitlement-summary>
+        </div>
+        <div id="'summaryChart'">
+
+          <employee-chart [id]="getChildId('EmployeeChart', 1)" [name]="getChildName('EmployeeChart', 1)" [chartData]="chartData | async">
+          </employee-chart>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="holidayabsencerequests">
+    <ae-datatable [id]="'holidayAbsenceRequestsGrid'" [name]="'holidayAbsenceRequestsGrid'" [dataSource]="holidayAbsenceRequests$"
+      [autoGenerateColumns]="false" [totalRecords]="recordsCount$" [defaultOptions]="dataTableOptions$ | async" (pageChanged)="onPageChange($event)"
+      (onSort)="onSort($event)" [loading]="!(holidayAbsencesLoading$ | async)" [actions]="actions">
+      <ae-column [headerText]="'Status'" [sortable]="false">
+        <ae-template [type]="'header'">
+          <ng-template>
+            <span></span>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]="'cell'" [keys]="keys">
+          <ng-template let-context="item">
+            <holiday-status-indicator [code]="context.Status.Code" [id]="getChildId('holidayStatusIndicator', context.Id)" [name]="getChildName('holidayStatusIndicator', context.Id)">
+            </holiday-status-indicator>
+          </ng-template>
+        </ae-template>
+      </ae-column>
+
+      <ae-column [headerText]="'ABSENCES.TYPE' | translate:lang" [sortable]="true" [sortKey]="'TypeId'" [isMobileView]="true">
+        <ae-template [type]="'header'">
+          <ng-template>
+            <span>{{'ABSENCES.TYPE' | translate:lang}}</span>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]="'cell'" [keys]="keys">
+          <ng-template let-context="item">
+            <span [title]="context.RequestTypeTitle">  {{ getType(context.TypeId) }} </span>
+          </ng-template>
+        </ae-template>
+      </ae-column>
+
+      <ae-column [headerText]="'EMPLOYEE_LABEL' | translate:lang" [sortable]="true" [sortKey]="'EmployeeView.FirstName'">
+        <ae-template [type]="'header'">
+          <ng-template>
+            <span>{{'EMPLOYEE_LABEL' | translate:lang}}</span>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]="'cell'" [keys]="keys">
+          <ng-template let-context="item">
+            <span> {{ context.EmployeeName }} </span>
+          </ng-template>
+        </ae-template>
+      </ae-column>
+      <ae-column [headerText]="'Dep_Team' | translate:lang" [sortable]="true" [sortKey]="'EmployeeView.DepartmentName'">
+        <ae-template [type]="'header'">
+          <ng-template>
+            <span>{{'Dep_Team' | translate:lang}}</span>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]="'cell'" [keys]="keys">
+          <ng-template let-context="item">
+            <span>{{(context.DepartmentName) }} </span>
+          </ng-template>
+        </ae-template>
+      </ae-column>
+
+      <ae-column [headerText]="'ABSENCES.START_DATE' | translate:lang" [sortable]="true" [sortKey]="'StartDate'">
+        <ae-template [type]="'header'">
+          <ng-template>
+            <span>{{'ABSENCES.START_DATE' | translate:lang}}</span>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]="'cell'" [keys]="keys">
+          <ng-template let-context="item">
+            <span>{{context.StartDate | localeDate:defaultLocale:'shortDate'}}</span>
+          </ng-template>
+        </ae-template>
+      </ae-column>
+
+      <ae-column [headerText]="'ABSENCES.END_DATE' | translate:lang" [sortable]="true" [sortKey]="'EndDate'">
+        <ae-template [type]="'header'">
+          <ng-template>
+            <span>{{'ABSENCES.END_DATE' | translate:lang}}</span>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]="'cell'" [keys]="keys">
+          <ng-template let-context="item">
+            <span>{{context.EndDate | localeDate:defaultLocale:'shortDate'}}</span>
+          </ng-template>
+        </ae-template>
+      </ae-column>
+
+
+
+      <ae-column [headerText]="'ABSENCES.REQUESTED_DAYS' | translate:lang" [sortable]="true" [sortKey]="'NoOfUnits'">
+        <ae-template [type]="'header'">
+          <ng-template>
+            <span>{{'ABSENCES.REQUESTED_DAYS' | translate:lang}}</span>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]="'cell'" [keys]="keys">
+          <ng-template let-context="item">
+            <span>{{ getUnitsData(context.NoOfUnitsInFraction) }}</span>
+            <ae-icon [id]="'iconInfo'" [name]="'iconInfo'" [size]="_iconTiny" [color]="'#009494'" [title]="'Click_more_info' | translate: lang"
+              *ngIf="context.NeedToShowAbsencesInPopOver" [icon]="'icon-info'" aePopover [popOverVm]="getPopOverVm(context)"
+              [popOverAction]="'click'"> </ae-icon>
+          </ng-template>
+        </ae-template>
+      </ae-column>
+
+
+      <ae-column [headerText]="'ABSENCES.Submitted_on' | translate:lang" [sortable]="true" [sortKey]="'CreatedOn'">
+        <ae-template [type]="'header'">
+          <ng-template>
+            <span>{{'ABSENCES.Submitted_on' | translate:lang}}</span>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]="'cell'" [keys]="keys">
+          <ng-template let-context="item">
+            <span>{{context.CreatedOn | localeDate:defaultLocale:'shortDate'}}</span>
+          </ng-template>
+        </ae-template>
+      </ae-column>
+
+      <ae-column [headerText]="'ABSENCES.Approved_by' | translate:lang" [sortable]="true" [sortKey]="'ApprovedByUser.FirstName'">
+        <ae-template [type]="'header'">
+          <ng-template>
+            <span>{{'ABSENCES.Approved_by' | translate:lang}}</span>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]="'cell'" [keys]="keys">
+          <ng-template let-context="item">
+            <span>{{ context.ApprovedByName }}</span>
+          </ng-template>
+        </ae-template>
+      </ae-column>
+
+      <ae-column [headerText]="'ABSENCES.COMMENT' | translate:lang" [sortable]="false">
+        <ae-template [type]="'header'">
+          <ng-template>
+            <span>{{'ABSENCES.COMMENT' | translate:lang}}</span>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]="'cell'" [keys]="keys">
+          <ng-template let-context="item">
+            <a href="'javascript:void(0)'" onclick="return false" class="icon icon--small" [ngClass]="commentStatus(context) ? '' : 'icon--disabled'">
+              <ae-icon [id]="'iconone'" [name]="'iconone'" [size]="iconOneSize" [icon]="'icon-alert-comment'" [title]="commentStatus(context) ? getComment(context) : 'No comments added'"></ae-icon>
+            </a>
+          </ng-template>
+        </ae-template>
+      </ae-column>
+    </ae-datatable>
+  </div>
+</div>
+<holiday-status-legend [id]="getChildId('holidayStatusLegend', 1)" [name]="getChildName('holidayStatusLegend', 1)">
+
+</holiday-status-legend>
+<!--Below is the pop over template component-->
+<ae-template #popOverTemplate [type]="'popOver'">
+  <ng-template let-context="item">
+    <div class="popover-container">
+      <table class="table__table" border="0" cellspacing="0">
+        <tr>
+          <th class="table__heading">{{'ABSENCES.DATE'| translate:lang}}</th>
+          <th class="table__heading">{{'ABSENCES.HOURS'| translate:lang}}</th>
+          <th class="table__heading">{{'ABSENCES.EXCLUDE_LUNCH'| translate:lang}}</th>
+        </tr>
+        <tr *ngFor="let absenceDetails of context.MyAbsenceDetails" class="table__row">
+          <td class="table__item">
+            <div class="table__item-inner">{{absenceDetails.FromHour | localeDate:defaultLocale:'shortDate' }}</div>
+          </td>
+          <td class="table__item">
+            <div class="table__item-inner">{{absenceDetails.NoOfUnits}}</div>
+          </td>
+          <td class="table__item">
+            <div class="table__item-inner">{{getLunchDuration(absenceDetails.LunchDuration)}}</div>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </ng-template>
+</ae-template>

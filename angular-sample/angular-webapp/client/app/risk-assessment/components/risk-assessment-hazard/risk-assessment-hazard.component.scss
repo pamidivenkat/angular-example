@@ -1,0 +1,92 @@
+@import '../../../../assets/scss/variablesMap';
+
+ae-virtual-scroll {
+  overflow: hidden;
+  overflow-y: auto;
+  height: 75vh;
+  display: block;
+  position: relative;
+}
+
+.hazards-virtual-list .scrollable-content {
+  @include clearfix;
+  display: flex;
+  flex-wrap: wrap;
+  height: auto;
+}
+
+.hazards-virtual-list ae-list-item {
+  float: left;
+  overflow: hidden;
+  @include media-0-480 {
+    width: 100%;
+
+    &:not(:nth-child(2n)) {
+      border-right: 1px solid $grey--pale;
+    }
+
+    &:not(:nth-child(n + 11)) {
+      border-bottom: 1px solid $grey--pale;
+    }
+  }
+  @include media-481-979 {
+    width: 50%;
+
+    &:not(:nth-child(2n)) {
+      border-right: 1px solid $grey--pale;
+    }
+
+    &:not(:nth-child(n + 11)) {
+      border-bottom: 1px solid $grey--pale;
+    }
+  }
+  @include media-over-979 {
+    width: 25%;
+    &:not(:nth-child(4n)) {
+      border-right: 1px solid $grey--pale;
+    }
+
+    &:not(:nth-child(-n + 4)) {
+      border-top: 1px solid $grey--pale;
+    }
+  }
+  .icons-block{ width: 80px; height: 80px; overflow: hidden; margin: auto; text-align: center;
+    img{max-height: 100%; max-width: 100%;}
+  }
+  .icon-picker__text{height: 55px;}
+}
+
+.hazards-virtual-list ae-list-item {
+  padding: 10px 20px 20px;
+  position: relative;
+  @include media-over-767 {
+    padding: 15px 30px 20px;
+  }
+
+  .icon-picker__checkbox {
+    cursor: pointer;
+    @media only screen and (max-width: 767px) {
+      top: 10px;
+      right: 5px;
+    }
+  }
+}
+
+.icon--buttons {
+  margin-top: 10px;
+  text-align: center;
+
+  ae-button {
+    display: inline-block;
+
+    ae-icon .icon svg {
+      width: 30px !important;
+    }
+  }
+}
+@media all and (-ms-high-contrast:none) {
+  .hazard-tabs .tabs-nav .tabs-nav__item {
+    line-height: 30px;
+    text-align: center;
+  }
+}

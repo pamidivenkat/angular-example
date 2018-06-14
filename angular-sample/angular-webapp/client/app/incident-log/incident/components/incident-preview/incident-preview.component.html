@@ -1,0 +1,453 @@
+<ae-notification [id]="getChildId('AeNotification', 1)" [name]="getChildName('AeNotification', 1)" [iconName]="'icon-info'"
+    [textInfo]="'INCIDENT_LOG.INCIDENT_LOG_PREVIEW_INFO' | translate:lang">
+</ae-notification>
+<div class="button-bar button-bar--scroll" [class.spacer]="!isPending" [class.spacer--y]="isPending" *ngIf="showApproveIncident()">
+    <div class="button-bar__item" *ngIf="canShowApproveButton">
+        <ae-anchor [id]="getChildId('AeAnchor', 1)" [name]="getChildName('AeAnchor', 1)" [anchorType]="'button'" [class]="'button button--cta'"
+            [anchorClass]="0" (aeClick)="approveIncident($event)" [title]="'PREVIEW.APPROVE' | translate:lang" [text]="'PREVIEW.APPROVE' | translate:lang"></ae-anchor>
+    </div>
+    <div class="button-bar__item">
+        <ae-anchor [id]="getChildId('AeAnchor', 2)" [name]="getChildName('AeAnchor', 2)" [anchorType]="'button'" [class]="'button button--cta'"
+            [anchorClass]="0" (aeClick)="saveIncidentToAtlas($event)" [title]="'PREVIEW.Save_incident_to_Atlas' | translate:lang"
+            [text]="'PREVIEW.Save_incident_to_Atlas' | translate:lang"></ae-anchor>
+    </div>
+    <div class="button-bar__item">
+        <ae-anchor [id]="getChildId('AeAnchor', 3)" [name]="getChildName('AeAnchor', 3)" [anchorType]="'button'" [class]="'button button--cta'"
+            [anchorClass]="0" (aeClick)="generatePDF($event)" [title]="'PREVIEW.Export_full_review' | translate:lang" [text]="'PREVIEW.Export_full_review' | translate:lang"></ae-anchor>
+    </div>
+</div>
+
+<div id="incident-preview" class="incident-preview preview-scroll">
+    <div *ngIf="validationInProgress">
+        <div class="overlay">
+            <ae-loader [loaderType]="loaderBars"></ae-loader>
+        </div>
+    </div>
+    <ae-loader [loaderType]="loaderType" *ngIf="isDataLoading"></ae-loader>
+    <div class="so-panel__content" #incidentPreviewPanel>
+        <div class="information-grid">
+            <section class="information-grid__section">
+                <div class="information-grid__item" *ngIf="incidentPreviewVM.Comments">
+                    <div class="information-grid__item-label column-1of3"> {{ 'PREVIEW.Reason_for_NonCompletion' | translate:lang }}</div>
+                    <div class="information-grid__item-value column-2of3"> {{ incidentPreviewVM.Comments }} </div>
+                </div>
+            </section>
+
+            <section class="information-grid__section">
+                <div class="so-panel__title">
+                    <h3 class="grey-strip">{{'PREVIEW.Incident_Record' | translate:lang}}</h3>
+                </div>
+                <div class="information-grid__item">
+                    <div class="information-grid__item-label column-1of3">{{'PREVIEW.Record_No' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3">{{incidentPreviewVM.ReferenceNumber}}</div>
+                </div>
+                <div class="information-grid__item">
+                    <div class="information-grid__item-label column-1of3"> {{'PREVIEW.Injury_Type' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3"> {{incidentPreviewVM.InjuryTypesText}} </div>
+                </div>
+                <div class="information-grid__item">
+                    <div class="information-grid__item-label column-1of3"> {{'PREVIEW.Date' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3"> {{incidentPreviewVM.PreviewDate | localeDate:defaultLocale:'shortDate'}} </div>
+                </div>
+            </section>
+
+            <section class="information-grid__section">
+                <h3>{{ 'PREVIEW.ABOUT_THE_AFFECTED_PARTY' | translate:lang}}</h3>
+                <div class="information-grid__item">
+                    <div class="information-grid__item-label column-1of3"> {{'PREVIEW.INJURED_PARTY' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3"> {{ incidentPreviewVM.InjuredPartyId ? incidentPreviewVM.InjuredPersonInjuredPartyName : 'Other'}} </div>
+                </div>
+                <div class="information-grid__item" *ngIf="incidentPreviewVM.InjuredPartyId == null">
+                    <div class="information-grid__item-label column-1of3"> {{'PREVIEW.INJURED_PARTY_OTHER' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3"> {{incidentPreviewVM.InjuredPersonInjuredPartyName}} </div>
+                </div>
+                <div class="information-grid__item">
+                    <div class="information-grid__item-label column-1of3"> {{'NAME' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3"> {{incidentPreviewVM.InjuredPersonName}} </div>
+                </div>
+                <div class="information-grid__item">
+                    <div class="information-grid__item-label column-1of3"> {{'PREVIEW.JOB_ROLE' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3"> {{incidentPreviewVM.InjuredPersonOccupation}} </div>
+                </div>
+                <div class="information-grid__item" *ngIf="incidentPreviewVM.IsInjuredPartyEmployee">
+                    <div class="information-grid__item-label column-1of3"> {{'PREVIEW.EMPLOYEE_START_DATE' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3"> {{incidentPreviewVM.InjuredPersonStartDate | date:'dd/MM/yyyy'}} </div>
+                </div>
+                <div class="information-grid__item">
+                    <div class="information-grid__item-label column-1of3"> {{'PREVIEW.DATE_OF_BIRTH' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3"> {{incidentPreviewVM.InjuredPersonDateOfBirth | date:'dd/MM/yyyy'}} </div>
+                </div>
+                <div class="information-grid__item">
+                    <div class="information-grid__item-label column-1of3"> {{'PREVIEW.HOME_ADDRESS' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3">
+                        <div>{{incidentPreviewVM.InjuredPersonAddressLine1}}</div>
+                        <div>{{incidentPreviewVM.InjuredPersonAddressLine2}}</div>
+                    </div>
+                </div>
+                <div class="information-grid__item">
+                    <div class="information-grid__item-label column-1of3"> {{'PREVIEW.TOWN' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3">
+                        <div>{{incidentPreviewVM.InjuredPersonTown}}</div>
+                    </div>
+                </div>
+                <div class="information-grid__item">
+                    <div class="information-grid__item-label column-1of3"> {{'COUNTY' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3">
+                        <div>{{incidentPreviewVM.InjuredPersonCounty}}</div>
+                    </div>
+                </div>
+                <div class="information-grid__item">
+                    <div class="information-grid__item-label column-1of3"> {{'POSTCODE' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3"> {{incidentPreviewVM.InjuredPersonPostcode}} </div>
+                </div>
+                <div class="information-grid__item">
+                    <div class="information-grid__item-label column-1of3">{{'TELEPHONE_NUMBER' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3">
+                        {{incidentPreviewVM.InjuredPersonMobilePhone}}
+                    </div>
+                </div>
+                <div class="information-grid__item">
+                    <div class="information-grid__item-label column-1of3">{{'PREVIEW.GENDER' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3">
+                        {{incidentPreviewVM.InjuredPersonGenderText}}
+                    </div>
+                </div>
+                <div class="information-grid__item" *ngIf="incidentPreviewVM.NewOrExpectantMother">
+                    <div class="information-grid__item-label column-1of3"> {{'PREVIEW.NEW_OR_EXPECTANT_MOTHER' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3"> {{incidentPreviewVM.NewOrExpectantMother ? 'Yes' : 'No' }}
+                    </div>
+                </div>
+            </section>
+
+            <section class="information-grid__section">
+                <h3>{{ 'PREVIEW.PERSON_REPORTING' | translate:lang}}</h3>
+                <div class="information-grid__item">
+                    <div class="information-grid__item-label column-1of3"> {{ 'PREVIEW.INCIDENT_REPORTED_BY' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3"> {{incidentPreviewVM.IncidentReportedByUserFullName}}</div>
+                </div>
+                <div class="information-grid__item">
+                    <div class="information-grid__item-label column-1of3"> {{ 'PREVIEW.WORK_ADDRESS' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3">
+                        <div>{{incidentPreviewVM.IncidentReportedByAddressLine1}}</div>
+                        <div>{{incidentPreviewVM.IncidentReportedByAddressLine2}}</div>
+                    </div>
+                </div>
+                <div class="information-grid__item">
+                    <div class="information-grid__item-label column-1of3"> {{'PREVIEW.TOWN_CITY' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3">
+                        <div>{{incidentPreviewVM.IncidentReportedByTown}}</div>
+                    </div>
+                </div>
+                <div class="information-grid__item">
+                    <div class="information-grid__item-label column-1of3"> {{'COUNTY' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3">
+                        <div>{{incidentPreviewVM.IncidentReportedByCountyName}}</div>
+                    </div>
+                </div>
+                <div class="information-grid__item">
+                    <div class="information-grid__item-label column-1of3"> {{ 'POSTCODE' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3"> {{incidentPreviewVM.IncidentReportedByPostcode}} </div>
+                </div>
+            </section>
+
+            <section class="information-grid__section">
+                <h3>{{ 'PREVIEW.ABOUT_THE_INCIDENT' | translate:lang}}</h3>
+                <div class="information-grid__item" *ngIf="getAboutIncidentFieldsVisibility('InjuryTypes')">
+                    <div class="information-grid__item-label column-1of3"> {{ 'PREVIEW.INJURY_TYPE' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3"> {{incidentPreviewVM.InjuryTypesText}}</div>
+                </div>
+                <div class="information-grid__item" *ngIf="getAboutIncidentFieldsVisibility('InjuredParts')">
+                    <div class="information-grid__item-label column-1of3"> {{ 'PREVIEW.INJURED_PARTS_OF_BODY' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3"> {{incidentPreviewVM.InjuredPartsText}}</div>
+                </div>
+                <div class="information-grid__item">
+                    <div class="information-grid__item-label column-1of3 "> {{ 'PREVIEW.HOW_DID_THE_INCIDENT_HAPPEN' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3 "> {{incidentPreviewVM.AboutIncidentDetails.HowDidHappen}}</div>
+                </div>
+                <div class="information-grid__item" *ngIf="getAboutIncidentFieldsVisibility( 'IncidentEvents') ">
+                    <div class="information-grid__item-label column-1of3 "> {{ 'PREVIEW.WHAT_WERE_THE_EVENTS_LEADING_UP_TO_THE_INCIDENT' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3 "> {{incidentPreviewVM.AboutIncidentDetails.IncidentEvents}}</div>
+                </div>
+
+                <div class="information-grid__item " *ngIf="getAboutIncidentFieldsVisibility( 'DrugsFound') ">
+                    <div class="information-grid__item-label column-1of3 "> {{ 'PREVIEW.WERE_ANY_DRUGS_FOUND' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3 "> {{incidentPreviewVM.AboutIncidentDetails.DrugsFound ? 'Yes' : 'No'}}</div>
+                </div>
+                <div class="information-grid__item " *ngIf="getAboutIncidentFieldsVisibility( 'DetailsOfDrugsFound') && incidentPreviewVM.AboutIncidentDetails.DrugsFound ">
+                    <div class="information-grid__item-label column-1of3 "> {{ 'PREVIEW.WHAT_DRUGS_WERE_FOUND' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3 "> {{incidentPreviewVM.AboutIncidentDetails.DetailsOfDrugsFound}}</div>
+                </div>
+
+                <div class="information-grid__item " *ngIf="getAboutIncidentFieldsVisibility( 'PropertyDamaged') ">
+                    <div class="information-grid__item-label column-1of3 "> {{ 'PREVIEW.DESCRIBE_ANY_PROPERTY_DAMAGE' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3 "> {{incidentPreviewVM.AboutIncidentDetails.PropertyDamaged}}</div>
+                </div>
+
+                <div class="information-grid__item " *ngIf="getAboutIncidentFieldsVisibility( 'Assisted') ">
+                    <div class="information-grid__item-label column-1of3 "> {{ 'PREVIEW.DID_SOMEONE_ASSIST_THE_INJURED_AFFECTED_PERSON' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3 "> {{incidentPreviewVM.AboutIncidentDetails.Assisted ? 'Yes' : 'No'}}</div>
+                </div>
+                <div class="information-grid__item " *ngIf="getAboutIncidentFieldsVisibility( 'AssistedDetails') && incidentPreviewVM.AboutIncidentDetails.Assisted ">
+                    <div class="information-grid__item-label column-1of3 "> {{ 'PREVIEW.WHO_ASSISTED_THE_INJURED_AFFECTED_PERSON' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3 "> {{incidentPreviewVM.AboutIncidentDetails.AssistedDetails}}</div>
+                </div>
+
+                <div class="information-grid__item " *ngIf="getAboutIncidentFieldsVisibility( 'InjuryDescription') ">
+                    <div class="information-grid__item-label column-1of3 "> {{ 'PREVIEW.DESCRIBE_ANY_INJURIES_SUSTAINED' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3 "> {{incidentPreviewVM.AboutIncidentDetails.InjuryDescription}}</div>
+                </div>
+                <div class="information-grid__item ">
+                    <div class="information-grid__item-label column-1of3 "> {{ 'PREVIEW.WHEN_DID_THE_INCIDENT_HAPPEN' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3 "> {{incidentPreviewVM.AboutIncidentDetails.WhenHappened | date:'dd/MM/yyyy'}} {{incidentPreviewVM.AboutIncidentDetails.WhenHappened
+                        | date:'jms'}}</div>
+                </div>
+                <div class="information-grid__item ">
+                    <div class="information-grid__item-label column-1of3 "> {{ 'PREVIEW.WHEN_WAS_THE_INCIDENT_REPORTED' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3 "> {{incidentPreviewVM.AboutIncidentDetails.WhenReported | date:'dd/MM/yyyy'}} {{incidentPreviewVM.AboutIncidentDetails.WhenReported
+                        | date:'jms'}}</div>
+                </div>
+                <div class="information-grid__item ">
+                    <div class="information-grid__item-label column-1of3 "> {{ 'PREVIEW.WHERE_DID_THE_INCIDENT_HAPPEN' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3 ">
+                        <div> {{incidentPreviewVM.AboutIncidentSiteName ? incidentPreviewVM.AboutIncidentSiteName : incidentPreviewVM.AboutIncidentDetails.OtherSite
+                            ? incidentPreviewVM.AboutIncidentDetails.OtherSite : ''}}</div>
+                        <div *ngIf="!incidentPreviewVM.AboutIncidentDetails.OtherSite">
+                            <div>{{incidentPreviewVM.AboutIncidentDetails.AddressLine1}}</div>
+                            <div>{{incidentPreviewVM.AboutIncidentDetails.AddressLine2}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="information-grid__item ">
+                    <div class="information-grid__item-label column-1of3 "> {{ 'PREVIEW.TOWN' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3 "> {{incidentPreviewVM.AboutIncidentDetails.Town}}</div>
+                </div>
+                <div class="information-grid__item ">
+                    <div class="information-grid__item-label column-1of3 "> {{ 'COUNTY' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3 "> {{incidentPreviewVM.AboutIncidentDetails.County ? incidentPreviewVM.AboutIncidentDetails.County.Name
+                        : ''}}</div>
+                </div>
+                <div class="information-grid__item ">
+                    <div class="information-grid__item-label column-1of3 "> {{ 'POSTCODE' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3 "> {{incidentPreviewVM.AboutIncidentDetails.Postcode}}</div>
+                </div>
+
+                <div class="information-grid__item ">
+                    <div class="information-grid__item-label column-1of3 "> {{ 'PREVIEW.WHERE_ON_THE_PREMISES_DID_THE_INCIDENT_HAPPEN' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3 "> {{incidentPreviewVM.AboutIncidentDetails.Premises}} </div>
+                </div>
+
+                <div class="information-grid__item ">
+                    <div class="information-grid__item-label column-1of3 "> {{ 'PREVIEW.WAS_THE_INCIDENT_COVERED_BY_CCTV' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3 "> {{incidentPreviewVM.AboutIncidentDetails.IsIncidentCoveredByCCTV ? 'Yes' : 'No'}} </div>
+                </div>
+                <div class="information-grid__item ">
+                    <div class="information-grid__item-label column-1of3 "> {{ 'PREVIEW.WHAT_WAS_THE_CONDITION_OF_THE_AREA' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3 "> {{incidentPreviewVM.AboutIncidentDetails.ConditionOfArea}} </div>
+                </div>
+
+                <div class="information-grid__item " *ngIf="getAboutIncidentFieldsVisibility('WhenAmbulanceAttended')">
+                    <div class="information-grid__item-label column-1of3 "> {{'PREVIEW.WHEN_AMBULANCE_ATTENDED_THE_INCIDENT'| translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3 "> {{incidentPreviewVM.AboutIncidentDetails.WhenAmbulanceAttended | date:'dd/MM/yyyy'}} </div>
+                </div>
+                <div class="information-grid__item " *ngIf="getAboutIncidentFieldsVisibility('WhenPoliceAttended')">
+                    <div class="information-grid__item-label column-1of3 "> {{'PREVIEW.WHEN_POLICE_ATTENDED_THE_INCIDENT'| translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3 "> {{incidentPreviewVM.AboutIncidentDetails.WhenPoliceAttended | date:'dd/MM/yyyy'}} </div>
+                </div>
+
+                <div class="information-grid__item " *ngIf="getAboutIncidentFieldsVisibility('DiagnosedDiseaseCategory') ">
+                    <div class="information-grid__item-label column-1of3 "> {{ 'PREVIEW.WHAT_WAS_THE_DIAGNOSED_DISEASE_CATEGORY' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3 "> {{incidentPreviewVM.DiagnosedDiseaseCategoryName}} </div>
+                </div>
+                <div class="information-grid__item " *ngIf="getAboutIncidentFieldsVisibility('DiagnosedDisease') ">
+                    <div class="information-grid__item-label column-1of3 "> {{ 'PREVIEW.SPECIFY_THE_DIAGNOSED_DISEASE' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3 "> {{incidentPreviewVM.AboutIncidentDetails.DiagnosedDisease}} </div>
+                </div>
+
+                <div class="information-grid__item " *ngIf="getAboutIncidentFieldsVisibility('PoliceCalled') ">
+                    <div class="information-grid__item-label column-1of3 "> {{ 'PREVIEW.WERE_THE_POLICE_CALLED' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3 "> {{incidentPreviewVM.AboutIncidentDetails.PoliceCalled ? 'Yes' : 'No'}} </div>
+                </div>
+                <div class="information-grid__item " *ngIf="getAboutIncidentFieldsVisibility('CrimeNumber') && incidentPreviewVM.AboutIncidentDetails.PoliceCalled">
+                    <div class="information-grid__item-label column-1of3 "> {{ 'PREVIEW.CRIME_NUMBER' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3 "> {{incidentPreviewVM.AboutIncidentDetails.CrimeNumber}} </div>
+                </div>
+                <div class="information-grid__item " *ngIf="getAboutIncidentFieldsVisibility('IsMedicalAssistanceRequired')">
+                    <div class="information-grid__item-label column-1of3 "> {{ 'PREVIEW.DID_THE_INJURED_AFFECTED_PERSON_REQUIRE_MEDICAL_ASSISTANCE' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3 "> {{incidentPreviewVM.AboutIncidentDetails.IsMedicalAssistanceRequired}} </div>
+                </div>
+
+                <div class="information-grid__item " *ngIf="getAboutIncidentFieldsVisibility('MedicalAssistanceDetails') && incidentPreviewVM.AboutIncidentDetails.IsMedicalAssistanceRequired == 'Yes'">
+                    <div class="information-grid__item-label column-1of3 "> {{ 'PREVIEW.PLEASE_PROVIDE_DETAILS_OF_MEDICAL_ASSISTANCE_REQUIRED' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3 "> {{incidentPreviewVM.AboutIncidentDetails.MedicalAssistanceDetails}} </div>
+                </div>
+                <div class="information-grid__item " *ngIf="getAboutIncidentFieldsVisibility('HasWitness')">
+                    <div class="information-grid__item-label column-1of3 "> {{ 'PREVIEW.WERE_THERE_ANY_WITNESSES' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3 "> {{hasWitness ? 'Yes' : 'No'}} </div>
+                </div>
+
+                <div class="information-grid__item witness-grid-block" *ngIf="getAboutIncidentFieldsVisibility('HasWitness') && hasWitness">
+                    <div class="row" *ngFor="let witness of incidentPreviewVM.Witnesses; let i = index ">
+                        <div class="witness-grid-collection">
+                            <fieldset>
+                                <legend>Witness {{i+1}}</legend>
+                                <div class="witness-grid">
+                                    <div class="witness-grid__name">
+                                        <label for="name-{{i}}"> {{ 'PREVIEW.FULL_NAME' | translate:lang}} </label>
+                                        <div>{{ witness.FullName}}</div>
+                                    </div>
+                                    <div class="witness-grid__telephone">
+                                        <label for="telephone-{{i}}"> {{ 'PREVIEW.TELEPHONE' | translate:lang}} </label>
+                                        <div>{{ witness.Telephone}}</div>
+                                    </div>
+                                    <div class="witness-grid__delegation">
+                                        <label for="delegation-{{i}}"> {{ 'PREVIEW.JOB_TITLE' | translate:lang}} </label>
+                                        <div>{{ witness.JobRole}}</div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="information-grid__item " *ngIf="getAboutIncidentFieldsVisibility('ActionsTaken')">
+                    <div class="information-grid__item-label column-1of3 "> {{ 'PREVIEW.WHAT_ACTIONS_WERE_TAKEN_HAVE_BEEN_TAKEN_IN_RELATION_TO_THIS_INCIDENT' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3 "> {{incidentPreviewVM.AboutIncidentDetails.ActionsTaken}} </div>
+                </div>
+                <div class="information-grid__item " *ngIf="getAboutIncidentFieldsVisibility('IsRiskAssessmentUpdated')">
+                    <div class="information-grid__item-label column-1of3 "> {{ 'PREVIEW.WAS_THE_RELEVANT_RISK_ASSESSMENT_UPDATED' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3 "> {{incidentPreviewVM.AboutIncidentDetails.IsRiskAssessmentUpdated ? 'Yes':'No'}} </div>
+                </div>
+                <div class="information-grid__item " *ngIf="getAboutIncidentFieldsVisibility('UpdatedDate') && incidentPreviewVM.AboutIncidentDetails.IsRiskAssessmentUpdated">
+                    <div class="information-grid__item-label column-1of3 "> {{ 'PREVIEW.UPDATE_DATE' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3 "> {{incidentPreviewVM.AboutIncidentDetails.UpdatedDate | date:'dd/MM/yyyy'}} </div>
+                </div>
+            </section>
+
+            <section class="information-grid__section " *ngIf="isRiddorRequired ">
+                <h3>{{ 'PREVIEW.RIDDOR' | translate:lang}}</h3>
+                <div class="information-grid__item ">
+                    <div class="information-grid__item-label column-1of3 "> {{ 'PREVIEW.Main_industry' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3 "> {{incidentPreviewVM.ReportedToMainIndustry}} </div>
+                </div>
+                <div class="information-grid__item ">
+                    <div class="information-grid__item-label column-1of3 "> {{ 'PREVIEW.Main_activity' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3 "> {{incidentPreviewVM.ReportedToMainActivity}} </div>
+                </div>
+                <div class="information-grid__item ">
+                    <div class="information-grid__item-label column-1of3 "> {{ 'PREVIEW.Sub_activity' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3 "> {{incidentPreviewVM.ReportedToSubActivity}} </div>
+                </div>
+
+                <div class="information-grid__item ">
+                    <div class="information-grid__item-label column-1of3 "> {{ 'PREVIEW.WORK_PROCESS' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3 "> {{incidentPreviewVM.ReportedToWorkProcess}} </div>
+                </div>
+                <div class="information-grid__item ">
+                    <div class="information-grid__item-label column-1of3 "> {{ 'PREVIEW.ROOT_CAUSE' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3 "> {{incidentPreviewVM.ReportedToMainFactor}} </div>
+                </div>
+
+                <div class="information-grid__item ">
+                    <div class="information-grid__item-label column-1of3 "> {{ 'PREVIEW.RIDDOR_REPORTED_BY' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3 "> {{incidentPreviewVM.IncidentReportedByUserFullName}} </div>
+                </div>
+                <div class="information-grid__item ">
+                    <div class="information-grid__item-label column-1of3 "> {{ 'PREVIEW.HOW_WAS_IT_REPORTED_TO_THE_HSE' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3 "> {{incidentPreviewVM.ReportedToRIDDORReportedMedium}} </div>
+                </div>
+
+                <div class="information-grid__item ">
+                    <div class="information-grid__item-label column-1of3 "> {{ 'PREVIEW.DATE_REPORTED' | translate:lang}}</div>
+                    <!-- to dispay both date and time properly in IE-->
+                    <div class="information-grid__item-value column-2of3 "> {{incidentPreviewVM.ReportedToRIDDORReportedDate | localeDate:defaultLocale:'dd/MM/yyyy'}} {{incidentPreviewVM.ReportedToRIDDORReportedDate
+                        | localeDate:defaultLocale:'jms'}}
+                    </div>
+                </div>
+
+                <div class="information-grid__item ">
+                    <div class="information-grid__item-label column-1of3 "> {{'COUNTY' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3 ">
+                        <div>{{incidentPreviewVM.ReportedToCounty}}</div>
+                    </div>
+                </div>
+                <div class="information-grid__item ">
+                    <div class="information-grid__item-label column-1of3 "> {{'COUNTRY' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3 ">
+                        <div>{{incidentPreviewVM.ReportedToCountry}}</div>
+                    </div>
+                </div>
+
+                <div class="information-grid__item ">
+                    <div class="information-grid__item-label column-1of3 ">{{ 'PREVIEW.LOCAL_AUTHORITY' | translate:lang}}</div>
+                    <div class="information-grid__item-value column-2of3 ">
+                        {{ incidentPreviewVM.ReportedToLocalAuthority}}
+                    </div>
+                </div>
+            </section>
+
+            <section class="information-grid__section border-none page-break-before " *ngIf="isInvestigationRequired ">
+                <h3>{{ 'PREVIEW.FORMAL_INVESTIGATION_DETAILS' | translate:lang }}</h3>
+                <div *ngFor="let section of invSections | async ">
+                    <div *ngIf="hasQuestions(section) ">
+                        <h4> {{section.SectionName}}</h4>
+                        <div class="information-grid__item " *ngFor="let question of section.InvQuestions ">
+                            <div class="information-grid__item-label column-1of3 "> {{question.Question}}</div>
+                            <div class="information-grid__item-value column-2of3 " *ngIf="!isUploadFileQuestionType(question) "> {{getAnswer(question)}} </div>
+                            <div class="information-grid__item-value column-2of3 " *ngIf="isUploadFileQuestionType(question) ">
+                                <ae-anchor [id]="question.Id " [name]="question.Id " [anchorClass]=" 'download-block' " [text]="getAnswer(question) " [href]="getFileDownloadUrl(question.AttachedObjectId) "
+                                    [target]="_blank " (aeClick)="downLoadFile($event,question.AttachedObjectId) ">
+                                </ae-anchor>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+        </div>
+        <div class="information-grid__item border-t-grey spacer-t-30" id='preview_signature'>
+            <div class="information-grid__item-label column-1of3 "> {{'SIGNATURE' | translate:lang}}</div>
+            <div class="information-grid__item-value column-2of3 ">
+                <img *ngIf="Signature " height="70 " src="{{Signature}} " alt=" 'Signature' " />
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<ae-modal-dialog [visible]="showKeyFieldsPopUp " (cancel)="keyFieldsModalClosed($event) " [closable]="false " [id]="getChildId( 'Aemodal', 1) "
+    [name]="getChildName( 'Aemodal', 1) " *ngIf="showKeyFieldsPopUp ">
+    <div class="modal-dialog-header ">
+        <h3> {{'INCIDENT_KEY_FIELD.NOTIFICATION_HEADER' | translate:lang}}</h3>
+    </div>
+    <div class="modal-dialog-body ">
+        <p>{{'INCIDENT_KEY_FIELD.PREVIEW_NOTIFICATION_MESSAGE' | translate:lang}} </p>
+    </div>
+    <form [id]="getChildId( 'commentsForm', 1) " [name]="getChildName( 'commentsForm', 1) " [formGroup]="commentsFormGroup ">
+        <div class="showhide showhide--active highlight highlight-block ">
+            <div class="information-grid ">
+                <section class="information-grid__section ">
+                    <div class="information-grid__item ">
+                        <div class="information-grid__item-label column-1of3 ">{{'INCIDENT_KEY_FIELD.KEY_INFORMATION_HEADER' | translate:lang}}</div>
+                        <div class="information-grid__item-value column-2of3 ">
+                            <ae-textarea [id]="getChildId( 'AeTextarea') " [name]="getChildName( 'AeTextarea') " [rows]="5 " formControlName="keyFieldsComment"
+                                [placeholder]=" "></ae-textarea>
+                            <span *ngIf="showValidation " class="error-text ">
+                                {{'INCIDENT_KEY_FIELD.COMMENTS_REQUIRED' | translate:lang}}
+                            </span>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </form>
+
+    <div class="modal-dialog-footer ">
+        <ae-button [text]=" 'INCIDENT_KEY_FIELD.BUTTON_REMAIN' | translate:lang " [title]=" 'INCIDENT_KEY_FIELD.BUTTON_REMAIN' | translate:lang "
+            [type]=" 'button' " [id]=" 'submitConfirmCancel' " [name]=" 'submitConfirmCancel' " (aeClick)="keyFieldsModalClosed($event) "></ae-button>
+        <ae-button [class]="lightClass " [text]=" 'INCIDENT_KEY_FIELD.BUTTON_CONTINUE' | translate:lang " [title]=" 'INCIDENT_KEY_FIELD.BUTTON_CONTINUE' | translate:lang "
+            [type]=" 'button' " [id]=" 'submitConfirm' " [name]=" 'submitConfirm'
+                    " (aeClick)="keyFieldsOnConfirmation($event) "></ae-button>
+    </div>
+
+</ae-modal-dialog>

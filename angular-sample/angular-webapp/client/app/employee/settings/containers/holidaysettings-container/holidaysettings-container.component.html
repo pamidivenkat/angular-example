@@ -1,0 +1,8 @@
+<div>
+  <ae-banner [id]="'settingsBanner'" [name]="'settingsBanner'" [titleText]="'SETTINGS.Employee_settings' | translate: lang" [backgroundImage]="'/assets/images/lp-employees.jpg'">
+    <div class="image-text banner-image-text">
+       <ae2-breadcrumb [id]="getChildId('Ae2Breadcrub',2)" [group]="bcGroup" [name]="getChildName('Ae2Breadcrub',2)"></ae2-breadcrumb>
+    </div>
+  </ae-banner>
+  <employee-holidaysettings [id]="getChildId('holidaysettings', 1)" [name]="getChildName('holidaysettings', 1)" [holidaySettingsData]="holidaySettingsData$ | async" (aeSubmit)="submitHolidaySettings($event)"> </employee-holidaysettings>
+</div>

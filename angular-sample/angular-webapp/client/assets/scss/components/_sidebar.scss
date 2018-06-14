@@ -1,0 +1,29 @@
+.sidebar {
+  background: $grey--pale;
+  height: calc(100vh - #{$header-height});
+  left: 100%;
+  opacity: 0;
+  padding: 10px 30px 30px;
+  position: absolute;
+  top: $header-height;
+  transition: left $base-transition, opacity $base-transition;
+  width: $sidebar-width;
+  z-index: $sidebar-z-index;
+
+  @include media-over-767 {
+    height: calc(100vh - #{$header-height});
+    left: 100%;
+    width: $sidebar-width--over-767;
+  }
+
+  &.js-open {
+    border-top: 1px solid $yellow--0;
+    left: calc(100% - #{$sidebar-width});
+    opacity: 1;
+    overflow-y: scroll;
+
+    @include media-over-767 {
+      left: calc(100% - #{$sidebar-width--over-767});
+    }
+  }
+}

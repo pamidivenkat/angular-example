@@ -1,0 +1,30 @@
+<div class="so-panel__title">
+  <h3 class="grey-strip">{{'ABSENCES.Decline_request' | translate: lang}}</h3>
+</div>
+<div class="so-panel__content">
+  <div class="information-grid">
+    <form id="myabsence-form" [formGroup]="myAbsenceDeclineForm">
+      <label>{{'ABSENCES.REASON' | translate: lang}}
+          <ae-textarea formControlName="Comment" [showcharleft]="true" [showOnFocus]="false" [placeholder]="'ABSENCES.REASON' | translate: lang" [maxlength]="500" [id]="getChildId('AeTextarea',13)"
+            [name]="getChildName('AeTextarea',13)" [title]="'ABSENCES.REASON' | translate: lang"></ae-textarea>
+        </label>
+    </form>
+    <div class="top-20">
+      <my-absence-history [id]="'myholidayHistory'" [name]="'myholidayHistory'" [myAbsenceId]="myAbsence.Id"></my-absence-history>
+    </div>
+  </div>
+</div>
+<div class="so-panel__footer">
+  <nav>
+    <ul>
+      <li><label for="soPanel" class="button button--inline-block" [id]="getChildId('AeButton',16)" (click)="onMyAbsenceFormClosed()"
+          [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label></li>
+      <li class="pull--right">
+        <ae-anchor [id]="getChildId('AeAnchor',17)" [name]="getChildName('AeAnchor',17)" [anchorType]="'button'" [class]="'button button--inline-block'"
+          [anchorClass]="lightClass" (aeClick)="submitDeclineRequest($event)" [title]="'BUTTONS.DECLINE' | translate:lang"
+          [text]="'BUTTONS.DECLINE' | translate:lang"></ae-anchor>
+      </li>
+    </ul>
+  </nav>
+</div>
+<ae-loader [id]="'declineDataLoad'" [loaderType]="loaderType" *ngIf="loading"></ae-loader>

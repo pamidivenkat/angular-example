@@ -1,0 +1,198 @@
+@import '../../../../assets/scss/variablesMap';
+
+ae-virtual-scroll {
+  overflow: hidden;
+  overflow-y: auto;
+  height: 300px;
+  display: block;
+  position: relative;
+}
+
+.controls-virtual-list {
+  margin: -15px;
+
+  .scrollable-content {
+    @include clearfix;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  ae-list-item {
+    display: inline-block;
+    padding: 15px;
+    text-align: center;
+    position: relative;
+    width: 100%;
+    @include media-over-480 {
+      width: 50%;
+    }
+    @include media-over-979 {
+      width: 33.33%;
+    }
+    @include media-over-1239 {
+      width: 25%;
+    }
+
+    .icon-picker__checkbox {
+      right: 10px;
+      cursor: pointer;
+    }
+  }
+}
+
+.modal-accordion .accordion__content {
+  max-height: 330px;
+  overflow-y: auto;
+}
+
+.hazard-control-panel {
+  background: $white;
+  display: flex;
+  flex-direction: column;
+}
+
+.hazard-control-panel__header {
+  background: $grey--4;
+  display: flex;
+
+  h4 {
+    margin: 0;
+  }
+
+  .hazard-control-panel__header__hazard {
+    min-width: 150px;
+    max-width: 150px;
+    padding: $base-padding;
+    text-align: center;
+    @include media-over-767 {
+      min-width: 175px;
+      max-width: 175px;
+    }
+    @include media-over-979 {
+      min-width: 200px;
+      max-width: 200px;
+    }
+    @include media-over-1049 {
+      padding: ($base-padding * 2) $base-padding;
+    }
+  }
+
+  .hazard-control-panel__header__controls {
+    padding: $base-padding;
+    @include media-over-1049 {
+      padding: ($base-padding * 2) $base-padding;
+    }
+  }
+}
+
+.hazard-control-panel__row {
+  display: flex;
+  flex-direction: row;
+
+  &:not(:last-of-type) {
+    border-bottom: 1px solid $grey--pale;
+  }
+}
+
+.hazard-control-panel__hazard {
+  align-items: center;
+  border-right: 1px solid $grey--pale;
+  display: flex;
+  flex-direction: column;
+  min-width: 150px;
+  max-width: 150px;
+  padding: $base-padding;
+  @include media-over-767 {
+    min-width: 175px;
+    max-width: 175px;
+  }
+  @include media-over-979 {
+    min-width: 200px;
+    max-width: 200px;
+  }
+  @include media-over-1049 {
+    padding: ($base-padding * 2) $base-padding;
+  }
+}
+
+.hazard-control-panel__controls {
+  align-content: flex-start;
+  align-items: center;
+  display: flex;
+  flex-flow: row wrap;
+
+  .hazard-control-panel__controls__item {
+    .control__options {
+      .button:first-of-type {
+        float: none;
+        margin-right: ($base-margin / 5);
+      }
+    }
+  }
+}
+
+.hazard-control-panel__controls__item,
+.hazard-control-panel__hazard {
+  .hazard__icon {
+    height: $icon-size;
+    width: $icon-size;
+    @include media-over-767 {
+      height: ($icon-size * 1.5);
+      width: ($icon-size * 1.5);
+    }
+    @include media-over-979 {
+      height: ($icon-size * 2);
+      width: ($icon-size * 2);
+    }
+  }
+}
+
+.hazard-control-panel__controls__item {
+  align-self: flex-start;
+
+  .hazard-control-panel__controls {
+    .button:first-of-type {
+      float: none;
+      margin-right: ($base-margin / 3);
+    }
+  }
+}
+
+.hazard-control-panel__controls__add,
+.hazard-control-panel__controls__item {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  padding: $base-padding;
+  @include media-over-767 {
+    width: 33%;
+  }
+  @include media-over-979 {
+    padding: ($base-padding * 2);
+    width: 25%;
+  }
+}
+
+.hazard-control-panel__controls > .hazard-control-panel__controls__add:first-child {
+  width: initial;
+}
+
+.control__options {
+  white-space: nowrap;
+}
+
+.control-grid__item {
+  padding: 15px;
+  position: relative;
+
+  .icon-picker__checkbox {
+    right: 10px;
+    cursor: pointer;
+  }
+}
+
+selected-controls {
+  display: flex;
+  width: 100%;
+}

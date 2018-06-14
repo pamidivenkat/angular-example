@@ -1,0 +1,5 @@
+<div [id]="id" class="icon" [style.color]="color" [class.icon--medium]="isMedium()" [class.icon--small]="isSmall()" [class.icon--big]="isBig()" [class.icon--tiny]="isTiny()" [class.icon--has-notification]="hasNotification" [class.icon--alert]="isAlert" [title]="title">
+  <svg>
+    <use xmlns:xlink="http://www.w3.org/1999/xlink"  [attr.xlink:href]="getIconSvgUri()"></use>
+  </svg>
+</div>

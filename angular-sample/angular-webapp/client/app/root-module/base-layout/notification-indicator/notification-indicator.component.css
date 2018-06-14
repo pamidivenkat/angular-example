@@ -1,0 +1,11 @@
+.notification-count{position: absolute; right:0px; top:0px;}
+.header__alert .icon--has-notification::after{
+    content: attr(data-value);
+    color: #fff;
+    font-size: 11px;
+    height: 22px;
+    width: 22px;
+    top: -8px;
+    right: -6px;
+    padding-top:5px; 
+}

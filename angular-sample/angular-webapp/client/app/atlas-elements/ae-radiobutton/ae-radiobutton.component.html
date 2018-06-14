@@ -1,0 +1,2 @@
+    <input type="radio" #rb [value]="value" [id]="id" [name]="name" (change)="onSelectionChanged($event)" class="radio__input" [attr.disabled]="isDisabled()"/>
+    <label [for]="id" class="radio__copy">{{text}}</label>

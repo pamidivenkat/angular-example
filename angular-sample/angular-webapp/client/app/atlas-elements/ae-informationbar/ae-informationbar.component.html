@@ -1,0 +1,11 @@
+<section class="statistics-bar" [id]="id+'_Sec'"> 
+  <div class="statistics-bar__inner" [id]="id+'_div'">
+      <div *ngFor="let item of items;  let i = index;" class="statistics-bar__statistic" [class.noaction]="hasNoAction(item.Clickable)" [id]="id+'_div_'+i">          
+     <ae-statistic (aeClick)="onClick(item)" [id]="id+'_aestat_'+i" [name]="id+'_aestat_'+i"  [numbercolor]="numberColour" [iconColor]="color" [numberval]="item.Count" [nametext]="item.Title" 
+                    [icon]="item.IconName" [size]="iconSize" [notify]="requireNotification(item)" [tooltip]="getToolTip(item.ToolTip)" >
+                    </ae-statistic>   
+      </div>
+    </div> 
+  </section>
+
+

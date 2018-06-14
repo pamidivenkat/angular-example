@@ -1,0 +1,34 @@
+@import '../../../../assets/scss/variablesMap';
+
+.title-primary {
+  color: $teal--0;
+}
+
+.preview-grid.grid--1-1-3 > *:nth-child(3n+1) {
+  clear: none;
+}
+
+.review-scroll {
+  max-height: 520px;
+  overflow-y: auto;
+  background-color: $white;
+  padding: $base-padding;
+  border: solid 1px $grey--4;
+}
+
+.checklist__header {
+  overflow: hidden;
+
+  .button-bar__item {
+    float: right;
+  }
+}
+
+.assignments-preview {
+  .notification-bar {
+    padding: 0 0 20px;
+  }
+  @media screen and (min-width:1021px) {
+    margin-bottom: 50px;
+  }
+}

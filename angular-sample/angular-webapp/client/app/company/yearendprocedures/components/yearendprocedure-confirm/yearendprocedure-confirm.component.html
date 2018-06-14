@@ -1,0 +1,26 @@
+<div class="modal-dialog-header">
+  <h3>{{ 'YEAR_END_PROCEDURE.CONFIRM_RESULTS.YEP_TITLE' | translate:lang }}</h3>
+</div>
+<div class="modal-dialog-body bg--white">
+  <p>{{'YEAR_END_PROCEDURE.CONFIRM_RESULTS.YEP_BODY_TEXT_ONE'| translate:lang }} <strong>{{'YEAR_END_PROCEDURE.CONFIRM_RESULTS.ZERO_HOLIDAY_ENTITLEMENT'| translate:lang }}</strong>    {{'YEAR_END_PROCEDURE.CONFIRM_RESULTS.YEP_BODY_TEXT_TWO'| translate:lang }}
+  </p>
+  <div>
+    <ul>
+      <li *ngFor="let item of employeeList">{{item}}</li>
+    </ul>
+  </div>
+  <p>{{'YEAR_END_PROCEDURE.CONFIRM_RESULTS.YEP_BODY_TEXT_THREE'| translate:lang }}</p>
+</div>
+<div class="modal-dialog-footer">
+  <div class="button-bar">
+    <div class="button-bar__item">
+      <ae-button [text]="'YEAR_END_PROCEDURE.CONFIRM_RESULTS.DIALOG_NO' | translate:lang" [title]="'YEAR_END_PROCEDURE.CONFIRM_RESULTS.DIALOG_NO' | translate:lang"
+        [type]="'button'" [id]="getChildId('AeButton', 7)" [name]="getChildId('AeButton', 7)" (aeClick)="onConfirmProcess('no')"></ae-button>
+    </div>
+    <div class="button-bar__item">
+      <ae-button [text]="'YEAR_END_PROCEDURE.CONFIRM_RESULTS.DIALOG_YES' | translate:lang" [title]="'YEAR_END_PROCEDURE.CONFIRM_RESULTS.DIALOG_YES' | translate:lang"
+        [type]="'button'" [id]="getChildId('AeButton', 8)" [name]="getChildId('AeButton', 8)" (aeClick)="onConfirmProcess('yes')"
+        [customClass]="'button--cta'"></ae-button>
+    </div>
+  </div>
+</div>

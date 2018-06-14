@@ -1,0 +1,35 @@
+<div id="saftyprecautions" class="safty-precautions">
+  <ae-notification [id]="'saftyPrecautions'" [name]="'saftyprecautions'" [iconName]="'icon-info'" [textInfo]="'MANAGE_METHOD_STM.SEQUENCE_OF_EVENTS.SAFETY_PROCAUTIONS_HELPTEXT' | translate:lang">
+  </ae-notification>
+  <ae-tab [id]="getChildId('AeTab',1)" [name]="getChildName('AeTab',1)" [standard]="true" (aeTabIndexChange)="tabChanged($event)">
+    <ae-tab-item [id]="getChildId('AeTabItem',1)" [name]="getChildName('AeTabItem',1)" [title]="'MANAGE_METHOD_STM.SAFETY_PRECAUTIONS.PERSONAL_PROTECTIVE_EQUIPMENT' | translate:lang"
+      [header]="'MANAGE_METHOD_STM.SAFETY_PRECAUTIONS.PERSONAL_PROTECTIVE_EQUIPMENT' | translate:lang">
+      <ae-template [type]="'content'">
+        <ng-template let-context="item">
+          <personal-protective-equipment [methodstatement]="methodStatement" [id]="'ppeForm'" [name]="'ppeForm'" [context]="wizStepContext"
+         (onPPEChange)="onPPEChange($event)"   (onPPESubmit)="onPPESubmit($event)"></personal-protective-equipment>
+        </ng-template>
+      </ae-template>
+    </ae-tab-item>
+
+    <ae-tab-item [id]="getChildId('AeTabItem',1)" [name]="getChildName('AeTabItem',1)" [title]="'MANAGE_METHOD_STM.SAFETY_PRECAUTIONS.SAFETY_RESPONSIBILITIES' | translate:lang"
+      [header]="'MANAGE_METHOD_STM.SAFETY_PRECAUTIONS.SAFETY_RESPONSIBILITIES' | translate:lang">
+      <ae-template [type]="'content'">
+        <ng-template>
+          <safty-responsibilities [methodStatement]="methodStatement" [id]="'responsibilityForm'" [name]="'responsibilityForm'" (onMSRespGridPaging)="onMSRespGridPaging($event)"></safty-responsibilities>
+        </ng-template>
+      </ae-template>
+    </ae-tab-item>
+
+    <ae-tab-item [id]="getChildId('AeTabItem',1)" [name]="getChildName('AeTabItem',1)" [title]="'MANAGE_METHOD_STM.SAFETY_PRECAUTIONS.SAFETY_PROCEDURES' | translate:lang"
+      [header]="'MANAGE_METHOD_STM.SAFETY_PRECAUTIONS.SAFETY_PROCEDURES' | translate:lang">
+      <ae-template [type]="'content'">
+        <ng-template>
+          <safety-procedures [id]="getChildId('SafetyProcedures',11)" [name]="getChildName('SafetyProcedures',11)" [methodStatement]="methodStatement"></safety-procedures>
+        </ng-template>
+      </ae-template>
+    </ae-tab-item>
+
+  </ae-tab>
+
+</div>

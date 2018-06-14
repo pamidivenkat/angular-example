@@ -1,0 +1,80 @@
+<div id="importHistoryList">
+
+    <ae-datatable [id]="getChildId('AeDataTable')" [name]="getChildName('AeDataTable')" [dataSource]="importHistorytList$" [autoGenerateColumns]="false" [totalRecords]="recordsCount$" [loading]="loadingStatus$" [defaultOptions]="dataTableOptions$" (pageChanged)="onPageChange($event)"
+        (onSort)="onPageSort($event)">
+        <ae-column [headerText]="'File name'" [sortable]="true" [sortKey]="'FileName'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>File name</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <ae-anchor [id]="getChildId('AeAnchor',1)" [name]="getChildName('AeAnchor',1)" [class]="'button button--inline-block'" (aeClick)="downloadDocument(context.FileStorageId,context.FileName)" [text]="context.FileName"></ae-anchor>
+
+                </ng-template>
+            </ae-template>
+        </ae-column>
+        <ae-column [headerText]="'Created on'" [sortable]="true" [sortKey]="'CreatedOn'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>Created on</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                  <span>{{ context.CreatedOn | localeDate:defaultLocale:'dd/MM/yyyy h:mm a' }}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+        <ae-column [headerText]="'Created by'" [sortable]="true" [sortKey]="'LastName,FirstName'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>Created by</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <span>{{getFullName(context.FirstName,context.LastName) }}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+        <ae-column [headerText]="'Background job'" [sortable]="true" [sortKey]="'IsBackgroundJob'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>Background job</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <span>{{ getIsBackgroundJobText(context.IsBackgroundJob) }}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+        <ae-column [headerText]="'Status'" [sortable]="true" [sortKey]="'Status'">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>Status</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <span>{{ getStatusText(context.Status) }}</span>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+        <ae-column [headerText]="'Results'" [sortable]="false">
+            <ae-template [type]="'header'">
+                <ng-template>
+                    <span>Results</span>
+                </ng-template>
+            </ae-template>
+            <ae-template [type]="'cell'" [keys]="keys">
+                <ng-template let-context="item">
+                    <ae-button [class]="lightClass" [customClass]="'button--condensed'" [btnIcon]="'icon-alert-eye'" [title]="'View log details'" [type]="'button'" [id]="'buttonView'" [name]="'buttonView'" (aeClick)="onViewImportResultsClick(context)" *ngIf="showViewResults(context.Status)"></ae-button>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+
+    </ae-datatable>
+</div>

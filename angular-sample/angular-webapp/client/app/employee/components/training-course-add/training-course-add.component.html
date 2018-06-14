@@ -1,0 +1,49 @@
+<div class="so-panel__title">
+  <h3 class="grey-strip">{{'TRAINING_COURSE.add_training_course_details' | translate:lang}}</h3>
+</div>
+<div class="so-panel__content">
+  <div class="information-grid">
+    <form class="form" [formGroup]="trainingCourseAddForm">
+      <section class="information-grid__section">
+        <h3>{{'TRAINING_COURSE.training_course_details' | translate:lang}}</h3>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'TRAINING_COURSE.course_title' | translate:lang}} <span class="error-text">*</span></div>
+          <div class="information-grid__item-value column-2of3 text-muted">
+            <ae-input [id]="'Title'" [name]="'Title'" [title]="'TRAINING_COURSE.course_title_tooltip' | translate:lang" formControlName="Title"
+              [placeholder]="'TRAINING_COURSE.course_title' | translate:lang"></ae-input>
+          </div>
+          <span *ngIf="fieldHasRequiredError('Title')" class="form__input__error">{{'TRAINING_COURSE.course_title_required' | translate:lang}}.</span>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'TRAINING_COURSE.course_code' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3 text-muted">
+            <ae-input [id]="'CourseCode'" [name]="'CourseCode'" [title]="'TRAINING_COURSE.course_code_tooltip' | translate:lang" formControlName="CourseCode"
+              [placeholder]="'TRAINING_COURSE.course_code' | translate:lang"></ae-input>
+          </div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">{{'TRAINING_COURSE.description' | translate:lang}}</div>
+          <div class="information-grid__item-value column-2of3 text-muted">
+            <ae-input [id]="'Description'" [name]="'Description'" [title]="'TRAINING_COURSE.description_tooltip' | translate:lang" formControlName="Description"
+              [placeholder]="'TRAINING_COURSE.description' | translate:lang"></ae-input>
+          </div>
+        </div>
+      </section>
+      <div class="form__error">
+      </div>
+
+    </form>
+  </div>
+</div>
+<div class="so-panel__footer">
+  <nav>
+    <ul>
+      <li><label for="soPanel" class="button button--inline-block" [id]="getChildId('AeButton',1)" (click)="onAddFormClosed($event)"
+          [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label></li>
+      <li class="pull--right">
+        <ae-anchor [id]="getChildId('AeAnchor',1)" [name]="getChildName('AeAnchor',1)" [anchorType]="'button'" [class]="'button button--inline-block'"
+          [anchorClass]="lightClass" (aeClick)="onAddFormSubmit($event)" [title]="'BUTTONS.SAVE' | translate:lang" [text]="'BUTTONS.SAVE' | translate:lang"></ae-anchor>
+      </li>
+    </ul>
+  </nav>
+</div>

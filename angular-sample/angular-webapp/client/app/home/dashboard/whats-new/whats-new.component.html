@@ -1,0 +1,22 @@
+<div *ngIf="showWhatsNew()">
+    <ae-modal-dialog [visible]="showWhatsNew()" (cancel)="closeModal()" [closable]="true" [id]="getChildId('AeModel', 1)" [name]="getChildName('AeModel', 1)">
+        <div class="modal-dialog-header">
+            <h3>{{ 'WHATS_NEW.PLATFORM_MESSAGES' | translate:lang }}</h3>
+        </div>
+        <div class="modal-dialog-body">
+            <div class="aritcle-listing">
+                <ng-template ngFor let-item [ngForOf]="newItems" let-i="index">
+                    <div class="article-listing__item">
+                        <div class="date">{{item.PublishDate | date: 'd MMM y'}} @ {{item.PublishDate | date: 'jm'}}</div>
+                        <h2 class="article-listing__title">{{item.Title}}</h2>
+                        <div class="article-listing__copy" [innerHTML]="updateImageUrl(item.Body)"></div>
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+        <div class="modal-dialog-footer">
+            <ae-button [class]="lightClass" [text]="'WHATS_NEW.CLOSE' | translate:lang" [type]="'button'" [id]="'deleteConfirmYes'" [name]="'deleteConfirmYes'"
+                (aeClick)="markAsRead()"></ae-button>
+        </div>
+    </ae-modal-dialog>
+</div>

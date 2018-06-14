@@ -1,0 +1,124 @@
+<div>
+    <ae-notification [id]="'todays'" [name]="'todays'" [iconName]="'icon-info'" [textInfo]="'CHECKLIST_HELP_TEXT.SCHEDULED_INCOMPLETE' | translate:lang">
+    </ae-notification>
+</div>
+<div class="table spacer" [id]="'schedule-checklist'">
+  <form [formGroup]="filterForm" [id]="getChildId('filterForm', 1)" [name]="getChildName('filterForm', 1)">
+    <div class="table__filter-bar">
+      <div class="filter-bar__label label">{{'Filter_by'| translate:lang}}</div>
+      <div class="filter-bar">
+        <div class="filter-bar__filters">
+          <div class="filter-bar__filter">
+            <ae-select [id]="getChildId('AeSelect', 2)" [name]="getChildName('AeSelect', 2)" [options]="siteOptionList" formControlName="filterBySiteId"></ae-select>
+          </div>
+          <div class="filter-bar__filter">
+            <ae-select [id]="getChildId('AeSelect', 3)" [name]="getChildName('AeSelect', 3)" [options]="checklistFilterOptions" formControlName="statusType"></ae-select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <ae-datatable [id]="getChildId('DataTable', 1)" [name]="getChildName('DataTable', 1)" [dataSource]="list$" [autoGenerateColumns]="false"
+    [totalRecords]="totalCount$" [actions]="actions" [defaultOptions]="dataTableOptions$ | async" [loading]="loading$ | async"
+    (pageChanged)="onPageChange($event)" (onSort)="onSort($event)">
+    <ae-column [headerText]="'Name'| translate:lang" [sortable]="true" [sortKey]="'Name'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'NAME'| translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <div>
+            <span>{{context.Name}}</span>
+          </div>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'SCHEDULE_START'| translate:lang" [sortable]="true" [sortKey]="'ScheduledDate'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'SCHEDULE_START'| translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <div>
+            <span>{{ context.ScheduledDate | localeDate:defaultLocale:'shortDate'}}</span>
+          </div>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'NEXT_DUE_DATE'| translate:lang" [sortable]="true" [sortKey]="'NextDueDate'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'NEXT_DUE_DATE'| translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <div>
+            <span>{{context.NextDueDate | localeDate:defaultLocale:'shortDate'}}</span>
+          </div>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'ASSIGN_TO'| translate:lang" [sortable]="true" [sortKey]="'firstname'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'ASSIGN_TO'| translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <div>
+            <span>{{ getAssignedFullname(context.firstname,context.lastname)}}</span>
+          </div>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'SITE'| translate:lang" [sortable]="true" [sortKey]="'SiteId'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'SITE'| translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <div>
+             <span>{{getSiteName(context.SiteName,context.SiteLocation)}}</span>
+          </div>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'WORKSPACE'| translate:lang" [sortable]="false">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'WORKSPACE'| translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <div *ngIf="context.Workspaces" class="max-width-container">
+            <ae-stamp *ngFor="let item of context.Workspaces" [text]="item.Name" [class]="'stamp--grey'" ></ae-stamp>
+          </div>            
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'FREQUENCY'| translate:lang" [sortable]="true" [sortKey]="'Periodicity'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>{{'FREQUENCY'| translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <div>
+            <span> {{ getFrequency(context.Periodicity)}}</span>
+          </div>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+  </ae-datatable>
+</div>
+

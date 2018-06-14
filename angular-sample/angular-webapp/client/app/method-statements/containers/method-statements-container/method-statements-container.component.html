@@ -1,0 +1,62 @@
+<div>
+  <ae-banner [id]="getChildId('AeBanner',1)" [name]="getChildName('AeBanner',1)" [titleText]="'METHOD_STATEMENTS_MANAGE.MANAGE' |  translate:lang"
+    [backgroundImage]="'/assets/images/lp-method-statements.jpg'">
+    <div class="image-text banner-image-text">
+      <ae2-breadcrumb [id]="getChildId('Ae2Breadcrub',1)" [name]="getChildName('Ae2Breadcrub',1)" [group]="bcGroup"></ae2-breadcrumb>
+    </div>
+    <span *ngIf="navigateMenuUrl()"> </span>
+    <div class="icon-list banner-icon-list buttons-list">
+      <ae-anchor *ngIf="canCreateMethodStatements()" [id]="getChildId('addNewMs', 1)" [name]="getChildName('addNewMs', 1)" [anchorType]="'button'"
+        [class]="'button'" (aeClick)="navigateToAdd($event)" [anchorClass]="" [text]="'METHOD_STATEMENTS_MANAGE.ADD_METHODSTATEMENT' | translate:lang"></ae-anchor>
+      <ae-anchor *ngIf="canCreateExampleMethodStatements()" [id]="getChildId('addNewExampleMs', 2)" [name]="getChildName('addNewExampleMs', 2)"
+        [anchorType]="'button'" [class]="'button'" [routerLink]="'add/example'" [anchorClass]="" [text]="'METHOD_STATEMENTS_MANAGE.ADD_EXAMPLES' | translate:lang"></ae-anchor>
+    </div>
+  </ae-banner>
+  <ae-notification [id]="getChildId('AeNotification',1)" [name]="getChildName('AeNotification',1)" [iconName]="'icon-info'"
+    [textInfo]="'METHOD_STATEMENTS_MANAGE.METHODSTATEMENT_LANDING_PAGE_MSG' | translate:lang"></ae-notification>
+
+  <div class="spacer">
+    <form [formGroup]="methodStatementsFilterForm" [id]="getChildId('form', 1)" [name]="getChildName('form', 1)">
+      <div class="filter-bar__label label">{{'METHOD_STATEMENTS_MANAGE.FILTER_BY'| translate:lang}}</div>
+      <div class="filter-bar__filters">
+        <div class="filter-bar__filter">
+          <div class="search-block">
+            <ae-input [id]="getChildId('AeInput',1)" [name]="getChildName('AeInput',1)" [title]="'METHOD_STATEMENTS_MANAGE.TITLE_KEYWORD' | translate:lang"
+              [placeholder]="'METHOD_STATEMENTS_MANAGE.TITLE_KEYWORD' | translate:lang" [delay]="500" [value]="''" (aeChange)="onNameFilterChange($event)"
+              formControlName="search"></ae-input>
+          </div>
+        </div>
+
+        <div class="filter-bar__filter">
+          <ae-select [id]="getChildId('AeSelect',1)" [name]="getChildName('AeSelect',1)" [placeholder]="'METHOD_STATEMENTS_MANAGE.ALL_SITES' | translate:lang"
+            [options]="sites$ | async" [value]="''" (aeSelectChange)="onSiteFilterChange($event)" formControlName="sites"></ae-select>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div>
+    <ae-tabstrip [id]="getChildId('AeTabStrip',1)" [name]="getChildName('AeTabStrip',1)" [standardWithIcon]="true">
+      <ae-tabstrip-item [id]="getChildId('AeTabStripItem',1)" [name]="getChildName('AeTabItem',1)" [navigateUrl]="getLiveUrl()"
+        [header]="'METHOD_STATEMENTS_MANAGE.LIVE' | translate:lang" [hasCount]="true" [count]="liveStatsCount" *ngIf="canCreateMethodStatements()">
+      </ae-tabstrip-item>
+      <ae-tabstrip-item [id]="getChildId('AeTabStripItem',2)" [name]="getChildName('AeTabItem',2)" [navigateUrl]="getPendingUrl()"
+        [header]="'METHOD_STATEMENTS_MANAGE.PENDING' | translate:lang" [hasCount]="true" [count]="pendingStatsCount" *ngIf="canCreateMethodStatements()">
+      </ae-tabstrip-item>
+      <ae-tabstrip-item [id]="getChildId('AeTabStripItem',3)" [name]="getChildName('AeTabItem',3)" [navigateUrl]="getCompleteUrl()"
+        [header]="'METHOD_STATEMENTS_MANAGE.COMPLETED' | translate:lang" [hasCount]="true" [count]="completedStatsCount" *ngIf="canCreateMethodStatements()">
+      </ae-tabstrip-item>
+      <ae-tabstrip-item [id]="getChildId('AeTabStripItem',4)" [name]="getChildName('AeTabItem',4)" [navigateUrl]="getExamplesUrl()"
+        [header]="'METHOD_STATEMENTS_MANAGE.EXAMPLES' | translate:lang" [hasCount]="true" [count]="exampleStatsCount">
+      </ae-tabstrip-item>
+      <ae-tabstrip-item [id]="getChildId('AeTabStripItem',5)" [name]="getChildName('AeTabItem',5)" [navigateUrl]="getArchivedUrl()"
+        [header]="'METHOD_STATEMENTS_MANAGE.ARCHIVED' | translate:lang" [hasCount]="true" [count]="archivedStatsCount" *ngIf="canCreateMethodStatements()">
+      </ae-tabstrip-item>
+    </ae-tabstrip>
+  </div>
+  <div class="spacer">
+    <router-outlet>
+
+    </router-outlet>
+  </div>
+
+</div>

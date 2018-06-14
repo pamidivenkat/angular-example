@@ -1,0 +1,33 @@
+@import '../../../assets/scss/variablesMap';
+.message {
+  align-items: center;
+  background: $red--4;
+  border: 1px solid $red--0;
+  border-radius: $base-border-radius;
+  display: flex;
+  padding: 15px;
+  position: relative;
+  .message__icon {
+    color: $red--0;
+    display: block;
+  }
+  .icon-with-text__icon {
+    width: 100%;
+  }
+  .icon-with-text__copy {
+    display: inline-block;
+    margin-left: 5px;
+    max-width: calc(100% - 60px);
+    vertical-align: middle;
+  }
+  .icon--has-notification::after{opacity: 0;}
+  .close-icon{position: absolute; top:3px; right: 3px;}
+}
+
+.message--okay {
+  background: $teal--4;
+  border: 1px solid $teal--0;
+}
+.close-icon{
+  cursor:pointer;
+}

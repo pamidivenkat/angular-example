@@ -1,0 +1,8 @@
+<button [id]="getChildId('aeButton', 1)" [name]="getChildName('aeButton', 1)" class="button" [class.button--light]="isLight()"
+  [class.button--dark]="isDark()" [ngClass]="class" (click)="onClick($event)" (mousedown) = "onMouseDownEvent($event)" [type]="buttonType" [disabled]="disabled" [title]="buttonTitle">
+  <span class="btn-text" *ngIf="isIconRight()">{{buttonText}}</span>
+  <span *ngIf="viewIcon()" class="button__icon">
+    <ae-icon [id]="getChildId('aeIcon', 1)" [name]="getChildName('aeIcon', 1)" [color]="btnIconColor" [icon]="iconType" [title]="buttonTitle"></ae-icon>
+  </span>
+  <span *ngIf="isIconLeft()" class="btn-text">{{buttonText}}</span>
+  </button>

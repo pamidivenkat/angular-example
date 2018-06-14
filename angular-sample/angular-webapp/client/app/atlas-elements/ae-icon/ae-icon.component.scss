@@ -1,0 +1,66 @@
+@import '../../../assets/scss/variablesMap';
+.icon {
+  display: inline-block;
+  font-size: 0;
+  position: relative;
+  vertical-align: middle;
+  svg {
+    @include dimensions(20px);
+    fill: currentColor;
+  }
+  &::after {
+    @include dimensions(14px);
+    background: $red--0;
+    border-radius: 50%;
+    content: '';
+    display: block;
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: opacity $base-transition;
+  }
+}
+
+.icon--tiny {
+  svg {
+    @include dimensions(15px);
+  }
+}
+
+.icon--small {
+  svg {
+    @include dimensions(30px);
+  }
+}
+
+.icon--medium {
+  svg {
+    @include dimensions(40px);
+  }
+}
+
+.icon--big {
+  svg {
+    @include dimensions(60px);
+  }
+}
+
+.icon--has-notification {
+  &::after {
+    opacity: 1;
+  }
+}
+
+.icon--alert {
+  color: $alert-color;
+}
+
+.table__item-inner {
+  .icon--tiny {
+    svg {
+      @include dimensions(20px);
+    }
+  }
+}

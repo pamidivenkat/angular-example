@@ -1,0 +1,35 @@
+<label class="ui-autocomplete ui-widget" [class.ui-autocomplete-multiple]="multiselect" [class.focus]="focus">
+  <ae-input *ngIf="!multiselect" [id]="id" [name]="name" [type]="controlType" [value]="inputValue" [title]="title"
+      (aeFocus)="onFocus($event)" (aeBlur)="onBlur($event)" (aeChange)="onInput($event)" [disabled]="disabled" [cssClass]="'ui-autocomplete-input'"
+      [tabindex]="tabindex" [placeholder]="placeholder" [autocomplete]="'off'" (aeKeydown)="onKeydown($event)">
+  </ae-input>
+   <!-- Multiselect tokens container -->
+  <ul *ngIf="multiselect" class="ui-autocomplete-multiple-container ui-widget ui-inputtext ui-state-default ui-corner-all" [ngClass]="{'ui-state-disabled':disabled,'ui-state-focus':focus}">
+        <li *ngFor="let token of selectedItems" class="ui-autocomplete-token ui-state-highlight ui-corner-all" (click)="tokenClick($event)" title="{{token.Text}}">
+            <span class="ui-autocomplete-token-label">{{token.Text}}</span>
+            <ae-icon [id]="'iconweone'" [name]="'iconweone'" [icon]="'icon-alert-cancel'" (click)="removeItem(token)" title="Remove '{{token.Text}}'"></ae-icon>
+        </li>
+        <li class="ui-autocomplete-input-token">
+            <ae-input [id]="id" [name]="name" [title]="title" [(ngModel)]="inputValue" [type]="controlType" [cssClass]="'ae-autocomplete-input'"
+              (aeFocus)="onFocus($event)" *ngIf="multiselect" (aeBlur)="onBlur($event)" (aeChange)="onInput($event)" (aeKeydown)="onKeydown($event)" [disabled]="disabled"
+              [tabindex]="tabindex" [placeholder]="placeholder" [autocomplete]="'off'" [readonly]="readonly" [value]="inputValue">
+            </ae-input>
+        </li>
+  </ul>
+
+   
+  <!-- Overlay Panel-->
+  <div class="ui-autocomplete-panel ui-widget-content ui-corner-all ui-shadow" [style.max-height]="scrollHeight" *ngIf="isLoading||panelVisible" [class.empty]="emptyList()" (mouseleave)="onMouseLeaveForAutoCompleteDiv($event)" (mouseenter)="onMouseEnterForAutoCompleteDiv($event)" (touchend)="onTouchEndForAutoCompleteDiv($event)" (touchstart)="onTouchStartForAutoCompleteDiv($event)"  (blur)="onBlur($event)" >
+        <ul class="ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-corner-all ui-helper-reset">
+            <li *ngIf="isLoading" class="loading">{{loadingText}}</li>
+            <li *ngIf="canShowNoResults()">{{noMatchFoundText || 'No Result Found'}}</li>
+            <li *ngFor="let option of filteredList" class="ui-autocomplete-list-item ui-corner-all" [ngClass]="{'ui-state-highlight':isOptionHighlighted(option)}"
+               (mousedown)="selectItem(option,$event);">
+              <span [innerHTML]="getDisplayText(option)"></span>
+            </li>
+        </ul>
+  </div>
+</label>
+<div *ngIf="selectedItems.length>1" title="Clear Selected" title="Clear Selected" class="ui-autocomplete-token-clear" (click)="clearselected($event)">
+    <ae-icon [id]="'iconweone'" [name]="'iconweone'" [icon]="'icon-alert-cancel'"></ae-icon>
+</div>

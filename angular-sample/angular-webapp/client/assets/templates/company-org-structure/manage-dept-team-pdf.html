@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Atlas - Manage departments and teams</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            font-weight: normal;
+        }
+
+        ae-org-chart {
+            display: inline-flex;
+        }
+
+        .org-chart-top-conatiner {
+            overflow: hidden;
+        }
+
+        .org-chart-nav {
+            position: absolute;
+            right: 10px;
+            background-color: #fec352;
+            color: #000;
+            width: 32px;
+            text-align: center;
+            z-index: 3;
+            margin-top: 10px;
+        }
+
+        .org-chart-nav ae-icon {
+            padding: 5px;
+            border-bottom: solid 1px #fff;
+            display: block;
+            cursor: pointer;
+        }
+
+        .org-node {
+            position: relative;
+            display: inline-block;
+            width: 185px;
+            min-height: 105px;
+            vertical-align: middle;
+            border: 2px solid #fff;
+            border-radius: 0;
+            background: rgba(74, 128, 169, 0.15);
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        .org-node .node-head {
+            padding: 5px 20px 5px 5px;
+            color: #fff;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            background-color: #4a80a9;
+        }
+
+        .org-node .node-head .node-toggle {
+            position: absolute;
+            right: 3px;
+            top: 5px;
+            height: 16px;
+            width: 16px;
+            line-height: 16px;
+            text-align: center;
+            font-size: 16px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .org-node .node-head .node-toggle:before {
+            content: "";
+            border-top: solid 2px #fff;
+            position: absolute;
+            width: 94%;
+            left: 3%;
+            top: 50%;
+            margin-top: -1px;
+        }
+
+        .org-node .node-head .node-toggle:after {
+            content: "";
+            border-left: solid 2px #fff;
+            position: absolute;
+            height: 94%;
+            top: 3%;
+            left: 50%;
+            margin-left: -1px;
+        }
+
+        .org-node .node-head .node-toggle.expanded-view:after {
+            display: none;
+        }
+
+        .org-node .emp-count {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            font-size: 14px;
+            background-color: #d8d8d8;
+            width: 100%;
+        }
+
+        .org-node .emp-count>span {
+            display: block;
+            background-color: #fff;
+            padding: 2px 3px;
+            float: right;
+        }
+
+        .org-node .node-button-group {
+            position: absolute;
+            display: none;
+            width: 100%;
+            left: 0;
+            text-align: center;
+            right: 0;
+            bottom: 0;
+        }
+
+        .org-node .node-button-group>span {
+            display: inline-block;
+            padding: 2px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .org-node .node-button-group ae-icon {
+            line-height: 0;
+            height: 15px;
+            width: 15px;
+            /* vertical-align: middle; */
+            font-size: 0;
+            display: block;
+            margin: auto;
+        }
+
+        .org-node .node-button-group ae-icon icon {
+            line-height: 0;
+        }
+
+        .org-node .node-button-group .add {
+            background-color: #009494;
+        }
+
+        .org-node .node-button-group .update {
+            background-color: #fec352;
+        }
+
+        .org-node .node-button-group .remove {
+            background-color: #df0000;
+        }
+
+        .org-node .node-button-group .expand {
+            background-color: #56b7e8;
+        }
+
+        .org-node:hover .node-button-group {
+            display: block;
+        }
+
+        .org-node .node-info {
+            padding: 5px 5px 5px 55px;
+            white-space: normal;
+            height: 55px;
+            overflow: hidden;
+            text-align: left;
+            display: table-cell;
+            vertical-align: middle;
+            position: relative;
+            font-weight: normal;
+        }
+
+        .org-node .node-info .icon-sec {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            box-shadow: inset 0 3px 5px 0 rgba(0, 0, 0, 0.25);
+            background-color: #fff;
+            margin: 5px 4px;
+            position: absolute;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            text-align: center;
+        }
+
+        .org-node .node-info .icon-sec ae-icon {
+            display: inline-block;
+            margin-top: 5px;
+        }
+
+        .org-node .node-info .icon-sec .icon {
+            color: #4a80a9;
+        }
+
+        .org-node.teal {
+            background-color: #cceaea;
+        }
+
+        .org-node.teal .node-head {
+            background-color: #009494;
+        }
+
+        .org-node.teal .node-info .icon-sec .icon svg {
+            color: #009494 !important;
+        }
+
+        .org-node.yellow {
+            background-color: #fff3dc;
+        }
+
+        .org-node.yellow .node-head {
+            background-color: #fec352;
+        }
+
+        .org-node.yellow .node-info .icon-sec .icon {
+            color: #fec352 !important;
+        }
+
+        .org-node.node-drag {
+            box-shadow: 1px 1px 1px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .org-node.node-drag:after {
+            content: "";
+            background-color: rgba(0, 0, 0, 0.5);
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+            z-index: 2;
+            position: absolute;
+        }
+
+        ae-org-chart-node {
+            text-align: center;
+        }
+
+        .node-employeelist {
+            height: auto;
+            padding-bottom: 0px;
+            text-align: left;
+            border: 2px solid #fff;
+            border-radius: 0;
+            background-color: #fff;
+        }
+
+        .node-employeelist:before {
+            top: -17px;
+            position: absolute;
+            left: 50%;
+            content: "";
+            border-left: 1px solid #4a80a9;
+            height: 15px;
+        }
+
+        .node-employeelist .node-head {
+            background-color: #56b7e8;
+        }
+
+        .node-employeelist .node-list {
+            height: auto;
+            color: #009494;
+            min-height: 65px;
+        }
+
+        .node-employeelist .node-list a {
+            color: #009494;
+            text-decoration: none;
+        }
+
+        .node-employeelist .node-list ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .node-employeelist .node-list ul li {
+            padding: 5px;
+            font-size: 14px;
+        }
+
+        .node-employeelist .node-list input[type="text"] {
+            display: none;
+        }
+
+        .parent-container {
+            display: inline-block;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .parent-container .org-node:before {
+            top: -17px;
+            position: absolute;
+            left: 50%;
+            content: "";
+            border-left: 1px solid #4a80a9;
+            height: 15px;
+        }
+
+        .parent-container.has-childrens:before {
+            top: -15px;
+            position: absolute;
+            left: 50%;
+            content: "";
+            border-left: 1px solid #4a80a9;
+            height: 15px;
+        }
+
+        .parent-container ae-org-chart-node {
+            z-index: 1;
+            position: relative;
+            display: inline-block;
+            padding: 15px;
+            vertical-align: top;
+        }
+
+        .parent-container ae-org-chart-node:before {
+            /*width: calc(100% + 30px);*/
+            width: 100%;
+            top: 0px;
+            position: absolute;
+            left: 0px;
+            content: "";
+            border-top: 1px solid #4a80a9;
+        }
+
+        .parent-container ae-org-chart-node:first-of-type:before {
+            /*width: calc(50% + 15px);*/
+            width: 50%;
+            left: 50%;
+        }
+
+        .parent-container ae-org-chart-node:last-of-type:before {
+            /*width: calc(50% + 15px);*/
+            width: 50%;
+            right: 50%;
+            left: auto;
+        }
+
+        .parent-container ae-org-chart-node:first-of-type:last-of-type:before {
+            border-top: none;
+        }
+
+        .no-print,
+        .node-toggle {
+            display: none;
+        }
+
+        .icon {
+            display: inline-block;
+            font-size: 0;
+            position: relative;
+            vertical-align: middle;
+        }
+
+        .icon--small svg {
+            height: 30px;
+            width: 30px;
+        }
+
+        .icon svg {
+            fill: currentColor;
+        }
+
+
+        .tree-roots-elements {
+            transform: translate3d(0px, 0px, 0px) !important;
+        }
+
+        .tree-expand-all.tree-roots-elements .line-to {
+            top: -28px;
+        }
+
+        .tree-expand-all.tree-roots-elements .tree-parent:not(.tree-root):before {
+            top: -28px;
+        }
+
+        .tree-expand-all.tree-roots-elements .tree-elements-group-nochildren:before {
+            right: -1px;
+        }
+
+        .tree-buttons {
+            display: none;
+        }
+        /* Tree end */
+    </style>
+</head>
+
+<body>
+    <div style="display:none">
+        <svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg" class="icons-svg">
+            <symbol viewBox="0 0 48 48" id="icon-people">
+                <title>people</title>
+                <path d="M22,26.78V23.07a9.41,9.41,0,0,0-6.26-8.85,5.69,5.69,0,1,0-6.28,0,9.41,9.41,0,0,0-6.26,8.85v3.71a.75.75,0,0,0,.75.75H21.3A.75.75,0,0,0,22,26.78ZM8.46,9.48a4.19,4.19,0,1,1,4.19,4.19A4.2,4.2,0,0,1,8.46,9.48ZM20.55,26H4.75v-3a7.9,7.9,0,0,1,15.8,0Z"
+                />
+                <path d="M35.77,26.27a7.55,7.55,0,1,0-7.33,0,12.66,12.66,0,0,0-9,12.1v5.1a.75.75,0,0,0,.75.75H44a.75.75,0,0,0,.75-.75v-5.1A12.66,12.66,0,0,0,35.77,26.27Zm-9.71-6.59a6,6,0,1,1,6,6A6.05,6.05,0,0,1,26.06,19.68Zm17.19,23H21V38.36a11.14,11.14,0,0,1,22.28,0Z"
+                />
+            </symbol>
+            <symbol viewBox="0 0 48 48" id="icon-org-chart">
+                <title>org-chart</title>
+                <path d="M44,31.53H39.92V24a.75.75,0,0,0-.75-.75H24.75V16.42a5.58,5.58,0,1,0-1.5,0v6.83H8.83a.75.75,0,0,0-.75.75v7.53H4a.75.75,0,0,0-.75.75v9.66a.75.75,0,0,0,.75.75h9.66a.75.75,0,0,0,.75-.75V32.28a.75.75,0,0,0-.75-.75H9.58V24.75H23.25v6.78H19.17a.75.75,0,0,0-.75.75v9.66a.75.75,0,0,0,.75.75h9.66a.75.75,0,0,0,.75-.75V32.28a.75.75,0,0,0-.75-.75H24.75V24.75H38.42v6.78H34.34a.75.75,0,0,0-.75.75v9.66a.75.75,0,0,0,.75.75H44a.75.75,0,0,0,.75-.75V32.28A.75.75,0,0,0,44,31.53ZM19.92,10.9A4.08,4.08,0,1,1,24,15,4.08,4.08,0,0,1,19.92,10.9Zm-7,30.28H4.75V33h8.16Zm15.17,0H19.92V33h8.16Zm15.17,0H35.09V33h8.16Z"
+                />
+            </symbol>
+            <symbol viewBox="0 0 48 48" id="icon-building">
+                <title>building</title>
+                <path d="M44,43.25H41.25a4.78,4.78,0,0,0,.05-.63,4.88,4.88,0,0,0-2.76-4.38V15a.75.75,0,0,0-.75-.75H27.51V4a.75.75,0,0,0-.75-.75H8.14A.75.75,0,0,0,7.39,4V43.25H4a.75.75,0,0,0,0,1.5H44a.75.75,0,0,0,0-1.5Zm-7-5.48a4.78,4.78,0,0,0-.62,0h0a4.81,4.81,0,0,0-.93.1l-.12,0-.28.08a.71.71,0,0,0,0-.14v-2a.75.75,0,0,0-1.5,0v2a.74.74,0,0,0,.35.62l-.34.21-.13.1a4.82,4.82,0,0,0-.68.61A4.24,4.24,0,0,0,30.92,38a.72.72,0,0,0,0-.19v-2a.75.75,0,0,0-1.5,0v1.95a4,4,0,0,0-.71.07,4.12,4.12,0,0,0-.63.18L28,38l-.15-.11-.23-.16-.37-.21a4.1,4.1,0,0,0-.48-.21V35.79a.75.75,0,0,0-1.5,0V37a4.13,4.13,0,0,0-.77.09l-.09,0a4.16,4.16,0,0,0-.46.13l-.35.14-.21.09-.08,0V15.78H37ZM26.1,39.52a4.17,4.17,0,0,0-.68,1.54v0a4.19,4.19,0,0,0-.09.86,4.11,4.11,0,0,0,.22,1.32H11a3.36,3.36,0,0,1,.17-.56l.05-.1a3.38,3.38,0,0,1,.24-.44l.13-.18a3.41,3.41,0,0,1,.25-.3l.17-.17.29-.24.2-.14.33-.18.22-.1a3.37,3.37,0,0,1,.4-.12l.2-.05a3.38,3.38,0,0,1,.64-.06.75.75,0,0,0,.75-.75,3.39,3.39,0,0,1,6.73-.5.75.75,0,0,0,1.35.32l0,0h0l0,0a2.78,2.78,0,0,1,.34-.36l.26-.21.09-.06a2.81,2.81,0,0,1,2.2-.33l.18.06.24.1.1.06a4.22,4.22,0,0,0-.55.63ZM8.89,4.75H26v9.53H22.62a.75.75,0,0,0-.75.75V36.35l-.08-.06a5,5,0,0,0-.62-.5l0,0a4.92,4.92,0,0,0-.74-.39l-.22-.09a4.82,4.82,0,0,0-.6-.18l-.24-.06a4.78,4.78,0,0,0-.86-.09,4.86,4.86,0,0,0-3.1,1.13A.73.73,0,0,0,15,36a.75.75,0,0,0-.75.75v.34a.73.73,0,0,0,0,.22,4.83,4.83,0,0,0-.68,1.84,4.84,4.84,0,0,0-.82.2l-.25.1a4.87,4.87,0,0,0-.51.22l-.27.17a4.89,4.89,0,0,0-.41.28l-.25.22c-.12.11-.24.22-.35.33l-.22.26c-.1.12-.2.25-.28.39l-.18.29a4.85,4.85,0,0,0-.22.44c0,.1-.09.2-.13.31a4.86,4.86,0,0,0-.14.5c0,.1-.06.21-.07.31l0,.08H8.89Zm18.3,38.5,0-.07a2.68,2.68,0,0,1-.2-.49c0-.06,0-.12,0-.17a2.34,2.34,0,0,1,0-1.25l0-.13a2.67,2.67,0,0,1,.24-.54l0,0a2.73,2.73,0,0,1,1-1h0a2.69,2.69,0,0,1,3.48.87l.06.09A2.62,2.62,0,0,1,32,41a.75.75,0,0,0,.66.49h.11a.71.71,0,0,0,.6-.4,3.33,3.33,0,0,1,.31-.48l.07-.09a3.39,3.39,0,0,1,.34-.37l0,0a3.43,3.43,0,0,1,1.55-.79h0a3.37,3.37,0,0,1,.57-.07h0a3.36,3.36,0,0,1,.38,0l.28,0a3.47,3.47,0,0,1,2.81,3.33,3.26,3.26,0,0,1-.06.63Z"
+                />
+                <path d="M26.07,29a.75.75,0,0,0-.75.75v2a.75.75,0,0,0,1.5,0v-2A.75.75,0,0,0,26.07,29Z" />
+                <path d="M26.07,17a.75.75,0,0,0-.75.75v2a.75.75,0,0,0,1.5,0v-2A.75.75,0,0,0,26.07,17Z" />
+                <path d="M26.07,23a.75.75,0,0,0-.75.75v2a.75.75,0,0,0,1.5,0v-2A.75.75,0,0,0,26.07,23Z" />
+                <path d="M30.21,20.54a.75.75,0,0,0,.75-.75v-2a.75.75,0,0,0-1.5,0v2A.75.75,0,0,0,30.21,20.54Z" />
+                <path d="M30.21,26.54a.75.75,0,0,0,.75-.75v-2a.75.75,0,0,0-1.5,0v2A.75.75,0,0,0,30.21,26.54Z" />
+                <path d="M30.21,32.54a.75.75,0,0,0,.75-.75v-2a.75.75,0,0,0-1.5,0v2A.75.75,0,0,0,30.21,32.54Z" />
+                <path d="M34.34,32.54a.75.75,0,0,0,.75-.75v-2a.75.75,0,0,0-1.5,0v2A.75.75,0,0,0,34.34,32.54Z" />
+                <path d="M34.34,26.54a.75.75,0,0,0,.75-.75v-2a.75.75,0,0,0-1.5,0v2A.75.75,0,0,0,34.34,26.54Z" />
+                <path d="M34.34,20.54a.75.75,0,0,0,.75-.75v-2a.75.75,0,0,0-1.5,0v2A.75.75,0,0,0,34.34,20.54Z" />
+                <path d="M10.9,9.51a.75.75,0,0,0,.75-.75v-2a.75.75,0,0,0-1.5,0v2A.75.75,0,0,0,10.9,9.51Z" />
+                <path d="M10.9,33.51a.75.75,0,0,0,.75-.75v-2a.75.75,0,0,0-1.5,0v2A.75.75,0,0,0,10.9,33.51Z" />
+                <path d="M10.9,39.51a.75.75,0,0,0,.75-.75v-2a.75.75,0,0,0-1.5,0v2A.75.75,0,0,0,10.9,39.51Z" />
+                <path d="M10.9,27.51a.75.75,0,0,0,.75-.75v-2a.75.75,0,0,0-1.5,0v2A.75.75,0,0,0,10.9,27.51Z" />
+                <path d="M10.9,15.51a.75.75,0,0,0,.75-.75v-2a.75.75,0,0,0-1.5,0v2A.75.75,0,0,0,10.9,15.51Z" />
+                <path d="M10.9,21.51a.75.75,0,0,0,.75-.75v-2a.75.75,0,0,0-1.5,0v2A.75.75,0,0,0,10.9,21.51Z" />
+                <path d="M15,33.51a.75.75,0,0,0,.75-.75v-2a.75.75,0,0,0-1.5,0v2A.75.75,0,0,0,15,33.51Z" />
+                <path d="M15,21.51a.75.75,0,0,0,.75-.75v-2a.75.75,0,0,0-1.5,0v2A.75.75,0,0,0,15,21.51Z" />
+                <path d="M15,15.51a.75.75,0,0,0,.75-.75v-2a.75.75,0,0,0-1.5,0v2A.75.75,0,0,0,15,15.51Z" />
+                <path d="M15,9.51a.75.75,0,0,0,.75-.75v-2a.75.75,0,0,0-1.5,0v2A.75.75,0,0,0,15,9.51Z" />
+                <path d="M15,27.51a.75.75,0,0,0,.75-.75v-2a.75.75,0,0,0-1.5,0v2A.75.75,0,0,0,15,27.51Z" />
+                <path d="M19.17,15.51a.75.75,0,0,0,.75-.75v-2a.75.75,0,0,0-1.5,0v2A.75.75,0,0,0,19.17,15.51Z" />
+                <path d="M19.17,21.51a.75.75,0,0,0,.75-.75v-2a.75.75,0,0,0-1.5,0v2A.75.75,0,0,0,19.17,21.51Z" />
+                <path d="M19.17,9.51a.75.75,0,0,0,.75-.75v-2a.75.75,0,0,0-1.5,0v2A.75.75,0,0,0,19.17,9.51Z" />
+                <path d="M19.17,33.51a.75.75,0,0,0,.75-.75v-2a.75.75,0,0,0-1.5,0v2A.75.75,0,0,0,19.17,33.51Z" />
+                <path d="M19.17,27.51a.75.75,0,0,0,.75-.75v-2a.75.75,0,0,0-1.5,0v2A.75.75,0,0,0,19.17,27.51Z" />
+                <path d="M23.31,9.51a.75.75,0,0,0,.75-.75v-2a.75.75,0,0,0-1.5,0v2A.75.75,0,0,0,23.31,9.51Z" />
+            </symbol>
+        </svg>
+    </div>
+    <div id="orgChart" style="position:absolute">
+        {{bodyContent}}
+    </div>
+</body>
+
+</html>

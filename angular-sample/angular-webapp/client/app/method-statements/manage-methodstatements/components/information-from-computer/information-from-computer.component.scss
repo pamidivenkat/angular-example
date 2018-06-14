@@ -1,0 +1,12 @@
+@import '../../../../../assets/scss/variablesMap';
+.information-from-computer{
+    div:nth-child(2n+2){
+        border-bottom: 1px solid $grey--3;
+        padding: 5px 0px 15px 0px;
+        
+    }
+    .information-grid__item--input { border-bottom: none !important; padding-bottom: 0px !important;}
+    .information-grid__item-value {border-bottom: none !important; padding-bottom: 0px !important;}
+    .information-grid__item-label {padding-left:0px; padding-right: 0px;}
+    .so-panel__content {padding:20px 25px !important;}
+}

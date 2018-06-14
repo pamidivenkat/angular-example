@@ -1,0 +1,12 @@
+@import '../../../assets/scss/variablesMap';
+.video__thumbnail {
+  color: $black;
+}
+
+a.video {
+  span {
+    color: $grey--0;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}

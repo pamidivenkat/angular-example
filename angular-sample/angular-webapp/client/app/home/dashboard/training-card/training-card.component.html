@@ -1,0 +1,9 @@
+<div [id]="id">
+    <app-mytrainings [id]="id" [name]="name" [trainings]="(myTrainings$ | async).Entities" [isLoading]="_isMyTrainingsLoading$ | async"
+        [myTeamTasksExists]="myTeamTraingTasksExists$ | async">
+    </app-mytrainings>
+    <div *ngIf="hasEmployeeRecord()">
+        <app-keydocuments [id]="id" [name]="name" [keyDocuments]="(keyDocuments$ | async).Entities" [isLoading]="iskeyDocumentsLoading$ | async">
+        </app-keydocuments>
+    </div>
+</div>

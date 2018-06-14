@@ -1,0 +1,13 @@
+<select [id]="id" [name]="name" class="select" [class.ng-invalid]="hasFormError()" [disabled]="disabled" [(ngModel)]="inputValue" (change)="onChange($event)">  
+  <option [ngValue]="defaultItem" *ngIf="hasPlaceholderText()">{{placeholder}}</option>
+ <ng-container *ngIf="isOptGroup">  
+    <ng-template ngFor let-option [ngForOf]="options">
+      <optgroup *ngIf="option.Childrens" [label]="option.Text">
+        <option *ngFor="let child of option.Childrens" [ngValue]="child" [disabled]="child.Disabled">{{child.Text}}</option>
+      </optgroup>
+    </ng-template>
+  </ng-container>
+  <ng-container *ngIf="!isOptGroup">
+    <option *ngFor="let item of options" [ngValue]="item" [disabled]="item.Disabled">{{item.Text}}</option>
+  </ng-container>
+</select>

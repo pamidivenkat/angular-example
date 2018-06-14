@@ -1,0 +1,4 @@
+<div [id]="'assignmentFrom'">
+    <ae-form [formBuilderData]="assignmentFormVM" [id]="getChildId('AeForm', 1)" [name]="getChildName('AeForm',1)" [Title]="formTitle()"
+        [isPrimaryTitle]="true" (onSubmit)="onSubmit($event)" (onCancel)="onCancel($event)" (onFormInit)="onFormInit($event)" [footerBtnText]="formButtonLabels()"></ae-form>
+</div>

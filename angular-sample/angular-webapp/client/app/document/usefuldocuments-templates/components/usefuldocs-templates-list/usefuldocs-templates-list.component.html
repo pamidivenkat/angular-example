@@ -1,0 +1,86 @@
+<div class="filter-bar holiday-filters table__filter-bar">
+  <div class="filter-bar__label label">{{'Filter_by' | translate:lang}}</div>
+
+  <form [formGroup]="usefulDocumentForm" [id]="getChildId('form', 1)" [name]="getChildName('form', 1)">
+    <div class="filter-bar__filters requests">
+      <div class="filter-bar__filter">
+        <ae-autocomplete [id]="getChildId('AeAutocomplete',1)" [name]="getChildName('AeAutocomplete',1)" [value]="serviceStatusFIlter"
+          [placeholder]="'USEFULDOCS.ALL_SERVICE' | translate:lang" formControlName="additionalService" [multiselect]="'true'"
+          [items]="additionalService" [dstype]="dataSouceType" [field]="'Title'" [valuefield]="'Id'" (aeOnSelect)="onServiceFilterChanged($event)"
+          (aeOnClearSelected)="onServiceFilterCleared($event)"></ae-autocomplete>
+      </div>
+      <div class="filter-bar__filter">
+        <ae-autocomplete [id]="getChildId('AeAutocomplete',2)" [name]="getChildName('AeAutocomplete',2)" [placeholder]="'USEFULDOCS.ALL_CATEGORIES' | translate:lang"
+          formControlName="category" [multiselect]="'true'" [items]="docCategoryList" [dstype]="dataSouceType" [field]="'Text'"
+          [valuefield]="'Value'"></ae-autocomplete>
+      </div>
+      <div class="filter-bar__filter">
+        <ae-autocomplete [id]="getChildId('AeAutocomplete',3)" [name]="getChildName('AeAutocomplete',3)" [placeholder]="'USEFULDOCS.SELECT_COUNTRY' | translate:lang"
+          formControlName="country" [multiselect]="'true'" [items]="countrySelectList" [dstype]="dataSouceType" [field]="'Name'"
+          [valuefield]="'Id'"></ae-autocomplete>
+      </div>
+      <div class="filter-bar__filter">
+        <ae-input [id]="getChildId('AeInput',1)" [name]="getChildName('AeInput',1)" [title]="'USEFULDOCS.TITLE_KEYWORD' | translate:lang"
+          formControlName="search" [placeholder]="'USEFULDOCS.TITLE_KEYWORD' | translate:lang" [delay]="500"></ae-input>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="usefuldocs-template">
+  <ae-datatable [id]="getChildId('AeDatatable',1)" [name]="getChildName('AeDatatable',1)" [dataSource]="usefulDocsRequest$"
+    [actions]="actions" [totalRecords]="usefulDocsListTotalCount$" [autoGenerateColumns]="false" [defaultOptions]="usefulDocsListDataTableOptions$ | async"
+    (pageChanged)="onGridPageChange($event)" (onSort)="onGridSortChange($event)" [loading]="!(usefulDocsRequestLoaded$ | async)">
+
+    <ae-column [headerText]="'USEFULDOCS.TITILE' | translate:lang" [sortable]="true " [sortKey]=" 'Title' ">
+      <ae-template [type]=" 'header' ">
+        <ng-template>
+          <span title="{{ 'USEFULDOCS.TITILE' | translate:lang  }}">{{'USEFULDOCS.TITILE' | translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]=" 'cell' " [keys]="keys ">
+        <ng-template let-context="item ">
+          <span title="{{ context.Title  }}">{{ context.Title }}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+
+    <ae-column [headerText]="'USEFULDOCS.SERVICE_NAME' | translate:lang" [sortable]="false">
+      <ae-template [type]=" 'header' ">
+        <ng-template>
+          <span title="{{ 'USEFULDOCS.SERVICE_NAME' | translate:lang  }}">{{'USEFULDOCS.SERVICE_NAME' | translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]=" 'cell' " [keys]="keys ">
+        <ng-template let-context="item ">
+          <span title="{{ getServiceNames(context.Categories) }}"> {{ getServiceNames(context.Categories) }}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+
+    <ae-column [headerText]="'USEFULDOCS.CATEGORY' | translate:lang" [sortable]="false">
+      <ae-template [type]=" 'header' ">
+        <ng-template>
+          <span title="{{ 'USEFULDOCS.CATEGORY' | translate:lang  }}">{{'USEFULDOCS.CATEGORY' | translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]=" 'cell' " [keys]="keys ">
+        <ng-template let-context="item ">
+          <span title="{{ getCategoryName(context.Categories) }}"> {{ getCategoryName(context.Categories) }}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+
+    <ae-column [headerText]=" 'USEFULDOCS.KEYWORDS' | translate:lang " [sortable]="true" [sortKey]=" 'Keywords' ">
+      <ae-template [type]=" 'header' ">
+        <ng-template>
+          <span title="{{ 'USEFULDOCS.KEYWORDS' | translate:lang  }}">{{'USEFULDOCS.KEYWORDS' | translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]=" 'cell' " [keys]="keys ">
+        <ng-template let-context="item ">
+          <span title="{{ context.Keywords }}"> {{ context.Keywords}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+  </ae-datatable>
+</div>

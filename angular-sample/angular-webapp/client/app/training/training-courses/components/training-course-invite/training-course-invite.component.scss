@@ -1,0 +1,24 @@
+.stamp {
+  background-color: #bdbbbc;
+  background-image: none;
+  border: 0 solid transparent;
+  border-radius: 3px;
+  color: rgba(0, 0, 0, 0.6);
+  display: inline-block;
+  font-size: 90%;
+  font-weight: 700;
+  line-height: 1;
+  margin: 0 3px 3px 0;
+  padding: 5px;
+  text-transform: none;
+  transition: background 0.3s ease-out;
+  vertical-align: baseline;
+}
+
+.stamp--yellow {
+  background: #fcc254;
+  color: #fff;
+}
+.assign-trainees-slideout{
+  .so-panel .so-panel__content{top: 70px;}
+}

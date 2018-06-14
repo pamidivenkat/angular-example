@@ -1,0 +1,43 @@
+<div class="company-org-block" [class.org-expand]="FullNormalModeClass()">
+  <h3 class="title">{{'COMPANY_ORG_STRUCTURE' | translate:lang}}</h3>
+  <div class="org-panel-nav">
+    <ae-icon [icon]="toggleIcon" [title]="toggleText | translate:lang" [id]="getChildId('print', 3)" [name]="getChildName('AeIcon', 3)"
+    (click)="toggleShowChildren()"></ae-icon>
+    <ae-icon [icon]="iconClassName()" [title]="iconTitleText() | translate: lang" [id]="getChildId('print', 3)" [name]="getChildName('AeIcon', 3)"
+      (click)="orgChartFullNormalMode()"></ae-icon>
+  </div>
+  <div class="text--centered org-panel-container" *ngIf="context">
+    <ae-org-chart #orgChart [id]="'company-org-structure'" [name]="'company-org-structure'" [context]="context" (selectDetailItem)="onEmployeeSelects($event)"
+      (downloadPDF)="generatePDF()" (print)="printOrgStructure()" [toggleChildren]="showChildren"
+      (onDrop)="onDrop($event)"></ae-org-chart>
+  </div>
+  <ae-loader [loaderType]="loaderType" *ngIf="loading"></ae-loader>
+</div>
+<!--delete confirmation pop-up-->
+<div *ngIf="showDeleteConfirmDialog">
+  <ae-modal-dialog [visible]="showDeleteConfirmDialog" (cancel)="deleteConfirmModalClosed($event)" [closable]="true" [id]="getChildId('AeModel', 1)"
+    [name]="getChildName('AeModel', 1)">
+    <div class="modal-dialog-header">
+      <h3 class="modal-title">{{'REMOVE_DIALOG.HEADER_TEXT' | translate:lang:{type: getDeptType()} }} </h3>
+    </div>
+    <div class="modal-dialog-body">
+      <span> {{'REMOVE_DIALOG.INFO_DEPT_TEAM' | translate: lang:{title: selectedDeptTeamName, type: getDeptType()} }}</span>
+    </div>
+    <div class="modal-dialog-footer">
+      <ae-button [text]="'REMOVE_DIALOG.CONFIRM_NO_DEPT_TEAM' | translate:lang:{type: getDeptType()}" [type]="'button'" [id]="'deleteConfirmNo'"
+        [name]="'deleteConfirmNo'" (aeClick)="deleteConfirmModalClosed($event)"></ae-button>
+      <ae-button [class]="lightClass" [text]="'REMOVE_DIALOG.CONFIRM_YES_DEPT_TEAM' | translate:lang:{type: getDeptType()}" [type]="'button'"
+        [id]="'deleteConfirmYes'" [name]="'deleteConfirmYes'" (aeClick)="deleteDeptTeam($event)"></ae-button>
+    </div>
+  </ae-modal-dialog>
+</div>
+
+
+<!--slideout pop code for add/update dept. here-->
+<ae-slideout [id]="getChildId('AeSlideOut', 2)" [name]="getChildName('AeSlideOut', 2)" [modelState]="getManageDepTeamSlideoutState()"
+  [class.slide--animate]="showManageDeptSlideOut">
+  <div *ngIf="showManageDeptSlideOut">
+    <add-update-department [id]="'add-update-department'" [name]="'add-update-department'" [operationMode]="operationMode" [deptTeamVM]="selectedDeptTeam" [managers]="managersList" (cancelled)="closeManageDeptForm($event)"
+      (saveCompleted)="saveDeptOrTeam($event)"></add-update-department>
+  </div>
+</ae-slideout>

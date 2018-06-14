@@ -1,0 +1,5 @@
+<div>
+  <ae-form [formBuilderData]="addProcedureFormVM" [id]="getChildId('AeForm',1)" [name]="getChildName('AeForm',1)" [Title]="'MANAGE_METHOD_STM.SEQUENCE_OF_EVENTS.ADD_NEW_PROCEDURE' | translate:lang"
+    [isPrimaryTitle]="true" (onSubmit)="onSubmit()" (onCancel)="onCancel()" (onFormInit)="onFormInit($event)" [footerBtnText]="formButtonNames()">
+  </ae-form>
+</div>

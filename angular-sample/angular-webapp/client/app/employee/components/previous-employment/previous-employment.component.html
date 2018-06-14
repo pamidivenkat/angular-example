@@ -1,0 +1,81 @@
+<div [id]="'id-previous-employment'">
+    <div class="section-title">
+        <h3>{{'EMPLOYEE_PREVIOUS_EMPLOYMENT.previous_employment_details' | translate:lang}}</h3>
+        <ae-button [type]="'button'" [id]="getChildId('AeButton', 1)" *ngIf="canUpdate$ | async" [name]="getChildName('AeButton', 1)" (aeClick)="openPreviousEmploymentAddForm($event)" class="btn" [class]="lightClass" [title]="'EMPLOYEE_PREVIOUS_EMPLOYMENT.add' | translate:lang"
+            [text]="'EMPLOYEE_PREVIOUS_EMPLOYMENT.add' | translate:lang"></ae-button>
+    </div>
+    <div class="table">
+        <ae-datatable [id]="'previous-employment'" [name]="'previous-employment'" [dataSource]="previousEmploymentsHistory" [autoGenerateColumns]="false" [totalRecords]="recordsCount" [actions]="actions" [defaultOptions]="dataTableOptions | async" (pageChanged)="onPageChange($event)"
+            (onSort)="onSort($event)" [loading]="!(hasPreviousEmploymentLoaded$ | async)">
+            <ae-column [headerText]="'EMPLOYEE_PREVIOUS_EMPLOYMENT.employer' | translate:lang" [sortable]="true" [sortKey]="'EmployerNameAndAddress'">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span>{{'EMPLOYEE_PREVIOUS_EMPLOYMENT.employer' | translate:lang}}</span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+                        <span>{{ context.EmployerNameAndAddress }}</span>
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+            <ae-column [headerText]="'EMPLOYEE_PREVIOUS_EMPLOYMENT.job_title' | translate:lang" [sortable]="true" [sortKey]="'JobTitleAndRoles'">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span>{{'EMPLOYEE_PREVIOUS_EMPLOYMENT.job_title' | translate:lang}}</span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+                        <span>{{ context.JobTitleAndRoles }}</span>
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+            <ae-column [headerText]="'EMPLOYEE_PREVIOUS_EMPLOYMENT.start_date' | translate:lang" [sortable]="true" [sortKey]="'StartDate'">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span>{{'EMPLOYEE_PREVIOUS_EMPLOYMENT.start_date' | translate:lang}}</span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+                        <span>{{context.StartDate | localeDate:defaultLocale:'shortDate'}}</span>
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+            <ae-column [headerText]="'EMPLOYEE_PREVIOUS_EMPLOYMENT.leaving_date' | translate:lang" [sortable]="true" [sortKey]="'EndDate'">
+                <ae-template [type]="'header'">
+                    <ng-template>
+                        <span>{{'EMPLOYEE_PREVIOUS_EMPLOYMENT.leaving_date' | translate:lang}}</span>
+                    </ng-template>
+                </ae-template>
+                <ae-template [type]="'cell'" [keys]="keys">
+                    <ng-template let-context="item">
+                        <span>{{context.EndDate | localeDate:defaultLocale:'shortDate'}}</span>
+                    </ng-template>
+                </ae-template>
+            </ae-column>
+        </ae-datatable>
+    </div>
+</div>
+
+<ae-slideout [id]="getChildId('AeSlideOut', 1)" [name]="getChildName('AeSlideOut', 1)" [modelState]="getSlideoutState()" (cancel)="closeUpdateForm($event)" [class.slide--animate]="slideoutState">
+        <ng-container *ngIf="slideoutState">
+            <previous-employment-add-update [id]="getChildId('PreviousEmployementUpdate', 1)" [name]="getChildName('PreviousEmployementUpdate', 1)" [toggle]="slideoutState" [action]="actionType" [data]="selectedEmployment" (aeClose)="closeUpdateForm($event)"></previous-employment-add-update>
+        </ng-container>
+    </ae-slideout>
+
+<div *ngIf="showRemoveConfirmDialog">
+    <ae-modal-dialog [visible]="showRemoveConfirmDialog" (cancel)="removeConfirmModalClosed($event)" [closable]="true" [id]="getChildId('AeModel', 1)" [name]="getChildName('AeModel', 1)">
+        <div class="modal-dialog-header">
+            <h3>{{ 'EMPLOYEE_PREVIOUS_EMPLOYMENT.Dialog.Heading_text' | translate:lang }}</h3>
+        </div>
+        <div class="modal-dialog-body">
+            <p>{{'EMPLOYEE_PREVIOUS_EMPLOYMENT.Dialog.Info' | translate: lang:{employerName: selectedEmployment.EmployerNameAndAddress} }}</p>
+        </div>
+        <div class="modal-dialog-footer">
+            <ae-button [text]="'EMPLOYEE_PREVIOUS_EMPLOYMENT.Dialog.Btn_No' | translate: lang" [type]="'button'" [id]="'removeConfirmNo'" [name]="'removeConfirmNo'" (aeClick)="removeConfirmModalClosed($event)"></ae-button>
+            <ae-button [class]="lightClass" [text]="'EMPLOYEE_PREVIOUS_EMPLOYMENT.Dialog.Btn_Yes' | translate: lang" [type]="'button'" [id]="'removeConfirmYes'" [name]="'removeConfirmYes'" (aeClick)="removePreviousEmployerDetails($event)"></ae-button>
+        </div>
+    </ae-modal-dialog>
+</div>

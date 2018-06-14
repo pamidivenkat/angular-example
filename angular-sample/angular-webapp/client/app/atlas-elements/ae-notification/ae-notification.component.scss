@@ -1,0 +1,22 @@
+@import '../ae-message/ae-message.component';
+@include media-over-767 {
+  .notification-bar.spacer {
+    padding: $base-padding ($base-padding * 2);
+  }
+}
+
+.notification-bar--button {
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+.notification-bar .icon-with-text {
+  width: 100%;
+}

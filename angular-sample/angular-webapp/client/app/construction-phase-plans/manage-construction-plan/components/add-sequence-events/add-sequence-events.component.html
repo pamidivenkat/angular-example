@@ -1,0 +1,58 @@
+<div class="so-panel__title">
+    <h3 class="grey-strip">{{getPageHeader()| translate:lang}}</h3>
+</div>
+<div class="so-panel__content">
+    <div class="information-grid">
+        <form class="form" [formGroup]="addUpdateSequenceOfEventsFrmGrp" [id]="'addSequenceOfEventsForm'" [name]="'addSequenceOfEventsForm'">
+            <section class="information-grid__section">
+                <div class="information-grid__item">
+                    <!-- Angular assigns array index as group name by default 0, 1, 2, ... -->
+                    <div formArrayName="events" class="add-sequence-events">
+                        <div class="sg-grid grid--1-2">
+                            <div><label>{{'CPP_ADD.EVENT_DETAILS' | translate:lang}} *</label></div>
+
+                            <div><label>{{'CPP_ADD.KEY_DATES' | translate:lang}} *</label></div>
+
+                        </div>
+
+                        <div *ngFor="let event of events; let i=index">  
+                            <div [formGroupName]="i" class="sg-grid grid--1-2">
+                                <div>
+                                    <ae-textarea [id]="getChildId('EventDetails',index)" [name]="getChildName('EventDetails',index)" [title]="'CPP_ADD.EVENT_DETAILS' | translate:lang" formControlName="EventDetails" [placeholder]="'CPP_ADD.EVENT_DETAILS' | translate:lang"></ae-textarea>
+                                    <span  class="error-text" *ngIf="borderStyle.length > 0 && setErrorMSg(i,'step')"> Event detail is required </span>
+                                </div>
+                                
+                                <div>
+                                    <ae-datetime-picker [id]="getChildId('KeyDates',1)" [name]="getChildName('KeyDates',1)" [monthNavigator]="true" [title]="'CPP_ADD.KEY_DATES' | translate:lang" [yearNavigator]="true" yearRange="1910:2030" [showIcon]="true" formControlName="KeyDates">
+                                    </ae-datetime-picker>
+                                    <span  class="error-text" *ngIf="borderStyle.length > 0 && setErrorMSg(i,'date')"> Key date is required </span>
+                                </div>                                
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div>
+                    <label> {{'CPP_ADD.ADD_FURTHER_STEPS' | translate:lang}} 
+            <ae-select [id]="'ddlSteps'" [name]="'ddlSteps'" [placeholder]="'PLEASE_SELECT' | translate:lang" [options]="furtherSteps"
+                (aeSelectChange)="onAddSteps($event)" [value]="''"></ae-select>
+          </label>
+                </div>
+            </section>
+
+
+        </form>
+    </div>
+</div>
+<div class="so-panel__footer">
+    <nav>
+        <ul>
+            <li><label for="soPanel" class="button button--inline-block" [id]="getChildId('AeButton',1)" (click)="onAddUpdateFormClosed($event)" [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label></li>
+            <li class="pull--right">
+                <ae-anchor [id]="getChildId('AeAnchor',1)" [name]="getChildName('AeAnchor',1)" [anchorType]="'button'" [class]="'button button--inline-block'" [anchorClass]="lightClass" (aeClick)="onAddUpdateFormSubmit($event)" [title]="formButtonNames()" [text]="formButtonNames()"></ae-anchor>
+            </li>
+        </ul>
+    </nav>
+</div>

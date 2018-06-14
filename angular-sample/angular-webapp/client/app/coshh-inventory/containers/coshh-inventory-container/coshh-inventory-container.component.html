@@ -1,0 +1,45 @@
+<div>
+    <ae-banner [id]="'COSHHInventoryBanner'" [name]="'COSHHInventoryBanner'" [titleText]="'COSHH_INVENTORY' | translate:lang"
+        [backgroundImage]="'/assets/images/lp-coshh.jpg'">
+        <ae2-breadcrumb [id]="'COSHHInventorybreadCrumb'" [name]="'COSHHInventorybreadCrumb'" class="bredcrumb-section" [group]="bcGroup"></ae2-breadcrumb>
+        <div class="icon-list banner-icon-list">
+            <ae-button [text]="'ADD_COSHH_INVENTORY_ITEM' | translate:lang" [type]="'button'" [id]="'btnAdd'" [name]="'btnAdd'" (aeClick)="addNewCoshhInventory()"
+                [title]="'ADD_COSHH_INVENTORY_ITEM' | translate:lang"></ae-button>
+        </div>
+    </ae-banner>
+    <ae-notification [id]="'CoshhInvenNotif'" [name]="'CoshhInvenNotif'" [iconName]="'icon-info'" [textInfo]="'COSHH_LANDING_MSG' | translate:lang"></ae-notification>
+    <div id="contentArea" class="tab-content">
+        <coshhinventory-list [id]="'COSHHInventoryList'" [name]="'COSHHInventoryList'" (onCoshhInventoryView)="onCoshhInventoryView($event)"
+            (onCoshhInventoryDelete)="onCoshhInventoryDelete($event)" (onCoshhInventoryUpdate)="onCoshhInventoryUpdate($event)">
+
+        </coshhinventory-list>
+    </div>
+
+    <ae-slideout [id]="'customCoshhInventorySlideout'" [name]="'customCoshhInventorySlideout'" [modelState]="getCoshhInventorySlideoutState()"
+        [class.slide--animate]="getSlideoutAnimateState()">
+        <div *ngIf="showCoshhInventoryAddUpdateForm">
+            <coshhinventory-addupdate [id]="'CoshhInventoryUpdate'" [name]="'CoshhInventoryUpdate'" [selectedCoshhInventory]="loadedSelectedCoshhInventory"
+                [action]="action" (onSubmit)="onCoshhInventory($event)" (onCancel)="onCoshhInventorySlideCancel($event)"></coshhinventory-addupdate>
+        </div>
+        <div *ngIf="showCoshhInventoryViewSlideOut">
+            <coshhinventory-view [id]="'customCoshhInventoryView'" [name]="'customCoshhInventoryView'" [selectedCoshhInventory]="loadedSelectedCoshhInventory"
+                (onCancel)="onCoshhInventorySlideCancel($event)"></coshhinventory-view>
+        </div>
+    </ae-slideout>
+
+    <ae-modal-dialog [visible]="showCoshhInventoryDeleteModal" (cancel)="modalClosed($event)" [closable]="true" [id]="'confirmModal'"
+        [name]="'confirmModal'" *ngIf="showCoshhInventoryDeleteModal">
+        <div class="modal-dialog-header">
+            <h3>{{ 'REMOVE_DIALOG_MSG' | translate:lang }}</h3>
+        </div>
+        <div class="modal-dialog-body">
+            <p>{{'REMOVE_DIALOG_MSG_CONFIRM' | translate: lang:{itemName: selectedCoshhInventory.Substance} }}</p>
+        </div>
+        <div class="modal-dialog-footer">
+            <ae-button [class]="darkClass" [text]="'COSHH_Dialog.Btn_No' | translate:lang" [type]="'button'" [id]="'confirmNo'" [name]="'confirmNo'"
+                (aeClick)="modalClosed('no')"></ae-button>
+            <ae-button [class]="lightClass" [text]="'COSHH_Dialog.Btn_Yes' | translate:lang" [type]="'button'" [id]="'confirmYes'" [name]="'confirmYes'"
+                (aeClick)="modalClosed('yes')"></ae-button>
+        </div>
+    </ae-modal-dialog>
+</div>

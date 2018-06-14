@@ -1,0 +1,9 @@
+<div class="grid--chart">
+  <div>
+    <ng-content></ng-content>
+  </div>
+  <div>
+    <ae-chart  [id]="getChildId('Chart', 1)" [name]="getChildName('Chart', 1)" [width]="width" [height]="height" [data]="chartData" [chartType]="'Donut'"></ae-chart>
+    <ae-legend  [id]="getChildId('Legend', 1)" [name]="getChildName('Legend', 1)" [options]="chartData" [legendType]="legendVertical"></ae-legend> 
+  </div>
+</div>

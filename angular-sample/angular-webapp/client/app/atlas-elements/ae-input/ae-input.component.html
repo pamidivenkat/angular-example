@@ -1,0 +1,4 @@
+<input #inputField [id]="id" [name]="name" class="input" [class.ng-invalid]="hasFormError()" [placeholder]="placeholder" [attr.readonly]="readOnly" [type]="controlType" [value]="value" (change)="onChangeEvent($event)" (focus)="onFocus($event)" (blur)="onBlur($event)"
+    (input)="onInput($event)" [attr.step]="step" [disabled]="disabled" [attr.min]="min" [attr.max]="max" [autocomplete]="autocomplete" [class.input--search]="isSeachInput" [attr.class]="cssClass" (keydown)="onKeyDown($event)" (keyup)="onKeyUp($event)" (paste)="onPaste($event)"
+    [attr.maxlength]="getMaxLength()" [attr.minlength]="getMinLength()" />
+<span class="textAlert" *ngIf="needToShowRemainingCharacterCount()"> {{ getRemainingCharaterCount() }} character(s) left. </span>

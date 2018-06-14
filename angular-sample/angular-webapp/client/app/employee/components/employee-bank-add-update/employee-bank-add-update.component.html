@@ -1,0 +1,122 @@
+<div id="bankAddUpdate">
+  <div class="so-panel__title">
+    <h3 class="grey-strip" *ngIf="!isUpdateMode()">{{'EMPLOYEE_BANK_DETAILS.ADD_BANK_DETAILS' | translate:lang}}</h3>
+    <h3 class="grey-strip" *ngIf="isUpdateMode()">{{'EMPLOYEE_BANK_DETAILS.UPDATE_BANK_DETAILS' | translate:lang}}</h3>
+  </div>
+  <div class="so-panel__content">
+    <div class="information-grid">
+      <form class="form" id="formBankDetails" name="formBankDetails" [formGroup]="employeeBankDetailsAddUpdateForm">
+        <section class="information-grid__section">
+          <div class="information-grid__item">
+            <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_BANK_DETAILS.BANK_NAME' | translate:lang}} <span class="error-text">*</span></div>
+            <div class="information-grid__item-value column-2of3 text-muted">
+              <ae-input [id]="getChildId('Name',1)" [name]="getChildName('Name',1)" [title]="'EMPLOYEE_BANK_DETAILS.BANK_NAME' | translate:lang"
+                formControlName="Name" [placeholder]="'EMPLOYEE_BANK_DETAILS.BANK_NAME' | translate:lang"></ae-input>
+            </div>
+            <span *ngIf="fieldHasRequiredError('Name')" class="form__input__error">{{'EMPLOYEE_BANK_DETAILS.THIS_FIELD_REQUIRED' | translate:lang}}</span>
+          </div>
+          <div class="information-grid__item">
+            <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_BANK_DETAILS.ACCOUNT_NAME' | translate:lang}} <span class="error-text">*</span></div>
+            <div class="information-grid__item-value column-2of3 text-muted">
+              <ae-input [id]="getChildId('AccountName',1)" [name]="getChildName('AccountName',1)" [title]="'EMPLOYEE_BANK_DETAILS.ACCOUNT_NAME' | translate:lang"
+                formControlName="AccountName" [placeholder]="'EMPLOYEE_BANK_DETAILS.ACCOUNT_NAME' | translate:lang"></ae-input>
+            </div>
+            <span *ngIf="fieldHasRequiredError('AccountName')" class="form__input__error">{{'EMPLOYEE_BANK_DETAILS.THIS_FIELD_REQUIRED' | translate:lang}}</span>
+          </div>
+          <div class="information-grid__item">
+            <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_BANK_DETAILS.ACCOUNT_NUMBER' | translate:lang}} <span class="error-text">*</span></div>
+            <div class="information-grid__item-value column-2of3 text-muted">
+              <ae-input [id]="getChildId('AccountNumber',1)" [name]="getChildName('AccountNumber',1)" [title]="'EMPLOYEE_BANK_DETAILS.ACCOUNT_NUMBER' | translate:lang"
+                formControlName="AccountNumber" [placeholder]="'EMPLOYEE_BANK_DETAILS.ACCOUNT_NUMBER' | translate:lang"></ae-input>
+            </div>
+            <span *ngIf="fieldHasRequiredError('AccountNumber')" class="form__input__error">{{'EMPLOYEE_BANK_DETAILS.THIS_FIELD_REQUIRED' | translate:lang}}</span>
+          </div>
+          <div class="information-grid__item">
+            <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_BANK_DETAILS.BANK_CODE' | translate:lang}} <span class="error-text">*</span></div>
+            <div class="information-grid__item-value column-2of3 text-muted">
+              <ae-input [id]="getChildId('BankCode',1)" [name]="getChildName('BankCode',1)" [title]="'EMPLOYEE_BANK_DETAILS.BANK_CODE' | translate:lang"
+                formControlName="BankCode" [placeholder]="'EMPLOYEE_BANK_DETAILS.BANK_CODE' | translate:lang"></ae-input>
+            </div>
+            <span *ngIf="fieldHasRequiredError('BankCode')" class="form__input__error">{{'EMPLOYEE_BANK_DETAILS.THIS_FIELD_REQUIRED' | translate:lang}}</span>
+          </div>
+          <div class="information-grid__item">
+            <div class="information-grid__item-value column-2of3 text-muted">
+              <ae-checkbox [id]="getChildId('IsSalaryAccount',1)" [name]="getChildName('IsSalaryAccount',1)" [title]="'EMPLOYEE_BANK_DETAILS.SALARY_ACCOUNT' | translate:lang"
+                formControlName="IsSalaryAccount" [checkText]="'EMPLOYEE_BANK_DETAILS.SALARY_ACCOUNT' | translate:lang"></ae-checkbox>
+            </div>
+          </div>
+          <div class="information-grid__item">
+            <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_BANK_DETAILS.ADDRESS_LINE_1' | translate:lang}}</div>
+            <div class="information-grid__item-value column-2of3 text-muted">
+              <ae-input [id]="getChildId('AddressLine1',1)" [name]="getChildName('AddressLine1',1)" [title]="'EMPLOYEE_BANK_DETAILS.ADDRESS_LINE_1' | translate:lang"
+                formControlName="AddressLine1" [placeholder]="'EMPLOYEE_BANK_DETAILS.ADDRESS_LINE_1' | translate:lang"></ae-input>
+            </div>
+          </div>
+          <div class="information-grid__item">
+            <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_BANK_DETAILS.ADDRESS_LINE_2' | translate:lang}}</div>
+            <div class="information-grid__item-value column-2of3 text-muted">
+              <ae-input [id]="getChildId('AddressLine2',1)" [name]="getChildName('AddressLine2',1)" [title]="'EMPLOYEE_BANK_DETAILS.ADDRESS_LINE_2' | translate:lang"
+                formControlName="AddressLine2" [placeholder]="'EMPLOYEE_BANK_DETAILS.ADDRESS_LINE_2' | translate:lang"></ae-input>
+            </div>
+          </div>
+          <div class="information-grid__item">
+            <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_BANK_DETAILS.TOWN_CITY' | translate:lang}}</div>
+            <div class="information-grid__item-value column-2of3 text-muted">
+              <ae-input [id]="getChildId('Town',1)" [name]="getChildName('Town',1)" [title]="'EMPLOYEE_BANK_DETAILS.TOWN_CITY' | translate:lang"
+                formControlName="Town" [placeholder]="'EMPLOYEE_BANK_DETAILS.TOWN_CITY' | translate:lang"></ae-input>
+            </div>
+          </div>
+          <div class="information-grid__item">
+            <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_CONTACTS.county' | translate:lang}}</div>
+            <div class="information-grid__item-value column-2of3 text-muted">
+              <ae-select [id]="getChildId('CountyId',1)" [name]="getChildName('CountyId',1)" [title]="'EMPLOYEE_CONTACTS.county_tooltip' | translate:lang"
+                formControlName="CountyId" [placeholder]="'Please Select'" [options]="countySelectList"></ae-select>
+            </div>
+          </div>
+          <div class="information-grid__item">
+            <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_CONTACTS.country' | translate:lang}}</div>
+            <div class="information-grid__item-value column-2of3 text-muted">
+              <ae-select [id]="getChildId('CountryId',1)" [name]="getChildName('CountryId',1)" [title]="'EMPLOYEE_CONTACTS.country_tooltip' | translate:lang"
+                formControlName="CountryId" [placeholder]="'Please Select'" [options]="countrySelectList"></ae-select>
+            </div>
+          </div>
+          <div class="information-grid__item">
+            <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_BANK_DETAILS.POST_CODE' | translate:lang}}</div>
+            <div class="information-grid__item-value column-2of3 text-muted">
+              <ae-input [id]="getChildId('Postcode',1)" [name]="getChildName('Postcode',1)" [title]="'EMPLOYEE_BANK_DETAILS.POST_CODE' | translate:lang"
+                formControlName="Postcode" [placeholder]="'EMPLOYEE_BANK_DETAILS.POST_CODE' | translate:lang"></ae-input>
+            </div>
+          </div>
+          <div class="information-grid__item">
+            <div class="information-grid__item-label column-1of3">{{'EMPLOYEE_BANK_DETAILS.PHONE_NUMBER' | translate:lang}}</div>
+            <div class="information-grid__item-value column-2of3 text-muted">
+              <ae-input [id]="getChildId('PhoneNumber',1)" [name]="getChildName('PhoneNumber',1)" [title]="'EMPLOYEE_BANK_DETAILS.PHONE_NUMBER' | translate:lang"
+                formControlName="PhoneNumber" [placeholder]="'EMPLOYEE_BANK_DETAILS.PHONE_NUMBER' | translate:lang"></ae-input>
+            </div>
+            <span *ngIf="fieldHasInvalidTelephoneNumber('PhoneNumber')" class="form__input__error">{{'EMPLOYEE_BANK_DETAILS.INVALID_PHONE_NUMBER' | translate:lang}}</span>
+          </div>
+        </section>
+        <div class="form__error">
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="so-panel__footer">
+    <nav>
+      <ul>
+        <li><label for="soPanel" class="button button--inline-block" [id]="getChildId('AeLabel',1)" (click)="onAddOrUpdateBankDetailsCancel($event)"
+            [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang">{{'BUTTONS.SLIDE_CLOSE' | translate:lang}}</label></li>
+        <li class="pull--right" *ngIf="!isUpdateMode()">
+          <ae-anchor [id]="getChildId('AeAnchor',1)" [name]="getChildName('AeAnchor',1)" [anchorType]="'button'" [class]="'button button--inline-block'"
+            [anchorClass]="lightClass" (aeClick)="onAddOrUpdateFormSubmit($event)" [title]="'BUTTONS.ADD' | translate:lang"
+            [text]="'BUTTONS.ADD' | translate:lang"></ae-anchor>
+        </li>
+          <li class="pull--right" *ngIf="isUpdateMode()">
+          <ae-anchor [id]="getChildId('AeAnchor',1)" [name]="getChildName('AeAnchor',1)" [anchorType]="'button'" [class]="'button button--inline-block'"
+            [anchorClass]="lightClass" (aeClick)="onAddOrUpdateFormSubmit($event)" [title]="'BUTTONS.UPDATE' | translate:lang"
+            [text]="'BUTTONS.UPDATE' | translate:lang"></ae-anchor>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>

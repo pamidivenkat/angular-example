@@ -1,0 +1,7 @@
+<ae-form [formBuilderData]="cppAddSafetyPrecautionsVM" [id]="'addSafetyPrecautionsForm'" [name]="'addSafetyPrecautionsForm'" 
+  [isPrimaryTitle]="true" [Title]="title() | translate:lang"
+  [displayFooter]="true" (onFormInit)="onFormInit($event)" 
+   [footerBtnText]="formButtonNames()"
+   (onSubmit)="onSubmit($event)" (onCancel)="onCancel($event)"
+  >
+</ae-form>

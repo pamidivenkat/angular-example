@@ -1,0 +1,41 @@
+<div id="slide-out-form-content" class="wrapper-for-slideout-conten">
+  <div class="so-panel__title">
+    <h3 class="grey-strip">{{'USER_PERMISSIONS' | translate:lang}} </h3>
+  </div>
+  <div *ngIf="isContentLoaded()" class="so-panel__content">
+    <div class="information-grid">
+      <h3>{{'PROFILE' | translate:lang}}</h3>
+      <section class="information-grid__section">
+        <div class="information-grid__item" *ngFor="let role of getUserRoles()">
+          <h3>
+            {{role | translate:lang}}
+          </h3>
+        </div>
+      </section>
+    </div>
+    <div class="information-grid">
+      <h3>{{'PERMISSIONS' | translate:lang}}</h3>
+      <section class="information-grid__section">
+        <div class="information-grid__item" *ngFor="let group of getPermissionGroups()">
+          <h3>{{group | translate:lang}} </h3>
+          <div class="information-grid__item-value">
+            <ul>
+              <li *ngFor="let permission of getUserPermission(group)">
+                {{permission.Name | translate:lang}}
+                <ae-icon [id]="getChildId('AeIcon',13)" [name]="getChildName('AeIcon',13)" [icon]="'icon-alert-circle-question'" [title]="permission.Description"></ae-icon>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+  <ae-loader [loaderType]="loaderType" *ngIf="!isContentLoaded()"></ae-loader>
+  <div class="so-panel__footer">
+    <nav>
+      <ul>
+        <li><label for="soPanel" class="button button--inline-block" (click)="onFormClosed($event)" [title]="'BUTTONS.SLIDE_CLOSE' | translate: lang">{{'BUTTONS.SLIDE_CLOSE' | translate: lang}}</label></li>
+      </ul>
+    </nav>
+  </div>
+</div>

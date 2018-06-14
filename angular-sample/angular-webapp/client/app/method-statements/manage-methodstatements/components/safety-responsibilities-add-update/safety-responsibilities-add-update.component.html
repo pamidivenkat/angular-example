@@ -1,0 +1,6 @@
+<div class="safety-responsibilities-add-update">
+  <ae-form [formBuilderData]="saftyResponsibilityFormVM" [id]="'responsibilitiesForm'" [name]="'responsibilitiesForm'" [isPrimaryTitle]="true"
+    [footerBtnText]="formButtonNames()" [Title]="getTitle()" (onFormInit)="onFormInit($event)" (onCancel)="onResponsibilityFormCancel($event)"
+    (onSubmit)="onResponsibilityFormSubmitted($event)" (isFormValid)="onFormValidityChange($event)">
+  </ae-form>
+</div>

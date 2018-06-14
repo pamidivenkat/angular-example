@@ -1,0 +1,17 @@
+<div class="header__alert js-notification-sidebar-trigger" (click)="onNotificationClick($event)" [id]="id">
+  <div class="icon icon--small" [class.icon--has-notification]="requireNotification()" [attr.data-value]="getPendingCountAsString()"
+    [id]="getChildId('notificationsCount', 1)">
+    <svg>
+      <use xmlns:xlink="http://www.w3.org/1999/xlink" [attr.xlink:href]="getAbsoluteUrl('icon-bell')"></use>
+    </svg>
+  </div>
+</div>
+<div>
+  <ae-slideout [notification]="'true'" [id]="getChildId('aeSlideout', 1)" [class.slide--animate]="showSlider" [modelState]="showSlider ? 'expanded' : 'collapsed'"
+    (cancel)="sliderClosed($event)" [id]="'testslider'" [name]="'testslider'">
+    <h2>{{'Notifications' | translate:lang}}</h2>
+    <ae-list [id]="getChildId('ae-list', 1)" [name]="getChildName('ae-list', 1)" [items]="NotificationListtems" (aeAction)="onNotificationItemClick($event)"
+      [isClickable]="true" [requireCircle]="true" [hasline]="'true'">
+    </ae-list>
+  </ae-slideout>
+</div>

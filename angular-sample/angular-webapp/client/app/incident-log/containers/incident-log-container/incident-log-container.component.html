@@ -1,0 +1,12 @@
+<div id="incident-log-container">
+    <incident-log-information [id]="'information-stats'" [name]="'information-stats'" (changeCategory)="onCategoryChange($event)"
+        (changeStatus)="onStatusChange($event)"></incident-log-information>
+    <incident-log-header [id]="'incident-header'" [name]="'incident-header'" (addIncident)="onAddIncident()"></incident-log-header>
+    <incident-log-list [id]="'incident-list'" [name]="'incident-list'" [sites]="sites" (onIncidentViewClick)="onIncidentViewClick($event)" *ngIf="canShowIncidentList()"></incident-log-list>
+    <ae-slideout [id]="getChildId('AeSlideOut', 1)" [name]="getChildName('AeSlideOut', 1)" [modelState]="getSlideoutState()"
+        (cancel)="closeSlideOut($event)" [class.slide--animate]="slideOut">
+        <ng-container *ngIf="slideOut">
+            <incident-log-view [id]="getChildId('incidentLogView', 1)" [name]="getChildName('incidentLogView', 1)" [viewDetails]="incidentPreviewVM" (slideOutClose)="onSlideOutClose($event)"></incident-log-view>
+        </ng-container>
+    </ae-slideout>
+</div>

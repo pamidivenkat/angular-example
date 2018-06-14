@@ -1,0 +1,28 @@
+<div [id]="id">
+  <div class="section-title">
+    <h3>{{'EMPLOYEE_BENEFITS.benefits' | translate:lang}}</h3>
+    <ae-button [type]="'button'" [id]="getChildId('AeButton', 1)" [name]="getChildName('AeButton', 1)" (aeClick)="onUpdateClick($event)"
+      class="btn" [class]="btnStyle" [title]="'BUTTONS.UPDATE' | translate:lang" 
+      [text]="'BUTTONS.UPDATE' | translate:lang"  [class]="btnStyle"></ae-button>
+  </div>
+
+
+  <div class="information-grid">
+    <section class="information-grid__section">
+      <div class="information-grid__item">
+        <label for name="pensionScheme">{{'EMPLOYEE_BENEFITS.pension_scheme' | translate:lang}} : {{ (payrollFullEntity$ | async)?.PensionScheme || ' '}}</label>
+      </div>
+    </section>
+  </div>
+
+  <div>
+    <ae-slideout [id]="getChildId('AeSlideOut', 1)" [name]="getChildName('AeSlideOut', 1)" [modelState]="getSlideoutState()"
+      (cancel)="onCancel($event)" [class.slide--animate]="showSlideOutPanel">
+      <ng-container *ngIf="showSlideOutPanel">
+        <employee-benefits-update [id]="getChildId('EmployeeBenefitsUpdate', 1)" [name]="getChildName('EmployeeBenefitsUpdate', 1)" [employeePayrollDetails]="payrollFullEntity$ | async"
+          (aeClose)="onCancel($event)" (benefitsSliderClose)="onCancel($event)" (benefitsSave)="onSave($event)">
+        </employee-benefits-update>
+      </ng-container>
+    </ae-slideout>
+  </div>
+</div>

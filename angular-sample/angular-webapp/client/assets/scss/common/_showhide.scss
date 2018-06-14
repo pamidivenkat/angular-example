@@ -1,0 +1,44 @@
+.showhide {
+  display: none;
+  opacity: 0;
+  transition: all $base-transition;
+
+  &.showhide--active {
+    display: block;
+    opacity: 1;
+
+    &.highlight div:first-child {
+      animation: highlight 2.5s;
+    }
+  }
+}
+
+@keyframes highlight {
+  0% {
+    background: $white;
+  }
+
+  20% {
+    background: $teal--4;
+  }
+
+  40% {
+    background: $white;
+  }
+
+  60% {
+    background: $teal--4;
+  }
+
+  80% {
+    background: $white;
+  }
+
+  90% {
+    background: $teal--3;
+  }
+
+  100% {
+    background: $white;
+  }
+}

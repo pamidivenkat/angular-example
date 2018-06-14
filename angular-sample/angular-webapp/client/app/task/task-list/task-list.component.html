@@ -1,0 +1,181 @@
+<task-information-bar (taskComponentItemClick)="taskComponentItemClick($event)" (taskAddClick)="taskAddClick($event)"></task-information-bar>
+<ae-notification [id]="'taskInfo'" [name]="'taskInfo'" [iconName]="'icon-info'" [textInfo]="'ADD_TASK_FORM.BELOW_YOUR_LIST_OF_TASKS' | translate: lang"></ae-notification>
+<div class="table spacer">
+  <div class="table__filter-bar">
+    <div class="filter-bar">
+      <div class="filter-bar__label label">Filter by</div>
+      <div class="sg-grid grid--1-1-3">
+        <div>
+          <ae-select [id]="'ddlViewType'" [name]="'ddlViewType'" [placeholder]="''" [options]="viewTypeOptions" [value]="taskViewFilter"
+            (aeSelectChange)="onViewTypeChange($event)"></ae-select>
+        </div>
+        <div>
+          <ae-autocomplete [id]="'ddlPriority'" [name]="'ddlPriority'" [value]="taskPriorityFlter" [placeholder]="'Select priority'"
+            [multiselect]="'true'" [items]="priorityOptions" [dstype]="dataSouceType" [field]="'name'" [valuefield]="'id'"
+            (aeOnSelect)="onPriorityFilterChanged($event)" (aeOnClearSelected)="onPriorityFilterCleared($event)"></ae-autocomplete>
+        </div>
+        <div>
+          <ae-autocomplete [id]="'ddlStatus'" [name]="'ddlStatus'" [value]="taskStatusFIlter" [placeholder]="'Select status'" [multiselect]="'true'"
+            [items]="statusOptions" [dstype]="dataSouceType" [field]="'name'" [valuefield]="'id'" (aeOnSelect)="onStatusFilterChanged($event)"
+            (aeOnClearSelected)="onStatusFilterCleared($event)"></ae-autocomplete>
+        </div>
+        <div>
+          <ae-select [id]="'ddlDueFilter'" [name]="'ddlDueFilter'" [placeholder]="''" [options]="dueFilterOptions" (aeSelectChange)="onDueFilterChange($event)"
+            [value]="taskViewDueFilter"></ae-select>
+        </div>
+        <div>
+          <ae-autocomplete [id]="'ddlCategories'" [name]="'ddlCategories'" [value]="taskCategoryFilter" [placeholder]="'Select categories'"
+            [multiselect]="'true'" [items]="taskCategories" [dstype]="dataSouceType" [field]="'Name'" [valuefield]="'Id'" (aeOnSelect)="onCategoryFilterChanged($event)"
+            (aeOnClearSelected)="onCategoryFilterCleared($event)"></ae-autocomplete>
+        </div>
+        <div *ngIf="areTeamTasksSelected">
+          <ae-select [id]="'ddlDepartmentFilter'" [name]="'ddlDepartmentFilter'" [placeholder]="'All departments'" [options]="departmentsList"
+            [value]="selectedDepartment" (aeSelectChange)="onDepartmentFilterChange($event)"></ae-select>
+        </div>
+        <div *ngIf="areTeamTasksSelected">
+          <ae-autocomplete [id]="'ddlEmployeeFilter'" [name]="'ddlEmployeeFilter'" [value]="selectedEmployee" [placeholder]="'Select employees'"
+            [multiselect]="'true'" [items]="employeesList" [dstype]="dataSouceType" [field]="'FullName'" [valuefield]="'Id'"
+            (aeOnSelect)="onEmployeeFilterChange($event)" (aeOnClearSelected)="onEmployeeFilterCleared($event)"></ae-autocomplete>
+        </div>
+        <div *ngIf="isSiteFilter">
+          <ae-select [id]="'ddlSiteFilter'" [name]="'ddlSiteFilter'" [placeholder]="''" [options]="siteOptionList" [value]="siteFilterDefaultValue"
+            (aeSelectChange)="onSiteFilterChange($event)"></ae-select>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <ae-datatable [id]="'taskTable'" [name]="'taskTable'" [dataSource]="tasks$" [actions]="actions" [autoGenerateColumns]="false"
+    [totalRecords]="totalRecords$" [defaultOptions]="dataTableOptions$ | async" (pageChanged)="onPageChange($event)" (onSort)="onSort($event)"
+    [loading]="tasksLoading$ | async">
+    <ae-column [sortable]="false" [headerText]="'Priority'">
+      <ae-template [type]="'header'">
+        <ng-template>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <ae-indicator [class]="'indicator--'+getPriority(context.Priority)" [text]="getPriority(context.Priority)"></ae-indicator>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'Title'" [sortable]="true" [sortKey]="'Title'" [isMobileView]="true">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>Title</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <label for="soPanel" (click)="onTaskDetails(context.Id)" class="so-panel__activator">{{context.Title}}</label>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'Status'" [sortable]="true" [sortKey]="'Status'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>Status</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <span>{{getStatus(context.Status)}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'Category'" [sortable]="true" [sortKey]="'TaskCategoryName'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>Category</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <span>{{context.TaskCategoryName}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'Due date'" [sortable]="true" [sortKey]="'DueDate'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>Due date</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <span>{{context.DueDate | date: 'dd/MM/yyyy'}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'Assigned to'" [sortable]="true" [sortKey]="'AssignedUserName'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>Assigned to</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <span>{{context.AssignedUserName}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'Created by'" [sortable]="true" [sortKey]="'CreatedByUserName'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>Created by</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <span>{{context.CreatedByUserName}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+
+
+    <ae-column [headerText]="'AssignedUserName'" [sortable]="true" [sortKey]="'AssignedUserName'" *ngIf="isAssignedToOthers()">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>Assigned To</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <span>{{context.AssignedUserName}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+
+  </ae-datatable>
+
+</div>
+<div>
+  <ae-modal-dialog [visible]="showRemoveDialog" (cancel)="modalClosed($event)" [closable]="true" [id]="'confirmModal'" [name]="'confirmModal'"
+    *ngIf="showRemoveDialog">
+    <div class="modal-dialog-header">
+      <h3>{{'TASK_Dialog.Heading_text' | translate: lang}}</h3>
+    </div>
+    <div class="modal-dialog-body">
+      <p>{{'TASK_Dialog.Info' | translate: lang:{taskName: removableTask.Title} }}</p>
+    </div>
+    <div class="modal-dialog-footer">
+      <ae-button [text]="'TASK_Dialog.Btn_No' | translate: lang" [type]="'button'" [id]="'confirmNo'" [name]="'confirmNo'" (aeClick)="modalClosed('no')"></ae-button>
+      <ae-button [class]="lightClass" [text]="'TASK_Dialog.Btn_Yes' | translate: lang" [type]="'button'" [id]="'confirmYes'" [name]="'confirmYes'"
+        (aeClick)="modalClosed('yes')"></ae-button>
+    </div>
+  </ae-modal-dialog>
+</div>
+<ae-legend [id]="'taskLegend'" [options]="taskLegendOptions" [headText]="'Priorities'"></ae-legend>
+<div>
+  <ae-slideout [id]="getChildId('AeSlideOut', 1)" [name]="getChildName('AeSlideOut', 1)" [modelState]="getSlideoutState()"
+    [class.slide--animate]="getSlideoutAnimateState()">
+    <div *ngIf="showDetailsSlideOut()">
+      <task-details (onCancel)="onTaskCancel($event)" (onUpdate)="onUpdate($event)"></task-details>
+    </div>
+    <div *ngIf="showUpdateSlideOut()">
+      <task-update (onFormSubmit)="onFormSubmit($event)" (onCancel)="onTaskCancel($event)" [message]="taskCompleteWarningMessage"></task-update>
+    </div>
+    <div *ngIf="showAddSlideOut()">
+      <task-add (onCancel)="onTaskCancel($event)" (OnAddComplete)="onAddTaskComplete($event)"></task-add>
+    </div>
+  </ae-slideout>

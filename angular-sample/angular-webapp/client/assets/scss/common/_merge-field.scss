@@ -1,0 +1,95 @@
+.mergefield-attribute {
+  display: none !important;
+}
+
+.mergefield-attribute.show {
+  display: inline !important;
+}
+
+.mergefield-value {
+  display: none !important;
+}
+
+.mergefield-value.show {
+  display: inline !important;
+}
+
+.marker {
+  background-color: yellow;
+}
+
+h2 .marker {
+  display: inline-block
+}
+
+.merge-field-only merge-field,
+.merge-field-only merge-field .marker {
+  background-color: #ba3549;
+  border-color: #6b1724;
+  color: $white;
+}
+
+merge merge-empty,
+.mergefield-attribute {
+  margin-top: -1px;
+  margin-bottom: -1px;
+}
+
+merge-empty,
+.mergefield-attribute,
+merge-empty .marker,
+.mergefield-attribute .marker {
+  background-color: #ba3549 !important;
+  border-color: #6b1724 !important;
+  color: $white !important;
+}
+
+.mergefield-value .marker,
+.mergefield-value {
+  color: $black;
+  background-color: rgb(233, 176, 59);
+}
+
+.mergefield-value li,
+.mergefield-value ul {
+  background-color: rgb(233, 176, 59);
+  padding-top: 1px;
+  padding-bottom: 1px;
+}
+
+.merge-field-only merge-field,
+.merge-field-only merge-field .marker {
+  background-color: #ba3549;
+  border-color: #6b1724;
+  color: $white;
+}
+
+.review-content merge,
+.review-content merge-field,
+.review-content .mergefield-attribute,
+.review-content .mergefield-value,
+.review-content merge merge-empty {
+  color: $black;
+}
+
+.review-content .marker {
+  background-color: yellow;
+  color: inherit
+}
+
+.review-content .mergefield-value .marker {
+  color: $black;
+  background-color: rgb(233, 176, 59);
+}
+
+.review-content merge merge-empty {
+  display: none;
+}
+
+.review-content,
+merge-field,
+merge {
+  img {
+    margin: auto;
+  }
+}

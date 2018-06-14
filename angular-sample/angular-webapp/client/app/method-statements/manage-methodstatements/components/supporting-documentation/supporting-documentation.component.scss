@@ -1,0 +1,12 @@
+.wizard{
+    .supporting-documentation{
+        .section-title{
+            padding: 15px 0;
+            display: inline-block;
+            width: 100%;
+            &:after{clear: none;}
+        h3{ padding: 12px 0 !important; }
+        }
+        ae-datatable{margin: 0px; width: 100%;}
+    }
+}

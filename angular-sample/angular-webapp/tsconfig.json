@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "mapRoot": "./",
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "lib": [
+      "es6",
+      "dom"
+    ],
+    "outDir": "../dist/out-tsc",
+    "target": "es5",
+    "types": [
+      "node",
+      "jasmine",
+      "core-js"
+    ],
+    "typeRoots": [
+      "../node_modules/@types"
+    ],
+    "module": "es6",
+    "baseUrl": ""
+  }
+}

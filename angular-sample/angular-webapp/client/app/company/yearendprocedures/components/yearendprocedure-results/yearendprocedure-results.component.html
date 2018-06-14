@@ -1,0 +1,163 @@
+<div [id]="id" class="yearendprocedure-container">
+  <yearendprocedure-status [loading]="canShowStatusLoader" [id]="getChildId('YearendprocedureStatus', 6)" [name]="getChildName('YearendprocedureStatus', 6)"></yearendprocedure-status>
+  <div class="icon-with-text" *ngIf="showInprogressMessage">
+    <span class="icon-with-text__icon">
+     <ae-icon [id]="getChildId('AeIcon',12)" [name]="getChildName('AeIcon',12)" [size]="iconSmall"
+            [icon]="'icon-info'" > </ae-icon>
+        </span>
+    <span class="icon-with-text__copy">
+    {{'YEAR_END_PROCEDURE.YEP_RESULTS.INPROGRESS_TEXT' | translate:lang}}
+      <ae-anchor [id]="getChildId('AeAnchor', 16)" [name]="getChildName('AeAnchor', 16)" [text]="'YEAR_END_PROCEDURE.YEP_RESULTS.CLICK_HERE' | translate:lang" (aeClick)="reloadResults($event)"></ae-anchor> {{'YEAR_END_PROCEDURE.YEP_RESULTS.RELOAD_RESULTS_TEXT' | translate:lang}}</span>
+  </div>
+
+  <div class="top-15 yearendprocedure-datatable" *ngIf="showYEPResults">
+    <ae-datatable [id]="getChildId('AeDatatable',2)" [name]="getChildName('AeDatatable',2)" [dataSource]="yearendprocedureResults$"
+      [autoGenerateColumns]="false" [totalRecords]="totalRowsCount$" [defaultOptions]="dataTableOptions$ | async" (pageChanged)="onPageChange($event)"
+      (onSort)="onSort($event)" [loading]="!(yepResultsLoading$ | async)">
+      <ae-column [headerText]="'YEAR_END_PROCEDURE.YEP_RESULTS.FULL_NAME' | translate:lang" [sortable]="true" [sortKey]="'FirstName'">
+        <ae-template [type]="'header'">
+          <ng-template>
+            <span [title]="'YEAR_END_PROCEDURE.YEP_RESULTS.FULL_NAME' | translate:lang">{{'YEAR_END_PROCEDURE.YEP_RESULTS.FULL_NAME' | translate:lang}}</span>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]="'cell'" [keys]="keys">
+          <ng-template let-context="item">
+            <span [title]="context.FullName"> {{ context.FullName }} </span>
+          </ng-template>
+        </ae-template>
+      </ae-column>
+
+      <ae-column [headerText]="'YEAR_END_PROCEDURE.YEP_RESULTS.DEPT_TEAM' | translate:lang" [sortable]="true" [sortKey]="'DepartmentName'">
+        <ae-template [type]="'header'">
+          <ng-template>
+            <span [title]="'YEAR_END_PROCEDURE.YEP_RESULTS.DEPT_TEAM' | translate:lang">{{'YEAR_END_PROCEDURE.YEP_RESULTS.DEPT_TEAM' | translate:lang}}</span>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]="'cell'" [keys]="keys">
+          <ng-template let-context="item">
+            <span [title]="context.DepartmentName"> {{ context.DepartmentName }} </span>
+          </ng-template>
+        </ae-template>
+      </ae-column>
+      <ae-column [headerText]="'YEAR_END_PROCEDURE.YEP_RESULTS.LENGTH_OF_SERVICE' | translate:lang" [sortable]="true" [sortKey]="'StartDate'">
+        <ae-template [type]="'header'">
+          <ng-template>
+            <span [title]="'YEAR_END_PROCEDURE.YEP_RESULTS.LENGTH_OF_SERVICE' | translate:lang">{{'YEAR_END_PROCEDURE.YEP_RESULTS.LENGTH_OF_SERVICE' | translate:lang}}</span>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]="'cell'" [keys]="keys">
+          <ng-template let-context="item">
+            <span [title]="context.LengthOfService">{{context.LengthOfService }} </span>
+          </ng-template>
+        </ae-template>
+      </ae-column>
+      <ae-column [headerText]="'YEAR_END_PROCEDURE.YEP_RESULTS.LAST_YEAR_HOLIDAY_ENTITLEMENT' | translate:lang" [sortable]="true"
+        [sortKey]="'HolidayEntitlement'">
+        <ae-template [type]="'header'">
+          <ng-template>
+            <span [title]="'YEAR_END_PROCEDURE.YEP_RESULTS.LAST_YEAR_HOLIDAY_ENTITLEMENT' | translate:lang">{{'YEAR_END_PROCEDURE.YEP_RESULTS.LAST_YEAR_HOLIDAY_ENTITLEMENT' | translate:lang}}</span>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]="'cell'" [keys]="keys">
+          <ng-template let-context="item">
+            <span [title]="context.LastYearHolidayEntitlement">{{context.LastYearHolidayEntitlement}}</span>
+          </ng-template>
+        </ae-template>
+      </ae-column>
+      <ae-column [headerText]="'YEAR_END_PROCEDURE.YEP_RESULTS.HOLIDAYS_TAKEN' | translate:lang" [sortable]="true" [sortKey]="'UtilizedHolidayUnits'">
+        <ae-template [type]="'header'">
+          <ng-template>
+            <span [title]="'YEAR_END_PROCEDURE.YEP_RESULTS.HOLIDAYS_TAKEN' | translate:lang">{{'YEAR_END_PROCEDURE.YEP_RESULTS.HOLIDAYS_TAKEN' | translate:lang}}</span>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]="'cell'" [keys]="keys">
+          <ng-template let-context="item">
+            <span [title]="context.HolidaysTaken">{{context.HolidaysTaken}}</span>
+          </ng-template>
+        </ae-template>
+      </ae-column>
+      <ae-column [headerText]="'YEAR_END_PROCEDURE.YEP_RESULTS.AVAILABLE_TO_CARRY_FORWARD' | translate:lang" [sortable]="true"
+        [sortKey]="'ReviewedCarryForwardedUnits'">
+        <ae-template [type]="'header'">
+          <ng-template>
+            <span [title]="'YEAR_END_PROCEDURE.YEP_RESULTS.AVAILABLE_TO_CARRY_FORWARD_MSG' | translate:lang">{{'YEAR_END_PROCEDURE.YEP_RESULTS.AVAILABLE_TO_CARRY_FORWARD' | translate:lang}}</span>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]="'cell'" [keys]="keys">
+          <ng-template let-context="item">
+            <div class="input-row">
+              <span class="input-box"><ae-input [id]="getChildId('AeInput',context.Row)" [name]="getChildName('AeInput',context.Row)" [placeholder]="'YEAR_END_PROCEDURE.YEP_RESULTS.AVAILABLE_TO_CARRY_FORWARD' | translate:lang"
+                  [title]="context.ReviewedCarryForwardedUnits" [value]="context.ReviewedCarryForwardedUnits" (aeChange)="setInputPropertyValue($event,context,'ReviewedCarryForwardedUnits')"                  
+                  [type]="inputTypeNumber" [min]="0" (aeBlur)="autoSave(context.Row)"></ae-input></span><span class="input-text">{{context.AvailableToCarryForwardUnitType}}</span>
+            </div>
+            <div class="top-5">
+              <span *ngIf="fieldHasRequiredError(context.Row,'ReviewedCarryForwardedUnits')" class="error-text" id="ReviewedHolidayEntitlement_error">
+            {{'YEAR_END_PROCEDURE.YEP_RESULTS.FIELD_REQUIRED' | translate:lang:{fieldName:"Available to carry forward"} }}
+            </span>
+              <span *ngIf="!isValidNumber(context.Row,'ReviewedCarryForwardedUnits')" class="error-text" id="ReviewedHolidayEntitlement_validnumber_error">
+            {{'YEAR_END_PROCEDURE.YEP_RESULTS.NUMBER_FIELD_MSG' | translate:lang:{fieldName:"Available to carry forward"} }}
+            </span>
+            </div>
+          </ng-template>
+        </ae-template>
+      </ae-column>
+      <ae-column [headerText]="'YEAR_END_PROCEDURE.YEP_RESULTS.THIS_YEAR_ENTITLEMENT' | translate:lang" [sortable]="true" [sortKey]="'ReviewedHolidayEntitlement'">
+        <ae-template [type]="'header'">
+          <ng-template>
+            <span [title]="'YEAR_END_PROCEDURE.YEP_RESULTS.THIS_YEAR_ENTITLEMENT' | translate:lang">{{'YEAR_END_PROCEDURE.YEP_RESULTS.THIS_YEAR_ENTITLEMENT' | translate:lang}}</span>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]="'cell'" [keys]="keys">
+          <ng-template let-context="item">
+            <div class="input-row">
+              <span class="input-box"><ae-input [id]="getChildId('AeInput',context.Row)" [name]="getChildName('AeInput',context.Row)" [placeholder]="'YEAR_END_PROCEDURE.YEP_RESULTS.THIS_YEAR_ENTITLEMENT' | translate:lang"
+                [title]="context.ReviewedHolidayEntitlement" [value]="context.ReviewedHolidayEntitlement" (aeChange)="setInputPropertyValue($event,context,'ReviewedHolidayEntitlement')"
+                [type]="inputTypeNumber" [min]="0" (aeBlur)="autoSave(context.Row)"></ae-input></span><span class="input-text">{{context.ThisYearHolidayEntitlementUnitType}}</span>
+            </div>
+            <div style="padding-top:5px;">
+              <span *ngIf="fieldHasRequiredError(context.Row,'ReviewedHolidayEntitlement')" class="error-text" id="ReviewedHolidayEntitlement_error">
+            {{'YEAR_END_PROCEDURE.YEP_RESULTS.FIELD_REQUIRED' | translate:lang:{fieldName:"This year's holiday entitlement"} }}
+            </span>
+              <span *ngIf="!isValidNumber(context.Row,'ReviewedHolidayEntitlement')" class="error-text" id="ReviewedHolidayEntitlement_validnumber_error">
+            {{'YEAR_END_PROCEDURE.YEP_RESULTS.NUMBER_FIELD_MSG' | translate:lang:{fieldName:"This year's holiday entitlement"} }}
+            </span>
+            </div>
+          </ng-template>
+        </ae-template>
+      </ae-column>
+      <ae-column [headerText]="'YEAR_END_PROCEDURE.YEP_RESULTS.THIS_YEAR_TOTAL_HOLIDAYS' | translate:lang" [sortable]="false" [sortKey]="'TotalHolidays'">
+        <ae-template [type]="'header'">
+          <ng-template>
+            <span [title]="'YEAR_END_PROCEDURE.YEP_RESULTS.THIS_YEAR_TOTAL_HOLIDAYS_MSG' | translate:lang">{{'YEAR_END_PROCEDURE.YEP_RESULTS.THIS_YEAR_TOTAL_HOLIDAYS' | translate:lang}}</span>
+          </ng-template>
+        </ae-template>
+        <ae-template [type]="'cell'" [keys]="keys">
+          <ng-template let-context="item">
+            <span [title]="getThisYearTotalHolidaysValue(context)">{{getThisYearTotalHolidaysValue(context)}}</span>
+          </ng-template>
+        </ae-template>
+      </ae-column>
+    </ae-datatable>
+  </div>
+
+  <div class="button-bar spacer--y">
+    <div class="button-bar__item"></div>
+    <div class="button-bar__item">
+      <ae-button [id]="getChildId('AeButton', 17)" [name]="getChildName('AeButton', 17)" [text]="'BUTTONS.RERUN' | translate:lang"
+        [title]="'BUTTONS.RERUN' | translate:lang" (aeClick)="reRunYearEndProcedure()" [disabled]="!showYEPResults"></ae-button>
+    </div>
+    <div class="button-bar__item">
+      <ae-button [id]="getChildId('AeButton', 18)" [name]="getChildName('AeButton', 18)" [customClass]="'button--cta'" [text]="'BUTTONS.CONFIRM' | translate:lang"
+        [title]="'BUTTONS.CONFIRM' | translate:lang" (aeClick)="runYearEndProcedure()" [disabled]="hasValidationErrors"></ae-button>
+    </div>
+  </div>
+
+  <!-- YEP review confirmation model -->
+  <ae-modal-dialog [visible]="showConfirmProcess" (cancel)="onConfirmProcess('no')" [closable]="true" [id]="getChildId('AeModalDialog', 1)"
+    [name]="getChildId('AeModalDialog', 1)" [size]="largeSize" *ngIf="showConfirmProcess">
+    <yearendprocedure-confirm [id]="getChildId('AeModalDialog', 2)" [name]="getChildId('AeModalDialog', 2)" 
+   [employeeList]="employeeList" (confirm)="onConfirmProcess($event)"></yearendprocedure-confirm>
+  </ae-modal-dialog>
+  <!-- End of YEP review confirmation model -->
+<ae-loader [id]="getChildId('AeLoader',21)" [loaderType]="loaderType" *ngIf="!isZeroEntitlementLoaded"></ae-loader>
+</div>

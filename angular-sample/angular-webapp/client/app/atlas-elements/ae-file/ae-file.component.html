@@ -1,0 +1,32 @@
+<label *ngIf="!isMultiFileUpload()" class="button  button--light button--upload">   
+     <input #inputFileSelector [id]="id" [name]="name" class="input"  type="file" 
+  (change)="onFileSelect($event)" [title]= "title" *ngIf="!isCaptureModeEnabled()"  [accept]="accept"/> 
+    <input [id]="id" [name]="name" class="input"  type="file" 
+  (change)="onFileSelect($event)" [title]= "title"  capture  *ngIf="isCaptureModeEnabled()" [accept]="accept"/> 
+
+    <ae-icon [id]="'iconUpload'" [name]="'iconUpload'" [size]="iconSize" [color]="iconColor" [icon]="icon" *ngIf="showIcon"></ae-icon>  
+    {{title}}
+</label>
+
+<label *ngIf="isMultiFileUpload()" class="button  button--light button--upload">  
+     <input #inputFileSelector [id]="id" [name]="name" class="input"  type="file" 
+  (change)="onFileSelect($event)" [title]= "title"  multiple="multiple" [accept]="accept"/>  
+    <ae-icon [id]="'iconUpload'" [name]="'iconUpload'" [size]="iconSize" [color]="iconColor" [icon]="icon" *ngIf="showIcon"></ae-icon>  
+    {{title}}
+</label>
+
+
+<label *ngIf="isDropSupported()" class="button  button--light button--upload drag-drop">
+  Or drop file{{isMultiFileUpload() ? 's':''}} here 
+     <input [id]="id" [name]="name" class="input"  type="file" 
+  (change)="onFileSelect($event)" [title]= "title"  multiple="multiple" [accept]="accept" />  
+</label>
+<div *ngIf="showFileName">
+  <div *ngIf="hasFiles()">
+    <div *ngFor="let result of selectedFiles" class="file-list">
+      <span><b>File name:</b> {{result.file.name}}</span>
+      <span><b>Size:</b> {{result.file.size}}</span>
+      <span *ngIf="!result.isValid" style="color:red">{{invalidFileMessage}}</span>
+    </div>
+  </div>
+</div>

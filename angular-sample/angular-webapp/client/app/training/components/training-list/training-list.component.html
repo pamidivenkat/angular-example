@@ -1,0 +1,119 @@
+<div class="table spacer training-list-grid">
+  <div class="table__filter-bar">
+    <form [formGroup]="trainingListForm" [id]="getChildId('trainingListForm', 1)" [name]="getChildName('trainingListForm', 1)">
+      <div class="filter-bar">
+        <div class="filter-bar__label label">Filter by</div>
+        <div class="filter-bar__filters">
+          <div class="filter-bar__filter">
+            <ae-input [id]="'txtSearch'" formControlName="courseName" [name]="'txtSearch'" [placeholder]="searchPlaceHolder" [delay]="searchDebounce"
+              [type]="inputType"></ae-input>
+          </div>
+          <div class="filter-bar__filter">
+
+            <ae-autocomplete formControlName="status" [id]="'ddlStatus'" [name]="'ddlStatus'" [placeholder]="'ALL' | translate:lang"
+              [multiselect]="'true'" [items]="trainingStatus" [dstype]="localDataSourceType" [field]="'Text'" [valuefield]="'Value'"></ae-autocomplete>
+
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <ae-datatable [id]="'trainingListTable'" [name]="'trainingListTable'" [dataSource]="trainings" [autoGenerateColumns]="false"
+    [totalRecords]="totalRecords" [defaultOptions]="dataTableOptions | async" (pageChanged)="onPageChange($event)" (onSort)="onSort($event)"
+    [loading]="trainingsLoading | async">
+    <ae-column [headerText]="'Course'" [sortable]="true" [sortKey]="'CourseTitle'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>Course</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          {{context.CourseTitle}}
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'Module'" [sortable]="true" [sortKey]="'ModuleTitle'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>Module</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <span>{{context.ModuleTitle}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+
+    <ae-column [headerText]="'Assigned date'" [sortable]="true" [sortKey]="'StartDate'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>Assigned date</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <span>{{context.StartDate | localeDate:defaultLocale:'shortDate'}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'Pass/Completed date'" [sortable]="true" [sortKey]="'PassDate'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>Pass/Completed date</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <span>{{context.PassDate |  localeDate:defaultLocale:'shortDate' }}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+
+
+    <ae-column [headerText]="'Status'" [sortable]="true" [sortKey]="'Status'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>Status</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <span>{{ getStatusText(context.Status)}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+
+
+    <ae-column [headerText]="'Actions'" [sortable]="false">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span>Actions</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <div [class]="'grid-action'">
+            <ae-button [class]="lightClass" [customClass]="'button--condensed'" [btnIcon]="'icon-upload'" [title]="context.Status == '4' ? 'Re-launch' : 'Launch'"
+              [type]="'button'" [id]="'btnLaunch'" [name]="'btnLaunch'" (aeClick)="onLaunchClick(context)" *ngIf="showLaunchButton(context.Status)"></ae-button>
+            <ae-button [customClass]="'button--condensed button--cta'" [btnIcon]="'icon-alert-download'" [title]="'Download certificate'"
+              [type]="'button'" [id]="'btnDownload'" [name]="'btnDownload'" (aeClick)="onDownloadClick(context)" *ngIf="showDownloadCertificate(context)"></ae-button>
+          </div>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+  </ae-datatable>
+</div>
+
+<div *ngIf="showTraining" class="training-popup-container">
+  <ae-modal-dialog [closable]="true" [id]="getChildId('AeModel', 1)" [name]="getChildName('AeModel', 1)" [visible]="true" (cancel)="closeTraining()">
+      <div class="modal-dialog-header">
+          <h3>{{moduleTitle}}</h3>
+        </div>
+    <div class="modal-dialog-body">
+      <ae-loader [loaderType]="loaderBars" *ngIf="!isCourseLoaded"></ae-loader>
+      <iframe id="player" [attr.src]="trustedUrl" frameborder="0"> </iframe>
+    </div>
+  </ae-modal-dialog>
+</div>

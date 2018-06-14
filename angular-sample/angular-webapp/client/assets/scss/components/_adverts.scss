@@ -1,0 +1,40 @@
+.adverts {
+  background: $white;
+  padding: 2%;
+
+  @include media-over-767 {
+    display: flex;
+  }
+}
+
+.adverts__advert {
+  background: $white;
+  display: block;
+  margin: 0 auto 2%;
+  max-width: 480px;
+
+  @include media-over-767 {
+    border-radius: $widget-border-radius;
+    box-shadow: $base-shadow;
+    margin-bottom: 0;
+    margin-left: 0;
+    margin-right: 2%;
+    max-width: none;
+    width: calc(33.3333% - 2px);
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  .button--cta {
+    display: inline-block;
+    margin: 0 auto $base-margin;
+    width: auto;
+  }
+
+  h2,
+  p {
+    margin: $base-margin;
+  }
+}

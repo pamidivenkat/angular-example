@@ -1,0 +1,21 @@
+
+.adverts__advert{padding-bottom:60px; position:relative;
+.button-sec{position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    text-align: center;}
+}
+.adverts-loader {
+  .img-loader {
+    height: 120px;
+  }
+  text-align: center;
+  .info {
+    width: 90%;
+    margin: 3% 5%;
+    .button-loader {
+      margin-top: 30px;
+    }
+  }
+}

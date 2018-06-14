@@ -1,0 +1,50 @@
+<div id="ID" class="calendar-block">
+  <h5 class="title">{{calendarTitle}}</h5>
+  <div class="spacer">
+
+    <div class="caleander-top-sec">
+      <div class="middle-col">
+        <h3 class="align-center">
+          <span *ngIf="view=='day'"> {{ viewDate | date: 'MMMM d, y'}} </span>
+          <span *ngIf="view=='week'"> {{weekTitle}}</span>
+          <span *ngIf="view=='month'"> {{ viewDate | date: 'MMMM y'}}</span>
+        </h3>
+      </div>
+      <div class="left-col">
+        <div class="button--inline-block">
+          <ae-button [text]="'<'" [type]="'submit'" [id]="'btnPrev'" [name]="'btnPrev'" (aeClick)="onPrvClick($event)"></ae-button>
+        </div>
+        <div class="button--inline-block">
+          <ae-button [text]="'>'" [type]="'submit'" [id]="'btnNext'" [name]="'btnNext'" (aeClick)="onNextClick($event)"></ae-button>
+        </div>
+        <div class="button--inline-block" [ngClass]="{'active': isToday}">
+          <ae-button [text]="'Today'" [type]="'submit'" [id]="'btnToday'" [name]="'btnToday'" (aeClick)="onTodayClick($event)"></ae-button>
+        </div>
+      </div>
+      <div class="right-col">
+        <div class="button--inline-block" [ngClass]="{'active': view==='day'}">
+          <ae-button [text]="'Day'" [type]="'submit'" [id]="'btnDay'" [name]="'btnDay'" (aeClick)="onDayViewClick($event)"></ae-button>
+        </div>
+        <div class="button--inline-block" [ngClass]="{'active': view==='week'}">
+          <ae-button [text]="'Week'" [type]="'submit'" [id]="'btnWeek'" [name]="'btnWeek'" (aeClick)="onWeekViewClick($event)"></ae-button>
+        </div>
+        <div class="button--inline-block" [ngClass]="{'active': view==='month'}">
+          <ae-button [text]="'Month'" [type]="'submit'" [id]="'btnMonth'" [name]="'btnMonth'" (aeClick)="onMonthViewClick($event)"></ae-button>
+        </div>
+      </div>
+
+    </div>
+    <div [ngSwitch]="view">
+      <ae-calendar-month-view *ngSwitchCase="'month'" [viewDate]="viewDate" displayView="month" [events]="events" [activeDayIsOpen]="true">
+      </ae-calendar-month-view>
+      <ae-calendar-week-view *ngSwitchCase="'week'" displayView="week" [viewDate]="viewDate" [events]="events">
+      </ae-calendar-week-view>
+      <ae-calendar-day-view *ngSwitchCase="'day'" [viewDate]="viewDate" displayView="day" [events]="events">
+      </ae-calendar-day-view>
+    </div>
+    <div class="legend-block">
+      <ae-legend [id]="'calenderLegend'" [options]="legendOptions"></ae-legend>
+    </div>
+  </div>
+</div>
+<ae-loader [loaderType]="loaderBars" *ngIf="loading"></ae-loader>

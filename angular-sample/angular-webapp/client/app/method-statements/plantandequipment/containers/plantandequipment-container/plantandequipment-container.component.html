@@ -1,0 +1,48 @@
+<div>
+    <ae-banner [id]="'PlantAndEquipBanner'" [name]="'PlantAndEquipBanner'" [titleText]="'PLANT_AND_EQUIPMENT' | translate:lang"
+        [backgroundImage]="getBackgroundImage()">
+        <ae2-breadcrumb [id]="'PlantAndEquipbreadCrumb'" [name]="'PlantAndEquipbreadCrumb'" [group]="bcGroup" class="bredcrumb-section"></ae2-breadcrumb>
+        <div class="icon-list banner-icon-list">
+            <ae-anchor [text]="'ADD_PLANT_AND_EQUIPMENT' | translate:lang" [anchorType]="'button'" [class]="'button'" [id]="'plantAndEquip_AeAnchor'"
+                [name]="'plantAndEquip_AeAnchor'" (aeClick)="addNewPlantAndEquipment()" [title]="'ADD_PLANT_AND_EQUIPMENT' | translate:lang"></ae-anchor>
+        </div>
+    </ae-banner>
+    <ae-notification [id]="'PlantAndEquipNotif'" [name]="'PlantAndEquipNotif'" [iconName]="'icon-info'" [textInfo]="'PLANTANDEQIP_LANDING_PAGE_MSG' | translate:lang"></ae-notification>
+
+
+    <div id="contentArea" class="tab-content">
+        <plantandequipmentlist [id]="'plantandequipmentList'" [name]="'plantandequipmentList'" (onPlantEquipmentView)="onPlantEquipmentView($event)"
+            (onPlantEquipmentDelete)="onPlantEquipmentDelete($event)" (onPlantEquipmentUpdate)="onPlantEquipmentUpdate($event)">
+        </plantandequipmentlist>
+    </div>
+</div>
+
+
+<ae-modal-dialog [visible]="showPlantEquipmentDeleteModal" (cancel)="modalClosed($event)" [closable]="true" [id]="'confirmModal'"
+    [name]="'confirmModal'" *ngIf="showPlantEquipmentDeleteModal">
+    <div class="modal-dialog-header">
+        <h3>{{ 'PLANT_AND_EQUIPMENT_REMOVE_DIALOG_MSG' | translate:lang }}</h3>
+    </div>
+    <div class="modal-dialog-body">
+        <p>{{'PLANT_AND_EQUIPMENT_REMOVE_DIALOG_MSG_CONFIRM' | translate: lang:{itemName: selectedPlantEquipment.Name} }}</p>
+    </div>
+    <div class="modal-dialog-footer">
+        <ae-button [class]="darkClass" [text]="'PLANT_AND_EQUIPMENT_Dialog.Btn_No' | translate:lang" [type]="'button'" [id]="'confirmNo'"
+            [name]="'confirmNo'" (aeClick)="modalClosed('no')"></ae-button>
+        <ae-button [class]="lightClass" [text]="'PLANT_AND_EQUIPMENT_Dialog.Btn_Yes' | translate:lang" [type]="'button'" [id]="'confirmYes'"
+            [name]="'confirmYes'" (aeClick)="modalClosed('yes')"></ae-button>
+    </div>
+</ae-modal-dialog>
+
+
+<ae-slideout [id]="'customPlantEquipmentSlideout'" [name]="'customPlantEquipmentSlideout'" [modelState]="getPlantAndEquipmentSlideoutState()"
+    [class.slide--animate]="getSlideoutAnimateState()">
+    <div *ngIf="showPlantEquipmentViewSlideOut">
+        <plantandequipment-view [id]="'customPlantEquipmentView'" [name]="'customPlantEquipmentView'" [SelectedPlantEquipment]="loadedSelectedPlantEquipment"
+            (onCancel)="onPlantAndEquipmentlideCancel($event)"></plantandequipment-view>
+    </div>
+    <div *ngIf="showPlantEquipmentAddUpdateForm">
+        <plantandequipment-addupdate [id]="'plantEquipmentUpdate'" [name]="'plantEquipmentUpdate'" [SelectedPlantEquipment]="loadedSelectedPlantEquipment"
+            [action]="action" (onCancel)="onPlantAndEquipmentlideCancel($event)"></plantandequipment-addupdate>
+    </div>
+</ae-slideout>

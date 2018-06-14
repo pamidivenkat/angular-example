@@ -1,0 +1,208 @@
+<div class="so-panel__container">
+  <div class="so-panel__title">
+    <h3>Incident</h3>
+  </div>
+  <div class="so-panel__content">
+    <div class="information-grid">
+      <section class="information-grid__section">
+        <h3>Person reporting</h3>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">Incident reported by</div>
+          <div class="information-grid__item-value column-2of3">
+            {{incident.IncidentReportedByUserFullName}}
+          </div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">Work address</div>
+          <div class="information-grid__item-value column-2of3">
+            <div> {{incident.IncidentReportedByAddressLine1}}</div>
+            <div *ngIf="incident.IncidentReportedByAddressLine2"> {{incident.IncidentReportedByAddressLine2}}</div>
+            <div> {{incident.IncidentReportedByTown}}</div>
+            <div> {{incident.IncidentReportedByCountyName}} </div>
+            <div>{{incident.IncidentReportedByPostcode}}</div>
+          </div>
+        </div>
+      </section>
+      <section class="information-grid__section">
+        <h3>About the incident</h3>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">Incident type</div>
+          <div class="information-grid__item-value column-2of3">
+            <div>{{incident.AboutIncidentIncidentType}}</div>
+          </div>
+        </div>
+        <div class="information-grid__item" *ngIf="incident.InjuryTypesText">
+          <div class="information-grid__item-label column-1of3">Injuries type</div>
+          <div class="information-grid__item-value column-2of3">
+            <div>{{incident.InjuryTypesText}}</div>
+          </div>
+        </div>
+        <div class="information-grid__item" *ngIf="incident.InjuredPartsText">
+          <div class="information-grid__item-label column-1of3">Injured parts </div>
+          <div class="information-grid__item-value column-2of3">
+            <div>{{incident.InjuredPartsText}}</div>
+          </div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">Where did the incident happen? </div>
+          <div class="information-grid__item-value column-2of3">
+            {{incident.AboutIncidentSiteName ? incident.AboutIncidentSiteName : incident.AboutIncidentDetails.OtherSite ? incident.AboutIncidentDetails.OtherSite : ''}}
+          </div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">When did the incident happen? </div>
+          <div class="information-grid__item-value column-2of3">
+            {{incident.AboutIncidentDetails.WhenHappened ? ( incident.AboutIncidentDetails.WhenHappened | localeDate:defaultLocale:'shortDate'):''}}
+          </div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">How did the incident happen?</div>
+          <div class="information-grid__item-value column-2of3">
+            {{incident.AboutIncidentDetails.HowDidHappen}}
+          </div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">Description of injuries sustained </div>
+          <div class="information-grid__item-value column-2of3">
+            {{incident.AboutIncidentDetails.InjuryDescription}}
+          </div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">Site </div>
+          <div class="information-grid__item-value column-2of3">
+            {{incident.AboutIncidentSiteName ? incident.AboutIncidentSiteName : incident.AboutIncidentDetails.OtherSite ? incident.AboutIncidentDetails.OtherSite : ''}}
+          </div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">Address</div>
+          <div class="information-grid__item-value column-2of3">
+            <div> {{incident.AboutIncidentDetails.AddressLine1}}</div>
+            <div *ngIf="incident.AboutIncidentDetails.AddressLine2"> {{incident.AboutIncidentDetails.AddressLine2}}</div>
+            <div> {{incident.AboutIncidentDetails.Town}}</div>
+            <div> {{getCountyName(incident.AboutIncidentDetails.County)}} </div>
+            <div>{{incident.AboutIncidentDetails.Postcode}}</div>
+          </div>
+        </div>
+      </section>
+      <section class="information-grid__section">
+        <h3>About the affected party</h3>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">Injured party</div>
+          <div class="information-grid__item-value column-2of3">
+            {{incident.InjuredPersonInjuredPartyName}}
+          </div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">Full name</div>
+          <div class="information-grid__item-value column-2of3">
+            {{incident.InjuredPersonName}}
+          </div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">Job role</div>
+          <div class="information-grid__item-value column-2of3 text-muted">
+            {{incident.InjuredPersonOccupation}}
+          </div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">Date of birth</div>
+          <div class="information-grid__item-value column-2of3">
+            {{incident.InjuredPersonDateOfBirth | localeDate:defaultLocale:'shortDate'}}
+          </div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">Address</div>
+          <div class="information-grid__item-value column-2of3">
+            <div> {{incident.InjuredPersonAddressLine1}}</div>
+            <div *ngIf="incident.InjuredPersonAddressLine2"> {{incident.InjuredPersonAddressLine2}}</div>
+            <div *ngIf="incident.InjuredPersonTown"> {{incident.InjuredPersonTown}}</div>
+            <div> {{incident.IncidentReportedByCountyName}} </div>
+            <div>{{incident.InjuredPersonCounty}}</div>
+          </div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">Telephone number</div>
+          <div class="information-grid__item-value column-2of3">
+            {{incident.InjuredPersonMobilePhone || 'NONE'}}
+          </div>
+        </div>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">Gender</div>
+          <div class="information-grid__item-value column-2of3">
+            {{incident.InjuredPersonGenderText}}
+          </div>
+        </div>
+      </section>
+      <section class="information-grid__section">
+        <h3>RIDDOR</h3>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">Is a RIDDOR report required?</div>
+          <div class="information-grid__item-value column-2of3">
+            {{incident.ReportedToIsRIDDORRequired ? 'Yes' : 'No' }}
+          </div>
+        </div>
+        <div *ngIf="incident.ReportedToIsRIDDORRequired">
+
+          <div class="information-grid__item">
+            <div class="information-grid__item-label column-1of3">Main industry</div>
+            <div class="information-grid__item-value column-2of3">
+              {{ incident.ReportedToMainIndustry }}
+            </div>
+          </div>
+          <div class="information-grid__item">
+            <div class="information-grid__item-label column-1of3">Main activity</div>
+            <div class="information-grid__item-value column-2of3">
+              {{ incident.ReportedToMainActivity }}
+            </div>
+          </div>
+          <div class="information-grid__item">
+            <div class="information-grid__item-label column-1of3">Sub activity</div>
+            <div class="information-grid__item-value column-2of3">
+              {{ incident.ReportedToSubActivity }}
+            </div>
+          </div>
+          <div class="information-grid__item">
+            <div class="information-grid__item-label column-1of3">RIDDOR reported by</div>
+            <div class="information-grid__item-value column-2of3">
+              {{ incident.ReportedToReportedBy }}
+            </div>
+          </div>
+          <div class="information-grid__item">
+            <div class="information-grid__item-label column-1of3">Date reported</div>
+            <div class="information-grid__item-value column-2of3">
+              {{ incident.ReportedToRIDDORReportedDate | localeDate:defaultLocale:'shortDate'}}
+            </div>
+          </div>
+          <div class="information-grid__item">
+            <div class="information-grid__item-label column-1of3">Local authority</div>
+            <div class="information-grid__item-value column-2of3">
+              {{ incident.ReportedToLocalAuthority}}
+            </div>
+          </div>
+          <div class="information-grid__item">
+            <div class="information-grid__item-label column-1of3">How was it reported to the HSE?</div>
+            <div class="information-grid__item-value column-2of3">
+              {{ incident.ReportedToRIDDORReportedMedium}}
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="information-grid__section">
+        <h3>Formal investigation</h3>
+        <div class="information-grid__item">
+          <div class="information-grid__item-label column-1of3">Is a formal investigation required?</div>
+          <div class="information-grid__item-value column-2of3">
+            {{incident.IsInvestigationRequired ? 'Yes' : 'No' }}
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+  <div class="so-panel__footer" [id]="getChildId('div', 1)">
+    <nav>
+      <ul>
+        <li><label for="soPanel" class="button button--inline-block" (click)="onIncidentViewFormClosed($event)">{{'CANCEL' | translate:lang}}</label></li>
+      </ul>
+    </nav>
+  </div>
+</div>

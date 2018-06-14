@@ -1,0 +1,5 @@
+<label class="toggle-switch" [class.text--left]="isLeft()" [class.text--right]="isRight()">
+      <span *ngIf="showText">{{switchLabel}}</span>
+  <input [id]="id" type="checkbox" [value]="value" (change)="onChange($event)" [checked]="value" class="toggle-switch__input" [disabled]="disabled"/>
+  <div class="toggle-switch__indicator" [title]="title"></div>
+</label>

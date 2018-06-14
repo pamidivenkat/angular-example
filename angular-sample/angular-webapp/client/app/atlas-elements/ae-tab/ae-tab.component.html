@@ -1,0 +1,35 @@
+<div class="js-tabs-container tabs">
+  <ng-container *ngIf="isStandardHeader()">
+    <div class="tabs-nav">
+      <div class="js-tabs-nav tabs-nav__inner">
+        <div class="js-tab-title tabs-nav__item" *ngFor="let tab of tabs; let i = index"  (click)="tabHeaderClick(tab,i)" 
+        aePopover [popOverVm]="getPopOverVm(tab)" [popOverAction]="'hover'" [class.active]="getSelectedTabIndex() == i">
+          <ae-label [id]="id + '_aelabel_'+ i" [name]="name + '_aelabel_'+ i" [text]="tab.header" [icon]="tab.headerIcon" class="icon--medium"></ae-label>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="!isStandardHeader()">
+    <div class="tabs-nav">
+      <div class="js-tabs-nav tabs-nav__inner">
+        <div class="js-tab-title tabs-nav__item" *ngFor="let tab of tabs; let i = index"  (click)="tabHeaderClick(tab,i)"
+          aePopover [popOverVm]="getPopOverVm(tab)" [popOverAction]="'hover'" [class.active]="getSelectedTabIndex() == i">
+          <div class="icon--medium">
+            <ae-template-loader [template]="getTabItemHeaderTemplate(tab)"></ae-template-loader>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <div class="tab-content">
+    <ae-template-loader [templateStream]="getTabItemContentTempalteStream()"></ae-template-loader>
+  </div>
+</div>
+
+<ae-template #popOverTemplate [type]="'popOver'">
+  <ng-template let-context="item">
+    <div class="popover-container">
+      {{ context.Title }}
+    </div>
+  </ng-template>
+</ae-template>

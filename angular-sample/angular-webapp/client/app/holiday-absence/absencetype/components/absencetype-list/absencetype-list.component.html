@@ -1,0 +1,75 @@
+<div class="absencetyperequests">
+    <div class="bottom-20">
+        <ae-notification [id]="'incidentNotification'" [name]="'incidentNotification'" [iconName]="'icon-info'" [textInfo]="'ABSENCETYPE.ABSENCE_TYPES_HELP_MSG' | translate:lang">
+        </ae-notification>
+    </div>
+    <ae-datatable [id]="getChildId('AeDatatable',1)" [name]="getChildName('AeDatatable',1)" [dataSource]="absenceTypeRequest$" [actions]="actions" [totalRecords]="absenceTypeListTotalCount$" [autoGenerateColumns]="false" [defaultOptions]="absenceTypeListDataTableOptions$ | async"
+        (pageChanged)="onGridPageChange($event)" (onSort)="onGridSort($event)" [loading]="!(absenceTypeRequestLoaded$ | async)">
+
+        <ae-column [headerText]="'ABSENCETYPE.TYPE' | translate:lang" [sortable]="true " [sortKey]="'TypeName'">
+            <ae-template [type]=" 'header' ">
+                <ng-template>
+                   {{'ABSENCETYPE.TYPE' | translate:lang}}
+                </ng-template>
+            </ae-template>
+            <ae-template [type]=" 'cell' " [keys]="keys">
+                <ng-template let-context="item ">
+                   {{ context.TypeName }}
+                </ng-template>
+            </ae-template>
+        </ae-column>
+
+        <ae-column [headerText]="'ABSENCETYPE.ABSENCE_CODE' | translate:lang" [sortable]="true " [sortKey]="'NameAndCode'">
+            <ae-template [type]=" 'header' ">
+                <ng-template>
+                   {{'ABSENCETYPE.ABSENCE_CODE' | translate:lang}}
+                </ng-template>
+            </ae-template>
+            <ae-template [type]=" 'cell' " [keys]="keys">
+                <ng-template let-context="item ">
+                    {{ context.NameAndCode }}
+                </ng-template>
+            </ae-template>
+        </ae-column>
+
+        <ae-column [headerText]="'ABSENCETYPE.ABSENCE_ICON' | translate:lang" [sortable]="false">
+            <ae-template [type]=" 'header' ">
+                <ng-template>
+                   {{'ABSENCETYPE.ABSENCE_ICON' | translate:lang}}
+                </ng-template>
+            </ae-template>
+            <ae-template [type]=" 'cell' " [keys]="keys ">
+                <ng-template let-context="item ">
+                    <ae-icon [id]="getChildId('AeIcon', i)" [name]="getChildName('AeIcon', i)" [size]="iconSize" [icon]="selectIconName(context.CodeName)" [title]="context.CodeName"></ae-icon>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+
+        <ae-column [headerText]=" 'ABSENCETYPE.IS_EXAMPLE' | translate:lang " [sortable]="true" [sortKey]="'IsExample'">
+            <ae-template [type]=" 'header' ">
+                <ng-template>
+                    {{'ABSENCETYPE.IS_EXAMPLE' | translate:lang}}
+                </ng-template>
+            </ae-template>
+            <ae-template [type]=" 'cell' " [keys]="keys ">
+                <ng-template let-context="item ">
+                    {{context.IsExample === true ? 'Yes' : 'No'}}
+                </ng-template>
+            </ae-template>
+        </ae-column>
+
+        <ae-column [headerText]="'ABSENCETYPE.ABSENCE_SUBTYPE' | translate:lang" [sortable]="false">
+            <ae-template [type]=" 'header' ">
+                <ng-template>
+                    {{'ABSENCETYPE.ABSENCE_SUBTYPE' | translate:lang}}
+                </ng-template>
+            </ae-template>
+            <ae-template [type]=" 'cell' " [keys]="keys ">
+                <ng-template let-context="item">
+                    <ae-select [id]="getChildId('AeSelect',1)" [name]="getChildName('AeSelect',1)" [title]="'ABSENCETYPE.ABSENCE_SUBTYPE' | translate:lang" [placeholder]="'ABSENCETYPE.ABSENCE_SUBTYPE' | translate:lang" [options]="absenceTypeSelectList(context.AbsenceSubType)"></ae-select>
+                </ng-template>
+            </ae-template>
+        </ae-column>
+
+    </ae-datatable>
+</div>

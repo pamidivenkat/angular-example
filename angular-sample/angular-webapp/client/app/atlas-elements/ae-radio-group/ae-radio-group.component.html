@@ -1,0 +1,4 @@
+<div [id]="id">
+    <ae-radiobutton style="display:inline-block" [id]="getSeqId(i,name)" [name]="name" *ngFor="let item of options; let i = index"
+       [defaultValue]="value" [value]="item.Value" [text]="getTranslationText(item.Text)" (aeChange)="valueChanged($event)" [disabled]="item.Disabled" ></ae-radiobutton>
+</div>

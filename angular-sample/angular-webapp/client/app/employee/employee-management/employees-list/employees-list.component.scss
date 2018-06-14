@@ -1,0 +1,14 @@
+@media all and (-ms-high-contrast:none) {
+  employees-list .table__row{
+    .grid-action {
+      width: 100px;
+      height: 30px;
+      .button {
+        width: 100px;
+        height: 30px;
+        display: inline-block;
+        padding: 5px 10px;
+      }
+    }
+  }
+}

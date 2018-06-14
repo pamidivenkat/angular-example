@@ -1,0 +1,44 @@
+.accordion__list .accordion-open {
+  .accordion__contents {
+    max-height: 1000px;
+    overflow-y: auto;
+  }
+  .accordion__header .accordion__indicator>svg {
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
+  }
+  .accordion__header {
+    background: #009494;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    color: #fff;
+  }
+}
+
+.table__footer {
+  display: table;
+  width: 100%;
+ ae-pagination > div {
+    padding: 10px 0;
+    overflow: hidden;
+}
+}
+.table__filter {
+  float: left;
+  max-width: 300px;
+  margin-bottom: 0;
+}
+
+.table__pagination {
+  float: right;
+  margin-right: 10px;
+}
+.content-section.spacer.text--centered {
+    padding: 75px 30px !important;
+}
+.search-help-content {
+  .cards {
+    display:block;
+    flex-wrap: inherit;
+  }
+}

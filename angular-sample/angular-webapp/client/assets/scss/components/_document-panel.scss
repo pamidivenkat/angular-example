@@ -1,0 +1,180 @@
+/*                   1
+ *    _______________________________
+ *   | _____ | _____________ | _____ |
+ *   ||     |||             |||     ||
+ *   ||  2  |||      3      |||  4  ||
+ *   ||     |||             |||     ||
+ *   ||_____|||_____________|||_____||
+ *   |_______|_______________|_______|
+ *
+ *   1 = .document
+ *   2 = .document__structure
+ *   3 = .document__content
+ *   4 = .document__collaboration
+ *
+ *****************************************/
+
+/* 1.
+ * Document should occupy the entire
+ * viewport width available.
+ *****************************************/
+.document {
+  // flex stuff
+  display: flex;
+  flex-direction: row;
+}
+
+/* 2 & 4.
+ * Structure and Collaboration columns
+ * should have a set width.
+ *****************************************/
+.document__structure,
+.document__collaboration {
+  // flex stuff
+  display: flex;
+  flex-direction: column;
+
+  width: $aside-width;
+}
+
+/* 3.
+ * Content column should be automatically
+ * adjusted based on the viewport width
+ * available.
+ *****************************************/
+.document__content {
+  // flex stuff
+  display: flex;
+  flex-direction: column;
+
+  margin: 0 $base-margin;
+  @media all and (-ms-high-contrast:none) {
+    display: inline-block;
+  }
+}
+
+/*       2
+ *    _______
+ *   | _____ |
+ *   ||  5  ||
+ *   ||_____||
+ *   ||     ||
+ *   ||     ||
+ *   ||  6  ||
+ *   ||     ||
+ *   ||_____||
+ *   |_______|
+ *
+ *   2 = .document__structure
+ *   5 = .document__area-header
+ *   6 = .document__area-scroller
+ *
+ *****************************************/
+
+/* 5.
+ * Same height across all three instances,
+ * regardless of content, based on the
+ * height of the most content in a header
+ * area.
+ *****************************************/
+.document__area-header {
+  // flex stuff
+
+  background-color: $teal--0;
+  color: $white;
+  padding: $base-padding;
+
+  h3 {
+    font-size: 1.8rem;
+    margin: 0;
+  }
+
+  p {
+    font-size: 90%;
+    margin: $base-margin 0 0;
+  }
+}
+
+/* 6.
+ * Same height across all three instances,
+ * regardless of content, based on the
+ * most content in a scrollable area.
+ *****************************************/
+.document__area-scroller {
+  // flex stuff
+
+  background: $white;
+  border-bottom: 3px solid $teal--0;
+  height: calc(100vh - 200px);
+  overflow-y: auto;
+}
+
+.document__collaboration {
+  .document__area-scroller {
+    padding: 0;
+  }
+
+  .document__collaboration--button {
+    padding: $base-padding;
+  }
+}
+
+.document__comments--item {
+  padding: $base-padding 0;
+
+  &.author,
+  &.respondent {
+    border-left: 4px solid $teal--0;
+    padding-left: $base-padding;
+  }
+
+  &.respondent {
+    border-color: rgba($teal--0, .25);
+    border-width: 8px;
+    padding-left: ($base-padding * 1.5);
+  }
+
+  .comment__avatar {
+    float: left;
+
+    img {
+      border-radius: 50%;
+      height: $avatar-size;
+      width: $avatar-size;
+    }
+  }
+
+  .date-posted {
+    font-size: 75%;
+  }
+
+  .comment__actions {
+    &.disabled {
+      a {
+        color: $grey--4;
+        cursor: not-allowed;
+      }
+    }
+
+    a {
+      color: $teal--0;
+      font-size: 80%;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+  }
+
+  .comment__content {
+    p:last-of-type {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.comment__form {
+  padding: 0 0 0 $base-padding;
+
+  textarea {
+    margin-bottom: $base-margin;
+  }
+}

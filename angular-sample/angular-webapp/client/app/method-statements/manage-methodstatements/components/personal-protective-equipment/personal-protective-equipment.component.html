@@ -1,0 +1,5 @@
+<div class="personal-protective-equipment">
+  <ae-form *ngIf="isFormLoaded" [formBuilderData]="ppeFormVM" [id]="'ppeCategoryForm'" [name]="'ppeCategoryForm'" [isPrimaryTitle]="true"
+    [displayFooter]="false" (onFormInit)="onFormInit($event)" (onSubmit)="onPPEFormSubmitted($event)" (isFormValid)="onFormValidityChange($event)">
+  </ae-form>
+</div>

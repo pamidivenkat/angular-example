@@ -1,0 +1,121 @@
+<div>
+  <ae-banner [id]="getChildId('aeBanner')" [name]="getChildName('aeBanner')" [titleText]="'BULK_DISTRIBUTION.HEADER'| translate:lang"
+    [backgroundImage]="'/assets/images/lp-documents.jpg'">
+    <h2 sub-title>{{'('+documentTitle+')'}}</h2>
+    <ae2-breadcrumb [id]="'breadCrumb'" [name]="'breadCrumb'" class="bredcrumb-section" [group]="bcGroup"></ae2-breadcrumb>
+    <div class="icon-list banner-icon-list">
+      <div class="banner__info-icons">
+        <div class="banner__info-icon">
+          <div class="icon-with-text icon-with-text--inline-block">
+            <ae-icon [id]="'doucmentVersionIcon'" [name]="'doucmentVersionIcon'" [title]="'Document version'" [icon]="'icon-to-review'"></ae-icon>
+            <span class="icon-with-text__copy "> {{documentVersion}}</span>
+          </div>
+        </div>
+        <div class="banner__info-icon">
+          <div class="icon-with-text icon-with-text--inline-block">
+            <ae-icon [id]="'dateIcon'" [name]="'dateIcon'" [icon]="'icon-date'" [title]="'Last modified'"></ae-icon>
+            <span class="icon-with-text__copy nowrap">{{documentCreatedDate | localeDate:defaultLocale:'shortDate'}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ae-banner>
+</div>
+<ae-notification id="'bulkDistributeInfo'" [name]="'bulkDistributeInfo'" [iconName]="'icon-info'" [textInfo]="'BULK_DISTRIBUTION.NOTIFICATION_TEXT' | translate:lang"></ae-notification>
+<div class="table spacer">
+  <ae-datatable [id]="getChildId('AeDatatable',1)" [name]="getChildName('AeDatatable',1)" [dataSource]="personalisedDocuments$"
+    [totalRecords]="totalRecords$" [autoGenerateColumns]="false" [defaultOptions]="dataTableOptions$ | async" (pageChanged)="onPageChange($event)"
+    (onSort)="onSorting($event)">
+    <ae-column [headerText]="'BULK_DISTRIBUTION.EMPLOYEE_NAME' | translate:lang" [sortable]="true" [sortKey]="'EmployeeName'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span title="{{ 'BULK_DISTRIBUTION.EMPLOYEE_NAME' | translate:lang  }}">{{'BULK_DISTRIBUTION.EMPLOYEE_NAME' | translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <span>{{context.EmployeeName}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'BULK_DISTRIBUTION.JOB_TITLE' | translate:lang" [sortable]="true" [sortKey]="'JobTitle'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span title="{{ 'BULK_DISTRIBUTION.JOB_TITLE' | translate:lang  }}">{{'BULK_DISTRIBUTION.JOB_TITLE' | translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <span>{{context.JobTitle}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'BULK_DISTRIBUTION.EMPLOYEE_GROUP' | translate:lang" [sortable]="true" [sortKey]="'EmployeeGroup'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span title="{{ 'BULK_DISTRIBUTION.EMPLOYEE_GROUP' | translate:lang  }}">{{'BULK_DISTRIBUTION.EMPLOYEE_GROUP' | translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <span>{{context.EmployeeGroup}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="'BULK_DISTRIBUTION.AUTHOR' | translate:lang" [sortable]="true" [sortKey]="'Author'">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <span title="{{ 'BULK_DISTRIBUTION.AUTHOR' | translate:lang  }}">{{'BULK_DISTRIBUTION.AUTHOR' | translate:lang}}</span>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <span>{{context.Author}}</span>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="''" [sortable]="false ">
+      <ae-template [type]="'header'">
+        <ng-template>
+          <ae-checkbox [id]="'allEmployees'" [name]="'allEmployees'" [checkText]="'BUTTONS.SELECT_ALL' | translate: lang" [checked]="checkedAllEmployees()"
+            (onAeChange)="onAllEmployeesSelect($event)"></ae-checkbox>
+        </ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <ae-checkbox [id]="context.EmployeeId" [name]="context.EmployeeId" [checkText]="'BUTTONS.SELECT' | translate: lang" [checked]="checkEmployee(context.EmployeeId)"
+            (onAeChange)="onEmployeesSelect(context)"></ae-checkbox>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+    <ae-column [headerText]="''" [sortable]="false ">
+      <ae-template [type]="'header'">
+        <ng-template></ng-template>
+      </ae-template>
+      <ae-template [type]="'cell'" [keys]="keys">
+        <ng-template let-context="item">
+          <ae-button [type]="'button'" [id]="'updateButton'" [name]="'updateButton'" [customClass]="'button--small'" [class]="lightClass"
+            [text]="'BUTTONS.UPDATE'| translate:lang" [title]="'BUTTONS.UPDATE'| translate:lang" (aeClick)="onUpdateClick(context)"></ae-button>
+        </ng-template>
+      </ae-template>
+    </ae-column>
+  </ae-datatable>
+</div>
+
+<div class="button-bar spacer">
+  <div class="button-bar__item">
+    <ae-button [type]="'button'" [id]="'previousButton'" [name]="'previousButton'" [text]="'BUTTONS.PREVIOUS'| translate:lang"
+      [title]="'BUTTONS.PREVIOUS'| translate:lang" (aeClick)="onPreviousButtonClick()"></ae-button>
+  </div>
+  <div class="button-bar__item">
+    <ae-button [type]="'button'" [id]="'bulkDistribution'" [name]="'bulkDistribution'" [customClass]="'button--cta'" [text]="'BULK_DISTRIBUTION.BULK_DISTRIBUTE' | translate:lang"
+      [disabled]="enableBulkDistribution()" [title]="'BULK_DISTRIBUTION.BULK_DISTRIBUTE' | translate:lang" (aeClick)="onBulkDistributeClick()"></ae-button>
+  </div>
+</div>
+<ae-slideout [id]="'contractDistributionSlideout'" [name]="'contractDistributionSlideout'" [modelState]="getDocActionSlideoutState()"
+  [class.slide--animate]="showHideDocumentActionSlideOut">
+  <ng-container *ngIf="showHideDocumentActionSlideOut">
+    <contract-distribute-action [id]="'documentDistribute'" [name]="'documentDistribute'" (aeDocumentAction)="documentAction($event)"
+      [title]="documentTitle" [employeeGroup]="employeeGroup" [options]="actionOptions" (aeCancel)="onAeCancel($event)"></contract-distribute-action>
+  </ng-container>
+</ae-slideout>

@@ -1,0 +1,4 @@
+<ae-virtual-scroll [items]="buffer" (update)="onUpdate($event)" (end)="onChange($event)">
+    <ae-list-item *ngFor="let item of defaultItems" [template]="getTemplate()" [item]="item"></ae-list-item>
+    <!--<div *ngIf="contentLoaded" class="loader">Loading...</div>-->
+</ae-virtual-scroll>

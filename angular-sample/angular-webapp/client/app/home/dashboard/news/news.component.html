@@ -1,0 +1,25 @@
+<div>
+    <ae-carousel [items]="news" [id]="getChildId('AeAanchor',1)" [name]="getChildName('AeAanchor',1)">
+        <ae-template>
+            <ng-template let-context="item">
+                <div>
+                    <p class="date">{{context.CreatedOn | date: 'dd MMMM yyyy'}}</p>
+                    <h2>
+                        <ae-anchor (aeClick)="goToUrl(context.Url)" [text]="context.Title" [id]="getChildId('AeAanchor', 2)" [name]="getChildName('AeAanchor', 2)"></ae-anchor>
+                    </h2>
+                    <p>{{context.Tip}}</p>
+                    <p>
+                        <ae-anchor (aeClick)="goToUrl(context.Url)" [id]="getChildId('AeAanchor', 3)" [name]="getChildName('AeAanchor', 3)" *ngIf="context.Url" [text]="'Read_more' | translate:lang"></ae-anchor>
+                    </p>
+                </div>
+            </ng-template>
+        </ae-template>
+    </ae-carousel>
+</div>
+<div class="news-loader" *ngIf="!(dataLoading | async)">
+    <div class="online-loader"></div>
+    <h2 class="h-loader h2-loader"></h2>
+    <p class="info-loader"></p>
+    <div class="link-loader"></div>
+    <div class="dots-loader"></div>
+</div>

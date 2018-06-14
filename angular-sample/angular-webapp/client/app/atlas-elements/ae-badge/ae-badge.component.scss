@@ -1,0 +1,49 @@
+@import '../../../assets/scss/variablesMap';
+.badge {
+  border-radius: 50%;
+  color: $white;
+  display: inline-block;
+  font-size: 70%;
+  font-weight: 700;
+  line-height: 1.9em;
+  min-width: 28px;   
+  padding: ($base-padding / 5);
+  text-align: center;
+}
+.badge--grey {
+  background-color: $grey--2;
+}
+
+.badge--red {
+  background-color: $red--0;
+}
+
+.badge--teal {
+  background-color: $teal--0;
+}
+
+.badge--yellow {
+  background-color: $yellow--0;
+  color: $grey--0;
+}
+
+.badge--grey-pale {
+  background-color: rgba($grey--4, .75);
+  color: $grey--0;
+}
+
+.badge--shadow {
+  box-shadow: 0 1px 1px rgba($grey--0, .5);
+}
+
+.badge--medium {
+  font-size: 70%;
+  line-height: 2em;
+  min-width: 2.8em;
+}
+
+.badge--large {
+  font-size: 80%;
+  line-height: 2.2em;
+  min-width: 3em;
+}

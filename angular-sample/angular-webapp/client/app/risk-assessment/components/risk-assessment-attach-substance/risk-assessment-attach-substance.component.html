@@ -1,0 +1,19 @@
+<div [id]="getChildId('div', 1)">
+  <div class="so-panel__title" [id]="getChildId('div', 2)">
+    <div class="pull-right pull-top-5">
+      <ae-button [class]="lightClass" [text]="'BUTTONS.ADD' | translate:lang" [type]="'button'" [id]="getChildId('btnAdd', 1)"
+        [name]="getChildName('btnAdd', 1)" (aeClick)="addSubstance()"></ae-button>
+    </div>
+    <h3>{{'SUBSTANCE_TAB.ADD_SUBSTANCE' | translate:lang}}</h3>
+  </div>
+  <ae-form [formBuilderData]="riskAssessmentFormVM" [id]="getChildId('AeForm', 1)" [name]="getChildName('AeForm', 1)" [isPrimaryTitle]="false"
+    (onSubmit)="onUpdateFormSubmit($event)" (onCancel)="onUpdateFormClosed($event)" (onFormInit)="onFormInit($event)">
+  </ae-form>
+  <ae-slideout [id]="getChildId('AeSlideOut', 1)" [name]="getChildName('AeSlideOut', 1)" [modelState]="getSlideoutState()"
+    [class.slide--animate]="getSlideoutAnimateState()">
+    <div *ngIf="showAddSlideOut()">
+      <risk-assessment-add-update-substance [id]="getChildId('attach-substance',1)" [name]="getChildName('attach-substance',1)"
+        (slideOutClose)="closedAddSlideOut($event)" (addUpdateSubstanceSubmit)="addCoshhInventory($event)" [action]="'Add'"></risk-assessment-add-update-substance>
+    </div>
+  </ae-slideout>
+</div>

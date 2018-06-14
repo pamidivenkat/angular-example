@@ -1,0 +1,29 @@
+<div id="slide-out-form-content" class="wrapper-for-slideout-conten">
+  <div class="so-panel__title">
+    <h3 class="grey-strip">{{'MANAGE_METHOD_STM.SEQUENCE_OF_EVENTS.PROC_QUICK_VIEW' | translate:lang}}</h3>
+  </div>
+  <div class="so-panel__content">
+    <div class="form__input">
+      <label>{{'MANAGE_METHOD_STM.SEQUENCE_OF_EVENTS.NAME' | translate:lang}}
+        <div [class.text-muted]="!msProcedure?.Name" id="procedure_name">{{msProcedure?.Name || ''}}</div>
+      </label>
+    </div>
+    <div class="form__input">
+      <label>{{'MANAGE_METHOD_STM.SEQUENCE_OF_EVENTS.DESCRIPTION' | translate:lang}}
+      <div class="" [class.text-muted]="!msProcedure?.Description" class="procedure_description" id="procedure_description"
+        [innerHTML]="msProcedure?.Description || ''">
+      </div>
+      </label>
+    </div>
+  </div>
+  <div class="so-panel__footer">
+    <nav>
+      <ul>
+        <li>
+          <ae-button [text]="'BUTTONS.SLIDE_CLOSE' | translate:lang" [title]="'BUTTONS.SLIDE_CLOSE' | translate:lang" [type]="'button'" [id]="getChildId('AeButton',2)"
+            [name]="getChildName('AeButton',2)" (aeClick)="closeQuickView()"></ae-button>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>

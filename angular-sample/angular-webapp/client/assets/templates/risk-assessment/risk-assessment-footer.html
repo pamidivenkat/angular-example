@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Atlas - Risk assessment</title>
+    <style>
+        .footersec {
+            font-size: 16px;
+            margin: 0 35px 0px 35px;
+             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+    </style>
+</head>
+
+<body onload="subst()" style='height:50px;overflow:hidden;margin:0;padding:0;'>
+    {{bodyContent}}
+    <script>
+        function subst() {
+            var vars = {};
+            var x = document.location.search.substring(1).split('&');
+            for (var i in x) { var z = x[i].split('=', 2); vars[z[0]] = unescape(z[1]); }
+            var x = ['frompage', 'topage', 'page'];
+            for (var i in x) {
+                var y = document.getElementsByClassName(x[i]);
+                for (var j = 0; j < y.length; ++j) y[j].textContent = vars[x[i]];
+            }
+        }
+    </script>
+</body>
+
+</html>
