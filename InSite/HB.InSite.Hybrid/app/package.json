@@ -1,0 +1,10 @@
+{
+  "main": "index.js",
+  "name": "HB-InSite",
+  "bundleMain": "index.js",
+  "bundleOutput": "bundle.js",
+  "version": "0.0.1",
+  "android": {
+    "v8Flags": "--expose_gc"
+  }
+}

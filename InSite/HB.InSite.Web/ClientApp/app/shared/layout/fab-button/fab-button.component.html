@@ -1,0 +1,28 @@
+<div>
+    <smd-fab-speed-dial class="FAB_fixed outline-none" #myFab [(open)]="open" [direction]="'left'" [animationMode]="'scale'"
+        [fixed]="fixed">
+        <smd-fab-trigger [spin]="true" class="outline-none">
+            <button mat-fab name="btnFabExpand" color="primary" class="outline-none" id="btnFabExpand3" (click)="showButtons()">
+                <mat-icon>add</mat-icon>
+            </button>
+        </smd-fab-trigger>
+        <smd-fab-actions>
+            <button mat-mini-fab name="btnFabReview" id="btnFabReview" (click)="addPost('review')">
+                <label class="button-label">Add Review</label>
+                <mat-icon style="color:#5C4925" class="home-fab-button" svgIcon="hb_stars"></mat-icon>
+            </button>
+            <button mat-mini-fab name="btnFabInsight" id="btnFabInsight" (click)="addPost('insight')">
+                <label class="button-label">Add Insight</label>
+                <mat-icon style="color:#D9A460" class="home-fab-button" svgIcon="hb_info"></mat-icon>
+            </button>
+            <button mat-mini-fab name="btnFabQuestion" id="btnFabQuestion" (click)="addPost('question')">
+                <label class="button-label">Ask Question</label>
+                <mat-icon style="color: #005487" class="home-fab-button" svgIcon="hb_help"></mat-icon>
+            </button>
+            <button mat-mini-fab name="btnFabReviewRequest" id="btnFabReviewRequest" (click)="addReviewRequest()" *ngIf="isPropertyPage">
+                <label class="button-label">Request a Review</label>
+                <mat-icon style="color: #7ebeb6" class="home-fab-button" svgIcon="request_review"></mat-icon>
+            </button>
+        </smd-fab-actions>
+    </smd-fab-speed-dial>
+</div>

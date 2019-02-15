@@ -1,0 +1,20 @@
+.results-block {
+    padding: 5px 15px;
+}
+
+.results-block:nth-child(2n){
+    background: aliceblue;
+}
+
+
+.results-block:hover {
+    background: #efefef;
+}
+
+.results-block a{
+    color: #777777;
+}
+
+.results-block a:hover {
+    text-decoration: none !important;
+}

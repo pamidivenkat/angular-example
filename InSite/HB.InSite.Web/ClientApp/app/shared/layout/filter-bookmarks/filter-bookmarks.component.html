@@ -1,0 +1,36 @@
+<mat-card>
+  <app-page-card-header
+    [title]="'My Bookmarks'"
+    [icon]="'turned_in'"
+    [iconClass]="'card-head-small-icon'"
+    [titleClass]="'card-head-small-title'"
+  ></app-page-card-header>
+  <form [formGroup]="filtersForm">
+    <mat-card-content>
+      <h4 class="mt-2 font-weight-bold pl-0">Filter Bookmarks</h4>
+      <br />
+      Choose the type(s) of items you would like to have show in the bookmark list
+      <mat-list class="form-group">
+        <mat-list-item *ngFor="let type of postTypes" class="border-0">
+          <mat-slide-toggle class="float-right" [color]="'primary'" formControlName="postType{{type.value}}"
+            >{{ type.value == "32" ? "Venue/CVB" : type.name }}
+          </mat-slide-toggle>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+    <mat-card-footer>
+      <span class="float-right post-buttons">
+        <button mat-raised-button type="button" id="btnApply" (click)="apply()" class="submit-button">Apply</button>
+        &nbsp;
+        <button mat-raised-button type="button" id="btnCancel" (click)="cancel()" color="accent" class="submit-button">
+          Cancel
+        </button>
+        &nbsp;
+        <button mat-raised-button type="button" id="btnClear" (click)="clear()" class="delete-button">Clear</button>
+      </span>
+      <br />
+      <br />
+      <br />
+    </mat-card-footer>
+  </form>
+</mat-card>

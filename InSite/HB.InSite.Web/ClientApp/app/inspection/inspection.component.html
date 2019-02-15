@@ -1,0 +1,135 @@
+<mat-card style="padding: 5px">
+  <app-page-card-header
+    [icon]="'offline_pin'"
+    [title]="'Inspection'"
+    [postColor]="consts.POST_COLORS.INSPECTION"
+  ></app-page-card-header>
+  <div class="float-right mt-3">
+    <app-bookmark
+      [entity]="inspection"
+      class="float-right"
+      (onSaveBookmark)="updateBookmark($event)"
+      [entitySubject]="inspSubject"
+      [showLabel]="true"
+    ></app-bookmark>
+  </div>
+  <mat-card-header class="mt-3" *ngIf="!isLoading">
+    <div mat-card-avatar class="example-header-image">
+      <app-user-avatar
+        style="height: 50px; width: 50px; padding-top: 20px;"
+        [userImage]="inspection.associateUser && inspection.associateUser.photoUrl"
+      ></app-user-avatar>
+    </div>
+    <mat-card-title>
+      <span class="author-name">
+        <a routerLink="/profile/{{inspection.createdBy}}"
+          >{{ inspection.associateUser ? inspection.associateUser.fullname : inspection.createdBy }}
+        </a>
+      </span>
+    </mat-card-title>
+    <mat-card-subtitle>
+      <span class="post-date">{{ inspection.createdOn | date: "MM/dd/yyyy" }}</span>
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content *ngIf="!isLoading">
+    <div style="text-align: center;" *ngIf="inspection.property">
+      <h4 mat-line [routerLink]="'/property/' + inspection.property.propertyId" style="cursor: pointer;">
+        {{ inspection.property.propertyName }}
+      </h4>
+      <br />
+      <span mat-line>{{ inspection.property.location }}</span> <br />
+      <img
+        mat-card-image
+        class="venue_image"
+        src="{{inspection.venuePhotoUrl}}"
+        alt="image of {{inspection.property.propertyName}}"
+        *ngIf="inspection.venuePhotoUrl"
+      />
+    </div>
+    <div *ngIf="generalSection">
+      <div class="mt-3" style="width: 100%">
+        <span class="mt-1 inspection-label">Overall Rating</span>
+        <app-rating
+          [readOnly]="true"
+          class="float-right"
+          style="padding-right: 15px; "
+          [rate]="generalSection.rating"
+          [margin]="false"
+        ></app-rating>
+      </div>
+      <div class="mt-3" *ngIf="generalSection.detailedNotes.length > 0" style="width: 100%">
+        <div class="inspection-label">General Notes</div>
+        <div [innerHTML]="generalSection.detailedNotes"></div>
+      </div>
+    </div>
+  </mat-card-content>
+  <mat-card-content
+    *ngFor="let section of otherSections; let i = index"
+    [ngClass]="{ 'odd-row': i % 2 == 0 }"
+    class="mt-3 p-1 section"
+  >
+    <div class="mt-3" style="width: 100%">
+      <span class="mt-1 inspection-label">{{ section.inspectionSectionType.sectionName }}</span>
+      <app-rating
+        class="float-right"
+        [readOnly]="true"
+        style="padding-right: 15px; "
+        [rate]="section.rating"
+        [margin]="false"
+      ></app-rating>
+    </div>
+    <div class="mt-3" *ngIf="section.detailedNotes.length > 0" style="width: 100%">
+      <div class="inspection-label">{{ section.inspectionSectionType.sectionName }} Notes</div>
+      <div [innerHTML]="section.detailedNotes"></div>
+    </div>
+    <div class="section-item pl-4" *ngFor="let item of section.inspectionSectionItems">
+      <hr />
+      <div class="mt-3" style="width: 100%;">
+        <span class="mt-1 inspection-label"
+          >{{ item.name }} {{ item.inspectionItemType ? " -
+          " + item.inspectionItemType.itemName : "" }}
+        </span>
+        <app-rating
+          class="float-right"
+          [readOnly]="true"
+          style="padding-right: 15px;"
+          [rate]="item.quality"
+          [margin]="false"
+        ></app-rating>
+      </div>
+      <div class="pl-1 mt-2 pt-2">
+        <div *ngIf="item.rate" class="item-content">
+          <span class="inspection-label">Rate</span> <span class="float-right">{{ item.rate | currency }}</span>
+        </div>
+        <div *ngIf="item.space || item.roomSize" class="item-content">
+          <span class="inspection-label">Space</span>
+          <span class="float-right">{{ item.space ? item.space : item.roomSize }}</span>
+        </div>
+        <div *ngIf="item.isOnSite !== null" class="item-content">
+          <span class="inspection-label">Onsite</span>
+          <span class="float-right">{{ item.isOnSite ? "Yes" : "No" }}</span>
+        </div>
+        <div *ngIf="item.priceScale" class="item-content">
+          <span class="inspection-label">Price</span>
+          <span class="price-scale float-right">{{ item.priceScale | priceRange }}</span>
+        </div>
+        <div class="mt-3" *ngIf="item.notes.length > 0" style="width: 100%">
+          <div class="inspection-label">Notes</div>
+          <div [innerHTML]="item.notes"></div>
+        </div>
+        <div>
+          <div>
+            <span *ngIf="item.photo1url"> <img src="{{item.photo1url}}" class="item-photo" /> </span>
+            <span *ngIf="item.photo2url"> <img src="{{item.photo2url}}" class="item-photo" /> </span> <br />
+            <span *ngIf="item.photo3url"> <img src="{{item.photo3url}}" class="item-photo" /> </span>
+            <span *ngIf="item.photo4url"> <img src="{{item.photo4url}}" class="item-photo" /> </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+  <mat-card-content *ngIf="isLoading">
+    <mat-spinner style="top: 170px;"> </mat-spinner>
+    <br /><br /><br /><br />
+  </mat-card-content>
+</mat-card>

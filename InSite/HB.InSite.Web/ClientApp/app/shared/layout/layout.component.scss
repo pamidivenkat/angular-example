@@ -1,0 +1,32 @@
+.main-layout {
+  padding-top: 78px;
+  @media (max-width: 1024px) {
+    padding-top: 68px;
+  }
+}
+
+.menuNavWrapper {
+  display: flex;
+  height: 100%;
+  width: 257px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  align-items: center;
+  justify-content: center;
+  background: #FAFAFA;
+  border-right: 2px solid #eee;
+  @media (max-width: 1023px) {
+    width: 253px;
+  }
+}
+
+.sideNavWrapper {
+  display: flex;
+  height: 100%;
+  width: 330px;
+  align-items: center;
+  justify-content: center;
+  background: #FAFAFA;
+  border-left: 2px solid #eee;
+}

@@ -1,0 +1,168 @@
+<mat-card>
+  <app-page-card-header [title]="'Expirations'" [icon]="'watch_later'"></app-page-card-header>
+  <form [formGroup]="expirationsForm" class="pt-2">
+    <div class="form-group">
+      <mat-form-field class="material-control">
+        <input
+          matInput
+          placeholder="{{getDescription('Inspection')}}"
+          type="number"
+          name="Inspection"
+          formControlName="Inspection"
+          [maxLength]="256"
+          #Inspection
+          required
+          id="txtInspection"
+        />
+        <mat-error *ngIf="Inspection.required"> You must enter a value </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field class="material-control">
+        <input
+          matInput
+          placeholder="{{getDescription('ClientReview')}}"
+          type="number"
+          name="ClientReview"
+          formControlName="ClientReview"
+          [maxLength]="256"
+          #ClientReview
+          required
+          id="txtClientReview"
+        />
+        <mat-error *ngIf="ClientReview.required"> You must enter a value </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field class="material-control">
+        <input
+          matInput
+          placeholder="{{getDescription('Review')}}"
+          type="number"
+          name="Review"
+          formControlName="Review"
+          [maxLength]="256"
+          #Review
+          required
+          id="txtReview"
+        />
+        <mat-error *ngIf="Review.required"> You must enter a value </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field class="material-control">
+        <input
+          matInput
+          placeholder="{{getDescription('ReviewRequestDays')}}"
+          type="number"
+          name="ReviewRequestDays"
+          formControlName="ReviewRequestDays"
+          [maxLength]="256"
+          #ReviewRequestDays
+          required
+          id="txtReviewRequestDays"
+        />
+        <mat-error *ngIf="ReviewRequestDays.required"> You must enter a value </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field class="material-control">
+        <input
+          matInput
+          placeholder="{{getDescription('UnansweredQuestionDays')}}"
+          type="number"
+          name="UnansweredQuestionDays"
+          formControlName="UnansweredQuestionDays"
+          [maxLength]="256"
+          #UnansweredQuestionDays
+          required
+          id="txtUnansweredQuestionDays"
+        />
+        <mat-error *ngIf="UnansweredQuestionDays.required"> You must enter a value </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field class="material-control">
+        <input
+          matInput
+          placeholder="{{getDescription('UnansweredQuestionCount')}}"
+          type="number"
+          name="UnansweredQuestionCount"
+          formControlName="UnansweredQuestionCount"
+          [maxLength]="256"
+          #UnansweredQuestionCount
+          required
+          id="txtUnansweredQuestionCount"
+        />
+        <mat-error *ngIf="UnansweredQuestionCount.required"> You must enter a value </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field class="material-control">
+        <input
+          matInput
+          placeholder="{{getDescription('PromptReview')}}"
+          type="number"
+          name="PromptReview"
+          formControlName="PromptReview"
+          [maxLength]="256"
+          #PromptReview
+          required
+          id="txtPromptReview"
+        />
+        <mat-error *ngIf="PromptReview.required"> You must enter a value </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field class="material-control">
+        <input
+          matInput
+          placeholder="{{getDescription('ReviewRequestCount')}}"
+          type="number"
+          name="ReviewRequestCount"
+          formControlName="ReviewRequestCount"
+          [maxLength]="256"
+          #ReviewRequestCount
+          required
+          id="txtReviewRequestCount"
+        />
+        <mat-error *ngIf="ReviewRequestCount.required"> You must enter a value </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field class="material-control">
+        <input
+          matInput
+          placeholder="{{getDescription('ReviewRequestDelete')}}"
+          type="number"
+          name="ReviewRequestDelete"
+          formControlName="ReviewRequestDelete"
+          [maxLength]="256"
+          #ReviewRequestDelete
+          required
+          id="txtReviewRequestDelete"
+        />
+        <mat-error *ngIf="ReviewRequestDelete.required"> You must enter a value </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-group mb-4">
+      <span class="float-right review-buttons">
+        <button
+          mat-raised-button
+          type="button"
+          class="submit-button"
+          id="btnSubmit"
+          (click)="onSubmit()"
+          [disabled]="expirationsForm.pristine || expirationsForm.invalid"
+        >
+          Save
+        </button>
+        &nbsp;
+        <button mat-raised-button type="button" id="idCancel" (click)="cancel()" color="accent">Cancel</button> &nbsp;
+      </span>
+    </div>
+    <br />
+    <br />
+    <br />
+  </form>
+</mat-card>

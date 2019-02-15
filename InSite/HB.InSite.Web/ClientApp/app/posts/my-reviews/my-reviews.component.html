@@ -1,0 +1,80 @@
+<mat-card appScrollTracker (scrollEnd)="getMorePosts($event)">
+  <app-page-card-header
+    [icon]="postTypeId | postIcon"
+    [title]="pageTitle"
+    [postColor]="postTypeId | postColor"
+  ></app-page-card-header>
+  <mat-card-content>
+    <div class="well well-sm" *ngFor="let review of posts">
+      <mat-card class="row row_off" style="padding: 5px">
+        <mat-card-header *ngIf="!isLoading" class="mt-2">
+          <div mat-card-avatar class="example-header-image mt-2">
+            <app-post-avatar
+              style="height: 50px; width: 50px;"
+              [type]="4"
+              [userImage]="review.associateUser && review.associateUser.photoUrl"
+              *ngIf="review.postType === 'A'"
+            ></app-post-avatar>
+            <mat-icon style="color:#5C4925; font-size: 50px" class="home-fab-button" *ngIf="review.postType === 'C'"
+              >stars</mat-icon
+            >
+          </div>
+          <mat-card-title style="padding-top: 5px; padding-left: 5px">
+            <span class="author-name" *ngIf="review.postType === 'A'">
+              <a routerLink="/profile/{{review.createdBy}}">{{
+                review.associateUser && review.associateUser.fullname
+              }}</a>
+            </span>
+            <span class="author-name" *ngIf="review.postType === 'C'">Client Review</span>
+            <span class="post-date" style="margin-left:10px;">{{ review.createdOn | date: "MM/dd/yyyy" }}</span>
+          </mat-card-title>
+          <mat-card-subtitle style="padding-left: 5px"> <span class="post-type">Review</span> </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content *ngIf="!isLoading">
+          <div style="text-align: center; cursor: pointer;" [routerLink]="['/review/view/' + review.reviewId]">
+            <h4 mat-line>{{ review.property && review.property.propertyName }}</h4>
+            <br />
+            <h6 mat-line>
+              {{
+                review.property &&
+                  constructAddress([
+                    review.property.propertyAddress,
+                    review.property.cityName,
+                    review.property.stateName,
+                    review.property.propertyZip,
+                    review.property.countryName
+                  ])
+              }}
+            </h6>
+            <div>
+              <label class="mt-1 inspection-label">Overall Rating </label><label style="width:5%">: </label>
+              <app-rating
+                [readOnly]="true"
+                *ngIf="!review.bOverallExperience"
+                [rate]="review.overallExperience / 10"
+                [margin]="false"
+                style="display:inline-block;vertical-align:middle;"
+              ></app-rating>
+              <span *ngIf="review.bOverallExperience"> N/A</span>
+            </div>
+          </div>
+          <div *ngIf="getGalleryImages(review.reviewId).length > 0">
+            <ngx-gallery [images]="getGalleryImages(review.reviewId)" [options]="galleryOptions"></ngx-gallery>
+          </div>
+        </mat-card-content>
+        <mat-card-footer>
+          <div class="col-sm-12">
+            <a routerLink="/review/view/{{review.reviewId}}" style="float:right;">Read more</a> <br />
+          </div>
+          <br />
+        </mat-card-footer>
+      </mat-card>
+    </div>
+    <div class="spinner" *ngIf="isLoading">
+      <div class="bounce1"></div>
+      <div class="bounce2"></div>
+      <div class="bounce3"></div>
+    </div>
+    <div *ngIf="posts.length === 0 && !isLoading" class="text-center pt-3">No {{ postTypeId | postType }}s</div>
+  </mat-card-content>
+</mat-card>

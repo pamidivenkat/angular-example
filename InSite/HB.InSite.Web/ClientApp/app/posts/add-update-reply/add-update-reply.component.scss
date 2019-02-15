@@ -1,0 +1,55 @@
+.reply-box {
+  min-width: 100%;
+  padding-right: 10px;
+  margin-bottom: 0px;
+}
+
+@media (max-width: 767px) {
+  .reply-box {
+    margin-bottom: 0px;
+  }
+}
+
+.reply-icon {
+  display: block;
+  padding: 5px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.btn-save {
+  position: absolute;
+  bottom: 0;
+  left: 3px;
+  i {
+    font-size: 35px;
+  }
+}
+
+.btn-reset {
+  position: absolute;
+  right: 0;
+  top: 4px;
+  i {
+    font-size: 23px;
+    font-weight: bold;
+  }
+}
+
+.reply-box {
+  min-width: 90%;
+  margin-bottom: 0px;
+  mat-form-field {
+    .mat-form-field-wrapper {
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .reply-box {
+    min-width: 70%;
+    margin-bottom: 0px;
+  }
+}

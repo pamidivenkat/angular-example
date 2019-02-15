@@ -1,0 +1,39 @@
+.profile-name {
+  font-size: 20px;
+}
+
+.profile-address {
+  font-size: 14px;
+}
+
+.profile-email {
+    font-size: 14px;
+    cursor: pointer;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 80%;
+    display: inline-block;
+}
+
+.profile-header .mat-card-avatar {
+  height: 65px;
+  width: 65px;
+}
+
+.mat-card-avatar .medium {
+  height: 65px;
+  width: 65px;
+  border-radius: 0px;
+}
+
+.contributions {
+  width: 100%;
+  min-height: 400px;
+}
+
+@media (min-width: 1024px) {
+  .contributions .mat-form-field {
+    width: 95%;
+  }
+}

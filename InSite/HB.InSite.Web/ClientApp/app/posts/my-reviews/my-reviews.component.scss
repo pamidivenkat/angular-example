@@ -1,0 +1,23 @@
+.mt-1,
+.my-1 {
+    margin-top: 0.25rem !important;
+    font-weight: bold;
+}
+
+.property-rating {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.property-rating > li {
+    float: left;
+    width: 100%;
+}
+
+.property-rating > li > label {
+    line-height: 22px;
+    float: left;
+    padding: 0 10px;
+    width: 165px;
+}

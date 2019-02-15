@@ -1,0 +1,20 @@
+<div *ngIf="comment.active">
+    <mat-card class="example-card">
+        <mat-card-header>
+            <div mat-card-avatar class="example-header-image">
+                <app-user-avatar [userImage]="comment.associateUser.photoUrl" style="float:right"></app-user-avatar>
+            </div>
+            <mat-card-title>{{comment.createdBy}}</mat-card-title>
+            <mat-card-subtitle>
+                <button mat-button class="float-right">
+                    <span (click)='confirmRemove()'>Delete</span>
+                </button>
+                <button mat-button class="float-right">
+                    <span (click)='editComment()'>
+                        Edit
+                    </span>
+                </button>
+            </mat-card-subtitle>
+        </mat-card-header>
+    </mat-card>
+</div>

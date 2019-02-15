@@ -1,0 +1,112 @@
+.type-filter {
+  width: 100%;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+
+@media (min-width: 1024px) {
+  .type-filter .mat-form-field-infix {
+    min-height: 400px;
+  }
+  .contributions .mat-form-field {
+    width: 95%;
+  }
+}
+
+@media (max-width: 1024px) {
+  .type-filter {
+    width: 100%;
+    margin-bottom: 0;
+    margin-top: 5px;
+  }
+}
+
+.type-filter .mat-select {
+  text-align: right;
+}
+
+.manage-folders {
+  color: #45818e !important;
+  cursor: pointer;
+}
+
+.bookmark-folders {
+  margin: 0 2px 0 2px;
+}
+
+.item-menu {
+  justify-content: right;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  font-size: 24px;
+  box-sizing: content-box;
+  padding: 4px;
+}
+
+.folder-header {
+  border-bottom: 1px solid;
+  height: 48px;
+  cursor: pointer;
+  align-items: center;
+  border-color: rgba(0, 0, 0, 0.42);
+}
+
+.folders {
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+  margin-left: 2px;
+  margin-right: 2px;
+  min-height: 40px;
+}
+
+.select-folder {
+  font-size: 10px;
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.post-title {
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mat-list {
+  .my-bookmarks {
+    .float-right {
+      position: absolute;
+      top: 10px;
+      right: -12px;
+      .mat-icon {
+        font-size: 20px !important;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.my-bookmarks {
+  .mat-list-item-content {
+    align-items: normal !important;
+    padding: 0px !important;
+  }
+}
+
+.bookmark-title {
+  overflow: hidden;
+  max-height: 40px;
+  text-overflow: ellipsis;
+}
+
+.post-title:hover {
+  color: #45818e !important;
+  cursor: pointer;
+  text-decoration: underline !important;
+}
+
+.active-filter {
+  background-color: #fba400;
+}
+
+.filter {
+  background-color: #45818e;
+}

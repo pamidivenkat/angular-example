@@ -1,0 +1,44 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HB | InSite</title>
+    <base href="/">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1">
+    <environment names="Development">
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+        <link href="~/css/site.css" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Catamaran:400,500" rel="stylesheet">
+        <link href="~/css/quill.snow.css" rel="stylesheet">
+        <link href="~/css/quill.bubble.css" rel="stylesheet">
+        <link href="~/css/material.css" rel="stylesheet">
+        <link href="~/css/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2" rel="stylesheet">
+    </environment>
+    <environment names="Staging,Production">
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+        <link href="~/css/site.css" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Catamaran:400,500" rel="stylesheet">
+        <link href="~/css/quill.snow.css" rel="stylesheet">
+        <link href="~/css/quill.bubble.css" rel="stylesheet">
+        <link href="~/css/material.css" rel="stylesheet">
+        <link href="~/css/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2" rel="stylesheet">
+    </environment>
+</head>
+<body>
+    <section class="container padding_0">
+        @RenderBody()
+    </section>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-41197457-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-41197457-1');
+    </script>
+
+    @RenderSection("scripts", false)
+</body>
+</html>

@@ -1,0 +1,198 @@
+<mat-card>
+    <app-page-card-header [title]="pageHeading + ' ' + (postType | postType)" [icon]="postType| postIcon" [postColor]="postType | postColor"></app-page-card-header>
+    <form [formGroup]="reviewForm" class="pt-2">
+
+        <div class="form-group">
+            <mat-form-field class="material-control">
+                <mat-label>Venue/CVB</mat-label>
+                <input matInput placeholder="Please enter 3 or more characters" aria-label="Venues" id="autoVenue"
+                    [matAutocomplete]="autoProperty" [formControl]="propertyControl" [readonly]="readonlyVenue">
+                <mat-progress-spinner matSuffix mode="indeterminate" diameter=15 *ngIf="propertyLoader" style="top:9px; position: absolute;"></mat-progress-spinner>
+                <a mat-button matSuffix (click)="sendMail()" class="float-right">Missing Hotel?</a>
+                <mat-autocomplete #autoProperty="matAutocomplete" (optionSelected)="propertySelected($event)">
+                    <mat-option *ngFor="let property of filteredProperties | async" [value]="property.propertyId">
+                        <span>{{ property.propertyName }}</span>
+                    </mat-option>
+                </mat-autocomplete>
+                <mat-hint>Enter Venue/CVB Name</mat-hint>
+            </mat-form-field>
+            <mat-chip-list>
+                <mat-chip *ngFor="let property of selectedProperties;" color="accent" class="review-chip">
+                    <a [routerLink]="'/property/' + property.propertyId">{{property.propertyName}}</a>
+                    <i class="material-icons pl-3" (click)="removeSelectedProperty(property.propertyId)" style="cursor: pointer;"
+                        [hidden]="readonlyVenue">highlight_off</i>
+                </mat-chip>
+            </mat-chip-list>
+        </div>
+        <div class="form-group">
+            Details
+            <div class="details">
+                <quill-editor id="txtDetails" bounds="self" placeholder="" formControlName="detailedReview" [modules]="{toolbar:[['bold', 'italic', 'underline'], ['link'], [{ 'list': 'ordered'}, { 'list': 'bullet' }]]}">
+                </quill-editor>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="top-ratings">
+                <div *ngIf="!isCvb">
+                    <div class="rounder">
+                        <h6 mat-Venus>Venue Condition</h6>
+                        <mat-slide-toggle color="primary" [labelPosition]="'before'" id="bVenueCondition" (change)="ratingChanged($event)"
+                            [(ngModel)]="review.bVenueCondition" formControlName="bVenueCondition"> N/A
+                        </mat-slide-toggle>
+                        <app-rating class="range" *ngIf="!review.bVenueCondition" [rate]="review.venueCondition"
+                            (change)="ratingChanged($event)" formControlName="venueCondition" [showDropdown]="isMobile">
+                        </app-rating>
+                    </div>
+                    <div class="rounder">
+                        <h6 mat-Venus>Service Quality</h6>
+                        <mat-slide-toggle color="primary" [labelPosition]="'before'" id="bServiceQuality" (change)="ratingChanged($event)"
+                            [(ngModel)]="review.bServiceQuality" formControlName="bServiceQuality"> N/A
+                        </mat-slide-toggle>
+                        <app-rating class="range" *ngIf="!review.bServiceQuality" [rate]="review.serviceQuality"
+                            (change)="ratingChanged($event)" formControlName="serviceQuality" [showDropdown]="isMobile">
+                        </app-rating>
+                    </div>
+                    <div class="rounder">
+                        <h6 mat-Venus>F &amp; B Quality</h6>
+                        <mat-slide-toggle color="primary" [labelPosition]="'before'" id="bFbQuality" (change)="ratingChanged($event)"
+                            [(ngModel)]="review.bFbQuality" formControlName="bFbQuality"> N/A </mat-slide-toggle>
+                        <app-rating class="range" *ngIf="!review.bFbQuality" [rate]="review.fbQuality" (change)="ratingChanged($event)"
+                            formControlName="fbQuality" [showDropdown]="isMobile">
+                        </app-rating>
+                    </div>
+                    <div class="rounder">
+                        <h6 mat-Venus>Overall Rating</h6>
+                        <mat-slide-toggle color="primary" [labelPosition]="'before'" id="bOverallExperience" (change)="ratingChanged($event)"
+                            [(ngModel)]="review.bOverallExperience" formControlName="bOverallExperience"> N/A
+                        </mat-slide-toggle>
+                        <app-rating class="range" *ngIf="!review.bOverallExperience" [rate]="review.overallExperience"
+                            (change)="ratingChanged($event)" formControlName="overallExperience" [showDropdown]="isMobile">
+                        </app-rating>
+                    </div>
+                </div>
+                <div *ngIf="isCvb">
+                    <div class="rounder">
+                        <h6 mat-Venus>Response Timeliness</h6>
+                        <mat-slide-toggle color="primary" [labelPosition]="'before'" id="bResponseTimeliness" (change)="ratingChanged($event)"
+                            [(ngModel)]="review.bResponseTimeliness" formControlName="bResponseTimeliness"> N/A
+                        </mat-slide-toggle>
+                        <app-rating class="range" *ngIf="!review.bResponseTimeliness" [rate]="review.responseTimeliness"
+                            (change)="ratingChanged($event)" formControlName="responseTimeliness" [showDropdown]="isMobile">
+                        </app-rating>
+                    </div>
+                    <div class="rounder">
+                        <h6 mat-Venus>HB Friendliness</h6>
+                        <mat-slide-toggle color="primary" [labelPosition]="'before'" id="bHbFriendliness" (change)="ratingChanged($event)"
+                            [(ngModel)]="review.bHbFriendliness" formControlName="bHbFriendliness"> N/A
+                        </mat-slide-toggle>
+                        <app-rating class="range" *ngIf="!review.bHbFriendliness" [rate]="review.hbFriendliness"
+                            (change)="ratingChanged($event)" formControlName="hbFriendliness" [showDropdown]="isMobile">
+                        </app-rating>
+                    </div>
+                    <div class="rounder">
+                        <h6 mat-Venus>Destination Knowledge</h6>
+                        <mat-slide-toggle color="primary" [labelPosition]="'before'" id="bDestinationKnowledge"
+                            (change)="ratingChanged($event)" [(ngModel)]="review.bDestinationKnowledge" formControlName="bDestinationKnowledge">
+                            N/A
+                        </mat-slide-toggle>
+                        <app-rating class="range" *ngIf="!review.bDestinationKnowledge" [rate]="review.destinationKnowledge"
+                            (change)="ratingChanged($event)" formControlName="destinationKnowledge" [showDropdown]="isMobile">
+                        </app-rating>
+                    </div>
+                    <div class="rounder">
+                        <h6 mat-Venus>Service Quality</h6>
+                        <mat-slide-toggle color="primary" [labelPosition]="'before'" id="bServiceQuality" (change)="ratingChanged($event)"
+                            [(ngModel)]="review.bServiceQuality" formControlName="bServiceQuality"> N/A
+                        </mat-slide-toggle>
+                        <app-rating class="range" *ngIf="!review.bServiceQuality" [rate]="review.serviceQuality"
+                            (change)="ratingChanged($event)" formControlName="serviceQuality" [showDropdown]="isMobile">
+                        </app-rating>
+                    </div>
+                    <div class="rounder">
+                        <h6 mat-Venus>Overall Rating</h6>
+                        <mat-slide-toggle color="primary" [labelPosition]="'before'" id="bOverallExperience" (change)="ratingChanged($event)"
+                            [(ngModel)]="review.bOverallExperience" formControlName="bOverallExperience"> N/A
+                        </mat-slide-toggle>
+                        <app-rating class="range" *ngIf="!review.bOverallExperience" [rate]="review.overallExperience"
+                            (change)="ratingChanged($event)" formControlName="overallExperience" [showDropdown]="isMobile"></app-rating>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <!--<mat-slide-toggle *ngIf="isCvb" color="primary" [labelPosition]="'before'" id="isRecommended" formControlName="isRecommended">{{'Would you recommend this CVB ?}}</mat-slide-toggle>-->
+            <mat-slide-toggle color="primary" [labelPosition]="'before'" id="isRecommended" formControlName="isRecommended">Would
+                you recommend this {{(isCvb? 'CVB' : 'Venue') + ' ?'}}</mat-slide-toggle>
+        </div>
+        <div>
+            <div style="display: inline-flex;">
+                <div class="form-group upload-drop-zone" [fileUploadInputFor]="imageUploadQueue" [files]="attachedImages">
+                    <label for="imageFile" *ngIf="isHybridApp">Image attachments &nbsp; </label>
+                    <button (click)="chooseFile($event)" *ngIf="isHybridApp">Choose Images</button>
+                    <span class="image-upload" [hidden]="isHybridApp">
+                        <label for="imageFile">
+                            <mat-icon>photo</mat-icon>
+                        </label>
+                        <input id="imageFile" accept="image/*" type="file" multiple (change)='chooseFile($event)'
+                            formControlName="imageFile" />
+                    </span>
+                </div>
+                <div class="form-group upload-drop-zone" [fileUploadInputFor]="fileUploadQueue" [files]="attachedFiles">
+                    <label for="singleFile" *ngIf="isHybridApp">File attachments &nbsp; </label>
+                    <button (click)="chooseFile($event)" *ngIf="isHybridApp">Choose Files</button>
+                    <span class="image-upload ml-2" [hidden]="isHybridApp">
+                        <label for="singleFile">
+                            <mat-icon>attachment</mat-icon>
+                        </label>
+                        <input id="singleFile" type="file" multiple (change)='chooseFile($event)' formControlName="singleFile" />
+                    </span>
+                </div>
+            </div>
+            <br>
+            <mat-file-upload-queue #imageUploadQueue [hidden]="!(imageUploadQueue.files.length > 0)" [fileAlias]="'file'"
+                [httpUrl]="uploadURL">
+                <mat-file-upload [file]="file" [id]="i" *ngFor="let file of imageUploadQueue.files; let i = index"
+                    [maxFiles]="maxNoImages" [maxSize]="maxFileLength" (onUpload)="addAttachment($event, true)"
+                    (removeEvent)="removeAttachment($event)" [displayType]="'GridView'" [allowedTypes]="'image'"
+                    (onUploadStart)="updateProgress($event)"></mat-file-upload>
+            </mat-file-upload-queue>
+            <br>
+            <label>Attachments <mat-icon>attachment</mat-icon></label>
+            <mat-file-upload-queue #fileUploadQueue [hidden]="!(fileUploadQueue.files.length > 0)" [fileAlias]="'file'"
+                [httpUrl]="uploadURL">
+                <mat-file-upload [file]="file" [id]="i" *ngFor="let file of fileUploadQueue.files; let i = index"
+                    [maxFiles]="maxNoFiles" [maxSize]="maxFileLength" (onUpload)="addAttachment($event, false)"
+                    (removeEvent)="removeAttachment($event)" [displayType]="'ListView'" (onUploadStart)="updateProgress($event)"></mat-file-upload>
+            </mat-file-upload-queue>
+        </div>
+        <br>
+        <div class="form-group">
+            <mat-form-field class="material-control">
+                <input matInput [matDatepicker]="picker" [min]="minExpirationDate" id="txtExpiration" placeholder="Expiration Date"
+                    formControlName="expirationDate">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+        </div>
+        <div class="form-group">
+            <mat-slide-toggle color="primary" [labelPosition]="'before'" id="expRemainder" formControlName="expirationReminder">Do
+                Not Remind Me</mat-slide-toggle>
+        </div>
+        <div class="form-group mb-4">
+            <span class="float-right review-buttons">
+                <button mat-raised-button type="button" id="btnSubmit" class="submit-button" (click)="onSubmit()"
+                    [disabled]="!isEditable || reviewForm.pristine || reviewForm.invalid || isUploadInProgress || (selectedProperties && selectedProperties.length == 0)">
+                    Submit </button> &nbsp;
+                <button mat-raised-button type="button" id="idCancel" (click)="cancel()" color="accent" [disabled]="isUploadInProgress">Cancel</button>
+                &nbsp;
+                <button mat-raised-button type="button" id="idArchive" (click)="archiveReview()" class="archive-button"
+                    *ngIf="reviewId && isEditable" [disabled]="isUploadInProgress">Archive</button>&nbsp;
+                <button mat-raised-button type="button" id="idDelete" (click)="deleteReview()" class="delete-button"
+                    *ngIf="reviewId && isEditable" [disabled]="isUploadInProgress">Delete</button>
+            </span>
+        </div>
+        <br>
+        <br>
+        <br>
+    </form>
+</mat-card>

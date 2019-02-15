@@ -1,0 +1,56 @@
+﻿@{
+    ViewBag.Title = "";
+}
+
+@if (ViewBag.requestedWith == "org.nativescript.HBInSiteHybrid")
+{
+    <style>
+        mat-sidenav.menuNavWrapper {
+            display: none !important;
+        }
+
+        app-header {
+            display: none !important;
+            visibility: hidden !important;
+        }
+
+        body {
+            padding-top: 0px !important;
+        }
+    </style>
+    <script>
+        window.requestHeaders = Request.Headers;
+        window.isHybridApp = true;
+    </script>
+}
+
+    <script>
+        window.requestHeaders = @Html.Raw(Json.Serialize(@ViewBag.requestHeaders));
+        // console.log("window.requestHeaders: " + JSON.stringify(JSON.stringify(window.requestHeaders)));
+    </script>
+<environment names="Development">
+    @section Scripts {
+        <script src="~/ClientApp/dist/assets/nativescript-webview-interface.js"></script>
+        <script>window['__Zone_disable_IE_check'] = true;</script>
+        <script src="~/ClientApp/dist/runtime.js"></script>
+        <script src="~/ClientApp/dist/polyfills.js"></script>
+        <script src="~/ClientApp/dist/styles.js"></script>
+        <script src="~/ClientApp/dist/vendor.js"></script>
+        <script src="~/ClientApp/dist/main.js"></script>
+    }
+</environment>
+<environment names="Production,Staging">
+    @section Scripts {
+        <script src="~/ClientApp/dist/assets/nativescript-webview-interface.js"></script>
+        <script>window['__Zone_disable_IE_check'] = true;</script>
+        <script type="text/javascript" asp-src-include="~/ClientApp/dist/runtime*.js"></script>
+        <script type="text/javascript" asp-src-include="~/ClientApp/dist/polyfills*.js"></script>
+        <script type="text/javascript" asp-src-include="~/ClientApp/dist/styles*.js"></script>
+        <script type="text/javascript" asp-src-include="~/ClientApp/dist/vendor*.js"></script>
+        <script type="text/javascript" asp-src-include="~/ClientApp/dist/main*.js"></script>
+    }
+
+</environment>
+<app-root></app-root>
+
+

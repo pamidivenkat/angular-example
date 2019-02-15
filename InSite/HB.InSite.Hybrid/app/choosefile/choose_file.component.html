@@ -1,0 +1,28 @@
+<GridLayout rows="auto auto * auto" backgroundColor="white" width="100%">
+    <StackLayout id="header" row="0">
+        <Label [text]="currentDirectory"></Label>
+        <Label [text]="mdi-cancel | fonticon" class="mdi" (tap)="parent.onSelectedFile()"></Label>
+    </StackLayout>
+    <FlexboxLayout flexDirection="row" width="100%" id="locationBar" row="1">
+        <!--<Label [text]="mdi-subdirectory-arrow-left | fonticon" left="0" top="0" class="mdi" (tap)="refreshList(customPath)"></Label>-->
+        <TextField #locationPath class="input" text="{{customPath}}" hint="Location *" autocorrect="false" autocapitalizationType="none"></TextField>
+        <Button text="Go" (tap)="refreshList()" width="70" style="float:right;"></Button>
+    </FlexboxLayout>
+
+
+    <Button row="3" text="Cancel" (tap)="parent.onSelectedFile()"></Button>
+
+    <ListView row="2" [items]="listOfFilesAndFolders" (itemTap)="onItemTap($event)" separatorColor="white" rowHeight="60" width="100%" height="100%">
+        <ng-template let-item="item" let-i="index" let-odd="odd" let-even="even">
+            <!--I added this GridLayout because If I don't add it the hightligh select of
+            items will be small because the width of item-name is 80%(this is strange I think
+            one of strange things happen when using FlexboxLayout)-->
+            <GridLayout width="100%">
+                <FlexboxLayout flexDirection="row" width="100%">
+                    <Label id="item-icon" class="mdi" [text]="item.isFile ? '\ue24d' : '\ue2c7'" [isFile]="item.isFile ? true : false"></Label>
+                    <Label id="item-name" [textWrap]="'true'" [text]='item.name'></Label>
+                </FlexboxLayout>
+            </GridLayout>
+        </ng-template>
+    </ListView>
+</GridLayout>

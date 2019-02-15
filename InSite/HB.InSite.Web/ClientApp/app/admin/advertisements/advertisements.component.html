@@ -1,0 +1,263 @@
+<mat-card>
+  <app-page-card-header
+    [title]="'Advertisements'"
+    [icon]="'chrome_reader_mode'"
+    [postColor]="postType | postColor"
+  ></app-page-card-header>
+  <div>
+    <form [formGroup]="advertisementsForm" class="pt-2" *ngIf="isEditing == -1" style="width:100%;">
+      <div class="form-group upload-drop-zone" [fileUploadInputFor]="fileUploadQueue" [files]="attachments">
+        <label for="singleFile">Upload image &nbsp; </label>
+        <input
+          id="singleFile"
+          type="file"
+          [hidden]="isHybridApp"
+          mat-raised-button
+          title=""
+          [disabled]="fileUploadQueue.files.length >= maxNoFiles"
+          formControlName="singleFile"
+        />
+        <br />
+        <mat-file-upload-queue
+          #fileUploadQueue
+          [hidden]="!(fileUploadQueue.files.length > 0)"
+          [fileAlias]="'file'"
+          [httpUrl]="uploadURL"
+          (allFilesRemoved)="removeAttachment()"
+        >
+          <mat-file-upload
+            [file]="file"
+            [id]="i"
+            *ngFor="let file of fileUploadQueue.files; let i = index"
+            [maxFiles]="maxNoFiles"
+            [filePath]="filePath"
+            [maxSize]="maxFileLength"
+            (onUpload)="addAttachment($event, i)"
+            (removeEvent)="removeAttachment($event)"
+            [displayType]="'ListView'"
+          ></mat-file-upload>
+        </mat-file-upload-queue>
+      </div>
+      <div class="form-group" style="display:none;">
+        <mat-form-field class="material-control">
+          <input
+            matInput
+            placeholder="Image URL"
+            type="text"
+            name="imageURL"
+            formControlName="imageURL"
+            [maxLength]="256"
+            #imageURL
+            required
+            id="txtCategoryName"
+          />
+          <mat-error *ngIf="imageURL.required"> You must enter a value </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="form-group">
+        <mat-form-field class="material-control">
+          <input
+            matInput
+            placeholder="Navigate URL"
+            type="text"
+            name="navigateURL"
+            formControlName="navigateURL"
+            [maxLength]="256"
+            #navigateURL
+            required
+            id="txtExpirationInMonths"
+          />
+          <mat-error *ngIf="navigateURL.required"> You must enter a value </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="form-group">
+        <mat-form-field class="material-control">
+          <input
+            matInput
+            placeholder="Alternate Text"
+            type="text"
+            name="toolTipText"
+            formControlName="toolTipText"
+            [maxLength]="256"
+            #toolTipText
+            required
+            id="txtPromptExpire"
+          />
+          <mat-error *ngIf="toolTipText.required"> You must enter a value </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="form-group">
+        <mat-checkbox style="width:100%;" formControlName="active" id="chkBoxActive">Active Status</mat-checkbox>
+      </div>
+      <div class="form-group mb-4">
+        <span class="float-right review-buttons">
+          <button
+            mat-raised-button
+            type="button"
+            id="btnSubmit"
+            (click)="onSubmit()"
+            class="submit-button"
+            [disabled]="advertisementsForm.pristine || advertisementsForm.invalid"
+          >
+            Save
+          </button>
+          &nbsp;
+          <button mat-raised-button type="button" id="idCancel" (click)="cancel()" color="accent">Cancel</button> &nbsp;
+        </span>
+      </div>
+    </form>
+    <mat-list class="clearfix">
+      <mat-list-item style="height:100%; padding: 15px;">
+        <div mat-line class="pl-2" style="display:flex;">
+          <small style="width:100%; text-decoration:underline;">Image URL</small>
+          <small style="width:90%; text-decoration:underline;">Navigate URL</small>
+          <small style="width:90%; text-decoration:underline;">Alternate Text</small>
+          <small style="width:80%; text-decoration:underline;">Active</small>
+          <button mat-raised-button (click)="editAds(defaultValues, -1)" style="margin:5px">
+            <mat-icon class="float-left">add</mat-icon>
+            <span>Add</span>
+          </button>
+        </div>
+      </mat-list-item>
+      <mat-list-item *ngFor="let ads of adsList; let idx = index" style="height:100%; padding: 15px;">
+        <div mat-line class="pl-2" style="display:flex;" *ngIf="isEditing != idx">
+          <span style="width:100%;"
+            ><a
+              style="width:100px; display:inline-block; overflow:hidden; text-overflow:ellipsis"
+              href="{{ads.imageURL}}"
+              >{{ ads.imageURL }}</a
+            ></span
+          >
+          <span style="width:75%;"
+            ><a
+              style="width:100px; display:inline-block; overflow:hidden; text-overflow:ellipsis"
+              href="{{ads.navigateURL}}"
+              >{{ ads.navigateURL }}</a
+            ></span
+          >
+          <span style="width:75%;"
+            ><small title="{{ads.toolTipText}}">{{ ads.toolTipText }}</small></span
+          >
+          <!-- <small style="width:100%;">{{ads.active}}</small> -->
+          <mat-checkbox style="width:30%;" [(ngModel)]="ads.active" disabled="true"></mat-checkbox>
+          <div style="width:80%">
+            <button mat-raised-button (click)="editAds(ads, idx)" style="margin:5px" *ngIf="isEditing != idx">
+              <mat-icon class="float-left">edit</mat-icon>
+              <span>Edit</span>
+            </button>
+            <button mat-raised-button (click)="deleteAds(ads, idx)" style="margin:5px" *ngIf="isEditing != idx">
+              <mat-icon class="float-left">delete</mat-icon>
+              <span>Delete</span>
+            </button>
+          </div>
+        </div>
+        <form [formGroup]="advertisementsForm" class="pt-2" *ngIf="isEditing == idx" style="width:100%;">
+          <div class="form-group upload-drop-zone" [fileUploadInputFor]="fileUploadQueue" [files]="attachments">
+            <label for="singleFile">Upload image &nbsp; </label>
+            <input
+              id="singleFile"
+              type="file"
+              [hidden]="isHybridApp"
+              mat-raised-button
+              title=""
+              [disabled]="fileUploadQueue.files.length >= maxNoFiles"
+              formControlName="singleFile"
+            />
+            <br />
+            <mat-file-upload-queue
+              #fileUploadQueue
+              [hidden]="!(fileUploadQueue.files.length > 0)"
+              [fileAlias]="'file'"
+              [httpUrl]="uploadURL"
+              (allFilesRemoved)="removeAttachment()"
+            >
+              <mat-file-upload
+                [file]="file"
+                [id]="i"
+                *ngFor="let file of fileUploadQueue.files; let i = index"
+                [maxFiles]="maxNoFiles"
+                [filePath]="filePath"
+                [maxSize]="maxFileLength"
+                (onUpload)="addAttachment($event, i)"
+                (removeEvent)="removeAttachment($event)"
+                [displayType]="'ListView'"
+              ></mat-file-upload>
+            </mat-file-upload-queue>
+          </div>
+          <div class="form-group" style="display:none;">
+            <mat-form-field class="material-control">
+              <input
+                matInput
+                placeholder="Image URL"
+                type="text"
+                name="imageURL"
+                formControlName="imageURL"
+                [maxLength]="256"
+                #imageURL
+                required
+                id="txtCategoryName"
+              />
+              <mat-error *ngIf="imageURL.required"> You must enter a value </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-group">
+            <mat-form-field class="material-control">
+              <input
+                matInput
+                placeholder="Navigate URL"
+                type="text"
+                name="navigateURL"
+                formControlName="navigateURL"
+                [maxLength]="256"
+                #navigateURL
+                required
+                id="txtExpirationInMonths"
+              />
+              <mat-error *ngIf="navigateURL.required"> You must enter a value </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-group">
+            <mat-form-field class="material-control">
+              <input
+                matInput
+                placeholder="Alternate Text"
+                type="text"
+                name="toolTipText"
+                formControlName="toolTipText"
+                [maxLength]="256"
+                #toolTipText
+                required
+                id="txtPromptExpire"
+              />
+              <mat-error *ngIf="toolTipText.required"> You must enter a value </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-group">
+            <!--
+              <mat-slide-toggle color="primary" [labelPosition]="'before'" id="active" formControlName="active">Active Status</mat-slide-toggle>
+            -->
+            <mat-checkbox style="width:100%;" formControlName="active" id="chkBoxActive">Active Status</mat-checkbox>
+          </div>
+          <div class="form-group mb-4">
+            <span class="float-right review-buttons">
+              <button
+                mat-raised-button
+                type="button"
+                id="btnSubmit"
+                (click)="onSubmit()"
+                class="submit-button"
+                [disabled]="advertisementsForm.pristine || advertisementsForm.invalid"
+              >
+                Save
+              </button>
+              &nbsp;
+              <button mat-raised-button type="button" id="idCancel" (click)="cancel()" color="accent">Cancel</button>
+              &nbsp;
+            </span>
+          </div>
+        </form>
+        <br />
+      </mat-list-item>
+    </mat-list>
+  </div>
+</mat-card>

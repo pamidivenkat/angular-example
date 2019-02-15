@@ -1,0 +1,22 @@
+<mat-card appScrollTracker (scrollEnd)="getMorePosts($event)">
+  <app-page-card-header [icon]="postTypeId | postIcon" [title]="pageTitle" [postColor]="postTypeId | postColor"></app-page-card-header>
+  <mat-card-content>
+    <div class="well well-sm" *ngFor="let post of posts">
+      <div *ngIf="!isAnswerPage && postTypeId !== 16 && postTypeId !== 4">
+        <app-post [post]="post" [showBookmark]='false' [showNotification]='false' [showReAsk]='true'></app-post>
+      </div>
+      <div *ngIf="isAnswerPage">
+        <app-my-answer [answer]="post"></app-my-answer>
+      </div>
+      <div *ngIf="postTypeId === 16 || postTypeId === 4">
+        <app-post-review-request [review]="post" [type]="postTypeId"></app-post-review-request>
+      </div>
+    </div>
+    <div class="spinner" *ngIf="isLoading">
+      <div class="bounce1"></div>
+      <div class="bounce2"></div>
+      <div class="bounce3"></div>
+    </div>
+    <div *ngIf="posts.length === 0 && !isLoading" class="text-center pt-3">No {{postTypeId | postType}}s </div>
+  </mat-card-content>
+</mat-card>

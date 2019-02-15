@@ -1,0 +1,24 @@
+.details {
+  -moz-appearance: textfield-multiline;
+  -webkit-appearance: textarea;
+  border: 1px solid gray;
+  overflow: visible;
+  padding: 2px;
+  width: 100%;
+  min-height: 100px;
+}
+
+.rating-label {
+  display: flex;
+  justify-content: space-between !important;
+}
+
+.review-container {
+  max-width: 800px !important;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.review-chip {
+  padding: 2px 6px !important;
+}

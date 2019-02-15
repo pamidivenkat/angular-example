@@ -1,0 +1,66 @@
+<mat-card class="row row_off blog-home">
+    <div class="float-right text-right show-book-mark-bar">
+        <div *ngIf="showBookmark" class="show-book-mark-icon">
+            <app-bookmark [entity]="currentPost" [entitySubject]="postSubject" [user]="user" (onSaveBookmark)="updateBookmark($event)"></app-bookmark>
+        </div>
+        <div *ngIf="showNotification">
+            <app-notification [entity]="currentPost"></app-notification>
+        </div>
+    </div>
+    <mat-card-header>
+        <app-post-avatar mat-card-avatar [type]="currentPost.type" [userImage]="currentPost.associateUser && currentPost.associateUser.photoUrl"></app-post-avatar>
+        <mat-card-title>
+            <span class="author-name pr-2" *ngIf="canShowAssociateName()">
+                <a routerLink="/profile/{{currentPost.createdBy}}">{{currentPost.associateUser &&
+                    currentPost.associateUser.fullname}}</a>
+            </span>
+            <span class="ml-1">{{currentPost.createdOn | date:'MM/dd/yyyy'}}</span>
+            <span style="display: inline-flex" *ngIf="currentPost.renewedCount > 0 && currentPost.type == 2">
+                <mat-chip-list>
+                    <mat-chip class="re-asked">RE-ASKED</mat-chip>
+                </mat-chip-list>
+            </span>
+        </mat-card-title>
+        <mat-card-subtitle>
+            <span>{{currentPost.type | postType}}</span>
+        </mat-card-subtitle>
+    </mat-card-header>
+
+
+    <mat-card-content class="blog-header" *ngIf="currentPost.type != 3">
+        <div class="cursor-pointer no-outline" (click)="goToPage(currentPost.id)">
+            <h4 class="col-11  pr-0">
+                <span matTooltip="{{currentPost.title | removeAllTags}}" matTooltipShowDelay="1000" [innerHtml]="currentPost.title| removeAllTags"></span>
+            </h4>
+            <div [innerHtml]="preserveEmTag ? (currentPost.detail | removeHtmlTags) : (currentPost.detail | removeAllTags)"
+                class="content"></div>
+        </div>
+        <div *ngIf="galleryImages.length > 0">
+            <ngx-gallery [images]="galleryImages" [options]="galleryOptions"></ngx-gallery>
+        </div>
+        <div *ngIf="isExpiring">Expiration Date: {{currentPost.expirationDate| date:'MM/dd/yyyy'}}</div>
+    </mat-card-content>
+
+    <mat-card-footer *ngIf="showFooter">
+        <div class="d-flex col-sm-12 p-0 justify-content-between">
+            <div *ngIf="!isExpiring">
+                <div *ngIf="isKnowledge() && showComments">
+                    <a routerLink="/post/view/{{currentPost.id}}" fragment="comments">{{currentPost.numberOfComments}}
+                        {{currentPost.numberOfComments !=1 ? 'Comments' : 'Comment'}}</a>
+                </div>
+                <div *ngIf="isQuestion() && showAnswerCount">
+                    <a routerLink="/post/view/{{currentPost.id}}" fragment="answers">{{currentPost.answers.length}}
+                        {{currentPost.answers.length !=1 ? 'Answers' : 'Answer'}}</a>
+                </div>
+            </div>
+            <div *ngIf="isExpiring">
+                <a (click)="archivePost()" class="read-more">Archive</a>
+            </div>
+            <a (click)="reAskQuestion()" class="read-more" *ngIf="canShowReAsk() && !isExpiring">Re-ask</a>
+            <a (click)="goToPage(currentPost.id)" class="read-more" *ngIf="!isExpiring">{{isQuestion() &&
+                !showAnswerCount ?
+                'View/Answer' : 'Read more'}} </a>
+            <a (click)="goToPage(currentPost.id, true)" class="read-more" *ngIf="isExpiring">Update</a>
+        </div>
+    </mat-card-footer>
+</mat-card>

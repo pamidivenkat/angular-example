@@ -1,0 +1,4 @@
+<div class="notification " (click)="showNotification()" matRipple>
+  <i class="material-icons pull-left lightgray" [class.golden-yellow]="isSubscribed">notifications</i>
+  <span *ngIf="showLabel" class="lite-black  float-left " [class.golden-yellow]="isSubscribed">Notify</span>
+</div>

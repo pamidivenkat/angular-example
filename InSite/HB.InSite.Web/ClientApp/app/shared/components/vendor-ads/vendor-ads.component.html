@@ -1,0 +1,6 @@
+<mat-card class="vendor-card mt-4" *ngIf="vendorAd && vendorAd.imageURL">
+    <a href="{{vendorAd.navigateURL}}" target="_blank">
+        <img class="vendor-img" mat-card-image matTooltip="{{vendorAd.toolTipText}}" matTooltipClass="ad-tooltip" src="{{vendorAd.imageURL}}"
+            alt="{{vendorAd.toolTipText}}">
+    </a>
+</mat-card>

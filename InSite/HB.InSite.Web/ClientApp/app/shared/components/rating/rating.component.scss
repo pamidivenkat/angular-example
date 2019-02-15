@@ -1,0 +1,39 @@
+.star {
+  position: relative;
+  display: inline-block;
+  font-size: 50px;
+  margin-right: 20px;
+  line-height: 30px;
+  color: #e0dfdc;
+}
+
+@media (max-width: 812px) {
+  .star {
+    position: relative;
+    display: inline-block;
+    font-size: 25pt;
+    margin-right: 20px;
+    line-height: 30px;
+    color: #e0dfdc;
+  }
+}
+
+.full {
+  color: orange;
+}
+
+.full-other {
+  color: #005487;
+}
+
+.empty {
+  color: #e0dfdc;
+}
+
+.full-width {
+  display: flex !important;
+}
+
+.no-margin {
+  margin: 0px;
+}

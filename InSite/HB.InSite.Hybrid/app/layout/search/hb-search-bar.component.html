@@ -1,0 +1,9 @@
+
+<StackLayout #searchPanel [visibility]="hasSearchField? 'visible' : 'collapse'">
+    <SearchBar #searchBar hint="Search" (loaded)="onSearchLoaded($event)" (clear)="onSearchClear($event)" [text]="searchPhrase"
+               (submit)="onSearch($event)">
+    </SearchBar>
+    <StackLayout orientation="horizontal" style="padding: 15px">
+        <switch #venueOption (checkedChange)="venueOptionChange($event)" [checked]="false"></switch><Label style="padding-left: 25px; font-size:14px;" text="Find Venues/CVBs"></Label>
+    </StackLayout>
+</StackLayout>

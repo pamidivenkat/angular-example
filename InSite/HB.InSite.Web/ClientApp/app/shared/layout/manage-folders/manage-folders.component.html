@@ -1,0 +1,18 @@
+<mat-card>
+  <app-page-card-header
+    [title]="'Bookmark Folders'"
+    [icon]="'create_new_folder'"
+    [iconClass]="'card-head-small-icon'"
+    [titleClass]="'card-head-small-title'"
+  ></app-page-card-header>
+  <mat-card-content>
+    <h4 class="mt-2 font-weight-bold">Manage Bookmark Folders</h4>
+    <app-bookmark-folders [folders]="folders" [manageFolders]="true"></app-bookmark-folders>
+  </mat-card-content>
+  <mat-card-footer>
+    <span class="float-right post-buttons">
+      <button mat-raised-button type="button" id="btnSubmit" (click)="close()" class="submit-button">Close</button>
+    </span>
+    <br />
+  </mat-card-footer>
+</mat-card>

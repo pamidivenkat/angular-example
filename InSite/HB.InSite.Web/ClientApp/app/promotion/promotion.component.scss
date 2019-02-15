@@ -1,0 +1,77 @@
+.avatar {
+    background-size: cover;
+    padding: 2px;
+    border: grey solid 1px;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+}
+
+.more-info-panel {
+    span {
+        cursor: pointer;
+        color: #1c5673;
+        font-size: 16px;
+        line-height: 24px;
+    }
+}
+
+%liststyle {
+    padding: 0px;
+    margin: 0px;
+    list-style: none;
+    width: 100%;
+    clear: both;
+    height: auto;
+    overflow: hidden;
+}
+
+.more-info-panel {
+    span {
+        cursor: pointer;
+        color: #1c5673;
+        font-size: 16px;
+        line-height: 24px;
+    }
+}
+
+.info-bar {
+    @extend %liststyle;
+    li {
+        @extend %liststyle;
+        font-size: 16px;
+        line-height: 30px;
+        padding-top: 2px;
+        label {
+            float: left;
+            width: 100px;
+            color: #4a4a4a;
+        }
+        a {
+            float: left;
+        }
+    }
+}
+
+.contact-title {
+    text-decoration: underline;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+@media screen and (max-width: 767px) {
+    .matChip {
+        overflow: hidden;
+        text-overflow: ellipsis !important;
+        width: auto;
+        max-width: 200px;
+        white-space: nowrap;
+    }
+}
+
+.property-contact {
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: underline !important;
+    color: #45818e !important;
+}

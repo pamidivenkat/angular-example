@@ -1,0 +1,13 @@
+<form [formGroup]="replyForm">
+  <div style="display: flex">
+    <div class="form-group reply-box">
+      <mat-form-field class="material-control" appearance="outline">
+        <textarea matInput placeholder="Write a reply" matTextareaAutosize matAutosizeMinRows="2" matAutosizeMaxRows="5" formControlName="details"
+          #details minlength="1" maxlength="1000" [id]="'reply'+answerId+replyId"></textarea>
+      </mat-form-field>
+    </div>
+    <div class="float-right" style="padding-top: 10px;">
+      <mat-icon class="reply-icon" (click)="onSubmit()" class="send-icon" *ngIf="!replyForm.pristine">send</mat-icon>
+    </div>
+  </div>
+</form>

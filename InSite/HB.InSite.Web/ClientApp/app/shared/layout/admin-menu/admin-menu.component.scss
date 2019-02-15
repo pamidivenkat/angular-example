@@ -1,0 +1,94 @@
+.event-count {
+    background: #fff;
+    padding: 0px 4px;
+    border-radius: 5px;
+    color: #dd4532;
+    position: absolute;
+    margin-left: 10px;
+    border: 1px solid #dd4532;
+    font-size: 0.75em;
+    min-width: 22px;
+    text-align: center;
+}
+
+.icon-class {
+    margin-left: 5px;
+    margin-right: 10px;
+}
+
+.user-link {
+    color: #fff;
+    font-size: 16px;
+    margin-left: 25px;
+    background-color: transparent;
+    width: 100%;
+    display: inline-block;
+}
+
+.personal-info {
+    margin-bottom: 0px;
+    max-width: 165px;
+}
+
+// .fa-angle-down{ position: absolute; right:12px; padding-top: 3px;}
+.fa.pull-right {
+    margin-top: 4px;
+}
+
+.link-cursor {
+    cursor: pointer;
+}
+
+.copy-rights {
+    padding: 22px;
+    color: #929292;
+    font-size: 11px;
+}
+
+@media (max-width: 1023px) {
+    .nav {
+        z-index: 9999;
+    }
+    .overlay {
+        position: fixed;
+        display: none;
+        width: 100%;
+        height: 100%;
+        top: 45px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 2;
+        cursor: pointer;
+    }
+}
+
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) {
+    .nav {
+        position: fixed;
+        z-index: 9999;
+    }
+    .overlay {
+        position: fixed;
+        display: none;
+        width: 100%;
+        height: 100%;
+        top: 45px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 2;
+        cursor: pointer;
+    }
+}
+
+.menu-avatar {
+    background-size: cover;
+    padding: 2px;
+    border: grey solid 1px;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+}

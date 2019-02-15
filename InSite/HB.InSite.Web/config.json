@@ -1,0 +1,18 @@
+{
+    "DisableSSL": false,
+  "ConnectionStrings": {
+    "InSiteConnectionString": "Data Source=SHVLSP2410F1D;Initial Catalog=InSite;Integrated Security=True;MultipleActiveResultSets=true"
+  },
+    "Logging": {
+        "LogLevel": {
+            "Default": "Information",
+            "Microsoft": "Information"
+        }
+    },
+    "Tokens": {
+        "Key": "My New-Token Key: Value",
+        "Issuer": "localhost",
+        "Audience": "What should this value be?"
+    }
+
+}

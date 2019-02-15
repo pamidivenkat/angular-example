@@ -1,0 +1,11 @@
+<div *ngIf="!isIconAvatar">
+    <div class="example-header-image" [class.small-header-image]="isBookmark" [ngStyle]="{'background-image': 'url(' + path + ')'}"></div>
+    <mat-icon class="icon-overlay" [class.icon-overlay-small]="isBookmark" [ngStyle]="{'color': iconColor}">{{type |
+        postIcon}}</mat-icon>
+</div>
+<div *ngIf="isIconAvatar">
+    <mat-icon [class.icon-header-image]="!isBookmark" [class.small-icon-header-image]="isBookmark" [ngStyle]="{'background-color': iconColor}">{{avatarIcon}}</mat-icon>
+    <button mat-fab disabled [class.overlay-background]="!isBookmark" [class.small-overlay-background]="isBookmark">
+        <mat-icon [class.promotion-overlay]="!isBookmark" [class.small-promotion-overlay]="isBookmark" [ngStyle]="{'background-color': iconColor}">{{avatarIcon}}</mat-icon>
+    </button>
+</div>

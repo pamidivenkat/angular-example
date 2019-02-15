@@ -1,0 +1,17 @@
+<div mat-dialog-title>
+  <mat-icon class="golden-yellow" *ngIf="icon">{{ icon }}</mat-icon> {{ data.name }}
+</div>
+<div mat-dialog-content *ngIf="showFolders && folders">
+  <app-bookmark-folders
+    (onSelectedFolder)="selectFolder($event)"
+    [manageFolders]="hideNo"
+    [folders]="folders"
+  ></app-bookmark-folders>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-raised-button cdkFocusInitial class="btn-remove" (click)="closeDialog()">
+    {{ data.okName ? data.okName : "Yes" }}
+  </button>
+  <button mat-raised-button (click)="cancelDialog()" *ngIf="!hideNo">{{ data.noName ? data.noName : "No" }}</button>
+</div>
+<div style="height: 15px"><!-- don't remove adding space after buttons to fix issue in iOS devices --></div>

@@ -1,0 +1,29 @@
+<StackLayout width="100%" backgroundColor="#fafafa"  [visibility]="isLoggedIn ? 'visible' : 'collapse'">
+    <GridLayout columns="auto, auto, *, auto, auto" rows="auto" height="50" padding="5" class="action-bar">
+        <Label row="0" col="0" class="mdi back-button" [text]="'mdi-arrow-back' | fonticon" (tap)="pageBack($event)"
+               [visibility]="hasBackButton? 'visible' : 'collapse'"></Label>
+        <AbsoluteLayout row="0" col="1" (tap)="toggleSideMenu($event)"
+                        [visibility]="'visible'">
+            <Label left="0" top="0" class="mdi icon-color" [text]="'mdi-menu' | fonticon"></Label>
+            <label left="5" top="0" [text]="expiringContent" class="event-count"
+                   [visibility]="expiringContent > 0? 'visible' : 'collapse'"></label>
+        </AbsoluteLayout>
+        <AbsoluteLayout row="0" col="2"
+                        [visibility]="'visible'">
+        <Image left="0" top="12" src="~/assets/images/HBInsiteLogo.png" (tap)="onLogoClick()" width="125" height="25"
+               verticalAlign="left"></Image>
+        </AbsoluteLayout>
+        <AbsoluteLayout row="0" col="3" (tap)="hasSearchField = !hasSearchField"
+                        [visibility]="'visible'">
+            <Label class="mdi icon-color" [text]="'mdi-search' | fonticon"></Label>
+        </AbsoluteLayout>
+        <AbsoluteLayout row="0" col="4" (tap)="showNotification($event)" width="55" height="50"
+                        [visibility]="'visible'" right>
+            <Label left="0" top="0" class="mdi icon-color" [text]="'mdi-notifications' | fonticon"></Label>
+            <label left="5" top="0" [text]="notificationCount" class="solid event-count"
+                   [visibility]="notificationCount !== 0 ? 'visible' : 'collapse'"></label>
+        </AbsoluteLayout>
+    </GridLayout>
+    <hb-search-bar [parent]="instance" [hasSearchField]="hasSearchField"
+                   (searchBarEvent)="searchBarEvent($event)"></hb-search-bar>
+</StackLayout>

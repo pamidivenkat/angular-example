@@ -1,0 +1,158 @@
+<mat-card class="review-container">
+  <app-page-card-header [icon]="'star_rate'" [title]="'Post a review'" [postColor]="consts.POST_COLORS.REVIEW"></app-page-card-header>
+  <form [formGroup]="postForm" *ngIf="!isSaved">
+    <div class="form-group">
+      <mat-form-field class="material-control">
+        <mat-label>Venue</mat-label>
+        <input matInput placeholder="Please enter 3 or more characters" aria-label="Venues" id="autoVenue"
+          [matAutocomplete]="autoProperty" [formControl]="propertyControl" [readonly]="params['propertyid']">
+        <mat-progress-spinner matSuffix mode="indeterminate" diameter=15 *ngIf="propertyLoader" style="left: -10px; top: 35px;"></mat-progress-spinner>
+        <a mat-button matSuffix (click)="sendMail()" style="bottom: -10px" class="float-right" *ngIf="!params['propertyid']">Missing
+          Hotel?</a>
+        <mat-autocomplete #autoProperty="matAutocomplete" (optionSelected)="propertySelected($event)">
+          <mat-option *ngFor="let property of filteredProperties | async" [value]="property.propertyId">
+            <span>{{ property.propertyName }}</span>
+          </mat-option>
+        </mat-autocomplete>
+        <mat-hint>Choose the venue to review</mat-hint>
+      </mat-form-field>
+      <mat-chip-list>
+        <mat-chip color="accent" class="review-chip" *ngIf="selectedProperty.propertyId">
+          {{selectedProperty.propertyName}}
+          <i class="material-icons pl-3" (click)="removeSelectedProperty(selectedProperty.propertyId)" style="cursor: pointer;"
+            *ngIf="!params['propertyid']">highlight_off</i>
+        </mat-chip>
+      </mat-chip-list>
+    </div>
+    <div class="form-group">
+      <mat-form-field class="material-control">
+        <input matInput placeholder="Organization" formControlName="organizationName">
+        <mat-hint>Enter your organization name</mat-hint>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field class="material-control">
+        <input matInput placeholder="Program Name" formControlName="programName">
+        <mat-hint>Enter the name of the program</mat-hint>
+      </mat-form-field>
+    </div>
+    <div class="from-group">
+      <mat-form-field class="material-control">
+        <input matInput [matDatepicker]="picker" placeholder="Program date" formControlName="programStartDate" [max]="maxStartDate"
+          disabled="true">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker disabled="false"></mat-datepicker>
+        <mat-hint>Choose the start date of the program.</mat-hint>
+      </mat-form-field>
+    </div>
+    <div class="form-group" hidden="{{params['AssociateID'] && associateNames.length > 0 }}">
+      <mat-form-field class="material-control">
+        <input matInput placeholder="Associates" formControlName="associates">
+        <mat-hint>List your HelmsBriscoe associates</mat-hint>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field class="material-control">
+        <input matInput placeholder="Full Name" formControlName="fullName">
+        <mat-hint>Enter your full name</mat-hint>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field class="material-control">
+        <input matInput placeholder="# of Attendees" formControlName="numberOfAttendees" type="number">
+        <mat-hint>Enter the number of attendees</mat-hint>
+      </mat-form-field>
+    </div>
+    Review Details
+    <div class="form-group details">
+      <quill-editor id="txtDetails" bounds="self" placeholder="" formControlName="detailedReview" [modules]="{toolbar:[['bold', 'italic', 'underline'], ['link'], [{ 'list': 'ordered'}, { 'list': 'bullet' }]]}">
+      </quill-editor>
+    </div>
+    <div class="rounder">
+      <div class="rating-label">
+        <h6 mat-Venus>Venue Condition</h6>
+        <span class="float-right form-group">
+          <mat-slide-toggle color="primary" [labelPosition]="'before'" id="expRemainder" #rVenueCondition
+            formControlName="bVenueCondition" (change)="resetRating('venueCondition')" [checked]='review.bVenueCondition'>N/A</mat-slide-toggle>
+        </span>
+      </div>
+      <app-rating formControlName="venueCondition" [viewOnly]="rVenueCondition.checked" [showDropdown]="isMobile">
+      </app-rating>
+    </div>
+    <div class="rounder">
+      <div class="rating-label">
+        <h6 mat-Venus>Service Quality</h6>
+        <span class="float-right form-group">
+          <mat-slide-toggle color="primary" [labelPosition]="'before'" id="expRemainder" #rServiceQuality
+            formControlName="bServiceQuality" (change)="resetRating('serviceQuality')" [checked]="review.bServiceQuality">N/A</mat-slide-toggle>
+        </span>
+      </div>
+      <app-rating formControlName="serviceQuality" [viewOnly]="rServiceQuality.checked" [showDropdown]="isMobile"></app-rating>
+    </div>
+    <div class="rounder">
+      <div class="rating-label">
+        <h6 mat-Venus>F &amp; B Quality</h6>
+        <span class="float-right form-group">
+          <mat-slide-toggle color="primary" [labelPosition]="'before'" id="expRemainder" #rFbQuality formControlName="bFbQuality"
+            (change)="resetRating('fbQuality')" [checked]="review.bFbQuality">N/A</mat-slide-toggle>
+        </span>
+      </div>
+      <app-rating formControlName="fbQuality" [viewOnly]="rFbQuality.checked" [showDropdown]="isMobile"> </app-rating>
+    </div>
+    <div class="rounder">
+      <div class="rating-label">
+        <h6 mat-Venus>Overall Rating</h6>
+        <span class="float-right form-group">
+          <mat-slide-toggle color="primary" [labelPosition]="'before'" id="expRemainder" #rOverallExperience
+            formControlName="bOverallExperience" (change)="resetRating('overallExperience')" [checked]="review.bOverallExperience">N/A</mat-slide-toggle>
+        </span>
+      </div>
+      <app-rating formControlName="overallExperience" [viewOnly]="rOverallExperience.checked" [showDropdown]="isMobile">
+      </app-rating>
+    </div>
+    <div class="form-group">
+      <span>Would you recommend this venue?&nbsp;&nbsp;&nbsp;&nbsp;</span>
+      <mat-slide-toggle formControlName="isRecommended" color="primary"> </mat-slide-toggle>
+    </div>
+
+    Please let your HB Associate(s) know how they did on this event
+    <div class="form-group details">
+      <quill-editor id="txtFeedback" bounds="self" placeholder="" formControlName="hbAssociateFeedBack" [modules]="{toolbar:[['bold', 'italic', 'underline'], ['link'], [{ 'list': 'ordered'}, { 'list': 'bullet' }]]}">
+      </quill-editor>
+    </div>
+    Please enter a testimonial of your experience working with HelmsBriscoe
+    <div class="form-group details">
+      <quill-editor id="txtTestimonial" bounds="self" placeholder="" formControlName="testimonial" [modules]="{toolbar:[['bold', 'italic', 'underline'], ['link'], [{ 'list': 'ordered'}, { 'list': 'bullet' }]]}">
+      </quill-editor>
+    </div>
+    <div class="form-group">
+      <mat-checkbox class="example-margin" formControlName="isApproved">I approve public use of the testimonial entry
+        above</mat-checkbox>
+    </div>
+
+    <div class="form-group" *ngIf="review.reviewId">
+      <mat-form-field class="material-control">
+        <input matInput [matDatepicker]="picker" [min]="minExpirationDate" id="txtExpiration" placeholder="Expiration Date"
+          formControlName="expirationDate">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <div class="form-group" *ngIf="review.reviewId">
+      <mat-slide-toggle formControlName="showOnInsite" color="primary">Show On Insite </mat-slide-toggle>
+    </div>
+
+
+    <div class="form-group float-right">
+      <button mat-raised-button type="button" class="submit-button" (click)="createPostReview()" [disabled]="postForm.pristine">Submit</button>&nbsp;
+      <button mat-raised-button type="button" (click)="reset()" color="accent" [disabled]="postForm.pristine">Cancel</button>&nbsp;
+      <button mat-raised-button type="button" id="idArchive" (click)="archiveReview()" class="archive-button" *ngIf="review.reviewId && isEditable">Archive</button>&nbsp;
+      <button mat-raised-button type="button" id="idDelete" (click)="deleteReview()" class="delete-button" *ngIf="review.reviewId && isEditable">Delete</button>
+    </div>
+  </form>
+  <app-thankyou *ngIf="isSaved"></app-thankyou>
+  <br>
+  <br>
+  <br>
+</mat-card>

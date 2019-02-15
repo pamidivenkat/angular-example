@@ -1,0 +1,25 @@
+<mat-card appScrollTracker (scrollEnd)="getMorePosts($event)">
+  <app-page-card-header
+    [icon]="'watch_later'"
+    [title]="'My Expiring Content'"
+    [postColor]="'black'"
+  ></app-page-card-header>
+  <mat-card-content>
+    <div class="well well-sm" *ngFor="let post of posts">
+      <app-post
+        [post]="post"
+        [isExpiring]="true"
+        [showBookmark]="false"
+        [showNotification]="false"
+        (onPostArchived)="removeFromList($event)"
+      ></app-post>
+    </div>
+
+    <div *ngIf="posts.length === 0 && !isLoading" class="text-center pt-3">No Expiring Content</div>
+    <div class="spinner" *ngIf="isLoading">
+      <div class="bounce1"></div>
+      <div class="bounce2"></div>
+      <div class="bounce3"></div>
+    </div>
+  </mat-card-content>
+</mat-card>

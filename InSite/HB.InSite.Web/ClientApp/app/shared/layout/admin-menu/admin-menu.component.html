@@ -1,0 +1,92 @@
+<nav>
+    <ul class="nav">
+        <li class="nav-item">
+            <div class="panel">
+                <div class="d-flex" style="text-align: center; margin-left: 20px;">
+                    <div class="menu-avatar" [ngStyle]="{'background-image': 'url(' + user.photoUrl + ')'}"></div>
+                    <p class="personal-info">
+                        {{user.firstName}} {{user.lastName}}
+                        <br>
+                        <span>{{user.points | number}} Points</span>
+                        <br>
+                        <span>{{user.location}}</span>
+                    </p>
+                </div>
+            </div>
+        </li>
+        <li class="nav-item" *ngIf="true">
+            <ul class="nav" style="list-style: none;">
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="'/admin/userroles'">
+                        <span class="menu-title">
+                            <i class="material-icons" style="color:rgb(0, 84, 135)">people</i>User Roles
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="'/admin/expirations'">
+                        <span class="menu-title">
+                            <i class="material-icons" style="color:rgb(0, 84, 135)">watch_later</i>Expirations
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="'/admin/points'">
+                        <span class="menu-title">
+                            <i class="material-icons" style="color:rgb(0, 84, 135)">redeem</i>Points
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="'/admin/synonyms'">
+                        <span class="menu-title">
+                            <i class="material-icons" style="color:rgb(0, 84, 135)">linear_scale</i>Synonyms
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="'/admin/advertisements'">
+                        <span class="menu-title">
+                            <i class="material-icons" style="color:rgb(0, 84, 135)">chrome_reader_mode</i>Advertisements
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="'/admin/categories'">
+                        <span class="menu-title">
+                            <i class="material-icons" style="color:rgb(0, 84, 135)">category</i>Categories
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="'/admin/general'">
+                        <span class="menu-title">
+                            <i class="material-icons" style="color:rgb(0, 84, 135)">settings</i>General
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="'/admin/clientreviews'">
+                        <span class="menu-title">
+                            <i class="material-icons" style="color:rgb(0, 84, 135)">stars</i>Manage Client Reviews
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <hr />
+
+        <li class="nav-item">
+            <a class="nav-link link-cursor" (click)="logout()" id="logout">
+                <i class="material-icons">exit_to_app</i>
+                <span class="menu-title"> Sign out</span>
+            </a>
+        </li>
+        <hr>
+        <li class="copy-rights">
+            Published date : {{publishedDate}}
+            <br /> HB | InSite &copy; 2018
+        </li>
+    </ul>
+</nav>

@@ -1,0 +1,104 @@
+@mixin default-overlay {
+  position: relative;
+  top: -17px;
+  left: 26px;
+  background: #eeeeee;
+  border-radius: 50%;
+  font-size: 24px;
+}
+
+.icon-overlay {
+  @include default-overlay;
+}
+
+.icon-overlay-small {
+  @include default-overlay;
+  top: -20px;
+  left: 16px;
+  font-size: 15px;
+  height: 15px;
+  width: 15px;
+}
+
+.promotion-overlay {
+  @include default-overlay;
+  color: #fff;
+  top: -17px;
+  left: 0px;
+  width: 20px;
+  height: 20px;
+  font-size: 21px;
+}
+
+.small-promotion-overlay {
+  @include default-overlay;
+  color: #fff;
+  width: 14px;
+  height: 14px;
+  top: -20px;
+  left: 0px;
+  font-size: 12px;
+}
+
+@mixin example-header-image {
+  background-size: cover;
+  width: 40px;
+  height: 40px;
+  padding: 2px;
+  border: grey solid 1px;
+  border-radius: 50%;
+}
+
+.example-header-image {
+  @include example-header-image;
+}
+
+.medium-header-image {
+  @include example-header-image;
+  height: 36px;
+  width: 36px;
+  margin-top: 0;
+}
+
+.small-header-image {
+  @include example-header-image;
+  height: 25px;
+  width: 25px;
+  margin-top: -15px;
+}
+
+.icon-header-image {
+  @include example-header-image;
+  font-size: 36px;
+  color: white;
+  border: #b0bec5 solid 1px;
+  opacity: 0.5;
+}
+
+.small-icon-header-image {
+  @include example-header-image;
+  color: white;
+  border: #b0bec5 solid 1px;
+  opacity: 0.5;
+  width: 25px;
+  height: 25px;
+  font-size: 20px;
+}
+
+.overlay-background {
+  top: -30px;
+  left: 26px;
+  height: 24px;
+  width: 24px;
+  box-shadow: none;
+  background-color: #eeeeee !important;
+}
+
+.small-overlay-background {
+  top: -23px;
+  left: 16px;
+  height: 15px;
+  width: 15px;
+  box-shadow: none;
+  background-color: #eeeeee !important;
+}

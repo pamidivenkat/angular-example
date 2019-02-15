@@ -1,0 +1,30 @@
+<mat-list class="material-control" *ngIf="posts.length !== 0">
+    <mat-list-item *ngFor="let post of posts" class="material-control mt-1 d-flex align-items-center pt-2">
+        <app-post-avatar mat-list-icon mat-card-avatar [type]="post.type" class="mini-avatar-50" [userImage]="post.associateUser && post.associateUser.photoUrl"></app-post-avatar>
+        <h6 mat-line>
+            <small class="strong">
+                <span *ngIf="post.type !== 8">
+                    {{(post.type | postType)}} by
+                    <a routerLink="/profile/{{post.createdBy}}">{{post.associateUser ? post.associateUser.fullname :
+                        post.createdBy}}</a>
+                    on </span>{{post.createdOn | date:'MM/dd/yyyy'}}
+            </small>
+        </h6>
+        <div mat-line style="overflow: hidden; max-height: 40px;">
+            <div [innerHTML]="post.detail" class="post-details" (click)="gotoPage(post.type, post.entityId)"></div>
+        </div>
+        <div mat-line class="col-sm-12 p-0 pt-1 pb-1 justify-content-between" style="min-height: 22px">
+            <span *ngIf="post.type === 1">
+                <a routerLink="/post/view/{{post.entityId}}" fragment="comments" class="float-left">{{post.recordCount}}
+                    {{post.recordCount !=1 ? 'Comments' : 'Comment'}}</a>
+            </span>
+            <span *ngIf="post.type === 2">
+                <a routerLink="/post/view/{{post.entityId}}" fragment="answers" class="float-left">{{post.recordCount}}
+                    {{post.recordCount
+                    !=1 ? 'Answers' : 'Answer'}}</a>
+            </span>
+            <a (click)="gotoPage(post.type, post.entityId)" class="float-right read-more">Read more</a>
+        </div>
+        <mat-divider></mat-divider>
+    </mat-list-item>
+</mat-list>

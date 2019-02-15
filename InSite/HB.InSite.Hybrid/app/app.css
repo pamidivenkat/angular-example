@@ -1,0 +1,107 @@
+@import "~nativescript-theme-core/css/core.light.ios.css";
+@import "fonts/font-awesome.css";
+@import "fonts/material-design-icons.css";
+@import url('https://fonts.googleapis.com/css?family=Catamaran:400,500');
+
+.mdi {
+    font-family: Material Icons, MaterialIcons-Regular;
+    font-size: 26px;
+    horizontal-align: center;
+    padding: 10px;
+    padding-top: 24px;
+}
+
+.action-bar {
+    background-color: #f5f5f5;
+}
+
+.status-bar {
+    background-color: #fafafa;
+    font-family: Catamaran;
+}
+
+Page {
+    background-color: #fafafa;
+    font-family: Catamaran;
+}
+
+.sidedrawer-header {
+    color: #fff;
+    background-color: #7da7ac;
+    margin-left: 5px;
+    height: 100;
+}
+
+.sidedrawer-header-image {
+    color: #fff;
+    border-radius: 50;
+    margin: 10;
+}
+
+.sidedrawer-user-info {
+    vertical-align: center;
+    color: #fff;
+}
+
+.sidedrawer-header-brand {
+    color: #fff;
+}
+
+.points {
+    color: #fff;
+}
+
+.location {
+    color: #fff;
+}
+
+.sidedrawer-content {
+    margin-left: 5px;
+    background-color: #fafafa;
+    color: #000000;
+}
+
+.sidedrawer-list-item {
+    vertical-align: center;
+}
+
+.sidedrawer-content .mdi {
+    vertical-align: center;
+    font-size: 26;
+}
+
+.sidedrawer-item-lbl {
+    font-family: "Catamaran";
+    margin: 15px;
+    vertical-align: center;
+    padding-bottom: 2px;
+    padding-top: 5px;
+    color: #777777;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.event-count {
+    margin-top: 7px;
+    margin-left: 35px;
+    min-width: 30px;
+    font-size: 13px;
+    background-color: #fff;
+    text-align: center;
+    vertical-align: center;
+    color: #dd4532;
+    border-color: #dd4532;
+    border-width: 2px;
+    border-radius: 10px;
+}
+
+.solid.event-count {
+    color: #fff;
+    background-color: #dd4532;
+
+}
+
+.btn-login {
+    text-transform: none;
+    background-color: #fff;
+}

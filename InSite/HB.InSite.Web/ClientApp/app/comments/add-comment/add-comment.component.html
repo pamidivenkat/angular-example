@@ -1,0 +1,14 @@
+<form [formGroup]="commentForm">
+  <div style="display: flex">
+    <div class="form-group comment-box">
+      <mat-form-field class="material-control" appearance="outline">
+        <textarea matInput placeholder="Write a {{placeholder|lowercase}}" matTextareaAutosize matAutosizeMinRows="2" matAutosizeMaxRows="5"
+          formControlName="details" #details maxlength="{{maxLength}}" minlength="1" [id]="'comment'+parentId+commentId"></textarea>
+      </mat-form-field>
+    </div>
+    <div style="margin-left:-50px; margin-top: 12px;">
+      <!-- <mat-icon class="comment-icon" (click)="cancel()" [color]="'accent'">cancel</mat-icon> -->
+      <mat-icon class="comment-icon" (click)="onSubmit()" class="send-icon" *ngIf="!commentForm.pristine">send</mat-icon>
+    </div>
+  </div>
+</form>

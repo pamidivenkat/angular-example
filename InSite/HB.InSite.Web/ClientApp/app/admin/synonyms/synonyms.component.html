@@ -1,0 +1,156 @@
+<mat-card>
+  <app-page-card-header
+    [title]="'Synonyms'"
+    [icon]="'linear_scale'"
+    [postColor]="postType | postColor"
+  ></app-page-card-header>
+  <div>
+    <form [formGroup]="synonymsForm" class="pt-2" *ngIf="isEditing == -1" style="width:100%;">
+      <div class="form-group">
+        <mat-form-field class="material-control">
+          <input
+            matInput
+            placeholder="Search Word"
+            type="text"
+            name="vSearch"
+            formControlName="vSearch"
+            [maxLength]="256"
+            #vSearch
+            required
+            id="txtvSearch"
+          />
+          <mat-error *ngIf="vSearch.required"> You must enter a value </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="form-group">
+        <mat-form-field class="material-control">
+          <input
+            matInput
+            placeholder="Synonyms"
+            type="text"
+            name="vSynonyms"
+            formControlName="vSynonyms"
+            [maxLength]="256"
+            #vSynonyms
+            required
+            id="txtvSynonyms"
+          />
+          <mat-error *ngIf="vSynonyms.required"> You must enter a value </mat-error>
+        </mat-form-field>
+      </div>
+      <!--
+        <div class="form-group">
+            <mat-checkbox style="width:100%;" formControlName="active" name="active" #active required id="txtActive">Active Status</mat-checkbox>
+        </div>
+      -->
+      <div class="form-group mb-4">
+        <span class="float-right review-buttons">
+          <button
+            mat-raised-button
+            type="button"
+            id="btnSubmit"
+            class="submit-button"
+            (click)="onSubmit()"
+            [disabled]="synonymsForm.pristine || synonymsForm.invalid"
+          >
+            Save
+          </button>
+          &nbsp;
+          <button mat-raised-button type="button" id="idCancel" (click)="cancel()" color="accent">Cancel</button> &nbsp;
+        </span>
+      </div>
+    </form>
+    <mat-list class="clearfix">
+      <mat-list-item style="height:100%; padding: 15px;">
+        <div mat-line class="pl-2" style="display:flex;">
+          <small style="width:100%; text-decoration:underline;">Search Word</small>
+          <small style="width:100%; text-decoration:underline;">Synonyms</small>
+          <!-- <small style="width:80%; text-decoration:underline;">Active</small> -->
+          <button mat-raised-button (click)="editSynonym(defaultValues, -1)" style="margin:5px">
+            <mat-icon class="float-left">add</mat-icon>
+            <span>Add</span>
+          </button>
+        </div>
+      </mat-list-item>
+      <mat-list-item *ngFor="let synonym of synonymsList; let idx = index" style="height:100%; padding: 15px;">
+        <div mat-line class="pl-2" style="display:flex;" *ngIf="isEditing != idx">
+          <span style="width:100%;"
+            ><small title="{{synonym.vSearch}}">{{ synonym.vSearch }}</small></span
+          >
+          <span style="width:100%;"
+            ><small title="{{synonym.synonym}}">{{ synonym.vSynonyms }}</small></span
+          >
+          <!-- <small style="width:100%;">{{synonym.active}}</small> -->
+          <!-- <mat-checkbox style="width:30%;" [(ngModel)]="synonym.active" disabled="true"></mat-checkbox> -->
+          <div style="width:60%">
+            <button mat-raised-button (click)="editSynonym(synonym, idx)" style="margin:5px" *ngIf="isEditing != idx">
+              <mat-icon class="float-left">edit</mat-icon>
+              <span>Edit</span>
+            </button>
+            <button mat-raised-button (click)="deleteSynonym(synonym, idx)" style="margin:5px" *ngIf="isEditing != idx">
+              <mat-icon class="float-left">delete</mat-icon>
+              <span>Delete</span>
+            </button>
+          </div>
+        </div>
+        <form [formGroup]="synonymsForm" class="pt-2" *ngIf="isEditing == idx" style="width:100%;">
+          <div class="form-group">
+            <mat-form-field class="material-control">
+              <input
+                matInput
+                placeholder="Search Word"
+                type="text"
+                name="vSearch"
+                formControlName="vSearch"
+                [maxLength]="256"
+                #vSearch
+                required
+                id="txtvSearch"
+              />
+              <mat-error *ngIf="vSearch.required"> You must enter a value </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-group">
+            <mat-form-field class="material-control">
+              <input
+                matInput
+                placeholder="Synonyms"
+                type="text"
+                name="vSynonyms"
+                formControlName="vSynonyms"
+                [maxLength]="256"
+                #vSynonyms
+                required
+                id="txtvSynonyms"
+              />
+              <mat-error *ngIf="vSynonyms.required"> You must enter a value </mat-error>
+            </mat-form-field>
+          </div>
+          <!--
+            <div class="form-group">
+                <mat-checkbox style="width:100%;" formControlName="active" name="active" #active required id="txtActive">Active Status</mat-checkbox>
+            </div>
+          -->
+          <div class="form-group mb-4">
+            <span class="float-right review-buttons">
+              <button
+                mat-raised-button
+                type="button"
+                id="btnSubmit"
+                (click)="onSubmit()"
+                class="submit-button"
+                [disabled]="synonymsForm.pristine || synonymsForm.invalid"
+              >
+                Save
+              </button>
+              &nbsp;
+              <button mat-raised-button type="button" id="idCancel" (click)="cancel()" color="accent">Cancel</button>
+              &nbsp;
+            </span>
+          </div>
+        </form>
+        <br />
+      </mat-list-item>
+    </mat-list>
+  </div>
+</mat-card>

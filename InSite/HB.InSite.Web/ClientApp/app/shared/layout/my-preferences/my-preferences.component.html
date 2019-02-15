@@ -1,0 +1,149 @@
+<mat-card>
+  <app-page-card-header [icon]="'mail_outline'" [title]="'Email Preferences'"></app-page-card-header>
+  <form [formGroup]="preferencesForm">
+    <mat-card-content class="mt-2" *ngIf="!isLoading">
+      <div class="form-group">
+        <mat-slide-toggle formControlName="sendImmediate" color="primary">
+          <span class="font-weight-bold ml-1">Enable immediate email Notifications</span>
+        </mat-slide-toggle>
+        <br>
+        <mat-hint class="ml-5">Receive emails about posts tagged with any of the below criteria immediately.</mat-hint>
+      </div>
+      <div class="form-group">
+        <mat-slide-toggle formControlName="sendSummary" color="primary" #sendSummary>
+          <span class="font-weight-bold ml-1" style="line-height: 50px">Enable summary email Notifications</span>
+        </mat-slide-toggle>
+        <br>
+        <mat-hint class="ml-5">Receive summary emails daily or weekly about posts tagged with any of the below
+          criteria.
+        </mat-hint>
+        <div [hidden]="!sendSummary.checked">
+          <mat-radio-group formControlName="sendSummaryChoice" class="summary-options ml-5">
+            <mat-radio-button value="1" class="font-weight-bold">Daily</mat-radio-button>
+            <mat-radio-button value="2" class="font-weight-bold">Weekly</mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </div>
+      <div class="form-group">
+        <mat-slide-toggle formControlName="categoriesEnabled" color="primary" #categoriesEnabled>
+          <span class="font-weight-bold ml-1">Enable emails about specific Categories</span>
+        </mat-slide-toggle>
+        <br>
+        <mat-hint class="ml-5">Receive emails about all posts tagged with any of the following categories:</mat-hint>
+      </div>
+      <div class="ml-5" [hidden]="!categoriesEnabled.checked">
+        <div class="form-group" *ngFor="let category of categories">
+          <mat-slide-toggle formControlName="category{{category.id}}" color="primary">{{category.name}}</mat-slide-toggle>
+        </div>
+      </div>
+      <div class="form-group" [class.mb-1]="propertiesEnabled.checked">
+        <mat-slide-toggle formControlName="propertiesEnabled" color="primary" #propertiesEnabled>
+          <span class="font-weight-bold ml-1">Enable emails about specific Venues/CVBs</span>
+        </mat-slide-toggle>
+        <br>
+        <mat-hint class="ml-5">Receive emails about all posts tagged with any of the following Venues/CVBs:</mat-hint>
+      </div>
+      <div class="form-group ml-5" [hidden]="!propertiesEnabled.checked">
+        <mat-form-field class="material-control">
+          <mat-label>Venues</mat-label>
+          <input matInput placeholder="Please enter 3 or more characters" aria-label="Venues" id="autoVenue"
+            [matAutocomplete]="autoProperty" [formControl]="propertyControl">
+          <mat-progress-spinner matSuffix mode="indeterminate" diameter=15 *ngIf="propertyLoader"></mat-progress-spinner>
+          <mat-autocomplete #autoProperty="matAutocomplete" (optionSelected)="propertySelected($event)">
+            <mat-option *ngFor="let property of filteredProperties | async" [value]="property.propertyId">
+              <span>{{ property.propertyName }}</span>
+            </mat-option>
+          </mat-autocomplete>
+          <mat-hint>Enter Venue Name</mat-hint>
+        </mat-form-field>
+        <mat-chip-list>
+          <mat-chip *ngFor="let property of selectedProperties;" color="accent" class="post-chip">
+            <a [routerLink]="'/property/' + property.propertyId">{{property.propertyName}}</a>
+            <i class="material-icons pl-3" (click)="removeSelectedProperty(property.propertyId)" style="cursor: pointer;">highlight_off</i>
+          </mat-chip>
+        </mat-chip-list>
+      </div>
+      <div class="form-group" [class.mb-1]="locationsEnabled.checked">
+        <mat-slide-toggle formControlName="locationsEnabled" color="primary" #locationsEnabled>
+          <span class="font-weight-bold ml-1">Enable emails about specific Locations</span>
+        </mat-slide-toggle>
+        <br>
+        <mat-hint class="ml-5">Receive emails about all posts tagged with any of the following Locations:</mat-hint>
+      </div>
+      <div class="form-group ml-5" [hidden]="!locationsEnabled.checked">
+        <mat-form-field class="material-control">
+          <mat-label>Locations</mat-label>
+          <input matInput placeholder="Please enter 3 or more characters" aria-label="Locations" id="autoLocation"
+            [matAutocomplete]="autoLocation" [formControl]="locationControl">
+          <mat-progress-spinner matSuffix mode="indeterminate" diameter=15 *ngIf="locationLoader"></mat-progress-spinner>
+          <mat-autocomplete #autoLocation="matAutocomplete" (optionSelected)="locationSelected($event)">
+            <mat-option *ngFor="let location of filteredLocations | async" [value]="location.locationId">
+              <span>{{ location.locationName }}</span>
+            </mat-option>
+          </mat-autocomplete>
+          <mat-hint>Enter City, Metro Area, State, Country or Region</mat-hint>
+        </mat-form-field>
+        <mat-chip-list>
+          <mat-chip *ngFor="let location of selectedLocations" color="accent" class="post-chip">
+            <a [routerLink]="'/search/results/location/' + location.locationId">{{location.locationName}}</a>
+            <i class="material-icons pl-3" (click)="removeSelectedLocation(location.locationId)" style="cursor: pointer;">highlight_off</i>
+          </mat-chip>
+        </mat-chip-list>
+      </div>
+      <div class="form-group" [class.mb-1]="associatesEnabled.checked">
+        <mat-slide-toggle formControlName="associatesEnabled" color="primary" #associatesEnabled>
+          <span class="font-weight-bold ml-1">Enable emails about specific Associates</span>
+        </mat-slide-toggle>
+        <br>
+        <mat-hint class="ml-5">Receive emails about all posts made by any of the following Associates:</mat-hint>
+      </div>
+      <div class="form-group ml-5" [hidden]="!associatesEnabled.checked">
+        <mat-form-field class="material-control">
+          <mat-label>Associates</mat-label>
+          <input matInput placeholder="Please enter 3 or more characters" aria-label="Associates" id="autoAssociate"
+            [matAutocomplete]="autoAssociate" [formControl]="associateControl">
+          <mat-progress-spinner matSuffix mode="indeterminate" diameter=15 *ngIf="associateLoader"></mat-progress-spinner>
+          <mat-autocomplete #autoAssociate="matAutocomplete" (optionSelected)="associateSelected($event)">
+            <mat-option *ngFor="let associate of filteredAssociates | async" [value]="associate.id">
+              <span>{{ associate.firstName }} {{associate.lastName}}</span>
+            </mat-option>
+          </mat-autocomplete>
+          <mat-hint>Enter Associate Name</mat-hint>
+        </mat-form-field>
+        <mat-chip-list>
+          <mat-chip *ngFor="let associate of selectedAssociates" color="accent" class="post-chip">
+            <a [routerLink]="'/profile/' + associate.id">{{ associate.firstName }} {{associate.lastName}}</a>
+            <i class="material-icons pl-3" (click)="removeSelectedAssociate(associate.id)" style="cursor: pointer;">highlight_off</i>
+          </mat-chip>
+        </mat-chip-list>
+      </div>
+      <hr>
+      <div class="form-group">
+        <mat-slide-toggle formControlName="notificationsEnabled" color="primary">
+          <span class="font-weight-bold ml-1">Enable emails for "My Notifications"</span>
+        </mat-slide-toggle>
+        <br>
+        <mat-hint class="ml-5">Receive emails about all posts for which you have turned on notifications.</mat-hint>
+      </div>
+    </mat-card-content>
+    <mat-card-footer *ngIf="!isLoading">
+      <div class="form-group mb-4 float-right">
+        <span class="post-buttons">
+          <button mat-raised-button type="button" id="btnSubmit" (click)="onSubmit()" [disabled]="preferencesForm.pristine"
+            class="submit-button">Submit</button>
+          &nbsp;
+          <button mat-raised-button type="button" id="idCancel" (click)="onCancel()" color="accent">Cancel</button>
+          &nbsp;
+        </span>
+      </div>
+    </mat-card-footer>
+    <mat-card-content *ngIf="isLoading">
+      <mat-spinner style="top: 185px"></mat-spinner>
+      <br>
+      <br>
+      <br>
+      <br>
+    </mat-card-content>
+    <br>
+  </form>
+</mat-card>

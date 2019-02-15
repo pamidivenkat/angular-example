@@ -1,0 +1,33 @@
+<mat-card>
+    <mat-card-content>
+        <app-page-card-header [title]="'Search Results'" [icon]="'search'"></app-page-card-header>
+        <div *ngIf="!isVenueSearch">
+            <app-posttype-filter (onSelectionChange)="applyPostTypeFilter($event)" [selectedType]="selectedTypes"></app-posttype-filter>
+            <div>
+                <mat-form-field class="material-control" id="matFormField">
+                    <mat-select placeholder="Category" #category [(ngModel)]="selectedCategory" (valueChange)="applyCategoryFilter($event)"
+                        id='optCategory'>
+                        <mat-option>None</mat-option>
+                        <mat-option *ngFor="let category of categories" [value]="category.id" id="catOptions">
+                            {{category.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <mat-slide-toggle class="float-right mb-3" [(ngModel)]="archived" [color]="'primary'" #archive (change)="includeArchivePosts(archive.checked)">
+                Include archive
+            </mat-slide-toggle>
+        </div>
+        <br>
+        <div *ngFor="let result of searchResults; let i = index;" class="well well-sm search">
+            <app-post [post]="result" [showFooter]="false" [showBookmark]="false" [showNotification]="false"
+                [preserveEmTag]='true'></app-post>
+        </div>
+        <div style="text-align: center" *ngIf="searchResults.length ===0 && !isLoading" class="mt-3">
+            No Results
+        </div>
+        <div *ngIf="isLoading">
+            <mat-spinner></mat-spinner>
+        </div>
+    </mat-card-content>
+</mat-card>

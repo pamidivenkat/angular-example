@@ -1,0 +1,258 @@
+.property-title {
+    //font-size: 1.5em;
+    padding-top: 5px;
+}
+
+.property-icon {
+    font-size: 30px;
+}
+
+.property-contact {
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: underline !important;
+    color: #45818e !important;
+}
+
+.mat-list {
+    .material-control {
+        .mat-list-item-content {
+            width: 100% !important;
+            .mat-divider {
+                bottom: 5px;
+            }
+        }
+    }
+}
+
+.sideNavWrapper {
+    .mat-list {
+        .material-control {
+            .mat-list-item-content {
+                width: 95% !important;
+            }
+        }
+    }
+}
+
+.post-select {
+    float: right;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.property-header-icons {
+    .notification {
+        display: inline;
+    }
+    .bookmark {
+        display: inline;
+    }
+}
+
+.property-report-list {
+    .mat-list-item-content {
+        font-size: 0.85em;
+        justify-content: space-between;
+    }
+    .mat-list-item-content {
+        .col {
+            padding: 0;
+            margin: 0;
+            text-align: center;
+        }
+        .label {
+            // text-align: left !important;
+            font-weight: 500;
+        }
+        .report-first-line {
+            padding-top: 0.25em;
+            display: flex;
+            justify-content: space-between;
+            small {
+                font-weight: 500;
+            }
+        }
+        .report-second-line {
+            display: flex;
+            justify-content: space-around;
+            small {
+                font-weight: 500;
+            }
+        }
+    }
+}
+
+@media (max-width: 1024px) {
+    .post-select {
+        width: 100%;
+        margin-bottom: 0;
+        margin-top: 5px;
+    }
+    .property-title {
+        padding: 0 !important;
+        font-size: 1.25em;
+    }
+    .property-icon {
+        font-size: 24px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .post-select .mat-form-field-infix {
+        width: 525px;
+    }
+}
+
+.property-page {
+    flex-direction: column;
+}
+
+.property-details {
+    background: rgb(170, 211, 216);
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 0px 0 0;
+}
+
+.property-details>.fa {
+    width: auto;
+}
+
+.property-title-address {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.property-title-address .bookmark {
+    line-height: inherit;
+}
+
+.property-title-address .fa {
+    color: #d9a460 !important;
+}
+
+.property-page .nav-tabs {
+    background: #7ea8ad;
+    width: 100%;
+    color: #ffffff;
+    top: 0;
+    margin: 0;
+    position: relative;
+    max-width: 100%;
+    z-index: 0;
+}
+
+.bd-content .property-page .nav-tabs li {
+    width: auto;
+    flex: 1;
+}
+
+.bd-content .property-page .nav-tabs .nav-link {
+    color: #ffffff;
+    outline: none;
+    border: 0px;
+    border: 0;
+    border-radius: 0;
+}
+
+.property-page .nav-tabs .nav-link:focus,
+.property-page .nav-tabs .nav-link:hover {
+    border: 0;
+    border-radius: 0;
+}
+
+.property-page .nav-tabs .nav-link.active {
+    background: #ffffff;
+    color: #7ea8ad;
+}
+
+.property-page .tab-content {
+    margin-top: 20px;
+}
+
+.property-rating {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.property-rating>li {
+    float: left;
+    width: 100%;
+}
+
+.property-rating>li>label {
+    line-height: 22px;
+    float: left;
+    padding: 0 10px;
+    width: 160px;
+}
+
+.top-ratings {
+    overflow: hidden;
+}
+
+.post-select .mat-select {
+    text-align: right;
+}
+
+.property-avatar {
+    height: 80px !important;
+    width: 150px !important;
+    border-radius: 5px !important;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+    border: 0px solid;
+    border-color: gray;
+}
+
+.bookmark {
+    margin-bottom: 10px;
+    height: auto;
+    overflow: hidden;
+}
+
+.contact-title {
+    text-decoration: underline;
+    font-weight: bold;
+    font-size: 16px;
+    color: #7ea8ad;
+}
+
+.rating-details {
+    width: 275px;
+    margin-left: 180px;
+}
+
+.property-tab-text {
+    line-height: 1;
+    font-weight: bold;
+    margin-top: 6px;
+    margin-bottom: 0px;
+}
+
+@media (max-width: 599px) {
+    .property-tab-text {
+        font-size: 0.85em;
+    }
+    .rating-details {
+        width: 275px;
+        margin-left: 130px;
+    }
+}
+
+.property-flag {
+    background-color: #005487 !important;
+    color: #fff !important;
+}
+
+.rate-count {
+    padding-top: 2px;
+    padding-left: 4px
+}

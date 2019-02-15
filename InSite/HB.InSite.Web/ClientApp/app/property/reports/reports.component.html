@@ -1,0 +1,125 @@
+<div style="overflow-x: hidden; padding-bottom: 200px">
+    <div class="col p-0 m-0 pt-3">
+        <div class="row justify-content-md-between">
+            <div class="col-8 col-md-4">
+                <mat-form-field class="material-control">
+                    <mat-select placeholder="Report Type" [(ngModel)]="selectedReport" name="selRpt" (selectionChange)="onReportTypeChanged($event)">
+                        <mat-option *ngFor="let report of reportTypes" [value]="report.value">
+                            {{ report.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-4 col-md-4">
+                <mat-form-field class="material-control">
+                    <mat-select placeholder="Currency" [(ngModel)]="selectedCurrency" name="selCurrency"
+                        (selectionChange)="onCurrencyChanged($event)">
+                        <mat-option *ngFor="let currency of currencies" [value]="currency.currencyId">
+                            {{ currency.currencyCode }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="!isLoading">
+        <div *ngIf="selectedReport === 'adr' || selectedReport === 'mcr'">
+            <mat-list>
+                <mat-list-item>
+                    <span mat-line class="table-head" style="display: flex;">
+                        <span class="report-column" style="text-align: left">{{selectedReport | uppercase}}</span>
+                        <span class="report-column">Program Date</span>
+                        <span class="report-column">Booking Date</span>
+                    </span>
+                </mat-list-item>
+            </mat-list>
+            <mat-list class="property-report-list" *ngFor="let record of report; let i = index">
+                <mat-list-item class="list-item" [ngClass]="{'odd-row' :(i % 2 == 0)}">
+                    <span mat-line class="table-data">
+                        <span *ngFor="let cell of record; let j = index" class="report-column" [class.header-cell]="j===0"
+                            [hidden]="j == 3">{{cell}}</span>
+                    </span>
+                </mat-list-item>
+            </mat-list>
+            <mat-list *ngIf="!hasReportData">
+                <mat-list-item>No data found.</mat-list-item>
+            </mat-list>
+        </div>
+        <div *ngIf="selectedReport==='programDate' || selectedReport === 'bookingDate'">
+            <mat-list class="property-report-list">
+                <mat-list-item class="small" [ngStyle]="{'height': 24 * tableHeaders.length + 'px'}">
+                    <span class="col label" [ngClass]="'table-head'" style="text-align: left">{{tableHeaders[0]}}:</span>
+                    <span class="col label" [ngClass]="'table-head'" style="text-align: left">
+                        <div style="text-align: right" *ngFor="let header of tableHeaders;  let idx = index" [hidden]="idx == 0">{{header}}</div>
+                    </span>
+                </mat-list-item>
+            </mat-list>
+            <mat-list class="property-report-list">
+                <mat-list-item class="small" *ngFor="let rpt of report let i = index" [ngClass]="{'odd-row' :(i % 2 == 0) && (i !== 0)}"
+                    [ngStyle]="{'height': columnHeight + 'px'}">
+                    <span class="col label" style="text-align: left">
+                        {{rpt[0]}}
+                    </span>
+                    <span class="col label">
+                        <div *ngFor="let rptItem of rpt;  let idx = index" style="text-align: right" [hidden]="idx == 0">
+                            {{rptItem}}
+                        </div>
+                    </span>
+                </mat-list-item>
+            </mat-list>
+            <mat-list *ngIf="!hasReportData">
+                <mat-list-item>No records available.</mat-list-item>
+            </mat-list>
+        </div>
+    </div>
+    <hr>
+    <div class="text-center" *ngIf="selectedReport == 'mcr'">*MCR is defined as the room rate for the most commonly
+        booked type of room.</div>
+    <div *ngIf="selectedReport == 'summary'">
+        <h4 class="material-control text-center">Booking History Summary</h4>
+        <div *ngIf="!isLoading">
+            <mat-list>
+                <mat-list-item>
+                    <span mat-line class="table-head" style="display: flex;">
+                        <span class="report-column" style="text-align: left;">
+                            <div>Program Date</div>
+                            <div>Booking Date</div>
+                        </span>
+                        <span class="report-column" style="text-align: center">
+                            <div>Rooms</div>
+                            <div>MCR Type</div>
+                        </span>
+                        <span class="report-column">
+                            <div>ADR</div>
+                            <div>MCR</div>
+                        </span>
+                    </span>
+                </mat-list-item>
+            </mat-list>
+            <mat-list class="property-report-list" *ngFor="let record of summaryReport; let i = index">
+                <mat-list-item class="list-item" [ngClass]="{'odd-row' :(i % 2 == 0)}">
+                    <span mat-line class="table-data">
+                        <span class="report-column" style="text-align: left">
+                            <div>{{record.programStartDate | date:'dd-MMM-yy' }}</div>
+                            <div>{{record.bookingDate | date:'dd-MMM-yy'}}</div>
+                        </span>
+                        <span class="report-column" style="text-align: center">
+                            <div>{{record.rooms|number}}</div>
+                            <div>{{record.mcrType}}</div>
+                        </span>
+                        <span class="report-column">
+                            <div>{{record.adr|number}}</div>
+                            <div>{{record.mcr|number}}</div>
+                        </span>
+                    </span>
+                </mat-list-item>
+            </mat-list>
+            <mat-list *ngIf="!hasReportData">
+                <mat-list-item>No records of booking history.</mat-list-item>
+            </mat-list>
+        </div>
+    </div>
+    <div *ngIf="isLoading">
+        <mat-spinner></mat-spinner>
+    </div>
+</div>

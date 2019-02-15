@@ -1,0 +1,23 @@
+<div class="row pt-3 sidebar-nav">
+    <div class="col-12">
+        <mat-tab-group class="side-tabs">
+            <mat-tab label="My Notifications" #tabAlert="matTab" style="padding: 0 5px">
+                <ng-template mat-tab-label>
+                    <div class="main-tab d-flex mt-3">
+                        <p class="tab-text">My Notifications</p>
+                    </div>
+                </ng-template>
+                <app-recent-notification></app-recent-notification>
+            </mat-tab>
+            <mat-tab label="My bookmarks" #tabBookmark="matTab">
+                <ng-template mat-tab-label>
+                    <div class="main-tab d-flex mt-3">
+                        <p class="tab-text">My Bookmarks</p>
+                    </div>
+                </ng-template>
+                <app-my-bookmarks></app-my-bookmarks>
+            </mat-tab>
+
+        </mat-tab-group>
+    </div>
+</div>

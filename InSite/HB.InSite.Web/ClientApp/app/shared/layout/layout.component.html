@@ -1,0 +1,32 @@
+<div [ngClass]="{'main-layout': (showHeader$ | async)}">
+    <!-- Header Start -->
+
+    <app-header *ngIf="(showHeader$ | async)"></app-header>
+    <mat-sidenav-container [ngStyle]="{'min-height': menuIsOpen && containerHeight}">
+
+        <mat-sidenav #menuNav [mode]="(menu$ | async)?.mode" [opened]="(menu$ | async)?.isOpen" (openedChange)="menuOpenEvent($event)"
+            class="menuNavWrapper bd-toc-item">
+            <app-menu [expiringContent]="expiringContent" *ngIf="!isAdminLayout"></app-menu>
+            <app-admin-menu [expiringContent]="expiringContent" *ngIf="isAdminLayout"></app-admin-menu>
+        </mat-sidenav>
+        <!-- Left Nav End -->
+        <mat-sidenav-content>
+            <!-- Middle Content Start -->
+            <main role="main" class="col py-3 bd-content main-content-overflow">
+                <router-outlet (activate)="changeOfRoutes()"></router-outlet>
+            </main>
+            <!-- Middle Content End -->
+        </mat-sidenav-content>
+
+        <!-- Right Nav Start -->
+        <mat-sidenav #sidebarNav position="end" [mode]="(side$ | async)?.mode" [opened]="(side$ | async)?.isOpen" class="sideNavWrapper"
+            *ngIf="!isAdminLayout">
+            <app-right-panel class="mat-elevation-z2"></app-right-panel>
+        </mat-sidenav>
+        <!-- Right Nav End -->
+    </mat-sidenav-container>
+
+    <div *ngIf="showHomeButton">
+        <app-fab-button></app-fab-button>
+    </div>
+</div>

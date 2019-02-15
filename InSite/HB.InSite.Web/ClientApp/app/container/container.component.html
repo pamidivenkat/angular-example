@@ -1,0 +1,94 @@
+<div class="main-tabs" appScrollTracker (scrollEnd)="getMorePosts($event)" (scrollTop)="saveScrollPosition($event)">
+    <mat-tab-group (selectedTabChange)="onTabChange($event)" class="container-tabs" [selectedIndex]="savedTab">
+        <mat-tab label="Recent Posts" #tabPosts="matTab">
+            <ng-template mat-tab-label>
+                <div class="main-tab d-flex mt-3">
+                    <mat-icon [color]="tabPosts.isActive ? 'primary' : 'accent'" style="font-size: x-large" class="mr-2">view_list</mat-icon>
+                    <p class="tab-text">Recent<br>Posts</p>
+                </div>
+            </ng-template>
+            <div class="main-content-overflow">
+                <div>
+                    <app-vendor-ads></app-vendor-ads>
+                </div>
+                <div style="min-height: 50px">
+                    <app-posttype-filter [selectedType]="selectedTypes" (onSelectionChange)="filterPosts($event)"></app-posttype-filter>
+                </div>
+                <div class="well well-sm" *ngFor="let post of recentPosts">
+                    <app-post [post]="post" [showNotification]="post.type == 1 || post.type == 2" [isAnnouncement]="post.type==8"></app-post>
+                    <!-- --{{post.bookmarkId}}--{{post.id}} -->
+                </div>
+                <div *ngIf="recentPosts.length === 0 && !loading && hasInitData" class="text-center" style="top:50px">
+                    No posts available for the selected types.
+                </div>
+                <div class="spinner" *ngIf="loading">
+                    <div class="bounce1"></div>
+                    <div class="bounce2"></div>
+                    <div class="bounce3"></div>
+                </div>
+                <div *ngIf="!loading && hasInitData && recentPosts.length < totalCount" style="text-align: center">
+                    <button mat-button (click)="loadMoreData()">Load more</button>
+                </div>
+            </div>
+            <div *ngIf="!hasInitData">
+                <mat-spinner></mat-spinner>
+            </div>
+
+        </mat-tab>
+        <mat-tab label="Unanswered Questions" #tabQuestions="matTab">
+            <ng-template mat-tab-label>
+                <div class="main-tab d-flex mt-3">
+                    <mat-icon [ngClass]="tabQuestions.isActive ? 'unanswered': 'tab-inactive'" style="font-size: x-large"
+                        class="mr-2">live_help</mat-icon>
+                    <p class="tab-text">Unanswered
+                        <br>Questions</p>
+                </div>
+            </ng-template>
+            <div class="main-content-overflow">
+                <div class="well well-sm" *ngFor="let question of questions;">
+                    <app-post [post]="question" [showAnswerCount]="question.numberofAnswers > 0" [showReAsk]='true'></app-post>
+                </div>
+                <div class="spinner" *ngIf="loading">
+                    <div class="bounce1"></div>
+                    <div class="bounce2"></div>
+                    <div class="bounce3"></div>
+                </div>
+                <div *ngIf="!loading && hasInitData && questions.length < totalCount" style="text-align: center">
+                    <button mat-button (click)="loadMoreData()">Load more</button>
+                </div>
+            </div>
+            <div *ngIf="!hasInitData">
+                <mat-spinner></mat-spinner>
+            </div>
+        </mat-tab>
+        <mat-tab #tabReviews="matTab">
+            <ng-template mat-tab-label>
+                <div class="main-tab d-flex mt-3">
+                    <mat-icon [ngClass]="tabReviews.isActive ? 'request-review': 'tab-inactive'" style="font-size: x-large"
+                        class="mr-2">forum</mat-icon>
+                    <p class="tab-text">Requested
+                        <br>Reviews</p>
+                </div>
+            </ng-template>
+            <div class="main-content-overflow">
+                <div class="well well-sm" *ngFor="let review of reviews;">
+                    <app-post-review-request [review]="review" [showBookMark]="false"></app-post-review-request>
+                </div>
+                <div *ngIf="hasInitData && !loading && reviews.length === 0" style="text-align: center">
+                    <mat-card>No review requests.</mat-card>
+                </div>
+                <div class="spinner" *ngIf="loading">
+                    <div class="bounce1"></div>
+                    <div class="bounce2"></div>
+                    <div class="bounce3"></div>
+                </div>
+                <div *ngIf="!loading && hasInitData && reviews.length < totalCount" style="text-align: center">
+                    <button mat-button (click)="loadMoreData()">Load more</button>
+                </div>
+            </div>
+            <div *ngIf="!hasInitData">
+                <mat-spinner></mat-spinner>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</div>

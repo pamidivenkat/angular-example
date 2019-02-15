@@ -1,0 +1,40 @@
+<div>
+    <!-- Header Start -->
+
+    <div class="fixed-top container">
+        <nav class="navbar navbar-dark p-0">
+            <header class="header-bg col">
+                <div class="row">
+                    <div class="col">
+                        <button class="btn btn-link bd-search-docs-toggle d-md-none p-0 collapsed" type="button" (click)="toggleNav()" aria-controls="bd-docs-nav"
+                            aria-expanded="false" aria-label="Toggle docs navigation">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" width="30" height="30" focusable="false">
+                                <title>Menu</title>
+                                <path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" d="M4 7h22M4 15h22M4 23h22"></path>
+                            </svg>
+                            <span class="event-count" *ngIf="hasExpiringContent()">{{expiringContent}}</span>
+                        </button>
+                        <div class="logo-block">
+                            <img src="Clientapp/dist/assets/HBInsiteLogo.png" class="logo" (click)="gotoHome()" />
+                        </div>
+                    </div>
+                </div>
+            </header>
+        </nav>
+    </div>
+    <mat-sidenav-container style="top:75px;">
+        <!--  [opened]="(menu$ | async)?.isOpen" -->
+        <mat-sidenav #menuNav [mode]="'side'" [opened]="true" class="menuNavWrapper bd-toc-item">
+            <app-admin-menu [expiringContent]="expiringContent"></app-admin-menu>
+        </mat-sidenav>
+        <!-- Left Nav End -->
+        <mat-sidenav-content>
+            <!-- Middle Content Start -->
+            <main role="main" class="col py-3 bd-content main-content-overflow">
+                <router-outlet (activate)="changeOfRoutes()"></router-outlet>
+            </main>
+            <!-- Middle Content End -->
+        </mat-sidenav-content>
+
+    </mat-sidenav-container>
+</div>

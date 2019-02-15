@@ -1,0 +1,17 @@
+.show-replies {
+    cursor: pointer;
+    color: #1c5673;
+    font-size: 16px;
+    line-height: 24px;
+}
+
+.reply-author-name {
+    color: #1c5673;
+    font-size: 14px;
+    line-height: 24px;
+}
+
+.mat-select-content .mat-option,
+.mat-autocomplete-panel .mat-option {
+    height: 2em !important;
+}

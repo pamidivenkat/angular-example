@@ -1,0 +1,60 @@
+<mat-card style="padding: 5px">
+  <app-page-card-header [icon]="'attach_money'" [title]="'Promotion'" [postColor]="consts.POST_COLORS.PROMOTION"></app-page-card-header>
+  <div *ngIf="!isLoading">
+    <div class="float-right mt-3">
+      <app-bookmark [entity]="promotion" [showLabel]="true"></app-bookmark>
+    </div>
+    <mat-card-header class="mt-3">
+      <div mat-card-avatar class="example-header-image">
+        <mat-icon style="font-size: 46px;">monetization_on</mat-icon>
+      </div>
+      <mat-card-title>
+        <span class="author-name"> &nbsp; </span>
+      </mat-card-title>
+      <mat-card-subtitle>
+        <span class="post-date">{{ promotion.dateOffered | date:'MM/dd/yyyy'}}</span>
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="more-info-panel pb-2 pr-1 mt-2" *ngIf="!isAnnouncement">
+        <span (click)="toggleInfoBar()">More Info
+          <i class="material-icons pl-3" style="vertical-align: middle;"> {{toggleInfoBarStatus == true ?
+            'keyboard_arrow_up' : 'keyboard_arrow_down'}} </i>
+        </span>
+      </div>
+      <ul @fade class="info-bar p-3 pt-0" *ngIf="toggleInfoBarStatus == true">
+        <li>
+          <label>Venues</label>
+          <mat-chip-list>
+            <mat-chip *ngFor="let venue of venues">
+              <a class="matChip" [routerLink]="'/property/' + venue.propertyId">{{venue.propertyName}}</a>
+            </mat-chip>
+          </mat-chip-list>
+        </li>
+      </ul>
+      <h4 class="col p-0 pt-1">
+        {{promotion.headline}}
+      </h4>
+      <div class="post-full-body" [innerHTML]="promotion.details | bypassSecurity"></div>
+      <div class="mt-3" *ngIf="!isAnnouncement">
+        <div class="contact-title">Contact Information</div>
+        <div class="mt-2 font-weight-bold">{{promotion.promoContact}}</div>
+        <div class="mt-2 font-weight-bold">{{promotion.promoPhone}}</div>
+        <div class="mt-2">
+          <a (click)="mailToContact()" class="property-contact">{{promotion.promoEmail}}</a>
+        </div>
+
+      </div>
+    </mat-card-content>
+  </div>
+  <div *ngIf="isLoading">
+    <mat-card-content>
+      <mat-spinner style="top: 165px;"></mat-spinner>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+    </mat-card-content>
+  </div>
+</mat-card>

@@ -1,0 +1,288 @@
+<mat-card>
+  <app-page-card-header
+    [title]="'General'"
+    [icon]="'settings'"
+    [postColor]="postType | postColor"
+  ></app-page-card-header>
+  <form [formGroup]="generalForm" class="pt-2">
+    <div class="form-group">
+      <mat-form-field class="material-control" appearance="outline">
+        <mat-label>{{ getDescription("AdImg:ConnectionString") }}</mat-label>
+        <textarea
+          matInput
+          placeholder="{{getDescription('AdImg:ConnectionString')}}"
+          matTextareaAutosize
+          matAutosizeMinRows="2"
+          matAutosizeMaxRows="5"
+          formControlName="azureAdImgConnection"
+          #azureAdImgConnection
+          required
+          [maxLength]="500"
+          minlength="1"
+        ></textarea>
+        <mat-error *ngIf="azureAdImgConnection.required"> You must enter a value </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field class="material-control">
+        <input
+          matInput
+          placeholder="{{getDescription('AdImg:Container')}}"
+          type="text"
+          name="AdImgContainer"
+          formControlName="AdImgContainer"
+          [maxLength]="256"
+          #AdImgContainer
+          required
+          id="txtAdImgContainer"
+        />
+        <mat-error *ngIf="AdImgContainer.required"> You must enter a value </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field class="material-control" appearance="outline">
+        <mat-label>{{ getDescription("ConnectionString") }}</mat-label>
+        <textarea
+          matInput
+          placeholder="{{getDescription('ConnectionString')}}"
+          matTextareaAutosize
+          matAutosizeMinRows="2"
+          matAutosizeMaxRows="5"
+          formControlName="azureConnection"
+          #azureConnection
+          required
+          [maxLength]="500"
+          minlength="1"
+        ></textarea>
+        <mat-error *ngIf="azureConnection.required"> You must enter a value </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field class="material-control">
+        <input
+          matInput
+          placeholder="{{getDescription('BlobStorage:Container')}}"
+          type="text"
+          name="attachContainer"
+          formControlName="attachContainer"
+          [maxLength]="256"
+          #attachContainer
+          required
+          id="txtAttachContainer"
+        />
+        <mat-error *ngIf="attachContainer.required"> You must enter a value </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field class="material-control">
+        <input
+          matInput
+          placeholder="{{getDescription('ApiKey')}}"
+          type="text"
+          name="insightApiKey"
+          formControlName="insightApiKey"
+          [maxLength]="256"
+          #insightApiKey
+          required
+          id="txtInsightApiKey"
+        />
+        <mat-error *ngIf="insightApiKey.required"> You must enter a value </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field class="material-control">
+        <input
+          matInput
+          placeholder="{{getDescription('WebKey')}}"
+          type="text"
+          name="insightWebKey"
+          formControlName="insightWebKey"
+          [maxLength]="256"
+          #insightWebKey
+          required
+          id="txtInsightWebKey"
+        />
+        <mat-error *ngIf="insightWebKey.required"> You must enter a value </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field class="material-control">
+        <input
+          matInput
+          placeholder="{{getDescription('UploadFileEndpoint')}}"
+          type="text"
+          name="uploadApiUrl"
+          formControlName="uploadApiUrl"
+          [maxLength]="256"
+          #uploadApiUrl
+          required
+          id="txtUploadApiUrl"
+        />
+        <mat-error *ngIf="uploadApiUrl.required"> You must enter a value </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field class="material-control">
+        <input
+          matInput
+          placeholder="{{getDescription('UploadFileMaxSize')}}"
+          type="number"
+          name="fileSizeKB"
+          formControlName="fileSizeKB"
+          [maxLength]="256"
+          #fileSizeKB
+          required
+          id="txtFileSizeKB"
+        />
+        <mat-error *ngIf="fileSizeKB.required"> You must enter a value </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field class="material-control">
+        <input
+          matInput
+          placeholder="{{getDescription('UploadFileSelectionLimit')}}"
+          type="number"
+          name="uploadLimit"
+          formControlName="uploadLimit"
+          [maxLength]="256"
+          #uploadLimit
+          required
+          id="txtUploadLimit"
+        />
+        <mat-error *ngIf="uploadLimit.required"> You must enter a value </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field class="material-control">
+        <input
+          matInput
+          placeholder="{{getDescription('UploadImageSelectionLimit')}}"
+          type="number"
+          name="imageUploadLimit"
+          formControlName="imageUploadLimit"
+          [maxLength]="256"
+          #imageUploadLimit
+          required
+          id="txtImageUploadLimit"
+        />
+        <mat-error *ngIf="imageUploadLimit.required"> You must enter a value </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field class="material-control">
+        <input
+          matInput
+          placeholder="{{getDescription('ImagesContainer')}}"
+          type="text"
+          name="imgContainer"
+          formControlName="imgContainer"
+          [maxLength]="256"
+          #imgContainer
+          required
+          id="txtImgContainer"
+        />
+        <mat-error *ngIf="imgContainer.required"> You must enter a value </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field class="material-control">
+        <input
+          matInput
+          placeholder="{{getDescription('BlobStorage:Path')}}"
+          type="url"
+          name="blobUploadPath"
+          formControlName="blobUploadPath"
+          [maxLength]="256"
+          #blobUploadPath
+          required
+          id="txtBlobUploadPath"
+        />
+        <mat-error *ngIf="blobUploadPath.required"> You must enter a value </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field class="material-control">
+        <input
+          matInput
+          placeholder="{{getDescription('MissingHotelEmail:Address')}}"
+          type="email"
+          name="missingHotelEmail"
+          formControlName="missingHotelEmail"
+          [maxLength]="256"
+          #missingHotelEmail
+          required
+          id="txtMissingHotelEmail"
+        />
+        <mat-error *ngIf="missingHotelEmail.required"> You must enter a value </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field class="material-control">
+        <input
+          matInput
+          placeholder="{{getDescription('MissingHotelEmail:Subject')}}"
+          type="text"
+          name="missingHotelSubject"
+          formControlName="missingHotelSubject"
+          [maxLength]="256"
+          #missingHotelSubject
+          required
+          id="txtMissingHotelSubject"
+        />
+        <mat-error *ngIf="missingHotelSubject.required"> You must enter a value </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field class="material-control">
+        <input
+          matInput
+          placeholder="{{getDescription('Search:Characters')}}"
+          type="number"
+          name="minCharToSearch"
+          formControlName="minCharToSearch"
+          [maxLength]="256"
+          #minCharToSearch
+          required
+          id="txtMinCharToSearch"
+        />
+        <mat-error *ngIf="minCharToSearch.required"> You must enter a value </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field class="material-control">
+        <input
+          matInput
+          placeholder="{{getDescription('Search:Results')}}"
+          type="number"
+          name="searchItemLimit"
+          formControlName="searchItemLimit"
+          [maxLength]="256"
+          #searchItemLimit
+          required
+          id="txtSearchItemLimit"
+        />
+        <mat-error *ngIf="searchItemLimit.required"> You must enter a value </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-group mb-4">
+      <span class="float-right general-buttons">
+        <button
+          mat-raised-button
+          type="button"
+          id="btnSubmit"
+          class="submit-button"
+          (click)="onSubmit()"
+          [disabled]="generalForm.pristine || generalForm.invalid"
+        >
+          Save
+        </button>
+        &nbsp;
+        <button mat-raised-button type="button" id="idCancel" (click)="cancel()" color="accent">Cancel</button> &nbsp;
+      </span>
+    </div>
+    <br />
+    <br />
+    <br />
+  </form>
+</mat-card>

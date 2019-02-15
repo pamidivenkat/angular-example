@@ -1,0 +1,24 @@
+.post-details {
+  white-space: normal;
+  width: 100%;
+  word-break: break-word;
+  text-overflow: ellipsis;
+}
+
+.mini-avatar-50 {
+  height: 50px !important;
+  width: 50px !important;
+}
+
+.post-details {
+  cursor: pointer;
+}
+
+.read-more {
+  color: #45818e !important;
+}
+
+.read-more:hover {
+  cursor: pointer;
+  text-decoration: underline !important;
+}

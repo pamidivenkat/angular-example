@@ -1,0 +1,52 @@
+<mat-card class="row row_off blog-home">
+  <div class="float-right text-right show-book-mark-bar">
+    <div class="show-book-mark-icon"><app-bookmark [entity]="review" *ngIf="showBookMark"></app-bookmark></div>
+  </div>
+
+  <mat-card-header>
+    <app-post-avatar
+      mat-card-avatar
+      [type]="type ? type : 'request'"
+      [userImage]="review?.associateUser?.photoUrl"
+    ></app-post-avatar>
+    <mat-card-title>
+      <span class="author-name">
+        <a routerLink="/profile/{{review?.createdBy}}">{{ review?.associateUser?.fullname }}</a>
+      </span>
+      &nbsp; <span>{{ review.createdOn | date: "MM/dd/yyyy" }}</span>
+    </mat-card-title>
+    <mat-card-subtitle>
+      <span *ngIf="type">{{ type | postType }}</span> <span *ngIf="!type">Review Request</span>
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content
+    class="blog-header"
+    *ngIf="review.property"
+    class="cursor-pointer no-outline"
+    (click)="gotoDetails()"
+  >
+    <h4 class="col-11 pr-0 mb-0">{{ review.property && review.property.propertyName }}</h4>
+    <div class="content" style="padding-left: 10px">{{ review.property && getLocation() }}</div>
+    <div *ngIf="type == 4" style="display: flex">
+      <label class="rating-label pt-1">Overall Rating </label><label style="width:5%">: </label>
+      <app-rating [readOnly]="true" [rate]="review.overallExperience"></app-rating>
+    </div>
+  </mat-card-content>
+  <mat-card-footer>
+    <div class="justify-content-between" style="width: 100%; display: flex">
+      <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+      <a (click)="reRequest()" class="read-more" *ngIf="canShowReRequest()">Re-Request</a>
+      <button
+        *ngIf="!type"
+        mat-raised-button
+        class="float-right"
+        style="top:-10px"
+        class="submit-button"
+        (click)="gotoAddReview(review.property.propertyId)"
+      >
+        Add Review
+      </button>
+      <a class="review-footer float-right" (click)="gotoDetails()" *ngIf="type">Read more</a>
+    </div>
+  </mat-card-footer>
+</mat-card>

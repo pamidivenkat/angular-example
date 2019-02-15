@@ -1,0 +1,184 @@
+<mat-card>
+  <app-page-card-header [title]="'Points'" [icon]="'redeem'"></app-page-card-header>
+  <form [formGroup]="pointsForm" class="pt-2">
+    <div class="form-group">
+      <mat-form-field class="material-control">
+        <input
+          matInput
+          placeholder="{{getDescription('Question')}}"
+          type="number"
+          name="Question"
+          formControlName="Question"
+          [maxLength]="256"
+          #Question
+          required
+          id="txtQuestion"
+        />
+        <mat-error *ngIf="Question.required"> You must enter a value </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field class="material-control">
+        <input
+          matInput
+          placeholder="{{getDescription('Answer')}}"
+          type="number"
+          name="Answer"
+          formControlName="Answer"
+          [maxLength]="256"
+          #Answer
+          required
+          id="txtAnswer"
+        />
+        <mat-error *ngIf="Answer.required"> You must enter a value </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field class="material-control">
+        <input
+          matInput
+          placeholder="{{getDescription('Insight')}}"
+          type="number"
+          name="Insight"
+          formControlName="Insight"
+          [maxLength]="256"
+          #Insight
+          required
+          id="txtInsight"
+        />
+        <mat-error *ngIf="Insight.required"> You must enter a value </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field class="material-control">
+        <input
+          matInput
+          placeholder="{{getDescription('Review')}}"
+          type="number"
+          name="Review"
+          formControlName="Review"
+          [maxLength]="256"
+          #Review
+          required
+          id="txtReview"
+        />
+        <mat-error *ngIf="Review.required"> You must enter a value </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field class="material-control">
+        <input
+          matInput
+          placeholder="{{getDescription('Inspection')}}"
+          type="number"
+          name="Inspection"
+          formControlName="Inspection"
+          [maxLength]="256"
+          #Inspection
+          required
+          id="txtInspection"
+        />
+        <mat-error *ngIf="Inspection.required"> You must enter a value </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field class="material-control">
+        <input
+          matInput
+          placeholder="{{getDescription('InsightComment')}}"
+          type="number"
+          name="InsightComment"
+          formControlName="InsightComment"
+          [maxLength]="256"
+          #InsightComment
+          required
+          id="txtInsightComment"
+        />
+        <mat-error *ngIf="InsightComment.required"> You must enter a value </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field class="material-control">
+        <input
+          matInput
+          placeholder="{{getDescription('InsightCommentReply')}}"
+          type="number"
+          name="InsightCommentReply"
+          formControlName="InsightCommentReply"
+          [maxLength]="256"
+          #InsightCommentReply
+          required
+          id="txtInsightCommentReply"
+        />
+        <mat-error *ngIf="InsightCommentReply.required"> You must enter a value </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field class="material-control">
+        <input
+          matInput
+          placeholder="{{getDescription('AnswerReply')}}"
+          type="number"
+          name="AnswerReply"
+          formControlName="AnswerReply"
+          [maxLength]="256"
+          #AnswerReply
+          required
+          id="txtAnswerReply"
+        />
+        <mat-error *ngIf="AnswerReply.required"> You must enter a value </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field class="material-control">
+        <input
+          matInput
+          placeholder="{{getDescription('ReviewRequest')}}"
+          type="number"
+          name="ReviewRequest"
+          formControlName="ReviewRequest"
+          [maxLength]="256"
+          #ReviewRequest
+          required
+          id="txtReviewRequest"
+        />
+        <mat-error *ngIf="ReviewRequest.required"> You must enter a value </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field class="material-control">
+        <input
+          matInput
+          placeholder="{{getDescription('ExtendExpiration')}}"
+          type="number"
+          name="ExtendExpiration"
+          formControlName="ExtendExpiration"
+          [maxLength]="256"
+          #ExtendExpiration
+          required
+          id="txtExtendExpiration"
+        />
+        <mat-error *ngIf="ExtendExpiration.required"> You must enter a value </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-group mb-4">
+      <span class="float-right review-buttons">
+        <button
+          mat-raised-button
+          type="button"
+          id="btnSubmit"
+          class="submit-button"
+          (click)="onSubmit()"
+          [disabled]="pointsForm.pristine || pointsForm.invalid"
+        >
+          Save
+        </button>
+        &nbsp;
+        <button mat-raised-button type="button" id="idCancel" (click)="cancel()" color="accent">Cancel</button> &nbsp;
+      </span>
+    </div>
+  </form>
+  <br />
+  <br />
+  <br />
+</mat-card>

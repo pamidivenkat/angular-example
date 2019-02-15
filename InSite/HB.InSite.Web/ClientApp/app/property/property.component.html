@@ -1,0 +1,499 @@
+<mat-card>
+  <app-page-card-header [icon]="isCvb ? 'place' : 'hotel'" [title]="isCvb ? 'CVB' : 'Venue'"></app-page-card-header>
+  <!-- Property page header start -->
+  <div>
+    <div class="float-right pt-1">
+      <app-bookmark [showLabel]="true" [entity]="property" [entitySubject]="propertySubject"></app-bookmark>
+      <span class="pt-1">
+        <app-notification [showLabel]="true" [entity]="property" [entitySubject]="propertySubject"></app-notification>
+      </span>
+    </div>
+    <div
+      class="property-avatar mt-2"
+      style="background-image: url(Clientapp/dist/assets/loading.gif)"
+      *ngIf="isImageUpdating"
+    ></div>
+    <div
+      class="property-avatar mt-2"
+      [ngStyle]="{
+        'background-image': property.imageUrl
+          ? 'url(' + property.imageUrl + ')'
+          : 'url(Clientapp/dist/assets/no-image.png)'
+      }"
+      *ngIf="!isImageUpdating"
+    >
+      <div class="float-right" (click)="removeImage()" *ngIf="isAdmin && property.imageUrl">
+        <mat-icon style="cursor: pointer;">delete_outline</mat-icon>
+      </div>
+    </div>
+    <div class="mt-2">
+      <span class="image-upload" *ngIf="isAdmin && !isImageUpdating">
+        <label for="venue-image"> <mat-icon>photo</mat-icon> </label>
+        <input id="venue-image" type="file" accept="image/*" (change)="onFileChange($event)" />
+      </span>
+    </div>
+  </div>
+  <mat-card-header class="pt-3 text-center">
+    <mat-card-title>
+      <h3 class="property-title">{{ property && property.propertyName }}</h3>
+    </mat-card-title>
+    <mat-card-subtitle>
+      <span style="display: inline-flex; margin-bottom: 3px" *ngIf="property.propertyAdvanceEligible && !isCvb">
+        <mat-chip-list> <mat-chip class="property-flag">HB Partner</mat-chip> </mat-chip-list>
+      </span>
+      <span style="display: inline-flex; margin-bottom: 3px" *ngIf="isCvb && property.partnerType">
+        <mat-chip-list>
+          <mat-chip class="property-flag">{{ property.partnerType }}</mat-chip>
+        </mat-chip-list>
+      </span>
+      <br *ngIf="(property.propertyAdvanceEligible && !isCvb) || (isCvb && property.partnerType)" />
+      {{ property.propertyAddress }}<br *ngIf="property.propertyAddress" />
+      {{ property.location }}
+    </mat-card-subtitle>
+  </mat-card-header>
+  <!-- Property page header end -->
+  <mat-card-content class="pt-1 property-content">
+    <mat-tab-group class="material-control property-tabs">
+      <!-- Property page content tab start -->
+      <mat-tab label="Recent Posts" #tabContent="matTab">
+        <ng-template mat-tab-label>
+          <div class="main-tab d-flex">
+            <mat-icon [color]="tabContent.isActive ? 'primary' : 'accent'" style="font-size: x-large" class="mr-2"
+              >view_list
+            </mat-icon>
+            <p class="property-tab-text">Content</p>
+          </div>
+        </ng-template>
+        <app-posttype-filter (onSelectionChange)="updateList($event)"></app-posttype-filter>
+        <mat-slide-toggle
+          class="float-right mb-3"
+          [color]="'primary'"
+          [(ngModel)]="includeArchive"
+          (change)="reloadContent()"
+          >Include archive
+        </mat-slide-toggle>
+        <div appScrollTracker (scrollEnd)="getMoreContent($event)" *ngIf="dataReceived">
+          <app-post-mini [posts]="posts"></app-post-mini>
+        </div>
+        <p *ngIf="posts.length === 0 && dataReceived" class="text-center" style="margin-top: 175px">
+          No posts available for this Venue/CVB.
+        </p>
+        <div *ngIf="!dataReceived" class="mb-5"><mat-spinner></mat-spinner></div>
+        <div class="spinner" *ngIf="loading">
+          <div class="bounce1"></div>
+          <div class="bounce2"></div>
+          <div class="bounce3"></div>
+        </div>
+        <div *ngIf="!loading && totalCount > posts.length" style="text-align: center">
+          <button mat-button (click)="loadMoreData()">Load more</button>
+        </div>
+        <br /><br /><br /><br /><br />
+      </mat-tab>
+      <!-- Property page content tab end -->
+      <!-- Property page ratings tab start -->
+      <mat-tab label="Ratings" #tabRatings="matTab">
+        <ng-template mat-tab-label>
+          <div class="main-tab d-flex">
+            <mat-icon [color]="tabRatings.isActive ? 'primary' : 'accent'" style="font-size: x-large" class="mr-2">
+              thumb_up
+            </mat-icon>
+            <p class="property-tab-text">Ratings</p>
+          </div>
+        </ng-template>
+        <div class="top-ratings">
+          <p class="p-2">
+            <strong>Rating summary (Average of {{ reviewsLength }} reviews)</strong>
+          </p>
+          <!-- Venue ratings start -->
+          <ul class="property-rating" *ngIf="!isCvb">
+            <li>
+              <label class="review-label">Overall Rating </label>
+              <span [class.float-right]="isMobile">
+                <app-rating
+                  [class.mr-3]="isMobile"
+                  [readOnly]="true"
+                  style="display:inline-block;vertical-align:middle;"
+                  [rate]="averages && averages.overall"
+                  [margin]="isMobile ? false : true"
+                ></app-rating>
+                <span
+                  (click)="toggleDetails('overall')"
+                  style="padding-left: 25px;"
+                  [class.mr-3]="isMobile"
+                  style="display:inline-block;vertical-align:middle;"
+                  [hidden]="reviewsLength === 0"
+                >
+                  <i class="material-icons p-0" style="cursor: pointer;">
+                    {{ showDetails && ratingName === "overall" ? "keyboard_arrow_up" : "keyboard_arrow_down" }}
+                  </i>
+                </span>
+
+                <div *ngIf="show('overall')" @fade [class.rating-details]="!isMobile">
+                  <ng-template ngFor let-item [ngForOf]="[5, 4, 3, 2, 1]" let-curIndex="index">
+                    <div style="display: flex">
+                      <app-rating
+                        [readOnly]="true"
+                        [rate]="item"
+                        [margin]="isMobile ? false : true"
+                        [otherColor]="true"
+                      ></app-rating>
+                      <div [class.pt-1]="!isMobile" [class.rate-count]="isMobile">: {{ getCount("overallExperience", item) }}</div>
+                    </div>
+                  </ng-template>
+                </div>
+              </span>
+            </li>
+            <li>
+              <label class="review-label">Venue Condition </label>
+              <span [class.float-right]="isMobile">
+                <app-rating
+                  [class.mr-3]="isMobile"
+                  [readOnly]="true"
+                  style="display:inline-block;vertical-align:middle;"
+                  [rate]="averages && averages.venueCondition"
+                  [margin]="isMobile ? false : true"
+                ></app-rating>
+                <span
+                  (click)="toggleDetails('venueCondition')"
+                  style="padding-left: 25px;"
+                  [hidden]="reviewsLength === 0"
+                  [class.mr-3]="isMobile"
+                  style="display:inline-block;vertical-align:middle;"
+                >
+                  <i class="material-icons p-0" style="cursor: pointer;">
+                    {{ showDetails && ratingName === "venueCondition" ? "keyboard_arrow_up" : "keyboard_arrow_down" }}
+                  </i>
+                </span>
+
+                <div *ngIf="show('venueCondition')" @fade [class.rating-details]="!isMobile">
+                  <ng-template ngFor let-item [ngForOf]="[5, 4, 3, 2, 1]" let-curIndex="index">
+                    <div style="display: flex">
+                      <app-rating
+                        [readOnly]="true"
+                        [rate]="item"
+                        [margin]="isMobile ? false : true"
+                        [otherColor]="true"
+                      ></app-rating>
+                      <div [class.pt-1]="!isMobile" [class.rate-count]="isMobile">: {{ getCount("venueCondition", item) }}</div>
+                    </div>
+                  </ng-template>
+                </div>
+              </span>
+            </li>
+            <li>
+              <label class="review-label">Service Quality </label>
+              <span [class.float-right]="isMobile">
+                <app-rating
+                  [class.mr-3]="isMobile"
+                  [readOnly]="true"
+                  style="display:inline-block;vertical-align:middle;"
+                  [rate]="averages && averages.serviceQuality"
+                  [margin]="isMobile ? false : true"
+                ></app-rating>
+                <span
+                  (click)="toggleDetails('serviceQuality')"
+                  style="padding-left: 25px;"
+                  [hidden]="reviewsLength === 0"
+                  [class.mr-3]="isMobile"
+                  style="display:inline-block;vertical-align:middle;"
+                >
+                  <i class="material-icons p-0" style="cursor: pointer;">
+                    {{ showDetails && ratingName === "serviceQuality" ? "keyboard_arrow_up" : "keyboard_arrow_down" }}
+                  </i>
+                </span>
+
+                <div *ngIf="show('serviceQuality')" @fade [class.rating-details]="!isMobile">
+                  <ng-template ngFor let-item [ngForOf]="[5, 4, 3, 2, 1]" let-curIndex="index">
+                    <div style="display: flex">
+                      <app-rating
+                        [readOnly]="true"
+                        [rate]="item"
+                        [margin]="isMobile ? false : true"
+                        [otherColor]="true"
+                      ></app-rating>
+                      <div [class.pt-1]="!isMobile" [class.rate-count]="isMobile">: {{ getCount("serviceQuality", item) }}</div>
+                    </div>
+                  </ng-template>
+                </div>
+              </span>
+            </li>
+            <li>
+              <label class="review-label">F &amp; B Quality </label>
+              <span [class.float-right]="isMobile">
+                <app-rating
+                  [class.mr-3]="isMobile"
+                  [readOnly]="true"
+                  style="display:inline-block;vertical-align:middle;"
+                  [rate]="averages && averages.fbQuality"
+                  [margin]="isMobile ? false : true"
+                ></app-rating>
+                <span
+                  (click)="toggleDetails('fbQuality')"
+                  style="padding-left: 25px;"
+                  [hidden]="reviewsLength === 0"
+                  [class.mr-3]="isMobile"
+                  style="display:inline-block;vertical-align:middle;"
+                >
+                  <i class="material-icons p-0" style="cursor: pointer;">
+                    {{ showDetails && ratingName === "fbQuality" ? "keyboard_arrow_up" : "keyboard_arrow_down" }}
+                  </i>
+                </span>
+
+                <div *ngIf="show('fbQuality')" @fade [class.rating-details]="!isMobile">
+                  <ng-template ngFor let-item [ngForOf]="[5, 4, 3, 2, 1]" let-curIndex="index">
+                    <div style="display: flex">
+                      <app-rating
+                        [readOnly]="true"
+                        [rate]="item"
+                        [margin]="isMobile ? false : true"
+                        [otherColor]="true"
+                      ></app-rating>
+                      <div [class.pt-1]="!isMobile" [class.rate-count]="isMobile">: {{ getCount("fbQuality", item) }}</div>
+                    </div>
+                  </ng-template>
+                </div>
+              </span>
+            </li>
+          </ul>
+          <!-- Venue rating end -->
+          <!-- CVB rating start -->
+          <ul class="property-rating" *ngIf="isCvb">
+            <li>
+              <label class="review-label">Overall Rating </label>
+              <span [class.float-right]="isMobile">
+                <app-rating
+                  [class.mr-3]="isMobile"
+                  [readOnly]="true"
+                  style="display:inline-block;vertical-align:middle;"
+                  [rate]="averages && averages.overall"
+                  [margin]="isMobile ? false : true"
+                ></app-rating>
+                <span
+                  (click)="toggleDetails('overall')"
+                  style="padding-left: 25px;"
+                  [class.mr-3]="isMobile"
+                  style="display:inline-block;vertical-align:middle;"
+                  [hidden]="reviewsLength === 0"
+                >
+                  <i class="material-icons p-0" style="cursor: pointer;">
+                    {{ showDetails && ratingName === "overall" ? "keyboard_arrow_up" : "keyboard_arrow_down" }}
+                  </i>
+                </span>
+                <div *ngIf="show('overall')" @fade [class.rating-details]="!isMobile">
+                  <ng-template ngFor let-item [ngForOf]="[5, 4, 3, 2, 1]" let-curIndex="index">
+                    <div style="display: flex">
+                      <app-rating
+                        [readOnly]="true"
+                        [rate]="item"
+                        [margin]="isMobile ? false : true"
+                        [otherColor]="true"
+                      ></app-rating>
+                      <div [class.pt-1]="!isMobile" [class.rate-count]="isMobile">: {{ getCount("overallExperience", item) }}</div>
+                    </div>
+                  </ng-template>
+                </div>
+              </span>
+            </li>
+            <li>
+              <label class="review-label">Response Timeliness </label>
+              <span [class.float-right]="isMobile">
+                <app-rating
+                  [class.mr-3]="isMobile"
+                  [readOnly]="true"
+                  style="display:inline-block;vertical-align:middle;"
+                  [rate]="averages && averages.responseTimeliness"
+                  [margin]="isMobile ? false : true"
+                ></app-rating>
+                <span
+                  (click)="toggleDetails('responseTimeliness')"
+                  style="padding-left: 25px;"
+                  [hidden]="reviewsLength === 0"
+                  [class.mr-3]="isMobile"
+                  style="display:inline-block;vertical-align:middle;"
+                >
+                  <i class="material-icons p-0" style="cursor: pointer;">
+                    {{
+                      showDetails && ratingName === "responseTimeliness" ? "keyboard_arrow_up" : "keyboard_arrow_down"
+                    }}
+                  </i>
+                </span>
+
+                <div *ngIf="show('responseTimeliness')" @fade [class.rating-details]="!isMobile">
+                  <ng-template ngFor let-item [ngForOf]="[5, 4, 3, 2, 1]" let-curIndex="index">
+                    <div style="display: flex">
+                      <app-rating
+                        [readOnly]="true"
+                        [rate]="item"
+                        [margin]="isMobile ? false : true"
+                        [otherColor]="true"
+                      ></app-rating>
+                      <div [class.pt-1]="!isMobile" [class.rate-count]="isMobile">: {{ getCount("responseTimeliness", item) }}</div>
+                    </div>
+                  </ng-template>
+                </div>
+              </span>
+            </li>
+            <li>
+              <label class="review-label">HB Friendliness </label>
+              <span [class.float-right]="isMobile">
+                <app-rating
+                  [class.mr-3]="isMobile"
+                  [readOnly]="true"
+                  style="display:inline-block;vertical-align:middle;"
+                  [rate]="averages && averages.hbFriendliness"
+                  [margin]="isMobile ? false : true"
+                ></app-rating>
+                <span
+                  (click)="toggleDetails('hbFriendliness')"
+                  style="padding-left: 25px;"
+                  [hidden]="reviewsLength === 0"
+                  [class.mr-3]="isMobile"
+                  style="display:inline-block;vertical-align:middle;"
+                >
+                  <i class="material-icons p-0" style="cursor: pointer;">
+                    {{ showDetails && ratingName === "hbFriendliness" ? "keyboard_arrow_up" : "keyboard_arrow_down" }}
+                  </i>
+                </span>
+
+                <div *ngIf="show('hbFriendliness')" @fade [class.rating-details]="!isMobile">
+                  <ng-template ngFor let-item [ngForOf]="[5, 4, 3, 2, 1]" let-curIndex="index">
+                    <div style="display: flex">
+                      <app-rating
+                        [readOnly]="true"
+                        [rate]="item"
+                        [margin]="isMobile ? false : true"
+                        [otherColor]="true"
+                      ></app-rating>
+                      <div [class.pt-1]="!isMobile" [class.rate-count]="isMobile">: {{ getCount("hbFriendliness", item) }}</div>
+                    </div>
+                  </ng-template>
+                </div>
+              </span>
+            </li>
+            <li>
+              <label class="review-label">Destination Knowledge </label>
+              <span [class.float-right]="isMobile">
+                <app-rating
+                  [class.mr-3]="isMobile"
+                  [readOnly]="true"
+                  style="display:inline-block;vertical-align:middle;"
+                  [rate]="averages && averages.destinationKnowledge"
+                  [margin]="isMobile ? false : true"
+                ></app-rating>
+                <span
+                  (click)="toggleDetails('destinationKnowledge')"
+                  style="padding-left: 25px;"
+                  [hidden]="reviewsLength === 0"
+                  [class.mr-3]="isMobile"
+                  style="display:inline-block;vertical-align:middle;"
+                >
+                  <i class="material-icons p-0" style="cursor: pointer;">
+                    {{
+                      showDetails && ratingName === "destinationKnowledge" ? "keyboard_arrow_up" : "keyboard_arrow_down"
+                    }}
+                  </i>
+                </span>
+
+                <div *ngIf="show('destinationKnowledge')" @fade [class.rating-details]="!isMobile">
+                  <ng-template ngFor let-item [ngForOf]="[5, 4, 3, 2, 1]" let-curIndex="index">
+                    <div style="display: flex">
+                      <app-rating
+                        [readOnly]="true"
+                        [rate]="item"
+                        [margin]="isMobile ? false : true"
+                        [otherColor]="true"
+                      ></app-rating>
+                      <div  [class.pt-1]="!isMobile" [class.rate-count]="isMobile">: {{ getCount("destinationKnowledge", item) }}</div>
+                    </div>
+                  </ng-template>
+                </div>
+              </span>
+            </li>
+            <li>
+              <label class="review-label">Service Quality </label>
+              <span [class.float-right]="isMobile">
+                <app-rating
+                  [class.mr-3]="isMobile"
+                  [readOnly]="true"
+                  style="display:inline-block;vertical-align:middle;"
+                  [rate]="averages && averages.serviceQuality"
+                  [margin]="isMobile ? false : true"
+                ></app-rating>
+                <span
+                  (click)="toggleDetails('serviceQuality')"
+                  style="padding-left: 25px;"
+                  [hidden]="reviewsLength === 0"
+                  [class.mr-3]="isMobile"
+                  style="display:inline-block;vertical-align:middle;"
+                >
+                  <i class="material-icons p-0" style="cursor: pointer;">
+                    {{ showDetails && ratingName === "serviceQuality" ? "keyboard_arrow_up" : "keyboard_arrow_down" }}
+                  </i>
+                </span>
+
+                <div *ngIf="show('serviceQuality')" @fade [class.rating-details]="!isMobile">
+                  <ng-template ngFor let-item [ngForOf]="[5, 4, 3, 2, 1]" let-curIndex="index">
+                    <div style="display: flex">
+                      <app-rating
+                        [readOnly]="true"
+                        [rate]="item"
+                        [margin]="isMobile ? false : true"
+                        [otherColor]="true"
+                      ></app-rating>
+                      <div [class.pt-1]="!isMobile" [class.rate-count]="isMobile">: {{ getCount("serviceQuality", item) }}</div>
+                    </div>
+                  </ng-template>
+                </div>
+              </span>
+            </li>
+          </ul>
+          <!-- CVB rating end -->
+        </div>
+        <br />
+        <br />
+        <br />
+        <br />
+      </mat-tab>
+      <!-- Property page venue reports tab start -->
+      <mat-tab label="Reports" #tabReports="matTab" *ngIf="!isCvb">
+        <ng-template mat-tab-label>
+          <div class="main-tab d-flex">
+            <mat-icon [color]="tabReports.isActive ? 'primary' : 'accent'" style="font-size: x-large" class="mr-2"
+              >insert_drive_file
+            </mat-icon>
+            <p class="property-tab-text">Reports</p>
+          </div>
+        </ng-template>
+        <app-reports [propertyId]="property.propertyId" [property]="propertySubject"></app-reports>
+      </mat-tab>
+      <!-- Property page CVB contact tab start -->
+      <mat-tab label="Contact" #tabContact="matTab" *ngIf="isCvb">
+        <ng-template mat-tab-label>
+          <div class="main-tab d-flex">
+            <mat-icon [color]="tabContact.isActive ? 'primary' : 'accent'" style="font-size: x-large" class="mr-2"
+              >account_circle
+            </mat-icon>
+            <p class="property-tab-text">Info</p>
+          </div>
+        </ng-template>
+        <div class="mt-3">
+          <div [innerHTML]="contact && contact.description"></div>
+          <br />
+          <div class="contact-title">Contact Information</div>
+          <div class="mt-2 font-weight-bold">{{ contact && contact.contactName }}</div>
+          <div class="mt-2">{{ contact && contact.contactPhone }}</div>
+          <div class="mt-2">
+            <a (click)="mailToContact()" class="property-contact">{{ contact && contact.overrideEmailAddress }}</a>
+          </div>
+          <div class="mt-2">
+            <a (click)="openWebsite()" class="property-contact">{{ contact && contact.webAddress }}</a>
+          </div>
+        </div>
+        <br />
+        <br />
+        <br />
+        <br />
+      </mat-tab>
+    </mat-tab-group>
+  </mat-card-content>
+</mat-card>

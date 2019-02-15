@@ -1,0 +1,39 @@
+.ngc-float {
+  position: relative;
+}
+
+.button-label {
+  color: white;
+  font-size: 20px;
+}
+
+.cdk-overlay-dark-backdrop {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.home-fab-button {
+  background-color: white !important;
+  font-size: 46px;
+}
+
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .home-fab-button {
+    background-color: white !important;
+    font-size: 45px;
+  }
+  .home-fab-button2 {
+    background-color: #673ab7 !important;
+    font-size: 25px;
+  }
+}
+
+@-moz-document url-prefix() {
+  .home-fab-button {
+    background-color: white !important;
+    font-size: 45px;
+  }
+  .home-fab-button2 {
+    background-color: #673ab7 !important;
+    font-size: 25px;
+  }
+}

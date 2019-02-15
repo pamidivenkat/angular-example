@@ -1,0 +1,61 @@
+<div class="box" *ngIf="displayType === 'GridView'">
+  <!-- --{{ canUpload }}--{{ isPreview }}--{{ errorMessage }} -->
+  <div class="image-box">
+    <img *ngIf="isPreview" src="{{filePath}}{{file.fileIdentifier}}" style="max-width:100%; max-height:100%" />
+    <img *ngIf="!isPreview && fileType == 'image'" src="{{fileContent}}" style="max-width:100%; max-height:100%" />
+  </div>
+  <div style="display: flex" *ngIf="errorMessage != '' && !canUpload && !isPreview">
+    <span class="error">{{ errorMessage }}</span>
+  </div>
+  <div *ngIf="!isPreview" class="image-progress">
+    <span style="width: 60%; padding-top: 8px; padding-right: 5px;">
+      <mat-progress-bar id="matProgress" class="example-margin" [value]="progressPercentage"></mat-progress-bar>
+    </span>
+    <span> {{ total | bytes }}</span>
+  </div>
+  <div class="attachment-name">
+    <span class="image-info">
+      <span matTooltip="{{file.name?file.name : file.fileName}}" [matTooltipPosition]="'before'">{{
+        file.name ? file.name : file.fileName
+      }}</span>
+    </span>
+    <span style="float:right; display:flex">
+      <!--
+        <a *ngIf="!isPreview" [ngClass]="{'disabled' : isUploading || progressPercentage===100}">
+            <mat-icon id="btnUpload" class="action" (click)="upload()" *ngIf="!errorMessage">file_upload</mat-icon>
+        </a>
+      -->
+      <a> <mat-icon id="btnRemove" class="action" (click)="remove()">delete</mat-icon> </a>
+    </span>
+  </div>
+</div>
+<mat-card class="matCard" *ngIf="displayType === 'ListView'">
+  <span *ngIf="!isPreview" class="file-info">{{ file.name }} </span>
+  <div *ngIf="isPreview">
+    <!-- -{{ canUpload }}--{{ isPreview }}--{{ errorMessage }} -->
+    <div class="file-info">
+      <a mat-list-item href="{{filePath}}{{file.fileIdentifier}}" title="{{file.fileName}}">
+        <span>{{ file.fileName }} </span>
+      </a>
+    </div>
+    <mat-icon class="action" id="btnRemove" (click)="remove()">delete</mat-icon>
+  </div>
+  <div *ngIf="!canUpload && !isPreview">
+    <!-- --{{ canUpload }}--{{ isPreview }}--{{ errorMessage }} -->
+    <span class="error">{{ errorMessage }}</span>
+    <mat-icon class="action" id="btnRemove" (click)="remove()">delete</mat-icon>
+  </div>
+  <div *ngIf="canUpload && !isPreview">
+    <!-- ---{{ canUpload }}--{{ isPreview }}--{{ errorMessage }} -->
+    <section class="mat-card-section">
+      <mat-progress-bar id="matProgress" class="example-margin" [value]="progressPercentage"></mat-progress-bar>
+      <!--
+        <a [ngClass]="{'disabled' : isUploading || progressPercentage===100}">
+            <mat-icon id="btnUpload" class="action" (click)="upload()">file_upload</mat-icon>
+        </a>
+      -->
+      <a> <mat-icon id="btnRemove" class="action" (click)="remove()">delete</mat-icon> </a>
+    </section>
+    <span class="file-info">{{ progressPercentage }}%</span> <span> {{ loaded | bytes }} of {{ total | bytes }}</span>
+  </div>
+</mat-card>

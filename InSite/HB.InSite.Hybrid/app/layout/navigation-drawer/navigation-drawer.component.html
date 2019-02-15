@@ -1,0 +1,61 @@
+<StackLayout row="0" orientation="horizontal" class="sidedrawer-header">
+	<image [src]="loggedInUser?.photoUrl" class="sidedrawer-header-image"></image>
+	<StackLayout class="sidedrawer-user-info">
+		<Label class="sidedrawer-header-brand" [text]="loggedInUser?.firstName +' '+ loggedInUser?.lastName"></Label>
+		<Label class="points" [text]="(loggedInUser?.points) + ' Points'"></Label>
+		<Label class="location" [text]="loggedInUser?.businessCity + ', ' + loggedInUser?.businessState"></Label>
+	</StackLayout>
+</StackLayout>
+
+<ScrollView row="1">
+	<StackLayout class="sidedrawer-content">
+		<GridLayout columns="auto, *" class="sidedrawer-list-item" (tap)="navigateTo('mybookmarks')">
+			<Label col="0" [text]="'mdi-turned-in' | fonticon" class="mdi" style="color:#ffc107"></Label>
+			<Label col="1" text="My Bookmarks" class="sidedrawer-item-lbl" ></Label>
+		</GridLayout>
+		
+		<GridLayout columns="auto, *" class="sidedrawer-list-item" (tap)="navigateTo('myreviews')">
+			<Label col="0" [text]="'mdi-stars' | fonticon" class="mdi" style="color: rgb(92, 73, 37);"></Label>
+			<Label col="1" text="My Reviews" class="sidedrawer-item-lbl" ></Label>
+		</GridLayout>
+
+		<GridLayout columns="auto, *" class="sidedrawer-list-item" (tap)="navigateTo('myquestions')">
+			<Label col="0" [text]="'mdi-help' | fonticon" class="mdi" style="color: rgb(0, 84, 135);"></Label>
+			<Label col="1" text="My Questions" class="sidedrawer-item-lbl" ></Label>
+		</GridLayout>
+
+		<GridLayout columns="auto, *" class="sidedrawer-list-item" (tap)="navigateTo('myanswers')">
+			<Label col="0" [text]="'mdi-supervised-user-circle' | fonticon" class="mdi" style="color: rgb(0, 84, 135);"></Label>
+			<Label col="1" text="My Answers" class="sidedrawer-item-lbl" ></Label>
+		</GridLayout>
+
+		<GridLayout columns="auto, *" class="sidedrawer-list-item" (tap)="navigateTo('myinsight')">
+			<Label col="0" [text]="'mdi-info' | fonticon" class="mdi" style="color: rgb(217, 164, 96);"></Label>
+			<Label col="1" text="My Insights" class="sidedrawer-item-lbl" ></Label>
+		</GridLayout>
+
+		<GridLayout columns="auto, *" class="sidedrawer-list-item" (tap)="navigateTo('myinspections')">
+			<Label col="0" [text]="'mdi-offline-pin' | fonticon" class="mdi" style="color: rgb(126, 168, 173);"></Label>
+			<Label col="1" text="My Inspections" class="sidedrawer-item-lbl" ></Label>
+		</GridLayout>
+		<GridLayout columns="auto, auto, auto" class="sidedrawer-list-item" (tap)="navigateTo('myexpiringcontent')">
+			<Label col="0" [text]="'mdi-watch-later' | fonticon" class="mdi"></Label>
+			<Label col="1" text="My Expiring Content" class="sidedrawer-item-lbl" ></Label>
+			<label col="2" [text]="(config$ | async)?.expiringContent" [visibility]="(config$ | async)?.expiringContent !== 0 ? 'visible' : 'collapse'" class="event-count"></label>
+		</GridLayout>
+		<GridLayout columns="auto, *" class="sidedrawer-list-item" (tap)="navigateTo('mypreferences')">
+			<Label col="0" [text]="'mdi-move-to-inbox' | fonticon" class="mdi"></Label>
+			<Label col="1" text="Email Preferences" class="sidedrawer-item-lbl" ></Label>
+		</GridLayout>
+		<GridLayout columns="auto, *" class="sidedrawer-list-item" (tap)="navigateTo('signOut')">
+			<Label col="0" [text]="'mdi-exit-to-app' | fonticon" class="mdi"></Label>
+			<Label col="1" text="Sign out" class="sidedrawer-item-lbl" ></Label>
+		</GridLayout>
+		<GridLayout columns="*" class="sidedrawer-list-item">
+			<Label col="0" class="publish-date" textWrap="true" text="{{'Published date : ' + (config$ | async)?.publishedDate}}" ></Label>
+		</GridLayout>
+		<GridLayout columns="*" class="sidedrawer-list-item">
+			<Label col="0" class="publish-date" textWrap="true" text="HB | InSite © 2018" ></Label>
+		</GridLayout>
+	</StackLayout>
+</ScrollView>

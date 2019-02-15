@@ -1,0 +1,33 @@
+<div appScrollTracker (scrolling)="getMoreItems($event)">
+  <mat-card *ngIf="!dataLoading">
+    <app-page-card-header [title]="'My Notifications'" [icon]="'notifications'" [iconClass]="'card-head-small-icon'"
+      [titleClass]="'card-head-small-title'" *ngIf="isMobile"></app-page-card-header>
+    <button mat-button class="float-right" (click)="clearNotificationItems()" *ngIf="notifications.length != 0">Clear
+      All</button>
+    <mat-list class="material-control right-notification">
+      <mat-list-item *ngFor="let notification of notifications" class="material-control side-notifications"
+        [class.new-notification]="notification.isNew">
+        <app-post-avatar mat-list-icon mat-card-avatar [type]="notification.post ? notification.post.type:0" style="width:40px; height:40px;"
+          [userImage]="notification.associateUser.photoUrl"></app-post-avatar>
+        <div mat-line class="notification-info">{{notification.description}}:</div>
+        <div mat-line style="overflow: hidden; max-height: 40px;">
+          <div [innerHTML]="notification.post && notification.post.title" class="notification-title" (click)="goToEntity(notification)"></div>
+        </div>
+        <div mat-line style="overflow: hidden; max-height: 40px;" *ngIf="notification.property.propertyId !== 0">
+          <div [innerHTML]="notification.property && notification.property.propertyName" class="notification-title"
+            (click)="goToProperty(notification.property.propertyId)"></div>
+        </div>
+        <span mat-line>{{(notification.age > 24) ? (notification.submitted | date:'MM/dd/yyyy') :
+          (notification.submitted | timeAgo)}}</span>
+        <mat-divider></mat-divider>
+        <div class="float-right">
+          <mat-icon mat-list-icon (click)="removeNotification(notification.id)">cancel</mat-icon>
+        </div>
+      </mat-list-item>
+    </mat-list>
+    <mat-card-content *ngIf="notifications.length == 0" class="text-center">No Notifications
+      <br>
+      <br>
+    </mat-card-content>
+  </mat-card>
+</div>

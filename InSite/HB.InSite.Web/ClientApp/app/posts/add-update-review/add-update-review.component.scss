@@ -1,0 +1,78 @@
+.mat-select-panel .mat-optgroup-label,
+.mat-select-panel .mat-option,
+.mat-autocomplete-panel .mat-option {
+    height: 2em !important;
+}
+
+.post-chip {
+    padding: 3px 10px !important;
+}
+
+@media (max-width: 768px) {
+    .post-buttons>.mat-raised-button {
+        min-width: 75px;
+    }
+    .mat-chip a {
+        overflow: hidden;
+        text-overflow: ellipsis !important;
+        width: auto;
+        max-width: 280px;
+        white-space: nowrap;
+    }
+}
+
+.details {
+    -moz-appearance: textfield-multiline;
+    -webkit-appearance: textarea;
+    border: 1px solid gray;
+    overflow: visible;
+    padding: 2px;
+    width: 100%;
+    min-height: 100px;
+}
+
+.property-rating {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.property-rating>li {
+    float: left;
+    width: 100%;
+}
+
+.property-rating>li>label {
+    line-height: 22px;
+    float: left;
+    padding: 0 10px;
+    width: 160px;
+}
+
+.property-rating div.form-text {
+    margin-bottom: 0.25rem;
+}
+
+.top-ratings {
+    overflow: hidden;
+}
+
+.rounder h6 {
+    display: inline;
+}
+
+.rounder .mat-slide-toggle {
+    float: right;
+}
+
+.appRating {
+    padding-left: 10%;
+}
+
+@media (max-width: 599px) {
+    .review-buttons {
+        .mat-raised-button {
+            min-width: 75px !important;
+        }
+    }
+}

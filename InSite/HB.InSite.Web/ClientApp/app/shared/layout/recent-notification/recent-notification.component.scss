@@ -1,0 +1,72 @@
+.right-notification {
+  padding: 20px 5px;
+}
+
+.mat-list {
+  .side-notifications {
+    padding: 5px 0px;
+    min-height: 75px !important;
+    height: auto !important;
+    width: 96% !important;
+    .mat-divider {
+      bottom: -20px !important;
+    }
+    .float-right {
+      position: absolute;
+      top: 0px;
+      right: -10px;
+      .mat-icon {
+        font-size: 24px !important;
+        cursor: pointer;
+      }
+    }
+    .mat-list-item-content {
+      margin: 0px 5px 0px 5px !important;
+      padding: 0px !important;
+    }
+    .mat-list-text {
+      padding-right: 15px !important;
+    }
+  }
+  .new-notification {
+    background-color: #e8f0f3;
+  }
+}
+
+.sideNavWrapper {
+  overflow-y: inherit;
+}
+
+.mat-menu-content.no-padding {
+  padding: 0px;
+}
+
+.notification-title {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.notification-title:hover {
+  color: #45818e;
+  text-decoration: underline;
+}
+
+.notification-info {
+  font-weight: bold !important;
+  overflow: hidden !important;
+  white-space: normal !important;
+  font-size: 12px !important;
+  padding-top: 2px !important;
+}
+
+.mat-menu-item {
+  outline: none !important;
+  i,
+  span {
+    float: left;
+    line-height: 28px;
+    padding: 0px;
+    color: rgba(0, 0, 0, 0.75);
+  }
+}

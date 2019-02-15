@@ -1,0 +1,22 @@
+﻿<page.actionBar>
+    <ActionBar [title]="'HB | InSite'" class="action-bar" visibility="hidden">
+    </ActionBar>
+</page.actionBar>
+<GridLayout rows="auto, auto">
+    <app-header row="0" [hasBackButton]="hasBackButton" (toggle)="toggleSideMenu($event)"></app-header>
+    <!--<StackLayout row="1">-->
+    <RadSideDrawer row="1" height="100%" class="rad-side-drawer">
+        <StackLayout tkDrawerContent class="drawer-content" [transition]="sideDrawerTransition" width="250"
+                     height="100%">
+            <navigation-drawer (close)="toggleSideMenu(false)" [visibility]="'visible'" height="100%">
+            </navigation-drawer>
+        </StackLayout>
+        <StackLayout tkMainContent width="100%" height="100%" backgroundColor="#fafafa">
+            <GridLayout rows="*, 25">
+                <WebView row="0" #myWebView width="100%" height="100%" (loaded)="onWebViewLoaded($event)"></WebView>
+                <Label row="1" #labelResult text="{{webViewStatus}}" class="status-bar"></Label>
+            </GridLayout>
+        </StackLayout>
+    </RadSideDrawer>
+    <!--</StackLayout>-->
+</GridLayout>

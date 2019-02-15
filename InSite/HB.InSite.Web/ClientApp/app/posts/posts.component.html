@@ -1,0 +1,6 @@
+<div class="row row_off" *ngIf="showPosts">
+    <app-vendor-ads></app-vendor-ads>
+    <div class="well well-sm" *ngFor="let post of posts; let i = index" [class.post-background-color]="i%2 == 1">
+        <app-post [post]="post"></app-post>
+    </div>
+</div>

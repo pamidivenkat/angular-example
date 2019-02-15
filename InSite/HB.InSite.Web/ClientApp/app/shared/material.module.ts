@@ -1,0 +1,80 @@
+import { MatFileUploadModule } from "./mat-file-upload-module/matFileUpload.module";
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import {
+  MatAutocompleteModule,
+  MatButtonModule,
+  MatButtonToggleModule,
+  MatCardModule,
+  MatCheckboxModule,
+  MatChipsModule,
+  MatDatepickerModule,
+  MatDialogModule,
+  MatDividerModule,
+  MatExpansionModule,
+  MatIconModule,
+  MatInputModule,
+  MatLineModule,
+  MatListModule,
+  MatMenuModule,
+  MatNativeDateModule,
+  MatOptionModule,
+  MatProgressBarModule,
+  MatProgressSpinnerModule,
+  MatRadioModule,
+  MatRippleModule,
+  MatSelectModule,
+  MatSidenavModule,
+  MatSliderModule,
+  MatSlideToggleModule,
+  MatSnackBarModule,
+  MatTabsModule,
+  MatToolbarModule,
+  MatTooltipModule,
+  MatTreeModule,
+  MatSortModule,
+  MatPaginatorModule,
+  MatTableModule
+} from "@angular/material";
+
+export const MaterialImports = [
+  MatAutocompleteModule,
+  MatDatepickerModule,
+  MatToolbarModule,
+  MatIconModule,
+  MatButtonModule,
+  MatButtonToggleModule,
+  MatSnackBarModule,
+  MatNativeDateModule,
+  MatLineModule,
+  MatListModule,
+  MatDividerModule,
+  MatOptionModule,
+  MatCardModule,
+  MatChipsModule,
+  MatCheckboxModule,
+  MatDialogModule,
+  MatInputModule,
+  MatMenuModule,
+  MatProgressBarModule,
+  MatProgressSpinnerModule,
+  MatRadioModule,
+  MatExpansionModule,
+  MatRippleModule,
+  MatSelectModule,
+  MatSliderModule,
+  MatSlideToggleModule,
+  MatSidenavModule,
+  MatTabsModule,
+  MatTableModule,
+  MatPaginatorModule,
+  MatSortModule,
+  MatTooltipModule,
+  MatTreeModule
+];
+
+@NgModule({
+  imports: [CommonModule, MatFileUploadModule, ...MaterialImports],
+  exports: [...MaterialImports, MatFileUploadModule]
+})
+export class MaterialModule {}

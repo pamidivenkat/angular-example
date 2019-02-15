@@ -1,0 +1,188 @@
+<mat-card style="padding: 5px">
+  <app-page-card-header
+    [icon]="'stars'"
+    [title]="'Review'"
+    [postColor]="consts.POST_COLORS.REVIEW"
+  ></app-page-card-header>
+  <div class="float-right mt-3" *ngIf="!isLoading">
+    <app-bookmark [entity]="review" [showLabel]="true"></app-bookmark>
+  </div>
+  <mat-card-header *ngIf="!isLoading" class="mt-2">
+    <div mat-card-avatar class="example-header-image mt-2">
+      <app-user-avatar
+        style="height: 50px; width: 50px;"
+        [userImage]="review.associateUser && review.associateUser.photoUrl"
+        *ngIf="review.postType === 'A'"
+      ></app-user-avatar>
+    </div>
+    <mat-card-title style="padding-top: 5px; padding-left: 5px">
+      <span class="author-name" *ngIf="review.postType === 'A'">
+        <a routerLink="/profile/{{review.createdBy}}">{{ review.associateUser && review.associateUser.fullname }}</a>
+      </span>
+      <span class="author-name" *ngIf="review.postType === 'C'">Client Review</span>
+    </mat-card-title>
+    <mat-card-subtitle style="padding-left: 5px">
+      <span class="post-type">{{ review.createdOn | date: "MM/dd/yyyy" }}</span>
+    </mat-card-subtitle>
+  </mat-card-header>
+  <div class="more-info-panel d-flex justify-content-between pb-2 pr-1" style="float:right;" *ngIf="isEditable">
+    <span (click)="editReview()">Edit</span>
+  </div>
+  <mat-card-content *ngIf="!isLoading && review.reviewId">
+    <div style="text-align: center;">
+      <h4 mat-line [routerLink]="'/property/' + review.property.propertyId" style="cursor: pointer;">
+        {{ review.property && review.property.propertyName }}
+      </h4>
+      <br />
+      <h6 mat-line>{{ review.property && review.property.location }}</h6>
+    </div>
+    <div class="mt-2" [innerHTML]="review.detailedReview"></div>
+    <ul class="property-rating" *ngIf="!isCVB">
+      <li>
+        <label class="review-label">Overall Rating </label>
+        <app-rating
+          [class.float-right]="isMobile"
+          [class.mr-3]="isMobile"
+          [readOnly]="true"
+          style="display:inline-block;vertical-align:middle;"
+          [rate]="review.overallExperience / 10"
+          [margin]="false"
+        ></app-rating>
+      </li>
+      <li>
+        <label class="review-label">Venue Condition </label>
+        <app-rating
+          [class.float-right]="isMobile"
+          [class.mr-3]="isMobile"
+          [readOnly]="true"
+          style="display:inline-block;vertical-align:middle;"
+          [rate]="review.venueCondition / 10"
+          [margin]="false"
+        ></app-rating>
+      </li>
+      <li>
+        <label class="review-label">Service Quality </label>
+        <app-rating
+          [class.float-right]="isMobile"
+          [class.mr-3]="isMobile"
+          [readOnly]="true"
+          style="display:inline-block;vertical-align:middle;"
+          [rate]="review.serviceQuality / 10"
+          [margin]="false"
+        ></app-rating>
+      </li>
+      <li>
+        <label class="review-label">F &amp; B Quality </label>
+        <app-rating
+          [class.float-right]="isMobile"
+          [class.mr-3]="isMobile"
+          [readOnly]="true"
+          style="display:inline-block;vertical-align:middle;"
+          [rate]="review.fbQuality / 10"
+          [margin]="false"
+        ></app-rating>
+      </li>
+    </ul>
+
+    <ul class="property-rating" *ngIf="isCVB">
+      <li>
+        <label class="review-label">Overall Rating </label>
+        <app-rating
+          [class.float-right]="isMobile"
+          [class.mr-3]="isMobile"
+          [readOnly]="true"
+          style="display:inline-block;vertical-align:middle;"
+          [rate]="review.overallExperience / 10"
+          [margin]="false"
+        ></app-rating>
+      </li>
+      <li>
+        <label class="review-label">Response Timeliness </label>
+        <app-rating
+          [class.float-right]="isMobile"
+          [class.mr-3]="isMobile"
+          [readOnly]="true"
+          style="display:inline-block;vertical-align:middle;"
+          [rate]="review.responseTimeliness / 10"
+          [margin]="false"
+        ></app-rating>
+      </li>
+      <li>
+        <label class="review-label">HB Friendliness </label>
+        <app-rating
+          [class.float-right]="isMobile"
+          [class.mr-3]="isMobile"
+          [readOnly]="true"
+          style="display:inline-block;vertical-align:middle;"
+          [rate]="review.hbFriendliness / 10"
+          [margin]="false"
+        ></app-rating>
+      </li>
+      <li>
+        <label class="review-label">Destination Knowledge </label>
+        <app-rating
+          [class.float-right]="isMobile"
+          [class.mr-3]="isMobile"
+          [readOnly]="true"
+          style="display:inline-block;vertical-align:middle;"
+          [rate]="review.destinationKnowledge / 10"
+          [margin]="false"
+        ></app-rating>
+      </li>
+      <li>
+        <label class="review-label">Service Quality </label>
+        <app-rating
+          [class.float-right]="isMobile"
+          [class.mr-3]="isMobile"
+          [readOnly]="true"
+          style="display:inline-block;vertical-align:middle;"
+          [rate]="review.serviceQuality / 10"
+          [margin]="false"
+        ></app-rating>
+      </li>
+    </ul>
+  </mat-card-content>
+  <br />
+  <br />
+  <mat-card-content *ngIf="!isLoading && review.reviewId">
+    <div class="mt-4">
+      <span style="line-height: 50px; min-width: 40%;"
+        >Would you recommend this {{ isCVB ? "CVB" : "venue" }}?&nbsp;&nbsp;&nbsp;&nbsp;</span
+      >
+      <mat-form-field style="width: 75px;" [class.float-right]="isMobile">
+        <mat-select [value]="review.isRecommended !== null && review.isRecommended.toString()" [disabled]="true">
+          <mat-option value="true">Yes</mat-option>
+          <mat-option value="false">No</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div *ngIf="review.postType === 'C'">
+      <div mt-2>
+        <label class="review-label" style="min-width: 40%;">Number of Attendees</label>&nbsp;&nbsp;&nbsp;&nbsp;
+        <span [class.float-right]="isMobile">{{ review.numberOfAttendees }}</span>
+      </div>
+      <div mt-2>
+        <label class="review-label" style="min-width: 40%;">Program Date</label>&nbsp;&nbsp;&nbsp;&nbsp;
+        <span [class.float-right]="isMobile">{{ review.programStartDate | date: "MM/dd/yyyy" }}</span>
+      </div>
+    </div>
+    <div *ngIf="galleryImages && galleryImages.length > 0">
+      <ngx-gallery [images]="galleryImages" [options]="galleryOptions"></ngx-gallery>
+    </div>
+    <div *ngIf="review.attachments && review.attachments.length > 0">
+      <br />
+      <div><h4>Attachments</h4></div>
+      <mat-card class="matCard" *ngFor="let file of review.attachments">
+        <div mat-line>
+          <span class="file-info">File Name: </span>
+          <a href="{{filePath}}{{file.fileIdentifier}}"> {{ file.fileName }} </a>
+        </div>
+      </mat-card>
+    </div>
+    <div *ngIf="isMobile"><br /><br /><br /></div>
+  </mat-card-content>
+  <mat-card-content *ngIf="isLoading">
+    <mat-spinner style="top: 165px"></mat-spinner>
+    <br />
+  </mat-card-content>
+</mat-card>

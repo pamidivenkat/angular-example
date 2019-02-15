@@ -1,0 +1,28 @@
+<div class="fixed-top container">
+  <nav class="navbar navbar-dark p-0">
+    <header class="header-bg col">
+      <div class="row">
+        <div class="col">
+          <button class="btn btn-link bd-search-docs-toggle d-md-none p-0 collapsed" type="button" (click)="toggleNav()"
+            aria-controls="bd-docs-nav" aria-expanded="false" aria-label="Toggle docs navigation">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" width="30" height="30" focusable="false">
+              <title>Menu</title>
+              <path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" d="M4 7h22M4 15h22M4 23h22"></path>
+            </svg>
+            <span class="event-count" *ngIf="hasExpiringContent()">{{expiringContent}}</span>
+          </button>
+          <div class="logo-block">
+            <img src="Clientapp/dist/assets/HBInsiteLogo.png" class="logo" (click)="gotoHome()" />
+          </div>
+        </div>
+        <div class="search-block d-md-block col-md-4 col-3 col-sm-6 bd-toc" *ngIf="!isAdminLayout">
+          <div class="header-notification">
+            <i class="material-icons" (click)="goToNotifications()" [class.hasNotifications]="hasNotifications()" style="cursor: pointer">notifications</i>
+            <span class="event-count" *ngIf="hasNotifications()">{{notifications}}</span>
+          </div>
+          <app-search></app-search>
+        </div>
+      </div>
+    </header>
+  </nav>
+</div>

@@ -1,0 +1,96 @@
+<mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+  <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding [matTreeNodePaddingIndent]="isMobile ? 15 : 40">
+    <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.filename" *ngIf="nodeHasChild(node)">
+      <mat-icon class="mat-icon-rtl-mirror">
+        {{ treeControl.isExpanded(node) ? "expand_more" : "chevron_right" }}
+      </mat-icon>
+    </button>
+    <button mat-icon-button disabled *ngIf="!nodeHasChild(node)"></button>
+    <mat-checkbox
+      *ngIf="!manageFolders"
+      class="checklist-leaf-node"
+      [checked]="folderChecked(node)"
+      (change)="folderChange(node)"
+      >{{ node.folderName }}</mat-checkbox
+    >
+    <mat-label *ngIf="manageFolders && editingNode.id != node.id">{{ node.folderName }}</mat-label>
+    <div *ngIf="editingNode.id == node.id">
+      <mat-form-field>
+        <input matInput #itemValue [value]="node.folderName" required [maxLength]="50" />
+        <mat-error *ngIf="itemValue.required"> You must enter a value </mat-error>
+      </mat-form-field>
+      <button mat-mini-fab (click)="updateNode(node, itemValue.value)" class="ml-2" color="primary">
+        <mat-icon>done</mat-icon>
+      </button>
+      <button mat-mini-fab (click)="cancel(node)" class="ml-2"><mat-icon>clear</mat-icon></button>
+    </div>
+    <div *ngIf="!editing">
+      <button mat-icon-button (click)="addNewFolder(node)" *ngIf="node.level < maxLevels">
+        <mat-icon>add</mat-icon>
+      </button>
+      <button mat-icon-button (click)="editName(node)" *ngIf="manageFolders && node.id != 0">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button (click)="removeFolder(node)" *ngIf="manageFolders && node.id != 0">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </mat-tree-node>
+
+  <mat-tree-node
+    *matTreeNodeDef="let node; when: hasNoContent"
+    matTreeNodePadding
+    [matTreeNodePaddingIndent]="isMobile ? 15 : 40"
+  >
+    <button mat-icon-button disabled></button>
+    <mat-form-field class="new-tem">
+      <input matInput #itemValue placeholder="New item..." required [maxLength]="50" />
+      <mat-error *ngIf="itemValue.required"> You must enter a value </mat-error>
+    </mat-form-field>
+    <button mat-mini-fab (click)="saveNode(node, itemValue.value)" class="ml-2" color="primary">
+      <mat-icon>done</mat-icon>
+    </button>
+    <button mat-mini-fab (click)="removeNode(node)" class="ml-2"><mat-icon>clear</mat-icon></button>
+  </mat-tree-node>
+
+  <mat-tree-node
+    *matTreeNodeDef="let node; when: hasChild"
+    matTreeNodePadding
+    [matTreeNodePaddingIndent]="isMobile ? 15 : 40"
+  >
+    <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.filename">
+      <mat-icon class="mat-icon-rtl-mirror">
+        {{ treeControl.isExpanded(node) ? "expand_more" : "chevron_right" }}
+      </mat-icon>
+    </button>
+    <mat-checkbox
+      *ngIf="!manageFolders"
+      [checked]="descendantsAllSelected(node)"
+      [indeterminate]="descendantsPartiallySelected(node)"
+      (change)="folderSelectionToggle(node)"
+      >{{ node.folderName }}
+    </mat-checkbox>
+    <mat-label *ngIf="manageFolders && editingNode.id != node.id">{{ node.folderName }}</mat-label>
+    <div *ngIf="editingNode.id == node.id">
+      <mat-form-field>
+        <input matInput #itemValue [value]="node.folderName" required [maxLength]="50" />
+        <mat-error *ngIf="itemValue.required"> You must enter a value </mat-error>
+      </mat-form-field>
+      <button mat-mini-fab (click)="updateNode(node, itemValue.value)" class="ml-2" color="primary">
+        <mat-icon>done</mat-icon>
+      </button>
+      <button mat-mini-fab (click)="cancel(node)" class="ml-2"><mat-icon>clear</mat-icon></button>
+    </div>
+    <div *ngIf="!editing">
+      <button mat-icon-button (click)="addNewFolder(node)" *ngIf="node.level < maxLevels">
+        <mat-icon>add</mat-icon>
+      </button>
+      <button mat-icon-button (click)="editName(node)" *ngIf="manageFolders && node.id != 0">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button (click)="removeParentFolder(node)" *ngIf="manageFolders && node.id != 0">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </mat-tree-node>
+</mat-tree>

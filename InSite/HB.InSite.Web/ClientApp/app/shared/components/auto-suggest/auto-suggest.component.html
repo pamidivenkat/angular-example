@@ -1,0 +1,15 @@
+<input matInput [placeholder]="placeholder" aria-label="placeholder" [matAutocomplete]="auto">
+<mat-autocomplete #auto="matAutocomplete" (optionSelected)="optionSelected($event)">
+  <mat-option *ngFor="let option of options; " [value]="option.id">
+    <span>{{ option.name }}</span>
+  </mat-option>
+</mat-autocomplete>
+<mat-error *ngIf="false">
+  Errors
+</mat-error>
+<mat-chip-list>
+  <mat-chip *ngFor="let chip of chips;" color="accent">
+    {{chip.name}}
+    <i class="material-icons pl-3" (click)="remove(chip.id)" style="cursor: pointer;">highlight_off</i>
+  </mat-chip>
+</mat-chip-list>

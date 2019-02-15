@@ -1,0 +1,290 @@
+<mat-card class="blog-home mat-card-page" style="padding: 5px !important;">
+  <div *ngIf="!hasData"><mat-spinner></mat-spinner></div>
+  <div>
+    <div *ngIf="hasData">
+      <app-page-card-header
+        [title]="selectedPost.type | postType"
+        [icon]="selectedPost.type | postIcon"
+        [postColor]="selectedPost.type | postColor"
+      ></app-page-card-header>
+      <div class="float-right pt-3 pr-1">
+        <app-bookmark [showLabel]="true" [entity]="selectedPost" [entitySubject]="postSubject"></app-bookmark>
+        <span class="pt-1">
+          <app-notification [showLabel]="true" [entity]="selectedPost" [entitySubject]="postSubject"></app-notification>
+        </span>
+      </div>
+      <mat-card-header class="mt-3">
+        <div mat-card-avatar class="example-header-image">
+          <app-user-avatar
+            style="height: 50px; width: 50px; padding-top: 20px;"
+            [userImage]="selectedPost.associateUser && selectedPost.associateUser.photoUrl"
+          ></app-user-avatar>
+        </div>
+        <mat-card-title>
+          <span class="author-name">
+            <a routerLink="/profile/{{selectedPost.createdBy}}">{{
+              selectedPost.associateUser && selectedPost.associateUser.fullname
+            }}</a>
+          </span>
+        </mat-card-title>
+        <mat-card-subtitle>
+          <span>{{ selectedPost.createdOn | date: "MM/dd/yyyy" }}</span>
+        </mat-card-subtitle>
+      </mat-card-header>
+      <h4 class="col p-0 pt-1">{{ selectedPost.title }}</h4>
+
+      <div class="more-info-panel d-flex justify-content-between pb-2 pr-1">
+        <span (click)="toggleInfoBar()"
+          >More Info
+          <i class="material-icons float-right p-0">
+            {{ toggleInfoBarStatus == true ? "keyboard_arrow_up" : "keyboard_arrow_down" }}
+          </i>
+        </span>
+        <span (click)="goToSection('comments')" *ngIf="selectedPost.type === postType.Insight"
+          >{{ selectedPost.numberOfComments }} {{ selectedPost.numberOfComments != 1 ? "Comments" : "Comment" }}</span
+        >
+        <span (click)="goToSection('answers')" *ngIf="selectedPost.type === postType.Question"
+          >{{ selectedPost.answers.length }} {{ selectedPost.answers.length != 1 ? "Answers" : "Answer" }}</span
+        >
+        <span *ngIf="!isEditable" style="width: 75px"> <!-- empty span for justification do not remove --> </span>
+        <span routerLink="/post/update/{{selectedPost.id}}" *ngIf="isEditable">Edit</span>
+      </div>
+      <ul @fade class="info-bar p-3 pt-0" *ngIf="toggleInfoBarStatus == true">
+        <li>
+          <label>Category</label>
+          <mat-chip-list>
+            <mat-chip *ngIf="selectedCategory">
+              <a class="matChip" [routerLink]="'/search/results/category/' + selectedCategory.id">{{
+                selectedCategory.name
+              }}</a>
+            </mat-chip>
+          </mat-chip-list>
+        </li>
+        <li>
+          <label>Venues</label>
+          <mat-chip-list>
+            <mat-chip *ngFor="let venue of venues">
+              <a class="matChip" [routerLink]="'/property/' + venue.id">{{ venue.name }}</a>
+            </mat-chip>
+          </mat-chip-list>
+        </li>
+        <li>
+          <label>Locations</label>
+          <mat-chip-list>
+            <mat-chip *ngFor="let location of locations">
+              <a class="matChip" [routerLink]="'/search/results/location/' + location.id">{{ location.name }}</a>
+            </mat-chip>
+          </mat-chip-list>
+        </li>
+        <li>
+          <label>Brands</label>
+          <mat-chip-list>
+            <mat-chip *ngFor="let brand of brands">
+              <a class="matChip" [routerLink]="'/search/results/brand/' + brand.id">{{ brand.name }}</a>
+            </mat-chip>
+          </mat-chip-list>
+        </li>
+      </ul>
+
+      <mat-card-content class="col blog-header p-0 pt-2">
+        <div class="post-full-body" [innerHTML]="selectedPost.detail | bypassSecurity"></div>
+        <div *ngIf="galleryImages && galleryImages.length > 0">
+          <ngx-gallery [images]="galleryImages" [options]="galleryOptions"></ngx-gallery>
+        </div>
+        <div *ngIf="selectedPost.attachments && selectedPost.attachments.length > 0">
+          <br />
+          <div><h4>Attachments</h4></div>
+          <mat-card class="matCard" *ngFor="let file of selectedPost.attachments">
+            <div mat-line>
+              <span class="file-info">File Name:</span>
+              <a href="{{filePath}}{{file.fileIdentifier}}"> {{ file.fileName }} </a>
+            </div>
+          </mat-card>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button
+          type="button"
+          mat-raised-button
+          (click)="goToSection('addAnswer')"
+          class="btn float-right submit-button"
+          style="left: -16px; top: -12px;"
+          *ngIf="selectedPost.type === postType.Question"
+        >
+          Answer Question
+        </button>
+        <button
+          type="button"
+          mat-raised-button
+          (click)="goToSection('addComment')"
+          class="btn float-right submit-button"
+          style="left: -16px; top: -18px;"
+          *ngIf="selectedPost.type === postType.Insight"
+        >
+          Comment
+        </button>
+      </mat-card-actions>
+    </div>
+    <!-- Comments start -->
+    <div class="full-post-footer" id="comments" #comments *ngIf="selectedPost.type === postType.Insight">
+      <mat-divider></mat-divider>
+      <div *ngIf="hasData">
+        <mat-list class="full-post-comments clearfix">
+          <mat-list-item *ngFor="let comment of postComments" class="insight-comment mt-1">
+            <span mat-line class="headers-bg" style="display:inherit;width:100%;padding:8px!important;">
+              <span mat-list-icon>
+                <app-user-avatar [imageSize]="'medium1'" [userImage]="comment.associateUser.photoUrl"></app-user-avatar>
+              </span>
+              <span mat-line class="pl-2" style="width:100%;margin-left:2%;padding-top:0;">
+                <small class="author-name">
+                  <a routerLink="/profile/{{comment.createdBy}}">{{
+                    comment.associateUser && comment.associateUser.fullname
+                  }}</a>
+                </small>
+                <small class="ml-1">{{ comment.createdOn | date: "MM/dd/yyyy" }}</small>
+                <button
+                  mat-icon-button
+                  [matMenuTriggerFor]="menu"
+                  class="float-right"
+                  *ngIf="canEdit(comment.createdBy)"
+                >
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item (click)="enableEdit(comment)">
+                    <mat-icon class="float-left">edit</mat-icon>
+                    <span>Edit</span>
+                  </button>
+                  <button mat-menu-item (click)="removeComment(comment.id)">
+                    <mat-icon class="float-left">delete</mat-icon>
+                    <span>Delete</span>
+                  </button>
+                </mat-menu>
+              </span>
+            </span>
+            <span mat-line class="pl-2 pt-3">
+              <span
+                [innerHTML]="comment.detail"
+                style="white-space: pre-line;"
+                *ngIf="!(isCommentEditing && selectedId === comment.id)"
+              ></span>
+              <app-add-comment
+                (onCommentSave)="saveComment($event)"
+                [comment]="editingComment"
+                *ngIf="isCommentEditing && selectedId === comment.id"
+                (onCommentCancel)="cancelEdit()"
+                [maxLength]="3000"
+              ></app-add-comment>
+            </span>
+            <!-- Replies start -->
+            <div class="mt-2 mb-2" mat-line>
+              <span
+                *ngIf="comment.replies.length > 0"
+                class="show-replies"
+                (click)="comment.replies.length > 0 && toggleShowReplies(comment.id)"
+                >{{ showHideReplies(comment.id) ? "Hide" : "Show" }}&nbsp;{{ comment.replies.length }}&nbsp;{{
+                  comment.replies.length === 1 ? "reply" : "replies"
+                }}
+              </span>
+              <span class="float-right show-replies" (click)="showReplay(comment.id)"> Reply </span>
+            </div>
+
+            <div mat-line *ngIf="showHideReplies(comment.id)">
+              <mat-list class="pt-0">
+                <mat-list-item *ngFor="let reply of comment.replies" class="pt-2 insight-replay">
+                  <span mat-list-icon>
+                    <app-user-avatar
+                      [imageSize]="'small1'"
+                      style="width: 12px; height: 12px"
+                      [userImage]="reply.associateUser.photoUrl"
+                    ></app-user-avatar>
+                  </span>
+                  <span mat-line class="pl-2">
+                    <small class="author-name">
+                      <a routerLink="/profile/{{reply.createdBy}}">{{
+                        reply.associateUser && reply.associateUser.fullname
+                      }}</a>
+                    </small>
+                    <small class="ml-1">{{ reply.createdOn | date: "MM/dd/yyyy" }}</small>
+                    <button
+                      mat-icon-button
+                      [matMenuTriggerFor]="menu"
+                      *ngIf="canEdit(reply.createdBy)"
+                      class="float-right"
+                    >
+                      <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                      <button mat-menu-item (click)="enableReplyEdit(reply, comment.id)">
+                        <mat-icon class="float-left">edit</mat-icon>
+                        <span>Edit</span>
+                      </button>
+                      <button mat-menu-item (click)="removeReply(reply.id, comment.id)">
+                        <mat-icon class="float-left">delete</mat-icon>
+                        <span>Delete</span>
+                      </button>
+                    </mat-menu>
+                  </span>
+                  <span mat-line class="pl-2 pb-2">
+                    <span
+                      [innerHTML]="reply.detail"
+                      style="white-space: pre-line;"
+                      *ngIf="!(isCommentEditing && selectedId === reply.id)"
+                    ></span>
+                    <app-add-comment
+                      [placeholder]="'Reply'"
+                      (onCommentSave)="saveComment($event, true, comment.id)"
+                      (onCommentCancel)="cancelEdit()"
+                      [comment]="editingReply"
+                      *ngIf="isCommentEditing && selectedId === reply.id"
+                      [parentId]="comment.id"
+                    ></app-add-comment>
+                  </span>
+                </mat-list-item>
+                <div id="addReply{{parentId}}" #addReply{{parentId}}>
+                  <app-add-comment
+                    [placeholder]="'Reply'"
+                    (onCommentSave)="saveComment($event, true, comment.id)"
+                    [comment]="newReply"
+                    [parentId]="comment.id"
+                  ></app-add-comment>
+                </div>
+              </mat-list>
+            </div>
+            <!-- Replies end -->
+          </mat-list-item>
+        </mat-list>
+        <div id="addComment" #addComment>
+          <app-add-comment
+            (onCommentSave)="saveComment($event)"
+            [comment]="newComment"
+            [maxLength]="3000"
+          ></app-add-comment>
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-card>
+<!-- Comments end -->
+<!-- Answers start -->
+<div class="pt-3" *ngIf="selectedPost.type === postType.Question" id="answers" #answers>
+  <div *ngFor="let answer of selectedPost.answers" [id]="'answer' + answer.answerId" #answer{{answer.answerId}}>
+    <app-answer
+      [answer]="answer"
+      (onEdit)="editAnswer($event)"
+      (onDelete)="updateAnswerList($event)"
+      [editMode]="isEditingAnswer"
+      (onAddUpdateReply)="updateNotify()"
+    ></app-answer>
+  </div>
+  <div id="addAnswerForm" #addAnswerForm>
+    <app-add-answer
+      [postId]="selectedPost.id"
+      (onAnswerSave)="addAnswer($event)"
+      [editingAnswer]="editingAnswer"
+      (onEditorCreated)="setEditor($event)"
+      (onEditCancel)="resetAnswerForm($event)"
+    ></app-add-answer>
+  </div>
+</div>
+<!-- Answers end -->

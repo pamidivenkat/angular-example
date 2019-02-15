@@ -1,0 +1,73 @@
+{
+    "project_info": {
+      "project_number": "301394375032",
+      "firebase_url": "https://hbin-1.firebaseio.com",
+      "project_id": "hbin-1",
+      "storage_bucket": "hbin-1.appspot.com"
+    },
+    "client": [
+      {
+        "client_info": {
+          "mobilesdk_app_id": "1:301394375032:android:37668f9a8b8e549d",
+          "android_client_info": {
+            "package_name": "com.helmsbriscoe.helmsbriscoeinsite"
+          }
+        },
+        "oauth_client": [
+          {
+            "client_id": "301394375032-gpee4f3rklfo50ufd19tbk1dq0ud2bjt.apps.googleusercontent.com",
+            "client_type": 3
+          }
+        ],
+        "api_key": [
+          {
+            "current_key": "AIzaSyACisPR3ZM7e2JjNM4NC95veRlkZFywKDI"
+          }
+        ],
+        "services": {
+          "analytics_service": {
+            "status": 1
+          },
+          "appinvite_service": {
+            "status": 1,
+            "other_platform_oauth_client": []
+          },
+          "ads_service": {
+            "status": 2
+          }
+        }
+      },
+      {
+        "client_info": {
+          "mobilesdk_app_id": "1:301394375032:android:cf8d682d40e214c1",
+          "android_client_info": {
+            "package_name": "com.toplinestrategies.insite"
+          }
+        },
+        "oauth_client": [
+          {
+            "client_id": "301394375032-gpee4f3rklfo50ufd19tbk1dq0ud2bjt.apps.googleusercontent.com",
+            "client_type": 3
+          }
+        ],
+        "api_key": [
+          {
+            "current_key": "AIzaSyACisPR3ZM7e2JjNM4NC95veRlkZFywKDI"
+          }
+        ],
+        "services": {
+          "analytics_service": {
+            "status": 1
+          },
+          "appinvite_service": {
+            "status": 1,
+            "other_platform_oauth_client": []
+          },
+          "ads_service": {
+            "status": 2
+          }
+        }
+      }
+    ],
+    "configuration_version": "1"
+  }

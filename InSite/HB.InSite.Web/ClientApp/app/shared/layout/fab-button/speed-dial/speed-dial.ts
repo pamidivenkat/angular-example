@@ -1,0 +1,281 @@
+/* tslint:disable */
+
+import {
+  AfterContentInit,
+  Component,
+  ContentChild,
+  ContentChildren,
+  ElementRef,
+  EventEmitter,
+  HostBinding,
+  HostListener,
+  Injector,
+  Input,
+  NgModule,
+  Output,
+  QueryList,
+  Renderer,
+  ViewEncapsulation
+} from "@angular/core";
+import { MatButton, MatButtonModule } from "@angular/material/button";
+
+const Z_INDEX_ITEM: number = 23;
+
+@Component({
+  selector: "smd-fab-trigger",
+  template: `
+		<ng-content select="[md-fab], [mat-fab]"></ng-content>
+	`
+})
+export class SmdFabSpeedDialTrigger {
+  /**
+   * Whether this trigger should spin (360dg) while opening the speed dial
+   */
+  @HostBinding("class.smd-spin")
+  @Input()
+  spin: boolean = false;
+
+  private readonly _parent: SmdFabSpeedDialComponent;
+
+  constructor(injector: Injector) {
+    this._parent = injector.get(SmdFabSpeedDialComponent);
+  }
+
+  @HostListener("click", ["$event"])
+  _onClick(event: any) {
+    if (!this._parent.fixed) {
+      this._parent.toggle();
+      event.stopPropagation();
+    }
+  }
+}
+
+@Component({
+  selector: "smd-fab-actions",
+  template: `
+		<ng-content select="[md-mini-fab], [mat-mini-fab]"></ng-content>
+	`
+})
+export class SmdFabSpeedDialActions implements AfterContentInit {
+  @ContentChildren(MatButton)
+  _buttons: QueryList<MatButton>;
+
+  private readonly _parent: SmdFabSpeedDialComponent;
+
+  constructor(injector: Injector, private renderer: Renderer) {
+    this._parent = injector.get(SmdFabSpeedDialComponent);
+  }
+
+  ngAfterContentInit(): void {
+    this._buttons.changes.subscribe(() => {
+      this.initButtonStates();
+      this._parent.setActionsVisibility();
+    });
+
+    this.initButtonStates();
+  }
+
+  private initButtonStates() {
+    this._buttons.toArray().forEach((button, i) => {
+      this.renderer.setElementClass(button._getHostElement(), "smd-fab-action-item", true);
+      this.changeElementStyle(button._getHostElement(), "z-index", "" + (Z_INDEX_ITEM - i));
+    });
+  }
+
+  show() {
+    if (this._buttons) {
+      let buttons = this._buttons.toArray();
+      buttons.forEach((button, i) => {
+        let transitionDelay = 0;
+        let transform;
+        if (this._parent.animationMode == "scale") {
+          // Incremental transition delay of 65ms for each action button
+          transitionDelay = buttons.length + 65 * i;
+          transform = "scale(1)";
+        } else {
+          transform = this.getTranslateFunction("0");
+        }
+        this.changeElementStyle(button._getHostElement(), "transition-delay", transitionDelay + "ms");
+        this.changeElementStyle(button._getHostElement(), "opacity", "1");
+        this.changeElementStyle(button._getHostElement(), "transform", transform);
+        setTimeout(() => {
+          this.changeElementStyle(button._getHostElement(), "display", "flex");
+        }, 50);
+      });
+    }
+  }
+
+  hide() {
+    if (this._buttons) {
+      let buttons = this._buttons.toArray();
+      buttons.forEach((button, i) => {
+        let opacity = "1";
+        let transitionDelay = 0;
+        let transform;
+        if (this._parent.animationMode == "scale") {
+          transitionDelay = buttons.length - 65 * i;
+          transform = "scale(0)";
+          opacity = "0";
+        } else {
+          transform = this.getTranslateFunction(55 * (i + 1) - i * 5 + "px");
+        }
+        this.changeElementStyle(button._getHostElement(), "transition-delay", transitionDelay + "ms");
+        this.changeElementStyle(button._getHostElement(), "opacity", opacity);
+        this.changeElementStyle(button._getHostElement(), "transform", transform);
+        setTimeout(() => {
+          this.changeElementStyle(button._getHostElement(), "display", "none");
+        }, 50);
+      });
+    }
+  }
+
+  private getTranslateFunction(value: string) {
+    let dir = this._parent.direction;
+    let translateFn = dir == "up" || dir == "down" ? "translateY" : "translateX";
+    let sign = dir == "down" || dir == "right" ? "-" : "";
+    return translateFn + "(" + sign + value + ")";
+  }
+
+  private changeElementStyle(elem: any, style: string, value: string) {
+    // FIXME - Find a way to create a "wrapper" around the action button(s) provided by the user, so we don't change it's style tag
+    this.renderer.setElementStyle(elem, style, value);
+  }
+}
+
+@Component({
+  selector: "smd-fab-speed-dial",
+  template: `
+		<div class="smd-fab-speed-dial-container">
+			<ng-content select="smd-fab-trigger"></ng-content>
+			<ng-content select="smd-fab-actions"></ng-content>
+		</div>
+    `,
+  styleUrls: ["./speed-dial.scss"],
+
+  encapsulation: ViewEncapsulation.None
+})
+export class SmdFabSpeedDialComponent implements AfterContentInit {
+  private isInitialized: boolean = false;
+  private _direction: string = "up";
+  private _open: boolean = false;
+  private _animationMode: string = "fling";
+
+  /**
+   * Whether this speed dial is fixed on screen (user cannot change it by clicking)
+   */
+  @Input()
+  fixed: boolean = false;
+
+  /**
+   * Whether this speed dial is opened
+   */
+  @HostBinding("class.smd-opened")
+  @Input()
+  get open() {
+    return this._open;
+  }
+
+  set open(open: boolean) {
+    let previousOpen = this._open;
+    this._open = open;
+    if (previousOpen != this._open) {
+      this.openChange.emit(this._open);
+      if (this.isInitialized) {
+        this.setActionsVisibility();
+      }
+    }
+  }
+
+  /**
+   * The direction of the speed dial. Can be 'up', 'down', 'left' or 'right'
+   */
+  @Input()
+  get direction() {
+    return this._direction;
+  }
+
+  set direction(direction: string) {
+    let previousDir = this._direction;
+    this._direction = direction;
+    if (previousDir != this.direction) {
+      this._setElementClass(previousDir, false);
+      this._setElementClass(this.direction, true);
+
+      if (this.isInitialized) {
+        this.setActionsVisibility();
+      }
+    }
+  }
+
+  /**
+   * The animation mode to open the speed dial. Can be 'fling' or 'scale'
+   */
+  @Input()
+  get animationMode() {
+    return this._animationMode;
+  }
+
+  set animationMode(animationMode: string) {
+    let previousAnimationMode = this._animationMode;
+    this._animationMode = animationMode;
+    if (previousAnimationMode != this._animationMode) {
+      this._setElementClass(previousAnimationMode, false);
+      this._setElementClass(this.animationMode, true);
+
+      if (this.isInitialized) {
+        // To start another detect lifecycle and force the "close" on the action buttons
+        Promise.resolve(null).then(() => (this.open = false));
+      }
+    }
+  }
+
+  @Output()
+  openChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  @ContentChild(SmdFabSpeedDialActions)
+  _childActions: SmdFabSpeedDialActions;
+
+  constructor(private elementRef: ElementRef, private renderer: Renderer) {}
+
+  ngAfterContentInit(): void {
+    this.isInitialized = true;
+    this.setActionsVisibility();
+    this._setElementClass(this.direction, true);
+    this._setElementClass(this.animationMode, true);
+  }
+
+  /**
+   * Toggle the open state of this speed dial
+   */
+  public toggle() {
+    this.open = !this.open;
+  }
+
+  @HostListener("click")
+  _onClick() {
+    if (!this.fixed && this.open) {
+      this.open = false;
+    }
+  }
+
+  setActionsVisibility() {
+    if (this.open) {
+      this._childActions.show();
+    } else {
+      this._childActions && this._childActions.hide();
+    }
+  }
+
+  private _setElementClass(elemClass: string, isAdd: boolean) {
+    this.renderer.setElementClass(this.elementRef.nativeElement, `smd-${elemClass}`, isAdd);
+  }
+}
+
+/** Speed dial module. */
+@NgModule({
+  declarations: [SmdFabSpeedDialActions, SmdFabSpeedDialComponent, SmdFabSpeedDialTrigger],
+  exports: [SmdFabSpeedDialActions, SmdFabSpeedDialComponent, SmdFabSpeedDialTrigger],
+  imports: [MatButtonModule],
+  entryComponents: [SmdFabSpeedDialComponent]
+})
+export class SmdFabSpeedDialModule {}

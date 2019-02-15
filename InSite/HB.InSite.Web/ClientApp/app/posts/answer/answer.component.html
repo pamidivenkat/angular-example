@@ -1,0 +1,98 @@
+<mat-card class="blog-home mb-3" style="padding: 12px">
+    <mat-card-header class="headers-bg">
+        <div mat-card-avatar class="example-header-image">
+            <app-post-avatar [type]="0" [userImage]="answer.associateUser.photoUrl"></app-post-avatar>
+        </div>
+        <mat-card-title>
+            <span class="author-name">
+                <a routerLink="/profile/{{answer.createdBy}}">{{answer.associateUser.fullname}}</a>
+            </span>
+            &nbsp;
+            <span>{{answer.createdOn | date:'MM/dd/yyyy'}}</span>
+            <button mat-icon-button [matMenuTriggerFor]="menu" class="comment-menu float-right" *ngIf="canEdit(answer.createdBy)"
+                style="width: 20px; height: 40px;">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="editAnswer()">
+                    <mat-icon class="float-left">edit</mat-icon>
+                    <span>Edit</span>
+                </button>
+                <button mat-menu-item (click)='removeAnswer()'>
+                    <mat-icon class="float-left">delete</mat-icon>
+                    <span>Delete</span>
+                </button>
+            </mat-menu>
+        </mat-card-title>
+        <mat-card-subtitle>
+            <span>Answer</span>
+        </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content class="col blog-header p-0 pt-2 mb-1">
+        <div class="post-full-body" [innerHTML]="answer.answerDetails | bypassSecurity"></div>
+        <div *ngIf="galleryImages && galleryImages.length > 0">
+            <ngx-gallery [images]="galleryImages" [options]="galleryOptions"></ngx-gallery>
+        </div>
+        <div *ngIf="attachments && attachments.length > 0">
+            <br>
+            <div>
+                <h4>Attachments</h4>
+            </div>
+            <mat-card class="matCard" style="padding: 5px" *ngFor="let file of attachments;">
+                <div mat-line>
+                    <span class="file-info">File Name:</span>
+                    <a href="{{filePath}}{{file.fileIdentifier}}"> {{file.fileName}} </a>
+                </div>
+            </mat-card>
+        </div>
+    </mat-card-content>
+    <mat-divider></mat-divider>
+    <!--Replies start-->
+    <div class="mt-4" style="min-height: 16px;">
+        <span *ngIf="answer.replies.length > 0" class="show-replies" (click)="toggleShowReplies(answer.answerId)">{{showReplies
+            ? 'hide': 'show'}}&nbsp;{{answer.replies.length}}&nbsp;{{answer.replies.length === 1 ? 'reply' :'replies'}}</span>
+        <span class="float-right show-replies" (click)='showReplay(answer.answerId)'> Reply </span>
+    </div>
+
+    <div @fade class="full-post-footer" id="replies" #replies *ngIf="showReplies">
+        <div *ngIf="answer.replies.length > 0">
+            <mat-list class="full-post-comments clearfix">
+                <mat-list-item *ngFor="let reply of answer.replies">
+                    <span mat-list-icon>
+                        <app-user-avatar [imageSize]="'small1'" style="width: 12px; height: 12px" [userImage]="reply.associateUser.photoUrl"></app-user-avatar>
+                    </span>
+                    <span mat-line class="pl-2">
+                        <small class="reply-author-name">
+                            <a routerLink="/profile/{{reply.createdBy}}">{{reply.associateUser &&
+                                reply.associateUser.fullname}}</a>
+                        </small>
+                        <small class="ml-1">{{ reply.createdOn | date:'MM/dd/yyyy'}}</small>
+                        <button mat-icon-button [matMenuTriggerFor]="replyMenu" class="comment-menu float-right pb-1"
+                            *ngIf="canEdit(reply.createdBy)" style="width: 20px; height: 25px;">
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #replyMenu="matMenu">
+                            <button mat-menu-item (click)="editReply(reply)">
+                                <mat-icon class="float-left">edit</mat-icon>
+                                <span>Edit</span>
+                            </button>
+                            <button mat-menu-item (click)='deleteReplay(reply.id)'>
+                                <mat-icon class="float-left">delete</mat-icon>
+                                <span>Delete</span>
+                            </button>
+                        </mat-menu>
+                    </span>
+                    <span mat-line class="pl-2 pb-1">
+                        <span [innerHTML]="reply.detail" style="white-space: pre-line;" *ngIf="!(isEditingReply && selectedReplyId === reply.id)"></span>
+                        <app-add-update-reply [answerId]="answer.answerId" (onReplySave)="addUpdateReply($event)"
+                            [selectedReply]="selectedReply" (onReplayReset)="hideEdit()" *ngIf="isEditingReply && selectedReplyId === reply.id"></app-add-update-reply>
+                    </span>
+                </mat-list-item>
+            </mat-list>
+        </div>
+        <!--Replies end-->
+        <div class="pt-2" *ngIf="showReplies && answer.answerId === selectedAnswerId">
+            <app-add-update-reply [answerId]="answer.answerId" (onReplySave)="addUpdateReply($event)"></app-add-update-reply>
+        </div>
+    </div>
+</mat-card>

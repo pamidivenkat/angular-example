@@ -1,0 +1,10 @@
+<div [class.image-grid]="viewType === 'GridView'">
+    <ng-content></ng-content>
+</div>
+<br>
+<div>
+    <button mat-raised-button type="button" id="bunUploadAll" class="submit-button" (click)="uploadAll()">Upload
+        All</button>
+    &nbsp;
+    <!-- <button mat-raised-button type="button" id="bunRemoveAll" color="accent" (click)="removeAll()">Remove Pending</button> -->
+</div>

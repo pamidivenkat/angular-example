@@ -1,0 +1,27 @@
+.table-head {
+    font-weight: bold !important;
+}
+
+.table-data {
+    justify-content: space-between;
+    display: flex !important;
+}
+
+.list-item {
+    border: 0px !important;
+    padding: 0px !important;
+}
+
+.report-column {
+    width: 33.3%;
+    text-align: right;
+}
+
+.date-column {
+    width: 50% !important;
+}
+
+.header-cell {
+    text-align: left;
+    font-weight: bold;
+}

@@ -1,0 +1,36 @@
+<mat-card>
+  <app-page-card-header [icon]="'person'" [title]="'Associate Profile'" [postColor]="'#91B0A0'"></app-page-card-header>
+  <mat-card-header class="mt-3 profile-header" *ngIf="!isProfileLoading">
+    <div mat-card-avatar class="mr-2">
+      <app-user-avatar [imageSize]="'square'" [userImage]="associate.photoUrl"></app-user-avatar>
+    </div>
+    <mat-card-title>
+      <span class="profile-name">{{associate.firstName + ' ' + associate.lastName}}</span>
+      <br>
+      <span class="profile-address">{{associate.location}}</span>
+      <br>
+      <span class="profile-email">
+        <a (click)="sendMail()">{{associate.email}}</a>
+      </span>&nbsp;
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content class="contributions" *ngIf="!isProfileLoading">
+    <h4>Recent Contributions</h4>
+    <app-posttype-filter style="width: 90%" (onSelectionChange)="updateList($event)"></app-posttype-filter>
+    <div class="mt-5" appScrollTracker (scrollEnd)="getMoreContributions($event)">
+      <div class="well well-sm" *ngFor="let post of posts">
+        <app-post [post]="post"></app-post>
+      </div>
+    </div>
+    <div class="spinner" *ngIf="isLoading">
+      <div class="bounce1"></div>
+      <div class="bounce2"></div>
+      <div class="bounce3"></div>
+    </div>
+  </mat-card-content>
+  <div class="mt-5" *ngIf="isProfileLoading">
+    <mat-spinner></mat-spinner>
+  </div>
+
+
+</mat-card>

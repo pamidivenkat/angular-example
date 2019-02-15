@@ -1,0 +1,123 @@
+<mat-card>
+  <form [formGroup]="answerForm" class="pt-2">
+    Answer
+    <div class="form-group details">
+      <quill-editor id="answerText" (onEditorCreated)="setEditor($event)" (onContentChanged)="contentChange($event)"
+        bounds="self" placeholder="" required #details formControlName="details" [modules]="{toolbar:[['bold', 'italic', 'underline'], ['link'], [{ 'list': 'ordered'}, { 'list': 'bullet' }]]}">
+      </quill-editor>
+      <mat-error *ngIf="details.required"> You must enter a value </mat-error>
+      <small *ngIf="errorMaxLength" class="error-msg text-danger">More than 8000 characters are not allowed.</small>
+    </div>
+    <div>
+      <div style="display: inline-flex;">
+        <div class="form-group upload-drop-zone" [fileUploadInputFor]="imageUploadQueue" [files]="attachedImages">
+          <label for="imageFile" *ngIf="isHybridApp">Image attachments &nbsp; </label>
+          <button (click)="chooseFile($event)" *ngIf="isHybridApp">Choose Images</button>
+          <span class="image-upload" [hidden]="isHybridApp">
+            <label for="imageFile">
+              <mat-icon>photo</mat-icon>
+            </label>
+            <input id="imageFile" accept="image/*" type="file" multiple (change)='chooseFile($event)' formControlName="imageFile" />
+          </span>
+        </div>
+        <div class="form-group upload-drop-zone" [fileUploadInputFor]="fileUploadQueue" [files]="attachedFiles">
+          <label for="singleFile" *ngIf="isHybridApp">File attachments &nbsp; </label>
+          <button (click)="chooseFile($event)" *ngIf="isHybridApp">Choose Files</button>
+          <span class="image-upload ml-2" [hidden]="isHybridApp">
+            <label for="singleFile">
+              <mat-icon>attachment</mat-icon>
+            </label>
+            <input id="singleFile" type="file" multiple (change)='chooseFile($event)' formControlName="singleFile" />
+          </span>
+        </div>
+      </div>
+      <br>
+      <mat-file-upload-queue #imageUploadQueue [hidden]="!(imageUploadQueue.files.length > 0)" [fileAlias]="'file'"
+        [httpUrl]="uploadURL">
+        <mat-file-upload [file]="file" [id]="i" *ngFor="let file of imageUploadQueue.files; let i = index" [maxFiles]="maxNoImages"
+          [maxSize]="maxFileLength" (onUpload)="addAttachment($event, true)" (removeEvent)="removeAttachment($event)"
+          [displayType]="'GridView'" [allowedTypes]="'image'" (onUploadStart)="updateProgress($event)"></mat-file-upload>
+      </mat-file-upload-queue>
+      <br>
+      <label>Attachments <mat-icon>attachment</mat-icon></label>
+      <mat-file-upload-queue #fileUploadQueue [hidden]="!(fileUploadQueue.files.length > 0)" [fileAlias]="'file'"
+        [httpUrl]="uploadURL">
+        <mat-file-upload [file]="file" [id]="i" *ngFor="let file of fileUploadQueue.files; let i = index" [maxFiles]="maxNoFiles"
+          [maxSize]="maxFileLength" (onUpload)="addAttachment($event, false)" (removeEvent)="removeAttachment($event)"
+          [displayType]="'ListView'" (onUploadStart)="updateProgress($event)"></mat-file-upload>
+      </mat-file-upload-queue>
+    </div>
+    <div class="form-group">
+      <mat-form-field class="material-control">
+        <mat-label>Venues</mat-label>
+        <input matInput placeholder="Please enter 3 or more characters" aria-label="Venues" id="autoVenue"
+          [matAutocomplete]="autoProperty" [formControl]="propertyControl">
+        <mat-progress-spinner matSuffix mode="indeterminate" diameter=15 *ngIf="propertyLoader" style="top:9px; position: absolute;"></mat-progress-spinner>
+        <a mat-button matSuffix (click)="sendMail()" class="float-right">Missing Hotel?</a>
+        <mat-autocomplete #autoProperty="matAutocomplete" (optionSelected)="propertySelected($event)">
+          <mat-option *ngFor="let property of filteredProperties | async" [value]="property.propertyId">
+            <span>{{ property.propertyName }}</span>
+          </mat-option>
+        </mat-autocomplete>
+        <mat-hint>Enter Venue Name</mat-hint>
+      </mat-form-field>
+      <mat-chip-list>
+        <mat-chip *ngFor="let property of selectedProperties;" color="accent" class="post-chip">
+          <a [routerLink]="'/property/' + property.propertyId">{{property.propertyName}}</a>
+          <i class="material-icons pl-3" (click)="removeSelectedProperty(property.propertyId)" style="cursor: pointer;">highlight_off</i>
+        </mat-chip>
+      </mat-chip-list>
+    </div>
+    <div class="form-group">
+      <mat-form-field class="material-control">
+        <mat-label>Locations</mat-label>
+        <input matInput placeholder="Please enter 3 or more characters" aria-label="Locations" id="autoLocation"
+          [matAutocomplete]="autoLocation" [formControl]="locationControl">
+        <mat-progress-spinner matSuffix mode="indeterminate" diameter=15 *ngIf="locationLoader"></mat-progress-spinner>
+        <mat-autocomplete #autoLocation="matAutocomplete" (optionSelected)="locationSelected($event)">
+          <mat-option *ngFor="let location of filteredLocations | async" [value]="location.id">
+            <span>{{ location.name }}</span>
+          </mat-option>
+        </mat-autocomplete>
+        <mat-hint>Enter City, Metro Area, State, Country or Region</mat-hint>
+      </mat-form-field>
+      <mat-chip-list>
+        <mat-chip *ngFor="let location of selectedLocations" color="accent" class="post-chip">
+          <a [routerLink]="'/search/results/location/' + location.id">{{location.name}}</a>
+          <i class="material-icons pl-3" (click)="removeSelectedLocation(location.id)" style="cursor: pointer;">highlight_off</i>
+        </mat-chip>
+      </mat-chip-list>
+    </div>
+    <div class="form-group">
+      <mat-form-field class="material-control">
+        <mat-label>Brands</mat-label>
+        <input matInput placeholder="Please enter 3 or more characters" id="autoBrands" aria-label="Brands"
+          [matAutocomplete]="autoPropertyChain" [formControl]="propertyChainControl">
+        <mat-progress-spinner matSuffix mode="indeterminate" diameter=15 *ngIf="propertyChainLoader"></mat-progress-spinner>
+        <mat-autocomplete #autoPropertyChain="matAutocomplete" (optionSelected)="propertyChainSelected($event)">
+          <mat-option *ngFor="let propertyChain of filteredPropertyChains | async" [value]="propertyChain.propertyChainID">
+            {{propertyChain.propertyChainName}}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-hint>Enter Brand Name</mat-hint>
+      </mat-form-field>
+      <mat-chip-list>
+        <mat-chip *ngFor="let propertyChain of selectedPropertyChains;" color="accent" class="post-chip">
+          <a [routerLink]="'/search/results/brand/' + propertyChain.propertyChainID">{{propertyChain.propertyChainName}}</a>
+          <i class="material-icons pl-3" (click)="removeSelectedPropertyChain(propertyChain.propertyChainID)" style="cursor: pointer;">highlight_off</i>
+        </mat-chip>
+      </mat-chip-list>
+    </div>
+    <div class="form-group mb-4">
+      <span class="float-right post-buttons">
+        <button mat-raised-button type="button" id="btnSubmit" (click)="onSubmit()" [disabled]="answerForm.pristine || answerForm.invalid || isUploadInProgress"
+          class="submit-button">Submit</button> &nbsp;
+        <button mat-raised-button type="button" id="idCancel" (click)="cancel()" color="accent" [disabled]="answerForm.pristine || isUploadInProgress">Cancel</button>
+        &nbsp;
+      </span>
+    </div>
+    <br>
+    <br>
+    <br>
+  </form>
+</mat-card>

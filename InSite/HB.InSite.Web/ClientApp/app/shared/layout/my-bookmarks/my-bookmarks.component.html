@@ -1,0 +1,137 @@
+<mat-card class="my-bookmarks">
+  <app-page-card-header
+    [title]="'My Bookmarks'"
+    [icon]="'turned_in'"
+    [iconClass]="'card-head-small-icon'"
+    [titleClass]="'card-head-small-title'"
+    *ngIf="isMobile"
+  ></app-page-card-header>
+  <mat-card-content class="mt-3">
+    <div (tap)="toggleShowFolders()" class="pt-1 pl-1 folder-header">
+      <div class="select-folder">Select Folder &nbsp;</div>
+      <strong class="pl-2"> {{ folderName }}</strong>
+      <i class="material-icons float-right p-0" *ngIf="!showFolders"> keyboard_arrow_down </i>
+      <i class="material-icons float-right p-0" *ngIf="showFolders"> keyboard_arrow_up </i>
+    </div>
+    <app-view-folders (onFolderSelected)="changeFolder($event)" [showFolders]="showFolders"></app-view-folders>
+    <br />
+    <div *ngIf="!isMobile">
+      <div (tap)="manageFolders()" class="mt-1 manage-folders">Manage Folders</div>
+      <app-posttype-filter
+        (onSelectionChange)="changeTypes($event)"
+        class="mt-2"
+        [includeVenue]="true"
+      ></app-posttype-filter>
+    </div>
+    <div *ngIf="isMobile">
+      <a class="mt-1 p-2 manage-folders" routerLink="/manage-folders">Manage Folders</a>
+      <button
+        mat-raised-button
+        type="button"
+        id="idFilter"
+        (click)="goToFilters()"
+        class="float-right"
+        [ngClass]="selectedTypes.length > 0 ? 'active-filter' : 'filter'"
+      >
+        Filter By
+      </button>
+    </div>
+    <div class="mt-2">
+      <mat-list class="material-control">
+        <mat-list-item *ngFor="let bookmark of bookmarks" class="material-control my-bookmarks">
+          <!-- --{{bookmark.type}} -->
+          <ng-template
+            [ngIf]="
+              bookmark.post &&
+              (bookmark.type === 1 || bookmark.type === 2 || bookmark.type === 8 || bookmark.type === 16)
+            "
+          >
+            <app-post-avatar
+              mat-list-icon
+              mat-card-avatar
+              [type]="bookmark.type"
+              [isBookmark]="true"
+              style="width:25px; height:25px;"
+              [userImage]="bookmark.post && bookmark.associateUser && bookmark.associateUser.photoUrl"
+            ></app-post-avatar>
+            <div class="mat-list-text">
+              <div
+                mat-line
+                style="font-weight: bold; overflow: hidden; white-space:normal; font-size: 12px"
+                *ngIf="bookmark.type !== 8"
+              >
+                <a routerLink="/profile/{{bookmark.post.createdBy}}">{{
+                  bookmark.associateUser ? bookmark.associateUser.fullname : bookmark.post.createdBy
+                }}</a>
+              </div>
+              <div mat-line style="overflow: hidden; font-size: 12px">{{ bookmark.type | postType }}</div>
+              <div mat-line class="bookmark-title">
+                <div
+                  [innerHTML]="bookmark.post && bookmark.post.title"
+                  class="post-title"
+                  (click)="goToDetails(bookmark.type, bookmark.entityId)"
+                ></div>
+              </div>
+            </div>
+          </ng-template>
+          <ng-template [ngIf]="bookmark.property.propertyId != 0">
+            <app-post-avatar
+              mat-list-icon
+              mat-card-avatar
+              [type]="32"
+              [isBookmark]="true"
+              style="width:25px; height:25px; margin-top: -10px;"
+            ></app-post-avatar>
+            <div class="mat-list-text">
+              <div mat-line style="overflow: hidden; font-size: 12px">{{ bookmark.type | postType }}</div>
+              <div mat-line class="bookmark-title">
+                <div
+                  [innerHTML]="bookmark.property.propertyName"
+                  class="post-title"
+                  routerLink="/property/{{bookmark.property.propertyId}}"
+                ></div>
+              </div>
+            </div>
+          </ng-template>
+          <ng-template [ngIf]="bookmark.type == 4">
+            <app-post-avatar
+              mat-list-icon
+              mat-card-avatar
+              [type]="4"
+              [isBookmark]="true"
+              style="width:25px; height:25px;"
+              [userImage]="bookmark.associateUser.photoUrl"
+            ></app-post-avatar>
+            <div class="mat-list-text">
+              <div mat-line style="font-weight: bold; overflow: hidden; white-space:normal; font-size: 12px">
+                <a routerLink="/profile/{{bookmark.post && bookmark.post.createdBy}}">{{
+                  bookmark.associateUser.fullname
+                }}</a>
+              </div>
+              <div mat-line style="overflow: hidden; font-size: 12px">{{ 4 | postType }}</div>
+              <div mat-line class="bookmark-title">
+                <div
+                  [innerHTML]="bookmark.post && bookmark.post.title"
+                  class="post-title"
+                  routerLink="/review/view/{{bookmark.entityId}}"
+                ></div>
+              </div>
+            </div>
+          </ng-template>
+          <mat-divider></mat-divider>
+          <div class="float-right">
+            <mat-icon mat-list-icon [matMenuTriggerFor]="notify">more_vert</mat-icon>
+            <mat-menu #notify="matMenu" class="no-padding" [xPosition]="'before'">
+              <button mat-menu-item (click)="moveBookmark(bookmark.id)">
+                <i class="material-icons">compare_arrows</i> <span>Move</span>
+              </button>
+              <button mat-menu-item (click)="removeBookmark(bookmark.id)">
+                <i class="material-icons">delete</i> <span>Remove</span>
+              </button>
+            </mat-menu>
+          </div>
+        </mat-list-item>
+      </mat-list>
+    </div>
+  </mat-card-content>
+</mat-card>

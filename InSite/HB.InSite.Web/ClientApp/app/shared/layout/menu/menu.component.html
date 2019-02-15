@@ -1,0 +1,85 @@
+<nav>
+    <ul class="nav">
+        <li class="nav-item">
+            <div class="panel">
+                <div class="d-flex" style="text-align: center; margin-left: 20px;">
+                    <div class="menu-avatar" [ngStyle]="{'background-image': 'url(' + user.photoUrl + ')'}"></div>
+                    <p class="personal-info">{{user.firstName}} {{user.lastName}}
+                        <br>
+                        <span>{{user.points | number}} Points</span>
+                        <br>
+                        <span>{{user.location}} </span>
+                    </p>
+                </div>
+            </div>
+        </li>
+
+        <li class="nav-item hidden-md-lg">
+            <a class="nav-link" [routerLink]="'/mybookmarks'">
+                <span class="menu-title">
+                    <i class="material-icons" style="color:#ffc107">turned_in</i>My Bookmarks</span>
+            </a>
+        </li>
+        <hr />
+
+        <li class="nav-item">
+            <a class="nav-link" [routerLink]="'/myreviews'">
+                <span class="menu-title">
+                    <i class="material-icons" [ngStyle]="{'color': consts.POST_COLORS.REVIEW}">stars</i>My Reviews
+                </span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" [routerLink]="'/myquestions'">
+                <span class="menu-title">
+                    <i class="material-icons" [ngStyle]="{'color': consts.POST_COLORS.QUESTION}">help</i>My Questions</span>
+            </a>
+        </li>
+        <li class="nav-item active">
+            <a class="nav-link" [routerLink]="'/myanswers'">
+                <span class="menu-title">
+                    <i class="material-icons" [ngStyle]="{'color': consts.POST_COLORS.QUESTION}">supervised_user_circle</i>My
+                    Answers</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" [routerLink]="'/myinsight'">
+                <span class="menu-title">
+                    <i class="material-icons" [ngStyle]="{'color': consts.POST_COLORS.INSIGHT}">info</i>My Insights</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" [routerLink]="'/myinspections'">
+                <span class="menu-title">
+                    <i class="material-icons" [ngStyle]="{'color': consts.POST_COLORS.INSPECTION}">offline_pin</i>My
+                    Inspections</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" [routerLink]="'/myexpiringcontent'">
+                <span class="menu-title">
+                    <i class="material-icons">watch_later</i>My Expiring Content</span>
+                <span class="event-count" *ngIf="expiringContent > 0">{{expiringContent}}</span>
+            </a>
+        </li>
+        <hr>
+        <li class="nav-item">
+            <a class="nav-link" [routerLink]="'/mypreferences'">
+                <span class="menu-title">
+                    <i class="material-icons">move_to_inbox</i>Email Preferences</span>
+            </a>
+        </li>
+        <hr>
+        <li class="nav-item">
+            <a class="nav-link link-cursor" (click)="logout()" id="logout">
+                <i class="material-icons">exit_to_app</i>
+                <span class="menu-title"> Sign out</span>
+            </a>
+        </li>
+        <hr>
+        <li class="copy-rights">
+            Published date : {{publishedDate}}
+            <br /> HB | InSite &copy; 2018
+        </li>
+    </ul>
+</nav>

@@ -1,0 +1,48 @@
+<!-- Desktop search start -->
+<div class="search-input d-none d-sm-block">
+    <mat-form-field class="material-control" style="margin-top: -15px" [floatLabel]="'never'">
+        <input matInput placeholder="Search" type="text" name="search" [(ngModel)]="search.query" (keypress)="searchByEnterKey($event, search.query)" />
+        <button (click)="goToResults(search.query)" matSuffix mat-icon-button>
+            <mat-icon>search</mat-icon>
+        </button>
+        <mat-hint>
+            <mat-slide-toggle id="chkVenues" name="chkVenues" color="primary" [(ngModel)]="search.venues" (keypress)="searchByEnterKey($event, search.query)">Find
+                Venues/CVBs</mat-slide-toggle>
+        </mat-hint>
+    </mat-form-field>
+</div>
+<!-- Desktop search end -->
+
+<!-- Mobile search start -->
+<div class="search-input d-block d-sm-none">
+    <!-- <i class="material-icons" *ngIf="!showModel" (click)="showSearch()">search</i> -->
+
+    <i class="material-icons search-icon" *ngIf="!showModel" (click)="showSearch()">search</i>
+    <div class="search-sm-block" *ngIf="showModel">
+        <mat-card class="pt-0">
+            <mat-card-title>
+                <span class="float-right">
+                    <button mat-icon-button (click)="hideSearch()">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </span>
+                <br>
+            </mat-card-title>
+            <mat-card-content>
+                <mat-form-field class="material-control-button">
+                    <input matInput placeholder="Search" type="text" name="search" [(ngModel)]="search.query"
+                        (keypress)="searchByEnterKey($event, search.query)" />
+                </mat-form-field>
+                <button (click)="goToResults(search.query)" matSuffix mat-icon-button>
+                    <mat-icon>search</mat-icon>
+                </button>
+                <mat-hint>
+                    <mat-slide-toggle id="chkVenues" name="chkVenues" color="primary" [(ngModel)]="search.venues"
+                        (keypress)="searchByEnterKey($event, search.query)">Find Venues/CVBs</mat-slide-toggle>
+                </mat-hint>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
+
+<!-- Mobile search end -->
